@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Circle the Square — Opening Title Sequence & Asset Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0B0D12;
+      --bg-card: #141722;
+      --bg-card-hover: #1C2130;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(176, 56, 31, 0.4);
+      --burnt-orange: #B0381F;
+      --orange-glow: rgba(176, 56, 31, 0.25);
+      --amber-gold: #F2A34D;
+      --slate-grey: #64748B;
+      --bone-white: #F4F3EF;
+      --text-muted: #94A3B8;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--bone-white);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Background Glow */
+    .bg-glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 600px;
+      background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header Navigation & Banner */
+    header {
+      padding: 40px 0 20px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(176, 56, 31, 0.15);
+      border: 1px solid var(--burnt-orange);
+      color: var(--amber-gold);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+
+    .badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--burnt-orange);
+      box-shadow: 0 0 10px var(--burnt-orange);
+    }
+
+    h1.hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #D4D4D8 50%, var(--amber-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 800px;
+    }
+
+    /* Section Styling */
+    section {
+      margin-bottom: 60px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title span {
+      color: var(--burnt-orange);
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* 30-Second Sequence Timeline Stepper */
+    .timeline-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-card:hover, .timeline-card.active {
+      background: var(--bg-card-hover);
+      border-color: var(--burnt-orange);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px var(--orange-glow);
+    }
+
+    .timeline-time {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--amber-gold);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .timeline-heading {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Grid Layouts for Images */
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .asset-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .asset-card:hover {
+      border-color: var(--burnt-orange);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6), 0 0 20px var(--orange-glow);
+    }
+
+    .asset-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .asset-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .asset-card:hover .asset-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    .asset-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(11, 13, 18, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--amber-gold);
+      font-weight: 600;
+    }
+
+    .asset-content {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .asset-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #FFF;
+    }
+
+    .asset-path {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--burnt-orange);
+      word-break: break-all;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .asset-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Character Specific Styles */
+    .character-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.82rem;
+    }
+
+    .meta-item {
+      color: var(--text-muted);
+    }
+
+    .meta-item strong {
+      color: var(--bone-white);
+    }
+
+    /* Prompt Box */
+    .prompt-box {
+      background: #0E1017;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--burnt-orange);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #E2E8F0;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin-top: 12px;
+      position: relative;
+    }
+
+    .prompt-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--amber-gold);
+      font-size: 0.9rem;
+    }
+
+    /* ------------------------------------------------------------- */
+    /* GRAND TITLE CARD DROP AT END OF PAGE                          */
+    /* ------------------------------------------------------------- */
+    .title-card-container {
+      margin: 80px 0 60px;
+      background: radial-gradient(circle at center, #1E1210 0%, var(--bg-dark) 80%);
+      border: 2px solid var(--burnt-orange);
+      border-radius: 24px;
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 0 50px var(--orange-glow);
+    }
+
+    .title-card-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(176, 56, 31, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(176, 56, 31, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .title-card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .title-card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      color: var(--slate-grey);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .main-title-text {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: var(--bone-white);
+      text-shadow: 0 0 30px rgba(244, 243, 239, 0.3), 0 0 60px var(--burnt-orange);
+      margin-bottom: 16px;
+    }
+
+    .title-divider {
+      width: 180px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--burnt-orange), var(--amber-gold), var(--burnt-orange), transparent);
+      margin: 20px auto 24px;
+      border-radius: 2px;
+    }
+
+    .subtitle-text {
+      font-family: var(--font-heading);
+      font-size: clamp(1.4rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--burnt-orange);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      text-shadow: 0 0 20px var(--orange-glow);
+    }
+
+    .title-footer-meta {
+      display: inline-flex;
+      gap: 24px;
+      padding: 12px 28px;
+      background: rgba(11, 13, 18, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .title-footer-meta strong {
+      color: var(--bone-white);
+    }
+
+    /* Modal Image Lightbox */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .lightbox-modal img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 12px;
+      border: 2px solid var(--burnt-orange);
+      box-shadow: 0 0 40px var(--orange-glow);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 2rem;
+      color: #FFF;
+      cursor: pointer;
+      font-family: var(--font-heading);
+    }
+
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="badge">LOCKED PRODUCTION SPECIFICATION</div>
+      <h1 class="hero-title">CIRCLE THE SQUARE</h1>
+      <p class="hero-subtitle">Visual Asset Matrix & 30-Second Opening Title Sequence Reference Portal for AI Video Synthesis (Google Veo 2 / Sora & Gemini)</p>
+    </header>
+
+    <!-- 30-Second Shot Timeline -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title">⏱️ <span>0:00 - 0:30</span> Sequence Breakdown</h2>
+        <span class="section-desc">Click any phase to view details</span>
+      </div>
+
+      <div class="timeline-container">
+        <div class="timeline-card active" onclick="highlightSection('ext-section')">
+          <div class="timeline-time">0:00 - 0:06</div>
+          <div class="timeline-heading">1. Aerial Drone Prow</div>
+          <div class="timeline-text">High FPV flyby over the buff-brick prow & glowing amber lantern tower at dawn.</div>
+        </div>
+
+        <div class="timeline-card" onclick="highlightSection('ext-section')">
+          <div class="timeline-time">0:06 - 0:11</div>
+          <div class="timeline-heading">2. Forecourt Plaza</div>
+          <div class="timeline-text">Rapid low push-in across Shaftesbury Road plaza toward glazed entrance.</div>
+        </div>
+
+        <div class="timeline-card" onclick="highlightSection('atrium-section')">
+          <div class="timeline-time">0:11 - 0:15</div>
+          <div class="timeline-heading">3. Atrium Speed Gates</div>
+          <div class="timeline-text">Pushing through revolving doors past concrete columns & burnt orange speed gates.</div>
+        </div>
+
+        <div class="timeline-card" onclick="highlightSection('office-section')">
+          <div class="timeline-time">0:15 - 0:20</div>
+          <div class="timeline-heading">4. Office Desk Rows</div>
+          <div class="timeline-text">Low fly-through past desk rows & hanging orange felt triangle ceiling baffles.</div>
+        </div>
+
+        <div class="timeline-card" onclick="highlightSection('stinger-section')">
+          <div class="timeline-time">0:20 - 0:30</div>
+          <div class="timeline-heading">5. Photo Meltdown</div>
+          <div class="timeline-text">Tripod lock on orange desk & triangle wall for dysfunctional corporate photo.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real Building & Office Reference Images -->
+    <section id="ext-section">
+      <div class="section-header">
+        <h2 class="section-title">🏛️ Real Office Architecture <span>Image References</span></h2>
+        <span class="section-desc">Real plates from building-reference/ & location-refs/ fed to AI</span>
+      </div>
+
+      <div class="image-grid">
+        
+        <!-- P01 Hero Exterior -->
+        <div class="asset-card" onclick="openLightbox('building-reference/use-images/P01.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">SHOT 01 • EXT HERO</span>
+            <img src="building-reference/use-images/P01.jpg" alt="Prow Exterior Dusk" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Acute Prow & Glowing Tower Lantern</div>
+            <div class="asset-path">📁 building-reference/use-images/P01.jpg</div>
+            <div class="asset-desc">Symmetrical blue-hour dusk view over Shaftesbury Road. Sand-cream brick prow with the top glass lantern glowing warm amber.</div>
+          </div>
+        </div>
+
+        <!-- Forecourt Plaza -->
+        <div class="asset-card" onclick="openLightbox('location-refs/exterior_forecourt_location_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">SHOT 02 • FORECOURT</span>
+            <img src="location-refs/exterior_forecourt_location_sheet.jpg" alt="Forecourt Location Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Exterior Forecourt & Plaza Location Sheet</div>
+            <div class="asset-path">📁 location-refs/exterior_forecourt_location_sheet.jpg</div>
+            <div class="asset-desc">Master location turnaround sheet showing entrance plaza paving, birch tree rows, and dark bronze glazed link bridge.</div>
+          </div>
+        </div>
+
+        <!-- Atrium & Speed Gates -->
+        <div class="asset-card" id="atrium-section" onclick="openLightbox('location-refs/reception_atrium_location_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">SHOT 03 • RECEPTION ATRIUM</span>
+            <img src="location-refs/reception_atrium_location_sheet.jpg" alt="Reception Atrium Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Double-Height Lobby & Speed Gates</div>
+            <div class="asset-path">📁 location-refs/reception_atrium_location_sheet.jpg</div>
+            <div class="asset-desc">Double-height lobby with fair-faced concrete columns, oak acoustic slat paneling, and Prism burnt orange speed gates.</div>
+          </div>
+        </div>
+
+        <!-- Office Floor Desk Rows -->
+        <div class="asset-card" id="office-section" onclick="openLightbox('building-reference/use-images/20250207_084330.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">SHOT 04 • OPEN-PLAN</span>
+            <img src="building-reference/use-images/20250207_084330.jpg" alt="Office Desk Rows" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Open-Plan Desk Rows & Triangle Baffles</div>
+            <div class="asset-path">📁 building-reference/use-images/20250207_084330.jpg</div>
+            <div class="asset-desc">Real office floor plate featuring white desk rows, grey carpet tiles, and hanging burnt-orange triangle felt ceiling acoustic sculptures.</div>
+          </div>
+        </div>
+
+        <!-- Group Photo Setup Wall -->
+        <div class="asset-card" id="stinger-section" onclick="openLightbox('building-reference/use-images/IMG_20260804_131855397.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">SHOT 05 & 06 • PHOTO SETUP</span>
+            <img src="building-reference/use-images/IMG_20260804_131855397.jpg" alt="Faceted Reception Desk" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Faceted Orange Desk & Triangle Wall</div>
+            <div class="asset-path">📁 building-reference/use-images/IMG_20260804_131855397.jpg</div>
+            <div class="asset-desc">Hero background plate for the group photo shoot stinger. Faceted ochre-orange reception desk with black-and-white geometric accent wall.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Master Character Identity Sheets -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title">🎭 Master Character Identity <span>Roster</span></h2>
+        <span class="section-desc">Conditioning input sheets from character-refs/</span>
+      </div>
+
+      <div class="image-grid">
+
+        <!-- Jan Peach -->
+        <div class="asset-card" onclick="openLightbox('character-refs/jan_peach_identity_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">JAN PEACH • CEO</span>
+            <img src="character-refs/jan_peach_identity_sheet.jpg" alt="Jan Peach Identity Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Jan Peach (CEO)</div>
+            <div class="asset-path">📁 character-refs/jan_peach_identity_sheet.jpg</div>
+            <div class="asset-desc">Blustering corporate tyrant. Navy suit jacket unbuttoned, red furious face screaming mid-shot with fists clenched.</div>
+            <div class="character-meta">
+              <div class="meta-item"><strong>Age / Role:</strong> 52 • CEO</div>
+              <div class="meta-item"><strong>Beat:</strong> Screaming in rage</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Christina Dross -->
+        <div class="asset-card" onclick="openLightbox('character-refs/christina_dross_identity_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">CHRISTINA • COMMS LEAD</span>
+            <img src="character-refs/christina_dross_identity_sheet.jpg" alt="Christina Dross Identity Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Christina Dross (Comms Lead)</div>
+            <div class="asset-path">📁 character-refs/christina_dross_identity_sheet.jpg</div>
+            <div class="asset-desc">Dry calculating strategist. Tailored beige blazer, dark bob hair. Applying compact mirror lipstick during photo.</div>
+            <div class="character-meta">
+              <div class="meta-item"><strong>Age / Role:</strong> 38 • Strategy</div>
+              <div class="meta-item"><strong>Beat:</strong> Compact mirror lipstick</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sharon Enfield -->
+        <div class="asset-card" onclick="openLightbox('character-refs/sharon_enfield_identity_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">SHARON • OPERATIONS</span>
+            <img src="character-refs/sharon_enfield_identity_sheet.jpg" alt="Sharon Enfield Identity Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Sharon Enfield (Operations)</div>
+            <div class="asset-path">📁 character-refs/sharon_enfield_identity_sheet.jpg</div>
+            <div class="asset-desc">Severe power suit, auburn wavy hair. Arms crossed tightly over chest giving Chris and Rick a death-stare.</div>
+            <div class="character-meta">
+              <div class="meta-item"><strong>Age / Role:</strong> 34 • Operations</div>
+              <div class="meta-item"><strong>Beat:</strong> Unimpressed death-stare</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chris -->
+        <div class="asset-card" onclick="openLightbox('character-refs/chris_identity_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">CHRIS • RANK & FILE</span>
+            <img src="character-refs/chris_identity_sheet.jpg" alt="Chris Identity Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Chris (Staff Wit)</div>
+            <div class="asset-path">📁 character-refs/chris_identity_sheet.jpg</div>
+            <div class="asset-desc">Lean build, grey polo shirt, untucked. Pulling silly faces holding a burnt-orange Prism stress ball.</div>
+            <div class="character-meta">
+              <div class="meta-item"><strong>Age / Role:</strong> 32 • Staff</div>
+              <div class="meta-item"><strong>Beat:</strong> Silly face & stress ball</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rick -->
+        <div class="asset-card" onclick="openLightbox('character-refs/rick_identity_sheet.jpg')">
+          <div class="asset-img-wrap">
+            <span class="asset-tag">RICK • SECURITY / STAFF</span>
+            <img src="character-refs/rick_identity_sheet.jpg" alt="Rick Identity Sheet" />
+          </div>
+          <div class="asset-content">
+            <div class="asset-title">Rick (Security Realist)</div>
+            <div class="asset-path">📁 character-refs/rick_identity_sheet.jpg</div>
+            <div class="asset-desc">Broad build, navy security uniform + radio. Putting bunny ears behind Chris's head in the group photo.</div>
+            <div class="character-meta">
+              <div class="meta-item"><strong>Age / Role:</strong> 40 • Security</div>
+              <div class="meta-item"><strong>Beat:</strong> Bunny ears behind Chris</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Master Video Generation Prompt Box -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title">🤖 Locked AI <span>Render Prompt Engine</span></h2>
+        <span class="section-desc">Google Veo 2 / Sora + Gemini Multi-Modal Instructions</span>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-box-header">
+          <span>GOOGLE VEO 2 / SORA CONTINUOUS VIDEO + NATIVE AUDIO PROMPT</span>
+          <span>OPTION A ENGINE</span>
+        </div>
+A continuous cinematic 35mm 4K video shot starting as an FPV drone high above a modern UK corporate building (The Triangle Building in Cambridge). The cold blue-hour dawn light illuminates a curved sand-brick prow and a glass-and-timber tower glowing warm amber at the top. 
+
+The camera rapidly dives down toward the street-level plaza, pushing smoothly through revolving glass doors into a grand double-height atrium with grey concrete columns, oak slat walls, and glowing burnt-orange speed gates. 
+
+Without stopping, the camera glides through the open-plan office past rows of white desks and hanging acoustic triangle ceiling panels, executing a smooth turn into the reception lobby. 
+
+The camera abruptly decelerates and locks onto a tripod wide 1-point perspective shot of five office workers posing awkwardly for a corporate website group photo in front of a faceted orange desk. 
+
+The male CEO in front explodes with a bright red shouting face and clenched fists. On the right, a female manager in a beige blazer ignores the photo to apply lipstick with a compact mirror. On the left, a female operations lead glares angrily at two male workers in the back who are mucking about and putting bunny ears behind each other. On the far left, a quiet man in an overcoat stands deadpan staring motionless into the lens. Bright indoor lighting, modern UK corporate satire style, 2.39:1 aspect ratio, sharp focus across all figures.
+
+NATIVE AUDIO PROMPT:
+"Acoustic guitar and light marimba music fading in, transitioning to revolving glass door click, scanning chime, soft office background chatter, building up to a dramatic choir crescendo that abruptly cuts out dead on a loud camera flash pop, followed by furious shouting from CEO, low chuckling from background workers, and compact mirror snap click."
+      </div>
+    </section>
+
+    <!-- GRAND TITLE CARD DROP SECTION -->
+    <div class="title-card-container">
+      <div class="title-card-lines"></div>
+      <div class="title-card-content">
+        <div class="title-card-eyebrow">A PRISM CREATIVE UNIT PRODUCTION</div>
+        <h1 class="main-title-text">CIRCLE THE SQUARE</h1>
+        <div class="title-divider"></div>
+        <h2 class="subtitle-text">ALL UNDER ONE ROOF</h2>
+        
+        <div class="title-footer-meta">
+          <div>LOCATIONS: <strong>THE TRIANGLE MOTHERSHIP, CAMBRIDGE UK</strong></div>
+          <div>FORMAT: <strong>16:9 / CINEMATIC 2.39:1 CROP</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 PRISM CREATIVE UNIT • <em>Circle the Square</em> Master Production Portal</p>
+      <p style="margin-top:6px; color: var(--amber-gold);">Primary Accent: Burnt Orange (<code>#B0381F</code>) • Locked Subscription Pipeline (£0 API Fees)</p>
+    </footer>
+
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImg" src="" alt="Full Preview" />
+  </div>
+
+  <script>
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxModal').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').style.display = 'none';
+    }
+
+    function highlightSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  </script>
+</body>
+</html>

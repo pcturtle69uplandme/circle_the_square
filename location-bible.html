@@ -1,0 +1,667 @@
+<title>Circle the Square — Location Bible</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #211d17;
+      --paper-raised: #2a251d;
+      --paper-tab: #171310;
+      --ink: #ede6d6;
+      --ink-soft: #b7ae99;
+      --line: #4a4030;
+      --accent: #e2603f;
+      --accent-soft: rgba(226, 96, 63, 0.18);
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #211d17;
+    --paper-raised: #2a251d;
+    --paper-tab: #171310;
+    --ink: #ede6d6;
+    --ink-soft: #b7ae99;
+    --line: #4a4030;
+    --accent: #e2603f;
+    --accent-soft: rgba(226, 96, 63, 0.18);
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
+
+  :root {
+    --paper: #e4dfcf;
+    --paper-raised: #f3efe3;
+    --paper-tab: #d8cfb4;
+    --ink: #2a2620;
+    --ink-soft: #6b6455;
+    --line: #c9c0a8;
+    --accent: #b0381f;
+    --accent-soft: rgba(176, 56, 31, 0.1);
+    --shadow: rgba(42, 38, 32, 0.18);
+
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.55;
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  .cover {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    padding: 2rem 2rem 1.6rem;
+    position: relative;
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: -8px; left: 28px;
+    width: 34px; height: 16px;
+    background: var(--paper-tab);
+    border: 1px solid var(--line);
+    border-bottom: none;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 4.4vw, 2.6rem);
+    margin: 0.25rem 0 0.4rem;
+    text-wrap: balance;
+  }
+  .cover-sub { font-size: 0.95rem; color: var(--ink-soft); max-width: 64ch; }
+  .cover-meta {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem;
+    margin-top: 1.1rem; padding-top: 0.9rem;
+    border-top: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 0.78rem; color: var(--ink-soft);
+  }
+  .cover-meta b { color: var(--ink); font-weight: 600; }
+
+  .callout {
+    margin-top: 1.4rem;
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 1rem 1.2rem;
+    font-size: 0.88rem;
+  }
+  .callout b { color: var(--accent); }
+  .callout ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+  .callout li { margin-bottom: 0.35rem; }
+
+  .directory {
+    margin-top: 1.6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.7rem;
+  }
+  .dir-card {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    text-decoration: none; color: var(--ink);
+  }
+  .dir-badge {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    border: 1.5px solid var(--accent); color: var(--accent);
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dir-name { font-size: 0.86rem; font-weight: 600; line-height: 1.2; }
+  .dir-role { font-size: 0.72rem; color: var(--ink-soft); }
+
+  section.file { margin-top: 2.4rem; position: relative; }
+  .tab {
+    display: inline-flex; align-items: baseline; gap: 0.6rem;
+    background: var(--paper-tab); border: 1px solid var(--line); border-bottom: none;
+    padding: 0.4rem 0.9rem 0.3rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .folder {
+    border: 1px solid var(--line); background: var(--paper-raised);
+    padding: 1.6rem 1.8rem 1.8rem; box-shadow: 0 2px 10px var(--shadow);
+  }
+  .file-head {
+    display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;
+    gap: 0.8rem; border-bottom: 1px solid var(--line); padding-bottom: 0.9rem; margin-bottom: 1.1rem;
+  }
+  .file-name { font-family: var(--display); font-size: 1.7rem; margin: 0; }
+  .file-role { color: var(--ink-soft); font-size: 0.9rem; margin-top: 0.15rem; }
+  .stamp {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); border: 1.5px solid var(--accent); padding: 0.28rem 0.55rem;
+    transform: rotate(-3deg); white-space: nowrap;
+  }
+
+  .grid { display: grid; grid-template-columns: 210px 1fr; gap: 1.8rem; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  .fields dl {
+    margin: 0; display: grid; grid-template-columns: auto 1fr;
+    row-gap: 0.55rem; column-gap: 0.5rem; font-family: var(--mono); font-size: 0.78rem;
+  }
+  .fields dt { color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.68rem; padding-top: 0.15rem; }
+  .fields dd { margin: 0; }
+
+  .narrative h4 {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin: 1.1rem 0 0.3rem;
+  }
+  .narrative h4:first-child { margin-top: 0; }
+  .narrative p { margin: 0 0 0.2rem; font-size: 0.95rem; }
+  .narrative ul { margin: 0.2rem 0 0; padding-left: 1.2rem; font-size: 0.92rem; }
+  .narrative li { margin-bottom: 0.25rem; }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0 0.2rem; }
+  .swatch { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.7rem; color: var(--ink-soft); }
+  .swatch-chip { width: 16px; height: 16px; border: 1px solid var(--line); border-radius: 3px; flex: none; }
+
+  .gallery {
+    margin-top: 1.4rem; border-top: 1px dashed var(--line); padding-top: 1.2rem;
+  }
+  .gallery h4 {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 0.6rem;
+  }
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem;
+  }
+  .gallery-grid figure { margin: 0; }
+  .gallery-grid img {
+    width: 100%; height: 110px; object-fit: cover; display: block;
+    border: 1px solid var(--line); background: var(--paper-tab);
+  }
+  .gallery-grid figcaption {
+    font-family: var(--mono); font-size: 0.64rem; color: var(--ink-soft);
+    margin-top: 0.25rem; line-height: 1.3;
+  }
+
+  .flag {
+    display: inline-block; margin-top: 0.5rem; font-family: var(--mono); font-size: 0.72rem;
+    background: var(--accent-soft); color: var(--accent); padding: 0.3rem 0.5rem; border: 1px solid var(--accent);
+  }
+
+  .notes { margin-top: 2.4rem; border: 1px solid var(--line); background: var(--paper-raised); padding: 1.6rem 1.8rem; }
+  .notes h3 { font-family: var(--display); font-size: 1.25rem; margin: 0 0 0.9rem; }
+  .notes table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .notes td, .notes th { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .notes th { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+
+  footer { margin-top: 2.5rem; text-align: center; font-family: var(--mono); font-size: 0.7rem; color: var(--ink-soft); letter-spacing: 0.06em; }
+</style>
+
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow">Prism &nbsp;·&nbsp; Location File &nbsp;·&nbsp; Confidential Draft</div>
+    <h1>Circle the Square — Location Bible</h1>
+    <p class="cover-sub">The building itself, treated like a character. Compiled by looking through every relevant photo in <code>building-reference/</code> — real materials, real light, real signage — so AI-generated shots and storyboard frames stay consistent with the actual shoot location.</p>
+    <div class="cover-meta">
+      <span><b>9</b> location sheets</span>
+      <span><b>1</b> real building: The Triangle, Cambridge Assessment HQ</span>
+      <span>Architect: Eric Parry Architects · completed 2018</span>
+    </div>
+    <div class="callout">
+      <b>Before this becomes background plate:</b> this is a real, currently-occupied workplace.
+      <ul>
+        <li>Real branding (the company crest/wordmark, the canteen's own internal name) is visible in several reference photos below — cover, crop, or digitally replace before using any frame as final material for the fictional "Prism".</li>
+        <li>Real colleagues appear in some shots — treat as private layout/lighting reference only, never as a source for generated background crowds.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="directory">
+    <a class="dir-card" href="#l1"><span class="dir-badge">01</span><span><span class="dir-name">Forecourt &amp; Entrance</span><br><span class="dir-role">Exterior</span></span></a>
+    <a class="dir-card" href="#l2"><span class="dir-badge">02</span><span><span class="dir-name">Reception &amp; Atrium</span><br><span class="dir-role">Ground floor</span></span></a>
+    <a class="dir-card" href="#l3"><span class="dir-badge">03</span><span><span class="dir-name">Staff Restaurant</span><br><span class="dir-role">Canteen scene</span></span></a>
+    <a class="dir-card" href="#l4"><span class="dir-badge">04</span><span><span class="dir-name">Open-Plan Floor</span><br><span class="dir-role">Desk neighbourhood</span></span></a>
+    <a class="dir-card" href="#l5"><span class="dir-badge">05</span><span><span class="dir-name">Glass Meeting Room</span><br><span class="dir-role">"Jan's office"</span></span></a>
+    <a class="dir-card" href="#l6"><span class="dir-badge">06</span><span><span class="dir-name">Breakout Nooks</span><br><span class="dir-role">Pitstop / arcade</span></span></a>
+    <a class="dir-card" href="#l7"><span class="dir-badge">07</span><span><span class="dir-name">Podium Courtyard</span><br><span class="dir-role">Optional/quiet beat</span></span></a>
+    <a class="dir-card" href="#l8"><span class="dir-badge">08</span><span><span class="dir-name">Corridors &amp; Lockers</span><br><span class="dir-role">Transitional</span></span></a>
+    <a class="dir-card" href="#l9"><span class="dir-badge">09</span><span><span class="dir-name">Rear Staff Entrance</span><br><span class="dir-role">Optional</span></span></a>
+  </div>
+
+  <!-- LOCATION 1 -->
+  <section class="file" id="l1">
+    <div class="tab">Location 01 / Exterior</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Forecourt &amp; Main Entrance</p>
+          <p class="file-role">Cold open, arrivals — the "it's just a building" establishing shot</p>
+        </div>
+        <div class="stamp">Establishing</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Shaftesbury Road forecourt, under the glazed link bridge</dd>
+            <dt>Floor</dt><dd>Ground, exterior</dd>
+            <dt>Signature</dt><dd>Tower's amber-lit timber lantern at dusk</dd>
+            <dt>Adjacent to</dt><dd>Reception &amp; Atrium (through the doors)</dd>
+          </dl>
+          <div class="swatches">
+            <span class="swatch"><span class="swatch-chip" style="background:#D9C3A0"></span>brick</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#E7E2D6"></span>precast band</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#16294A"></span>dusk sky</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#F2A34D"></span>window glow</span>
+          </div>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Calm, institutional, a little too pleased with itself — the "executive" establishing shot before the comedy starts. Dusk is the strongest look: deep blue sky, the whole building glowing warm from within, the tower's glass-and-timber lantern as the single most recognisable feature.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Central glazed double-height link bridge, dark bronze vertical fins</li>
+            <li>Revolving doors dead-centre, flanked by flat accessible doors</li>
+            <li>39m tower behind/right, amber-lit lantern box on top</li>
+            <li>Two symmetrical rows of small trees with ground uplighters</li>
+          </ul>
+          <h4>Continuity</h4>
+          <p>Keep the tower's amber glow consistent in every dusk exterior. Real crest is visible on the tower brickwork in some plates — exclude or obscure it.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Master Model Spec Sheet</h4>
+        <img src="location-refs/exterior_forecourt_location_sheet.jpg" style="width:100%; max-width:900px; border:1px solid var(--line); border-radius:4px; margin-bottom:1.2rem;" alt="Location 01 Master Spec Sheet">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/P01.jpg" alt="Dusk symmetrical forecourt approach"><figcaption>P01.jpg — master dusk approach</figcaption></figure>
+          <figure><img src="building-reference/use-images/DL-EPA-CA-5008-online.jpg" alt="Day wide tower and courtyard"><figcaption>DL-EPA-CA-5008 — day wide</figcaption></figure>
+          <figure><img src="building-reference/use-images/ATWEB-EricParryArchitects-CambridgeAssessment-phDirkLindner13.jpg" alt="Dusk entrance glazing"><figcaption>ATWEB...Lindner13 — dusk entrance</figcaption></figure>
+          <figure><img src="building-reference/use-images/DL-EPA-CA-5550-online.jpg" alt="Dusk courtyard and tower"><figcaption>DL-EPA-CA-5550 — dusk courtyard</figcaption></figure>
+          <figure><img src="building-reference/the-real-triangle/Triangle_Tower.jpg" alt="Tower lantern close dusk"><figcaption>Triangle_Tower.jpg — tower detail</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 2 -->
+  <section class="file" id="l2">
+    <div class="tab">Location 02 / Ground floor</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Reception &amp; Atrium</p>
+          <p class="file-role">Badge/gate access beat, the "Name?" checkpoint, general arrivals</p>
+        </div>
+        <div class="stamp">Double-height</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Ground-floor link-building lobby</dd>
+            <dt>Floor</dt><dd>Ground, double-height (mezzanine above)</dd>
+            <dt>Signature</dt><dd>Glass turnstile gates + faceted reception desk</dd>
+            <dt>Adjacent to</dt><dd>Forecourt, Canteen (same volume), main stair</dd>
+          </dl>
+          <div class="swatches">
+            <span class="swatch"><span class="swatch-chip" style="background:#E7E3D6"></span>floor tile</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#9C958A"></span>concrete</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#2C3A5C"></span>glazed brick (indigo)</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#B98A55"></span>oak stair tread</span>
+          </div>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Corporate-formal, slightly cold, deliberately impressive — "security checkpoint played as a heist." Bright and even by day; warm interior light against dark glazing at dusk reads more cinematic.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Row of glass paddle turnstile gates, glowing indicator lights</li>
+            <li>Faceted amber-toned reception desk just past the gates</li>
+            <li>Sculptural concrete staircase, cantilevered oak treads, glass balustrade</li>
+            <li>Mirrored ceiling panel over the entrance run</li>
+            <li>Backlit stone wall carrying the company wordmark + crest — <b>replace for Prism</b></li>
+          </ul>
+          <span class="flag">Flag: real wordmark wall + directory signage must be swapped or obscured</span>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Master Model Spec Sheet</h4>
+        <img src="location-refs/reception_atrium_location_sheet.jpg" style="width:100%; max-width:900px; border:1px solid var(--line); border-radius:4px; margin-bottom:1.2rem;" alt="Location 02 Master Spec Sheet">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/ep_tri_359-c-raftery-lowe-web.jpg" alt="Reception turnstiles and revolving doors"><figcaption>ep_tri_359 — turnstiles + doors</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_104013600_HDR.jpg" alt="Mezzanine view over whole lobby"><figcaption>IMG_...104013600 — mezzanine overlook</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_131354803_HDR.jpg" alt="Ground level wordmark wall and sofas"><figcaption>IMG_...131354803 — ground level</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_131925991_HDR.jpg" alt="Upper mezzanine overlook"><figcaption>IMG_...131925991 — upper overlook</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_130144130_HDR.jpg" alt="Help desk nook off the lobby"><figcaption>IMG_...130144130 — helpdesk nook</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 3 -->
+  <section class="file" id="l3">
+    <div class="tab">Location 03 / Canteen scene</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Staff Restaurant / Canteen</p>
+          <p class="file-role">The meltdown scene — "sorry, all gone," the window smash, the taser hit</p>
+        </div>
+        <div class="stamp">Primary Set</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Ground-floor servery + mezzanine dining</dd>
+            <dt>Floor</dt><dd>Ground (servery) + mezzanine above</dd>
+            <dt>Signature</dt><dd>Oak slat canopy over black servery counters</dd>
+            <dt>Adjacent to</dt><dd>Reception/Atrium (shares the volume)</dd>
+          </dl>
+          <div class="swatches">
+            <span class="swatch"><span class="swatch-chip" style="background:#1C1C1C"></span>servery counter</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#F2F0EA"></span>subway tile</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#E8B800"></span>yellow accent</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#C1502C"></span>upstairs chairs</span>
+          </div>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Everyday, slightly institutional canteen energy — trays, till points, roller shutters. The ordinariness is exactly what makes Jan's meltdown land.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Servery: black counters, glass sneeze-guards, oak slat canopy, white subway tile, "Pay point" sign</li>
+            <li>Digital menu screens above the servery — <b>real screens show the canteen's own name, replace for Prism</b></li>
+            <li>Large round reclaimed-wood communal table near the servery</li>
+            <li>Mezzanine above: light-oak tables, glass balustrade looking straight down into reception</li>
+          </ul>
+          <span class="flag">Flag: menu screens carry real branding + a real dated menu — must be replaced</span>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/IMG_20260804_131805405_HDR.jpg" alt="Servery counters and menu screens"><figcaption>IMG_...131805405 — hero servery</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_131714564_HDR.jpg" alt="Ground floor seating"><figcaption>IMG_...131714564 — ground seating</figcaption></figure>
+          <figure><img src="building-reference/use-images/DL-EPA-CA-5164-online.jpg" alt="Double height canteen both levels"><figcaption>DL-EPA-CA-5164 — both levels</figcaption></figure>
+          <figure><img src="building-reference/use-images/P09.jpg" alt="Mezzanine solo diner"><figcaption>P09.jpg — mezzanine dining</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 4 -->
+  <section class="file" id="l4">
+    <div class="tab">Location 04 / Desk neighbourhood</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Open-Plan Office Floor</p>
+          <p class="file-role">Staff gather-round scene, general floor coverage</p>
+        </div>
+        <div class="stamp">Recurring Set</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Hot-desk neighbourhood, upper floor</dd>
+            <dt>Floor</dt><dd>First floor and above</dd>
+            <dt>Signature</dt><dd>Suspended triangle/hexagon acoustic sculpture</dd>
+            <dt>Zone codes seen</dt><dd>NW1, NW2, NWI-A, W2-F, C2-D</dd>
+          </dl>
+          <div class="swatches">
+            <span class="swatch"><span class="swatch-chip" style="background:#8A8578"></span>carpet</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#2B2B2B"></span>partition fabric</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#C21F2A"></span>red zone accent</span>
+            <span class="swatch"><span class="swatch-chip" style="background:#3E7A8C"></span>blue zone accent</span>
+          </div>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Ordinary contemporary open-plan office — the deliberately unremarkable backdrop the comedy plays against. Bright, even, mostly borrowed daylight.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Rows of raised desks, black monitors, black fabric modesty panels</li>
+            <li>Suspended grey-felt + gloss-navy triangle/hexagon acoustic sculpture over a desk cluster — a gift for this production's geometry pun</li>
+            <li>Glass-fronted 1-2 person focus pods with frosted dot privacy film</li>
+            <li>Round columns stencilled with zone codes at eye height</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/DL-EPA-CA-4723-online.jpg" alt="Desk row with triangle acoustic screen"><figcaption>DL-EPA-CA-4723 — hero desk row</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_094532897_HDR.jpg" alt="Suspended triangle sculpture over desks"><figcaption>IMG_...094532897 — triangle sculpture</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_100304395_HDR.jpg" alt="NW1 zone column and focus pods"><figcaption>IMG_...100304395 — NW1 zone</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_133747384_HDR.jpg" alt="NWI-A desk aisle"><figcaption>IMG_...133747384 — desk aisle</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 5 -->
+  <section class="file" id="l5">
+    <div class="tab">Location 05 / "Jan's office"</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Glass Meeting Room</p>
+          <p class="file-role">Jan's office scenes — the pitch meeting, the door-closed affair beat</p>
+        </div>
+        <div class="stamp">Stand-in Set</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Small glazed meeting room off the open floor</dd>
+            <dt>Floor</dt><dd>Same floors as Location 04</dd>
+            <dt>Signature</dt><dd>Frosted dot film + triangle decal on the glass</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Exposed rather than private — full glass walls mean "closing the blinds" is a deliberate, visible act, which the script already leans on. No real blinds exist on these particular rooms — add as a set-dressing addition for the shoot.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Full-height glass partition walls, sliding glass door, black frame</li>
+            <li>Frosted dot privacy pattern + triangle-motif decal accent</li>
+            <li>Small white table seating 4, mesh-back task chairs</li>
+            <li>Wall-mounted TV visible through the glass from the corridor</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/IMG_20260804_100255305_HDR.jpg" alt="Glass meeting room with dot film"><figcaption>IMG_...100255305 — full reference</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 6 -->
+  <section class="file" id="l6">
+    <div class="tab">Location 06 / Optional colour</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Breakout &amp; Kitchenette Nooks</p>
+          <p class="file-role">Informal gossip beats, background colour</p>
+        </div>
+        <div class="stamp">Background</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>"Pitstop" coffee nook, kitchenette, arcade breakout</dd>
+            <dt>Floor</dt><dd>Same floors as Location 04</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Playful, a deliberate contrast to the desk floor's neutrality — bold graphic murals, novelty branding. Use sparingly; one clear graphic per scene.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>"Pitstop" nook: full-wall mural wordmark, teal stools, oak high tables</li>
+            <li>Kitchenette: bean-to-cup coffee machines, green recycling graphic panel</li>
+            <li>Arcade nook: foosball table, pixel-art mural, mezzanine rail over the canteen</li>
+          </ul>
+          <span class="flag">Flag: swap "Pitstop" and any legible real nook branding for an in-universe name</span>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/IMG_20260804_130225058_HDR.jpg" alt="Pitstop branded nook"><figcaption>IMG_...130225058 — Pitstop nook</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_131020279_HDR.jpg" alt="Kitchenette with coffee machines"><figcaption>IMG_...131020279 — kitchenette</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_104003709_HDR.jpg" alt="Arcade nook with foosball"><figcaption>IMG_...104003709 — arcade nook</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 7 -->
+  <section class="file" id="l7">
+    <div class="tab">Location 07 / Quiet beat</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Landscaped Podium Courtyard</p>
+          <p class="file-role">Optional quiet beat / gossip cutaway — not currently scripted</p>
+        </div>
+        <div class="stamp">Optional</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Enclosed podium-level courtyard, reachable only from inside</dd>
+            <dt>Floor</dt><dd>Podium level / ground terrace</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Quiet, enclosed, a deliberate exhale from the office floor. Soft, even daylight — the courtyard is boxed in on all sides.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Enclosed on four sides by office-wing facades with punched windows</li>
+            <li>Meandering path through ornamental grass and fern beds</li>
+            <li>Smooth boulder sculptures as informal seating; a sunken pebble-edged pool</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/IMG_20260804_130607892_HDR.jpg" alt="Enclosed courtyard with fern beds"><figcaption>IMG_...130607892 — enclosed courtyard</figcaption></figure>
+          <figure><img src="building-reference/use-images/P22.jpg" alt="Boulder seating and water feature"><figcaption>P22.jpg — boulder seating</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_130414582_HDR.jpg" alt="Rooftop terrace with benches"><figcaption>IMG_...130414582 — terrace alt.</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 8 -->
+  <section class="file" id="l8">
+    <div class="tab">Location 08 / Transitional</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Corridors, Lockers &amp; Washrooms</p>
+          <p class="file-role">Walk-and-talk transitions between main sets</p>
+        </div>
+        <div class="stamp">Connective</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Upper-floor circulation, locker banks, washrooms</dd>
+            <dt>Floor</dt><dd>Any floor</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Neutral, functional, deliberately unremarkable — good for quick transitional cuts. Consistency matters more than visual interest here.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Locker banks with zone signage on timber-clad end panels</li>
+            <li>Occasional abstract ceiling graphic mural at a junction</li>
+            <li>Washroom: trough sink counter, sensor taps, dark tile accent wall</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/IMG_20260804_125956552_HDR.jpg" alt="Locker corridor with ceiling mural"><figcaption>IMG_...125956552 — locker corridor</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_131253467.jpg" alt="Plain corridor"><figcaption>IMG_...131253467 — plain corridor</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_125931297_HDR.jpg" alt="Washroom sink counter"><figcaption>IMG_...125931297 — washroom</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION 9 -->
+  <section class="file" id="l9">
+    <div class="tab">Location 09 / Optional</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Rear / Staff-Only Entrance</p>
+          <p class="file-role">Not currently scripted — alternate entrance for a sneak-in/out beat</p>
+        </div>
+        <div class="stamp">Optional</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Real basis</dt><dd>Secondary revolving door, plainer than the main lobby</dd>
+            <dt>Floor</dt><dd>Ground, exterior/interior threshold</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Atmosphere</h4>
+          <p>Functional, unglamorous — the building's back door, in deliberate contrast to the front-of-house reception.</p>
+          <h4>Key features</h4>
+          <ul>
+            <li>Plain revolving door, same dot-pattern glazing family as the main entrance</li>
+            <li>Painted concrete blockwork wall, "Staff Entrance Only" plaque</li>
+            <li>Interior beyond is a plain corridor, not the grand atrium</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates</h4>
+        <div class="gallery-grid">
+          <figure><img src="building-reference/use-images/IMG_20260804_131335410_HDR.jpg" alt="Day staff entrance"><figcaption>IMG_...131335410 — day exterior</figcaption></figure>
+          <figure><img src="building-reference/use-images/IMG_20260804_164110088_HDR.jpg" alt="Dusk staff entrance signage"><figcaption>IMG_...164110088 — dusk exterior</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h3>Script-to-location map</h3>
+    <table>
+      <tr><th>Scene</th><th>Location</th></tr>
+      <tr><td>Scene 1 — Jan's office, pitch meeting</td><td>#5 Glass Meeting Room</td></tr>
+      <tr><td>Scene 2 — Sharon barges in, affair beat</td><td>#5 Glass Meeting Room (blinds/door-close staged as a set addition)</td></tr>
+      <tr><td>Scene 3 — staff gather round Jan</td><td>#4 Open-Plan Office Floor</td></tr>
+      <tr><td>Scene 4 — canteen meltdown, window smash, taser hit</td><td>#3 Staff Restaurant / Canteen</td></tr>
+      <tr><td>Cold open / establishing exteriors</td><td>#1 Forecourt &amp; Main Entrance</td></tr>
+      <tr><td>Optional colour / cutaways</td><td>#6, #7, #8, #9 as needed</td></tr>
+    </table>
+  </div>
+
+  <footer>Circle the Square — Location Bible · full text prompt sheets in location-identity-sheets.txt</footer>
+</div>

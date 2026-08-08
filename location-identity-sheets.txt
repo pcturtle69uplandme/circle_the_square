@@ -1,0 +1,660 @@
+CIRCLE THE SQUARE — LOCATION IDENTITY & SCALE SHEETS
+Companion to character-identity-sheets.txt. Built by actually looking through every relevant
+photo in building-reference/ (not just the architect's text notes) so these sheets describe
+what the building really looks like — real materials, real light, real signage — rather than
+generic "modern office" description. Each block is a self-contained prompt spec for one
+location reference image (or small set), in the same spirit as the character sheets: reuse
+the wording verbatim across generations so the same "set" reads consistently shot to shot.
+
+REAL-WORLD BASIS
+The building is The Triangle Building, Cambridge Assessment's real HQ on Shaftesbury Road,
+Cambridge (architect: Eric Parry Architects, completed 2018). Two five-storey blocks either
+side of a central entrance plaza, linked by a glazed bridge block, with a 39m tower at the
+building's "prow" facing the railway. Materials throughout: brick (cream/sand tone banded
+with pale precast concrete), glass curtain walling, fair-faced grey concrete columns and
+soffits internally, warm oak/timber slat joinery as an accent everywhere. Three landscaped
+podium courtyards + two ground courtyards. Full detail in building-reference/the-real-triangle/
+Building overview.txt.
+
+PRODUCTION NOTE — READ BEFORE SHOOTING OR GENERATING
+This is a real, currently-occupied workplace, not a set. Two things need handling before any
+of this becomes background plate or image-gen reference for the shoot:
+  1. Real branding is everywhere and legible in multiple reference photos — the Cambridge
+     University Press & Assessment crest/wordmark on the reception wall and tower, and the
+     staff restaurant's own internal name ("Triangle") on the menu screens. For a fictional
+     "Prism" production this needs covering, cropping out, or digitally replacing — don't
+     generate or shoot final material with the real company's name/crest legible.
+  2. Several reference photos have real colleagues in them (desks, canteen, corridors).
+     They're fine as private layout/lighting reference but should not be used as the basis
+     for any generated background crowd — treat them as location scouting, not casting.
+
+SHARED STYLE ANCHOR — paste into every location prompt
+photoreal architectural interior/exterior photography, modern UK office building, warm
+cream/sand brick and pale precast concrete, fair-faced grey concrete columns, full-height
+glazing, oak/timber slat joinery accents, grey carpet tile or pale stone floor, overcast-to-
+soft Northern European daylight unless a shot specifically calls for dusk/interior-lit,
+restrained and documentary in tone, no lens flare, no visible readable real-world branding
+or crests, 35mm-equivalent, deep focus for wide/establishing shots, shallower focus for
+close/cinematic inserts
+
+NEGATIVE (all shots)
+fisheye distortion, heavy vignette, warped verticals, cartoon rendering, oversaturated
+colour, visible "Cambridge University Press", "Cambridge Assessment" or university crest
+signage, gibberish text on screens/signage, extreme wide-angle stretch, empty/sterile look
+when the script calls for a populated office
+
+================================================================
+[Location #1] — EXTERIOR: FORECOURT & MAIN ENTRANCE
+================================================================
+Real-world basis: the entrance plaza between the two office blocks, under the glazed link
+bridge, tower rising behind on the right.
+
+LOCATION CORE
+  Function in script: cold open / establishing exterior, arrivals, the "it's just a building"
+    beat before things go wrong inside
+  Real basis: street-level forecourt, Shaftesbury Road frontage, Cambridge
+  Floor: ground level, exterior
+  Adjacent to: Reception & Atrium (directly through the revolving doors)
+
+ATMOSPHERE & PALETTE
+  Mood: calm, institutional, a little too pleased with itself — the "executive" establishing
+    shot before the comedy starts
+  Dominant materials: cream/sand brick with pale precast-concrete banding, dark bronze-toned
+    aluminium door/window framing, pale grey paving slabs
+  Palette: brick #D9C3A0, precast band #E7E2D6, glazing #2B3038 (dark bronze frame), sky
+    (day) soft overcast #C9D3DA, sky (dusk) deep blue #16294A with warm interior glow #F2A34D
+
+LIGHT
+  Day: soft overcast Northern European daylight, minimal shadow, cool-neutral grade
+  Dusk (preferred hero look): deep blue dusk sky, building glowing warm amber/gold from
+    within through the glazing — this is the single most reusable "signature" look for the
+    building and matches the tower's illuminated timber-lined lantern at the top
+
+ARCHITECTURAL FEATURES
+  - Central glazed double-height link bridge over the entrance, dark bronze vertical fins
+  - Bank of revolving doors dead-center, flanked by flat accessible doors
+  - Tower to the right/behind, topped by a glass-and-timber-slat lantern box that glows
+    amber at night — the building's single most recognisable feature
+  - Two symmetrical rows of small ornamental trees with ground uplighters leading to the door
+  - Precast concrete grid facade on the flanking five-storey blocks, punched windows
+
+SET DRESSING / PRACTICALS
+  Picnic-style benches and low box-hedge planters near the tower base; no cars in the
+    immediate forecourt (pedestrian plaza); occasional single figure in business dress
+    walking toward the doors reads well at this scale (see reference plates)
+
+CONTINUITY NOTES
+  - Keep the tower's amber lantern glow consistent in every dusk/night exterior — it's the
+    building's "signature light" the way a lighthouse beam would be
+  - Real crest/wordmark is on the tower brickwork in some plates (Triangle_Tower.jpg) —
+    exclude or obscure in generated stills
+  - Trees are young/small (recently planted) — don't generate mature full-canopy trees
+
+REFERENCE PLATES (building-reference/)
+  use-images/P01.jpg — hero dusk symmetrical approach shot, single figure walking toward
+    the glowing entrance; best single master reference for this location
+  use-images/DL-EPA-CA-5008-online.jpg — day wide, tower + courtyard + benches
+  use-images/ATWEB-EricParryArchitects-CambridgeAssessment-phDirkLindner13.jpg — dusk,
+    entrance glazing + bronze fins, tower glowing behind
+  use-images/DL-EPA-CA-5550-online.jpg — dusk wide, tower + lit link building + lawn
+  the-real-triangle/Triangle_Tower.jpg — close dusk detail of the tower lantern (crop out
+    the crest/wordmark if reusing)
+  the-real-triangle/Cambridge_Assessment,_The_Triangle_-_geograph.org.uk_-_5725907.jpg —
+    day street-level view of the curved south block, useful for the building's other face
+  the-real-triangle/13.CAC_-_Site_Plan_0001.jpg — site plan for geography/orientation only
+    (triangular plot beside the railway line, Shaftesbury Road frontage)
+
+SHOT LIST TO GENERATE
+  1. Master establishing — dusk, symmetrical wide, tower glowing, one distant figure
+  2. Day establishing — overcast, wide, no people, "dead still" cold-open version
+  3. Push-in on revolving doors — medium shot, someone mid-push, dot-pattern glass visible
+  4. Tower detail — close dusk shot, amber lantern glowing, brick tower shaft, no crest
+  5. Wide with courtyard — tower + lawn + benches, dusk, lit interior visible through glazing
+
+
+================================================================
+[Location #2] — RECEPTION & ATRIUM
+================================================================
+Real-world basis: the double-height lobby directly behind the revolving doors, spanning the
+full width of the link building, with the main staircase and mezzanine above.
+
+LOCATION CORE
+  Function in script: badge/gate access beat ("Name?"), the reception counter scene, general
+    arrivals/departures, the space Jan storms through
+  Real basis: ground-floor link-building lobby
+  Floor: ground floor, double-height (mezzanine visible above)
+  Adjacent to: Forecourt (through revolving doors), Canteen (same double-height volume,
+    mezzanine above), main staircase up to office floors
+
+ATMOSPHERE & PALETTE
+  Mood: corporate-formal, slightly cold, deliberately impressive — the "security checkpoint
+    played as a heist" energy the production notes describe
+  Dominant materials: pale stone/ceramic floor tile, fair-faced grey concrete column and
+    stair, glass turnstile gates, dark reflective/mirrored ceiling soffit over the entrance
+    run, warm oak stair treads, indigo-to-cream banded glazed brick piers at the entrance
+  Palette: floor #E7E3D6, concrete column #9C958A, turnstile glass #B8C4C4 (pale teal-grey),
+    glazed brick piers gradient #2C3A5C (indigo) to #E7E2D6 (cream), stair oak tread #B98A55
+
+LIGHT
+  Daytime: bright, even, lots of borrowed daylight from the full-height glazing either side
+  Dusk/evening: warm interior downlighting against a dark blue exterior seen through glass —
+    this is the version used in the professional dusk photography and reads as more
+    "cinematic"
+
+ARCHITECTURAL FEATURES
+  - Bank of glass paddle turnstile gates in a row, chest-height, glowing indicator lights
+  - Faceted, angular reception desk (amber/orange-toned finish) just past the gates
+  - Sculptural concrete staircase with cantilevered oak treads and glass balustrade rising
+    through the double-height space
+  - Mirrored/reflective black ceiling panel above the entrance run, doubling the space
+    visually
+  - Backlit stone feature wall beside the desk carrying the company wordmark + crest (real
+    version reads "Cambridge University Press & Assessment" — replace with Prism's own
+    signage for the shoot)
+  - Black leather sofas/armchairs and low tables in an informal waiting cluster near the
+    entrance; separate teal/orange lounge-chair cluster on a blue rug further in
+  - Potted palms and large architectural planters near the gate line
+
+SET DRESSING / PRACTICALS
+  Reception desk phones, a visitor sign-in tablet/screen, a rope-and-post queue barrier,
+    a bench along the glazed wall; a wall-mounted "Meet the Team" style screen nearby (seen
+    in the help-desk nook off this space) if a supporting-cast moment needs a TV in shot
+
+CONTINUITY NOTES
+  - The turnstile gates and the reception desk are the two elements to keep identical shot
+    to shot — they're the visual anchor for "you need a badge to get further than this"
+  - Replace/obscure the real wordmark wall and any real staff-directory signage
+  - Keep the mirrored ceiling panel only over the entrance run, not the whole lobby
+
+REFERENCE PLATES (building-reference/)
+  use-images/ep_tri_359-c-raftery-lowe-web.jpg — hero day shot: turnstiles, revolving doors,
+    glazed brick piers, reception desk visible right, staircase behind
+  use-images/IMG_20260804_104013600_HDR.jpg — elevated mezzanine view down over the whole
+    lobby: turnstiles, faceted reception desk, staircase, lounge seating, canteen balcony
+    above with orange chairs — best single "everything at once" master shot
+  use-images/IMG_20260804_131354803_HDR.jpg — ground-level view: wordmark wall, black sofas,
+    staircase, turnstiles receding into the distance
+  use-images/IMG_20260804_131401157_HDR.jpg — close detail of the backlit feature wall
+    (crop/replace the real wordmark before reuse)
+  use-images/IMG_20260804_131925991_HDR.jpg — upper mezzanine angle looking down across
+    reception + turnstiles + canteen tables simultaneously
+  use-images/IMG_20260804_130144130_HDR.jpg — adjoining help-desk/lounge nook off the main
+    lobby, teal stools, wall-screen, useful for a smaller two-hander scene near reception
+
+SHOT LIST TO GENERATE
+  1. Master wide — day, turnstile row + reception desk + staircase, a couple of figures
+  2. Elevated/mezzanine wide — looking down over the whole double-height space
+  3. Medium at the gates — one figure facing the turnstiles, "Name?" beat framing
+  4. Close on the desk — faceted reception desk, staff-blue lanyard/badge on the counter
+  5. Staircase detail — oak treads + glass balustrade, someone descending
+  6. Dusk version of the master wide — warm interior light against dark glazing outside
+
+
+================================================================
+[Location #3] — STAFF RESTAURANT / CANTEEN
+================================================================
+Real-world basis: the double-height dining hall sharing the same volume as reception, ground
+floor servery plus an open mezzanine level above with a glass balustrade looking back down
+into the lobby.
+
+LOCATION CORE
+  Function in script: the canteen meltdown scene — the "sorry, all gone" pastry beat, Jan's
+    breakdown, the taser hit
+  Real basis: ground-floor servery + first-floor mezzanine dining, same block as reception
+  Floor: ground floor (servery) + mezzanine (dining) — script needs the ground floor servery
+    primarily
+  Adjacent to: Reception/Atrium (shares the double-height volume, visible from the mezzanine)
+
+ATMOSPHERE & PALETTE
+  Mood: everyday, slightly institutional canteen energy — trays, till points, roller
+    shutters — the ordinariness is what makes Jan's meltdown land
+  Dominant materials: pale ceramic floor tile, oak slat suspended ceiling canopy over the
+    servery, white subway tile splashback, black servery counters with sneeze-guard glass,
+    glass balustrades upstairs, warm oak communal tables
+  Palette: floor #E7E3D6, servery counter #1C1C1C, subway tile #F2F0EA, oak table/ceiling
+    slats #B98A55, yellow gloss accent splashback (ground floor seating) #E8B800, upstairs
+    chair upholstery burnt-orange/rust #C1502C
+
+LIGHT
+  Daytime: bright and even, large disc-shaped acoustic ceiling lights in a loose grid over
+    the ground-floor seating, borrowed daylight from full-height glazing to the terrace side
+  Servery specifically: warm under-canopy strip lighting along the oak slat canopy, digital
+    menu screens providing a cool blue glow accent
+
+ARCHITECTURAL FEATURES
+  - Servery run: black counters with glass sneeze-guards, oak slat canopy overhead, white
+    subway-tile back wall, roller shutters for out-of-hours sections, a "Pay point" sign
+  - Two digital menu screens on black brackets above the servery (real version shows the
+    canteen's own internal brand name — swap for Prism's in-universe signage)
+  - Large round reclaimed-wood communal table as a centrepiece near the servery
+  - Ground-floor seating: long oak tables + white or black chairs, a yellow gloss servery
+    accent wall, glass doors out to an exterior terrace with more seating
+  - Mezzanine dining above: light-oak long tables, black chairs, exposed grey concrete
+    columns, glass balustrade with a clear view straight down into reception, burnt-orange
+    upholstered chairs at high tables along the window wall, a maroon banquette booth
+  - Full-height glazing along the mezzanine's outer wall with a real tree-lined view
+
+SET DRESSING / PRACTICALS
+  Trays, cutlery bins, condiment station, a "pay point" floor sign, the pastry/hot-counter
+    section (empty tray + "Sorry, all gone" beat), staff in polo-shirt uniform behind the
+    counter, recycling/coffee-machine kiosk visible from the mezzanine rail
+
+CONTINUITY NOTES
+  - The real digital menu screens carry the canteen's own name and a real dated menu —
+    replace with blank/in-universe signage before this is background plate
+  - Keep the servery's oak canopy + black counter + subway tile combination consistent —
+    it's the most distinctive part of this set for continuity
+  - Ground floor (servery + tables) is the scripted location; the mezzanine is optional
+    colour for a wide establishing insert, not required for the core scene
+
+REFERENCE PLATES (building-reference/)
+  use-images/IMG_20260804_131805405_HDR.jpg — hero servery shot: oak canopy, black counters,
+    subway tile, staff serving, digital menu screens, "Pay point" sign, big round table
+    foreground — primary reference for the "sorry, all gone" beat
+  use-images/IMG_20260804_131714564_HDR.jpg — ground-floor seating: oak tables, yellow
+    splashback accent, glazing to terrace, disc ceiling lights
+  use-images/DL-EPA-CA-5164-online.jpg — double-height view showing both levels at once:
+    mezzanine dining with orange chairs above, servery/seating below, staircase, atrium light
+  use-images/P09.jpg — mezzanine dining, solo diner at a long oak table, concrete columns,
+    full-height glazing, maroon booth in background — good quiet/empty-canteen reference
+  use-images/IMG_20260804_104013600_HDR.jpg — shows the mezzanine's orange chairs along the
+    glass rail from the reception side (cross-reference with Location #2)
+
+SHOT LIST TO GENERATE
+  1. Master servery wide — oak canopy, counters, menu screens, staff, empty pastry tray
+  2. Ground-floor seating wide — populated with staff at oak tables, yellow accent wall
+  3. Medium at the till/counter — the "Sorry, all gone" exchange framing
+  4. Mezzanine wide — orange chairs, glass rail, reception visible below through the rail
+  5. Wide action space — enough open floor/furniture around the servery for the chair-throw
+     and taser beats to block safely (see production notes in character-bible.html)
+  6. Empty/early-morning version — same servery, no staff, shutters down, quiet
+
+
+================================================================
+[Location #4] — OPEN-PLAN OFFICE FLOOR
+================================================================
+Real-world basis: a typical hot-desk neighbourhood on one of the upper office floors, real
+wayfinding zone codes visible on columns and lockers (e.g. NW1, NW2, NWI-A, W2-F, C2-D).
+
+LOCATION CORE
+  Function in script: staff gather-round scene (scene 3), general office-floor coverage,
+    Chris/Rick's home turf
+  Real basis: upper-floor open-plan desking, one of the building's "finger" wings
+  Floor: first floor and above (any upper floor reads the same)
+  Adjacent to: glass meeting rooms, breakout/kitchenette zones, lockers
+
+ATMOSPHERE & PALETTE
+  Mood: ordinary contemporary open-plan office — the deliberately unremarkable backdrop the
+    comedy plays against
+  Dominant materials: grey carpet tile, white desk surfaces, black fabric modesty
+    panels/partitions, exposed white ceiling with linear light coves and pale grey acoustic
+    baffle panels, full-height glazing along the perimeter with roller blinds
+  Palette: carpet #8A8578, desk surface #E8E6DE, partition fabric #2B2B2B, ceiling #F4F3EF,
+    accent zone colours vary by neighbourhood — seen in reference: red (#C21F2A), teal/blue
+    (#3E7A8C), green (#4C8C3C) — each work-neighbourhood has its own single accent colour
+
+LIGHT
+  Bright, even, mostly borrowed daylight through full-height glazing with pale roller blinds
+    controlling glare; recessed linear ceiling coves supplement on darker days
+
+ARCHITECTURAL FEATURES
+  - Rows of raised/standing desks with black monitors, most a two-monitor setup
+  - Suspended geometric triangle/hexagon acoustic sculpture hanging over a desk cluster —
+    grey felt + gloss navy triangles forming a faceted diamond shape; a strong, reusable
+    "Prism"-coded visual motif for this production
+  - Glass-fronted 1-2 person focus pods with frosted dot privacy film, tucked between desk
+    runs
+  - Round structural columns stencilled with zone codes (e.g. "NW1") at eye height
+  - Locker banks and low storage units at the ends of desk runs
+  - Occasional built-in library/shelving unit and blue/red upholstered high-backed pod
+    seating as an informal breakout within the floor itself
+
+SET DRESSING / PRACTICALS
+  Dell monitors, black task chairs, small desk plants, a red fire-extinguisher stand, paper
+    noticeboards, the odd branded stress-ball/mug as background dressing (ties nicely to the
+    "Project Inception" merch gag in the production notes)
+
+CONTINUITY NOTES
+  - The triangle/hexagon acoustic sculpture is a gift for this production — keep it in
+    background wherever the geometry pun should land visually without a line of dialogue
+  - Zone-code lettering (NW1, C2-D, etc.) reads as authentic wayfinding — keep a code
+    visible in wide shots for realism, but don't invent real-sounding new ones that clash
+  - Desk screens should show blurred/generic UI, not legible real software or company names
+
+REFERENCE PLATES (building-reference/)
+  use-images/DL-EPA-CA-4723-online.jpg — hero professional shot: desk row, anglepoise lamps,
+    grey concrete column, red/black/white triangle acoustic screen, library shelving, blue
+    pod seating — best single reference for this location's design language
+  use-images/IMG_20260804_094532897_HDR.jpg — the suspended triangle/hexagon acoustic
+    sculpture over a desk cluster, ornamental grass planters, glass meeting rooms beyond
+  use-images/IMG_20260804_100304395_HDR.jpg — "NW1" column signage, glass focus pods with
+    someone inside on a headset, fire extinguisher, standing desks
+  use-images/IMG_20260804_133747384_HDR.jpg — plain hot-desk aisle, "NWI-A 6" desk label,
+    black mesh task chairs, full-height glazing with blinds
+
+SHOT LIST TO GENERATE
+  1. Master wide — desk rows receding, triangle sculpture visible, glazing along one side
+  2. Crowd/gather-round wide — open desk area with room for 4-5 figures grouped (scene 3)
+  3. Medium at a desk — two-monitor setup, task chair, modesty panel, zone-code column visible
+  4. Focus-pod detail — glass pod with frosted dot film, someone inside on a call
+  5. Locker-bay insert — end-of-row lockers + zone signage, for a quick establishing cut
+
+
+================================================================
+[Location #5] — GLASS MEETING ROOM ("JAN'S OFFICE" TYPE SPACE)
+================================================================
+Real-world basis: a small glass-walled meeting room off the open-plan floor — the closest
+real-world equivalent to the script's "Jan's office," since the building is genuinely
+open-plan with glazed meeting rooms rather than private executive offices.
+
+LOCATION CORE
+  Function in script: Jan's office scenes — the pitch meeting, the door-closed affair beat
+  Real basis: small glazed meeting room, upper office floor
+  Floor: same floors as Location #4, opening directly off the open-plan area
+  Adjacent to: open-plan office floor
+
+ATMOSPHERE & PALETTE
+  Mood: exposed rather than private — full glass walls mean "closing the blinds" is a
+    deliberate, visible act, which the script already uses (blinds-closing beat, scene 2)
+  Dominant materials: full-height glass partition walls with a frosted white dot privacy
+    pattern, black door/frame joinery, white table, dark mesh-back task chairs, grey carpet
+  Palette: glass frame #1A1A1A, dot film #FFFFFF at ~40% opacity, table #F4F3EF, chair
+    #2B2B2B, carpet #8A8578
+
+LIGHT
+  Bright borrowed daylight through the room's own external window plus glow from the open
+    floor beyond the glass partition; even, shadowless, corporate
+
+ARCHITECTURAL FEATURES
+  - Full-height glass walls on at least two sides, sliding glass door with black frame
+  - Frosted dot privacy pattern plus a triangle-motif decal accent on the glass (matches the
+    building's recurring triangle branding)
+  - Small white table seating 4, mesh-back task chairs on castors
+  - Wall-mounted flatscreen TV visible through the glass from the corridor side
+  - A window to the outside with a tree view at the far end
+
+SET DRESSING / PRACTICALS
+  Whiteboard or glass-wall marker surface, HDMI/power pop-up box on the table, a chair
+    pushed back at an angle to suggest recent use
+
+CONTINUITY NOTES
+  - Because the walls are glass, anything happening inside is visible from the open floor —
+    useful staging note for the "closing the blinds" gag (manual blinds/shades would need to
+    be added as a set-dressing addition since these particular rooms don't show any)
+  - Keep the dot-pattern density consistent; it's the room's most identifying texture
+
+REFERENCE PLATES (building-reference/)
+  use-images/IMG_20260804_100255305_HDR.jpg — full reference: glass walls, dot film + triangle
+    decal, white table, mesh chairs, wall TV through the glass, window view beyond
+
+SHOT LIST TO GENERATE
+  1. Master wide from the corridor side — glass walls, dot pattern, meeting room visible
+     within, open floor reflected/visible around it
+  2. Interior wide — table + chairs from inside, glass walls behind, tree view through window
+  3. Medium two-shot at the table — the pitch-meeting framing
+  4. Close on the glass door sliding shut — the "privacy" beat
+
+
+================================================================
+[Location #6] — BREAKOUT & KITCHENETTE ZONES
+================================================================
+Real-world basis: several small themed breakout nooks scattered through the office floors —
+a branded coffee-point ("Pitstop"), a floor kitchenette/recycling point, and a games/arcade
+breakout with a foosball table and retro arcade-cabinet mural. Each work-neighbourhood seems
+to get its own small themed hangout space rather than one generic break room.
+
+LOCATION CORE
+  Function in script: informal staff-gossip beats, background colour for the office-floor
+    scenes, a good alternate location if the canteen is unavailable for a given shoot day
+  Real basis: scattered breakout nooks across the upper floors
+  Floor: same floors as Location #4, tucked just off the main desk runs
+  Adjacent to: open-plan office floor, lockers
+
+ATMOSPHERE & PALETTE
+  Mood: playful, a deliberate contrast to the desk floor's neutrality — bold graphic murals,
+    novelty branding, an office trying hard to feel fun
+  Dominant materials: painted feature walls with large graphic murals, oak-veneer joinery,
+    laminate high tables, upholstered stools in a single bright accent colour per nook
+  Palette: "Pitstop" nook — lavender/teal/pink swirl mural #B9AEDB / #4FBFAE / #E9B8C7 with
+    navy wordmark #241E3C, teal stools #1F8A7A; kitchenette nook — bright green recycling
+    graphic #2E8B3D on oak veneer #B98A55; arcade nook — deep indigo mural #241E5C with
+    pixel-art accent colours (red #D8384A, yellow #E8C23C)
+
+LIGHT
+  Even interior lighting, drum pendant lights over the high tables in the branded nooks;
+    the arcade nook sits in a naturally darker double-height corner near a mezzanine rail
+
+ARCHITECTURAL FEATURES
+  - "Pitstop" nook: full feature-wall graphic wordmark mural, two round pendant lights,
+    oak high tables, teal stools, circuit-line graphic motif
+  - Kitchenette nook: wood-veneer central kiosk with bean-to-cup coffee machines, a bold
+    green recycling-icon graphic panel, round white cafe tables, black swivel chairs, teal
+    stools at a wood bar counter, wall noticeboard
+  - Arcade/games nook: foosball table, an upright arcade cabinet, a large Pac-Man/Space-
+    Invaders style pixel-art mural across two wall panels, a potted palm, positioned beside
+    a mezzanine glass rail overlooking the canteen below
+
+SET DRESSING / PRACTICALS
+  Coffee machines, recycling bins (paper/general/coffee-cup streams), noticeboard flyers,
+    foosball table, an arcade cabinet, a low ottoman/stool
+
+CONTINUITY NOTES
+  - These nooks are small and visually loud — use sparingly, one clear graphic per scene, so
+    they read as set dressing rather than overwhelming a dialogue scene
+  - The "Pitstop" name and any other real nook branding should be swapped for an in-universe
+    equivalent if the signage is legible in a final shot
+
+REFERENCE PLATES (building-reference/)
+  use-images/IMG_20260804_130225058_HDR.jpg — "Pitstop" branded nook, mural wordmark, teal
+    stools, oak tables
+  use-images/IMG_20260804_131020279_HDR.jpg — kitchenette nook, coffee machines, green
+    recycling graphic, cafe tables and stools
+  use-images/IMG_20260804_104003709_HDR.jpg — arcade/games nook, foosball table, pixel-art
+    mural, mezzanine rail over the canteen
+  use-images/IMG_20260804_131107815_HDR.jpg — locker bay + high table/bench seat adjoining a
+    breakout nook, "W2-F" zone signage
+  use-images/IMG_20260804_125825597_HDR.jpg — print/post counter nook, timber slat panelling
+
+SHOT LIST TO GENERATE
+  1. Master of one branded nook — pick one graphic wall, populated with 2-3 staff chatting
+  2. Kitchenette wide — coffee machines + recycling graphic + cafe seating
+  3. Arcade nook detail — foosball + mural, good for a background comedy beat
+  4. Empty/quiet version of any one nook, for an early-morning or after-hours cutaway
+
+
+================================================================
+[Location #7] — LANDSCAPED PODIUM COURTYARD
+================================================================
+Real-world basis: one of the building's landscaped courtyards, sitting above the ground-floor
+podium and enclosed on all sides by the office wings — an outdoor space staff can only reach
+from inside the building.
+
+LOCATION CORE
+  Function in script: not in the current script, but a strong optional location for a quiet
+    beat, a smoke-break/gossip scene, or Rick/Chris cutaway
+  Real basis: one of three podium-level landscaped courtyards, or the ground-floor terrace
+  Floor: podium level (effectively first floor) or ground terrace
+  Adjacent to: open-plan office floor (accessed from inside only)
+
+ATMOSPHERE & PALETTE
+  Mood: quiet, enclosed, a deliberate exhale from the office floor — the building looking in
+    on itself from the outside
+  Dominant materials: cream brick with pale precast banding on all four enclosing walls,
+    pale resin-bound gravel or paving, ornamental grasses and ferns, large smooth boulder
+    seats, box hedging
+  Palette: brick #D9C3A0, paving/gravel #DCD3C0, planting greens #5C6B3E to #8A9B5C, boulder
+    seats pale grey #C7C2B8
+
+LIGHT
+  Soft, even daylight — the courtyard is enclosed on all sides so direct sun is limited;
+    generally overcast-soft, a good match to the exterior's default look
+
+ARCHITECTURAL FEATURES
+  - Fully enclosed on four sides by office-wing facades with regular punched windows
+  - Meandering paved/gravel path through beds of ornamental grass and fern planting
+  - Smooth, rounded boulder sculptures used as informal seating
+  - A circular sunken water feature with a pebble border in at least one courtyard
+  - Alternative: a rooftop terrace with wooden benches along a low brick parapet, looking
+    out over neighbouring buildings rather than enclosed on all sides
+
+SET DRESSING / PRACTICALS
+  Ground-level bollard lighting for a dusk version; a single figure sitting on a boulder or
+    bench reads well at this scale
+
+CONTINUITY NOTES
+  - This courtyard is only reachable from inside the building — any shot implying outside
+    access from the street is wrong for this location
+  - Keep planting soft/naturalistic (grasses, ferns) rather than manicured formal planting
+
+REFERENCE PLATES (building-reference/)
+  use-images/IMG_20260804_130607892_HDR.jpg — enclosed courtyard, fern/grass beds, gravel
+    path, cream brick facade wrapping all sides, pine trees
+  use-images/P22.jpg — elevated view, boulder seating, circular water feature, ornamental
+    grass beds, single figure sitting alone — strong "quiet beat" reference
+  use-images/IMG_20260804_130414582_HDR.jpg — alternative rooftop terrace version, wooden
+    benches, brick parapet, view out to neighbouring housing
+
+SHOT LIST TO GENERATE
+  1. Master wide — enclosed courtyard, planting, boulder seats, brick walls on all sides
+  2. Elevated/mezzanine-window view down into the courtyard
+  3. Medium — single figure seated on a boulder or bench, quiet beat framing
+  4. Dusk version with bollard lighting for a moodier optional cutaway
+
+
+================================================================
+[Location #8] — CORRIDORS, LOCKER BAYS & WASHROOMS
+================================================================
+Real-world basis: the connective tissue between the main sets — plain circulation corridors,
+locker banks for hot-desk storage, and washrooms.
+
+LOCATION CORE
+  Function in script: connective coverage, walk-and-talk transitions between the office floor
+    and canteen/reception
+  Real basis: upper-floor corridors and service circulation
+  Floor: any floor
+  Adjacent to: open-plan floor, breakout nooks, lockers
+
+ATMOSPHERE & PALETTE
+  Mood: neutral, functional, deliberately unremarkable — good for quick transitional cuts
+  Dominant materials: painted plasterboard walls (often warm grey or taupe fabric-textured
+    wall panel), grey carpet tile, white ceiling with linear light coves, occasional
+    coloured graphic ceiling soffit or wall mural as an accent, timber-veneer vertical fin
+    cladding at feature points
+  Palette: wall #D8D2C4 (taupe) or #F4F3EF (white), carpet #8A8578, accent mural colours vary
+    (seen: purple/pink/teal abstract ceiling graphic, high-gloss oak fin cladding #B98A55)
+  Washroom: white Corian-look trough sink counter, dark grey square wall tile, timber accent
+    door, red emergency pull-cords
+
+LIGHT
+  Even, functional linear ceiling lighting; washrooms slightly cooler/brighter
+
+ARCHITECTURAL FEATURES
+  - Locker banks: white lockers with individual key-code locks, stacked 2-3 high, zone
+    signage above (e.g. "W2-F") on a timber-clad end panel
+  - Corridors: red fire-hose-reel cabinets, green fire-exit signage, occasional abstract
+    ceiling graphic mural at a junction/breakout threshold
+  - Washroom: wall-mounted sensor taps set into a single trough-style counter, dark tile
+    accent wall, timber door with a "no smoking"/accessible pictogram sign
+
+SET DRESSING / PRACTICALS
+  Standard UK office wayfinding signage (fire exit arrows, zone labels), fire extinguisher/
+    hose reel cabinets, a spare desk plant or two at corridor junctions
+
+CONTINUITY NOTES
+  - Keep these deliberately plain — they're transitional, not scene-carrying, so consistency
+    matters more than visual interest
+  - Zone lettering on locker end-panels should stay legible but generic (doesn't need to
+    spell anything in particular)
+
+REFERENCE PLATES (building-reference/)
+  use-images/IMG_20260804_125956552_HDR.jpg — locker corridor, purple/pink abstract ceiling
+    mural, timber fin cladding, green shelving, fire hose cabinet
+  use-images/IMG_20260804_131107815_HDR.jpg — locker bay with "W2-F" signage (also referenced
+    under breakout nooks)
+  use-images/IMG_20260804_130918694_HDR.jpg — plain corridor with ribbed dark acoustic wall
+    treatment and a mezzanine handrail
+  use-images/IMG_20260804_131253467.jpg — plain beige corridor with wall sconces
+  use-images/IMG_20260804_125931297_HDR.jpg — washroom: trough sink counter, sensor taps,
+    dark tile accent wall, timber door
+
+SHOT LIST TO GENERATE
+  1. Corridor walk-and-talk — two figures walking away/toward camera, plain corridor
+  2. Locker-bay medium — zone signage + lockers, someone retrieving a bag
+  3. Washroom insert — sink counter, mirror, functional beat only (not a scripted scene
+     currently, kept for completeness)
+
+
+================================================================
+[Location #9] — REAR / STAFF-ONLY ENTRANCE
+================================================================
+Real-world basis: a secondary revolving-door entrance, plainer and less grand than the main
+lobby, marked "Staff Entrance Only," opening onto a service-level corridor rather than the
+double-height atrium.
+
+LOCATION CORE
+  Function in script: not currently scripted, but a useful alternate/background entrance for
+    a character arriving early, sneaking out, or avoiding reception
+  Real basis: secondary staff entrance, ground floor
+  Floor: ground floor, exterior/interior threshold
+  Adjacent to: a plain internal corridor (not the main atrium)
+
+ATMOSPHERE & PALETTE
+  Mood: functional, unglamorous — the building's back door, in contrast to the front-of-house
+    reception
+  Dominant materials: painted concrete blockwork wall (exterior approach), brick paving,
+    plain revolving door with the same dot-pattern glazing as the main entrance but a plainer
+    metal frame, mulch/planting bed alongside
+  Palette: blockwork wall #B8A98C, brick paving #C79A6B, door frame grey #7A7A7A, interior
+    beyond glimpsed as plain white/pale corridor
+
+LIGHT
+  Day: flat, functional, shaded (approach is often covered/recessed)
+  Dusk: door glows from the lit interior against the darker approach
+
+ARCHITECTURAL FEATURES
+  - Single revolving door unit, dot-pattern privacy film matching the main entrance family
+  - Plain "Staff Entrance Only" wall plaque/sign
+  - Red fire extinguisher cabinet and alarm bell mounted on the exterior wall beside the door
+  - Interior beyond is a plain corridor, not the grand atrium — deliberately anticlimactic
+
+SET DRESSING / PRACTICALS
+  A stray cardboard box or delivery item near the door reads well for "back of house"
+    authenticity
+
+CONTINUITY NOTES
+  - Keep this door visually distinct from the main entrance (Location #1) — plainer frame,
+    no bronze fins, no symmetrical tree-lined approach — so the two never get confused in
+    an edit
+  - This is a good location to establish that "getting in the easy way" isn't really
+    available to anyone without a badge, reinforcing the access-as-obstacle theme
+
+REFERENCE PLATES (building-reference/)
+  use-images/IMG_20260804_131335410_HDR.jpg — day, blockwork wall, revolving door, fire
+    extinguisher cabinet, plain interior beyond
+  use-images/IMG_20260804_164110088_HDR.jpg — dusk, "Staff Entrance Only" signage, brick
+    paving approach, door glowing from the lit interior
+
+SHOT LIST TO GENERATE
+  1. Day exterior — blockwork wall, revolving door, signage, someone approaching
+  2. Dusk exterior — door glowing warm against a darker blockwork wall
+  3. Push-through medium — someone entering, plain corridor visible beyond the glass
+
+
+================================================================
+PRODUCTION SUMMARY — HOW THESE LOCATIONS MAP TO THE SCRIPT
+================================================================
+Scene 1 (Jan's office, pitch meeting)      → Location #5 (Glass Meeting Room)
+Scene 2 (Sharon barges in, affair beat)    → Location #5, blinds/door-close staged as a set
+                                              addition since the real rooms are fully glazed
+Scene 3 (staff gather round Jan)           → Location #4 (Open-Plan Office Floor)
+Scene 4 (canteen meltdown, window smash,   → Location #3 (Staff Restaurant/Canteen);
+         taser hit)                          the "window smash" gag needs a practical/VFX
+                                              solution regardless of location per the
+                                              production notes in character-bible.html
+Cold open / establishing exteriors         → Location #1 (Forecourt & Main Entrance)
+Optional colour / cutaways                 → Locations #6, #7, #8, #9 as needed
+
+All ten location sheets share the STYLE ANCHOR and NEGATIVE blocks at the top of this file —
+paste both into every generation alongside the individual location's own fields, the same way
+the character sheets reuse their physical-description fields verbatim across shots.
+

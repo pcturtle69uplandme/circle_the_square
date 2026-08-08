@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle the Square — Master Production Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0D12;
+      --panel: #141720;
+      --panel-raised: #1C202C;
+      --border: #2A2F40;
+      --accent: #B0381F;
+      --accent-glow: rgba(176, 56, 31, 0.25);
+      --amber: #F2A34D;
+      --cyan: #38BDF8;
+      --text: #F1F5F9;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---------- Sidebar Navigation ---------- */
+    aside {
+      width: 280px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; bottom: 0; left: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      padding: 1.5rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      margin-top: 0.2rem;
+    }
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    nav {
+      padding: 1rem 0.75rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .nav-group-title {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      padding: 0.75rem 0.75rem 0.35rem;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .nav-btn:hover {
+      background: var(--panel-raised);
+      color: var(--text);
+    }
+    .nav-btn.active {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: #FFF;
+      font-weight: 600;
+    }
+    .nav-icon { font-size: 1.1rem; }
+
+    .sidebar-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.5rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 4px;
+      color: var(--cyan);
+      font-weight: 500;
+      margin-top: 0.4rem;
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    /* ---------- Main Content Area ---------- */
+    main {
+      margin-left: 280px;
+      flex: 1;
+      padding: 2rem 2.5rem;
+      max-width: 1300px;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .page-desc {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      margin-top: 0.3rem;
+    }
+
+    /* ---------- Cards & Containers ---------- */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .card-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: var(--panel-raised);
+      border: 1px solid var(--border);
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ---------- Media Embeds ---------- */
+    .media-frame {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #000;
+      margin: 1rem 0;
+      display: block;
+    }
+
+    /* ---------- Tables ---------- */
+    .table-container {
+      overflow-x: auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+    th {
+      background: var(--panel-raised);
+      padding: 0.85rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    /* ---------- Script Display ---------- */
+    .script-box {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: #08090D;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      color: #D1D5DB;
+    }
+
+    .copy-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.7rem;
+      background: var(--panel-raised);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--cyan);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .copy-btn:hover {
+      background: var(--cyan);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside>
+    <div class="brand">
+      <div class="brand-eyebrow">Prism HQ Production</div>
+      <div class="brand-title">Circle the Square</div>
+      <div class="brand-sub">Master Pre-Visualization Portal</div>
+    </div>
+
+    <nav>
+      <div class="nav-group-title">Core Assets</div>
+      <button class="nav-btn active" onclick="showTab('overview')"><span class="nav-icon">📊</span> Overview</button>
+      <button class="nav-btn" onclick="showTab('characters')"><span class="nav-icon">🎭</span> Character Spec Sheets</button>
+      <button class="nav-btn" onclick="showTab('locations')"><span class="nav-icon">🏛️</span> Location Spec Sheets</button>
+
+      <div class="nav-group-title">Direction & Edit</div>
+      <button class="nav-btn" onclick="showTab('screenplay')"><span class="nav-icon">📄</span> Fountain Screenplay</button>
+      <button class="nav-btn" onclick="showTab('shotlist')"><span class="nav-icon">🎬</span> Director's Shot List</button>
+      <button class="nav-btn" onclick="showTab('transitions')"><span class="nav-icon">🔁</span> Scene Transitions</button>
+      <button class="nav-btn" onclick="showTab('audio')"><span class="nav-icon">🔊</span> Sound Design Cues</button>
+
+      <div class="nav-group-title">Production Queues</div>
+      <button class="nav-btn" onclick="showTab('prompts')"><span class="nav-icon">🖼️</span> Storyboard Prompt Engine</button>
+      <button class="nav-btn" onclick="showTab('qwentts')"><span class="nav-icon">🎙️</span> ComfyUI Qwen3-TTS Setup</button>
+      <button class="nav-btn" onclick="showTab('inventory')"><span class="nav-icon">🧰</span> Costume & Prop Inventory</button>
+      <button class="nav-btn" onclick="showTab('queue')"><span class="nav-icon">⏱️</span> 5:21 PM Batch Queue</button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div>Project Status: Locked</div>
+      <div class="status-badge"><span class="status-dot"></span> 5:21 PM Batch Scheduled</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main>
+
+    <!-- OVERVIEW TAB -->
+    <div id="overview" class="tab-content active">
+      <div class="page-header">
+        <h1 class="page-title">Production Dashboard</h1>
+        <p class="page-desc">Complete pre-visualization, screenplay, character turnarounds, and location specs for "Circle the Square".</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-subtitle">Cast Roster</div>
+          <div class="card-title" style="margin-top:0.3rem;">5 Main Characters</div>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">Jan Peach, Christina Dross, Sharon Enfield, Chris, Rick. 10 Master Spec Sheets rendered.</p>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Set Locations</div>
+          <div class="card-title" style="margin-top:0.3rem;">9 Key Locations</div>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">Locations 01 & 02 rendered; Locations 03–09 pre-coded in 5:21 PM batch queue.</p>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Camera Setups</div>
+          <div class="card-title" style="margin-top:0.3rem;">34 Storyboard Shots</div>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">Complete 35mm framing, lens focal lengths, camera movement & lighting specs.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1.5rem;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Episode Synopsis — "Project Inception"</div>
+            <div class="card-subtitle">Contemporary British Workplace Comedy / Satire</div>
+          </div>
+          <span class="tag">Featurette Episode</span>
+        </div>
+        <p style="font-size:0.92rem; color:var(--text-muted);">
+          Following a string of failed corporate initiatives at Prism HQ, arrogant CEO Jan Peach launches a desperate rebranding exercise named <b>"Project Inception"</b>. While Comms Lead Christina Dross introduces high-sugar pastries to pacify staff, Jan's illicit office affair with Sharon Enfield is exposed, and his announcement of a £50k salary increase sparks workplace mutiny. The episode culminates in a chaotic canteen meltdown, furniture destruction, and a swift Taser de-escalation by Rick.
+        </p>
+      </div>
+    </div>
+
+    <!-- CHARACTERS TAB -->
+    <div id="characters" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Master Character Identity Sheets</h1>
+        <p class="page-desc">Complete multi-panel turnaround and production spec sheets for all main cast members.</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- JAN PEACH -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Jan Peach</div>
+              <div class="card-subtitle">CEO, Prism HQ — Protagonist / Antagonist (Older Senior Voice)</div>
+            </div>
+            <span class="tag">Lead</span>
+          </div>
+          <img src="character-refs/jan_peach_identity_sheet.jpg" class="media-frame" alt="Jan Peach Identity Sheet">
+          <div style="margin-top:0.5rem; margin-bottom:0.5rem;">
+            <p style="font-size:0.75rem; color:var(--cyan); margin-bottom:0.2rem; font-family:var(--font-mono);">LOCAL QWEN3-TTS GPU VOICE (ComfyUI Engine - Older Voice):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/jan_qwen_custom.wav" type="audio/wav"></audio>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; margin-bottom:0.2rem; font-family:var(--font-mono);">HUMAN NEURAL VOICE SAMPLE (Older British RP Executive - 52+ Yrs):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/jan_human_sample.mp3" type="audio/mpeg"></audio>
+            <button class="copy-btn" style="margin-top:0.4rem; width:100%; text-align:center;" onclick="speakLine('Great. Make it so. GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED!', 'Ryan', 0.85, 0.95)">🔊 Speak Live Browser Voice (Older Jan)</button>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg</code></p>
+        </div>
+
+        <!-- CHRISTINA DROSS -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Christina Dross</div>
+              <div class="card-subtitle">Comms Lead — Department Strategist (British RP Female)</div>
+            </div>
+            <span class="tag">Lead</span>
+          </div>
+          <img src="character-refs/christina_dross_identity_sheet.jpg" class="media-frame" alt="Christina Dross Identity Sheet">
+          <div style="margin-top:0.5rem; margin-bottom:0.5rem;">
+            <p style="font-size:0.75rem; color:var(--cyan); margin-bottom:0.2rem; font-family:var(--font-mono);">LOCAL QWEN3-TTS GPU VOICE (VoiceDesign Engine - British RP Female):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/christina_qwen_custom.wav" type="audio/wav"></audio>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; margin-bottom:0.2rem; font-family:var(--font-mono);">HUMAN NEURAL VOICE SAMPLE (British Corporate Crisp RP):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/christina_human_sample.mp3" type="audio/mpeg"></audio>
+            <button class="copy-btn" style="margin-top:0.4rem; width:100%; text-align:center;" onclick="speakLine('Well every two weeks on a Friday we do a breakfast meeting and offer some pastries loaded with as much sugar as humanly possible.', 'Sonia', 1.0, 0.95)">🔊 Speak Live Browser Voice (Christina)</button>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\character-refs\christina_dross_identity_sheet.jpg</code></p>
+        </div>
+
+        <!-- SHARON ENFIELD -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Sharon Enfield</div>
+              <div class="card-subtitle">Staff — Unbothered Negotiator (Welsh Accent)</div>
+            </div>
+            <span class="tag">Supporting</span>
+          </div>
+          <img src="character-refs/sharon_enfield_identity_sheet.jpg" class="media-frame" alt="Sharon Enfield Identity Sheet">
+          <div style="margin-top:0.5rem; margin-bottom:0.5rem;">
+            <p style="font-size:0.75rem; color:var(--cyan); margin-bottom:0.2rem; font-family:var(--font-mono);">LOCAL QWEN3-TTS GPU VOICE (VoiceDesign Engine - Welsh Female):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/sharon_qwen_custom.wav" type="audio/wav"></audio>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; margin-bottom:0.2rem; font-family:var(--font-mono);">HUMAN NEURAL VOICE SAMPLE (Adult Female Welsh Accent):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/sharon_human_sample.mp3" type="audio/mpeg"></audio>
+            <button class="copy-btn" style="margin-top:0.4rem; width:100%; text-align:center;" onclick="speakLine('Well I have needs too Jan that must be met.', 'Libby', 1.0, 1.0)">🔊 Speak Live Browser Voice (Sharon)</button>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\character-refs\sharon_enfield_identity_sheet.jpg</code></p>
+        </div>
+
+        <!-- CHRIS -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Chris</div>
+              <div class="card-subtitle">Staff — Designated Smart Mouth</div>
+            </div>
+            <span class="tag">Comic Relief</span>
+          </div>
+          <img src="character-refs/chris_identity_sheet.jpg" class="media-frame" alt="Chris Identity Sheet">
+          <div style="margin-top:0.5rem; margin-bottom:0.5rem;">
+            <p style="font-size:0.75rem; color:var(--cyan); margin-bottom:0.2rem; font-family:var(--font-mono);">LOCAL QWEN3-TTS GPU VOICE (ComfyUI Engine):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/chris_qwen_custom.wav" type="audio/wav"></audio>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; margin-bottom:0.2rem; font-family:var(--font-mono);">HUMAN NEURAL VOICE SAMPLE (British Sarcastic Baritone):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/chris_human_sample.mp3" type="audio/mpeg"></audio>
+            <button class="copy-btn" style="margin-top:0.4rem; width:100%; text-align:center;" onclick="speakLine('You are dreaming Jan. Inception is the name of a film about dreams Jan.', 'Thomas', 1.0, 1.05)">🔊 Speak Live Browser Voice (Chris)</button>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\character-refs\chris_identity_sheet.jpg</code></p>
+        </div>
+
+        <!-- RICK -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Rick</div>
+              <div class="card-subtitle">Staff — Realist & Taser Operator</div>
+            </div>
+            <span class="tag">Comic Relief</span>
+          </div>
+          <img src="character-refs/rick_identity_sheet.jpg" class="media-frame" alt="Rick Identity Sheet">
+          <div style="margin-top:0.5rem; margin-bottom:0.5rem;">
+            <p style="font-size:0.75rem; color:var(--cyan); margin-bottom:0.2rem; font-family:var(--font-mono);">LOCAL QWEN3-TTS GPU VOICE (ComfyUI Engine):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/rick_qwen_custom.wav" type="audio/wav"></audio>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; margin-bottom:0.2rem; font-family:var(--font-mono);">HUMAN NEURAL VOICE SAMPLE (British Deep Monotone):</p>
+            <audio controls style="width:100%; height:36px;"><source src="audio-refs/rick_human_sample.mp3" type="audio/mpeg"></audio>
+            <button class="copy-btn" style="margin-top:0.4rem; width:100%; text-align:center;" onclick="speakLine('No relax, he will be out for a while. I think we need the police here.', 'Ryan', 0.9, 0.9)">🔊 Speak Live Browser Voice (Rick)</button>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\character-refs\rick_identity_sheet.jpg</code></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCATIONS TAB -->
+    <div id="locations" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Master Location & Set Spec Sheets</h1>
+        <p class="page-desc">Architectural turnaround sheets, material swatches, and lighting grids for Prism HQ.</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- LOCATION 01 -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Location 01: Exterior Forecourt & Tower</div>
+              <div class="card-subtitle">Symmetrical Plaza, Revolving Doors & 39m Amber Lantern Tower</div>
+            </div>
+            <span class="tag">Rendered</span>
+          </div>
+          <img src="location-refs/exterior_forecourt_location_sheet.jpg" class="media-frame" alt="Location 01 Spec Sheet">
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\location-refs\exterior_forecourt_location_sheet.jpg</code></p>
+        </div>
+
+        <!-- LOCATION 02 -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Location 02: Reception & Atrium Lobby</div>
+              <div class="card-subtitle">Double-Height Lobby, Glass Paddle Turnstiles & Amber Desk</div>
+            </div>
+            <span class="tag">Rendered</span>
+          </div>
+          <img src="location-refs/reception_atrium_location_sheet.jpg" class="media-frame" alt="Location 02 Spec Sheet">
+          <p style="font-size:0.85rem; color:var(--text-muted);"><b>Full Path:</b> <code style="font-size:0.75rem;">C:\ai\Circle the Square\location-refs\reception_atrium_location_sheet.jpg</code></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENPLAY TAB -->
+    <div id="screenplay" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Industry Screenplay (Fountain Format)</h1>
+        <p class="page-desc">Complete script text for featurette episode "Project Inception".</p>
+      </div>
+
+      <div class="script-box">
+TITLE: CIRCLE THE SQUARE — FEATURETTE EPISODE
+FORMAT: Screenplay (Fountain)
+
+INT. JAN'S OFFICE - DAY
+
+It has been a troubling few months at ExInc for CEO JAN PEACH (52, soft build, tight navy suit, comb-over). Every idea he floated appeared to fail almost immediately. He thought something must be wrong with how his stupid colleagues had implemented his suggestions. Absolutely nothing else could be the cause.
+
+Jan would deal with that later, as for now he has a meeting with CHRISTINA DROSS (38, slim, dark bob, crisp blazer).
+
+CHRISTINA
+Morning Jan, how are you this morning?
+
+JAN
+(sighing)
+Oh you know -- another day dealing with these morons that cannot understand the discipline and brilliance it takes to be the CEO of a place like this.
+
+CHRISTINA
+I see. Well I might be able to help with that. I have an idea to help communicate better with the whole department.
+
+JAN
+I'm listening.
+
+CHRISTINA
+Well, every two weeks on a Friday we do a "breakfast meeting" and offer some pastries or some other junk loaded with as much sugar as humanly possible, and we give a talk about whatever for thirty mins. We then take any questions and pretend to listen.
+
+JAN
+(enthused)
+I am liking the idea of this so far. Especially if we ensure that the sugar in the breakfast junk is just enough to pacify the workers' brains so as not to care what we are talking about, but not too much so as to result in no actual work being done afterwards.
+
+CHRISTINA
+Thought you would like it. Friday statistically is a less productive day anyway, so we could just up the sugar content as much as we like.
+
+JAN
+Great. Make it so.
+
+CHRISTINA
+I am sorry, what?
+
+JAN
+You never seen Star Trek Next Generation?
+
+CHRISTINA
+(heavy sarcasm)
+Shockingly no.
+
+JAN
+Fine, just make it happen. Start tomorrow with the first meeting. Now get out, I have got to prepare for a short presentation to the whole staff in a few mins.
+
+CHRISTINA
+Is this another one of your poorly rehearsed presentations?
+
+JAN
+Jesus! Everyone thinks they know better than me! I am the one with the MBA from the University of --
+
+CHRISTINA
+Made Up Place?
+
+JAN
+(screaming, red-faced)
+GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED!
+
+Christina quickly leaves, shutting the glass door calmly behind her.
+      </div>
+    </div>
+
+    <!-- SHOT LIST TAB -->
+    <div id="shotlist" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Director's Shot List & Staging</h1>
+        <p class="page-desc">Complete 34-shot pre-visualization table for Scenes 1 through 4.</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Shot #</th>
+              <th>Scene & Set</th>
+              <th>Framing & Lens</th>
+              <th>Movement</th>
+              <th>Subject & Action</th>
+              <th>Audio Cue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>S01-01</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>24mm Wide Master</td>
+              <td>Static locked-off</td>
+              <td>Fishbowl view into glass meeting room. Jan pacing, Christina seated with tablet.</td>
+              <td>Low office hum</td>
+            </tr>
+            <tr>
+              <td><b>S01-02</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>50mm OTS Jan</td>
+              <td>Slow creep-in</td>
+              <td>Jan sitting back arrogantly with arms spread on white desk.</td>
+              <td>Jan: "dealing with these morons..."</td>
+            </tr>
+            <tr>
+              <td><b>S01-06</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>50mm Medium Jan</td>
+              <td>Rapid push-in</td>
+              <td>Jan stands up abruptly pointing index finger at ceiling in Picard pose.</td>
+              <td>Jan: "Great. Make it so."</td>
+            </tr>
+            <tr>
+              <td><b>S01-09</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>100mm Macro Close-Up</td>
+              <td>Rapid zoom-in</td>
+              <td>Jan red-faced, sweating, screaming at maximum volume.</td>
+              <td>Jan: "GET OUT NOW YOU STUPID COW!"</td>
+            </tr>
+            <tr>
+              <td><b>S02-03</b></td>
+              <td>Scene 2 (Jan's Office)</td>
+              <td>35mm Low-Angle Insert</td>
+              <td>Downward tilt</td>
+              <td>Jan's open shirt reveals chest hair shaved in a giant arrow pointing down.</td>
+              <td>3-second total silence</td>
+            </tr>
+            <tr>
+              <td><b>S03-08</b></td>
+              <td>Scene 3 (Open Floor)</td>
+              <td>50mm Merch Insert</td>
+              <td>Tilt down</td>
+              <td>Jan holds up a burnt orange "Project Inception" stress ball over cardboard box.</td>
+              <td>Jan: "1,000 stress balls..."</td>
+            </tr>
+            <tr>
+              <td><b>S04-08</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>35mm Action Stunt</td>
+              <td>Tracking follow</td>
+              <td>Jan hurls heavy meeting chair through glass window, shattering it outward.</td>
+              <td>Loud glass explosion smash</td>
+            </tr>
+            <tr>
+              <td><b>S04-09</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>50mm Medium Two-Shot</td>
+              <td>Static</td>
+              <td>Rick tasers Jan; Jan slumps face-first onto tile floor unconscious.</td>
+              <td>POP-CRACKLE electric zap sound</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TRANSITIONS TAB -->
+    <div id="transitions" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Scene Transitions & Editorial Map</h1>
+        <p class="page-desc">Visual match-cuts, L/J audio bridges, and location continuity.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom:1rem;">Visual Editing Flow Diagram</div>
+        <div class="script-box" style="text-align:center; padding:2rem; font-size:0.95rem;">
+[SCENE 1: Jan's Office] ──(Door Click)──> [SCENE 2: Blinds Snap] ──(Locker Cutaway)──> [SCENE 3: Open Floor] ──(Exterior Dawn)──> [SCENE 4: Canteen Meltdown]
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMPTS TAB -->
+    <div id="prompts" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Panel-by-Panel Storyboard Prompt Engine</h1>
+        <p class="page-desc">Pre-coded photorealistic 35mm film-still prompts for all 34 camera panels.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Panel S01-01 (Master Wide)</div>
+            <button class="copy-btn" onclick="copyText('p01')">Copy Prompt</button>
+          </div>
+          <code id="p01" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px;">
+High-resolution 35mm film-still, 24mm wide angle shot looking into Location #5 Glass Meeting Room from the open-plan office corridor. Full-height glass partition wall with white frosted dot privacy film pattern. Inside, Jan Peach (52, soft 5'10" build, double chin, comb-over greying at temples, tight dark navy suit, Prism navy lanyard with burnt orange badge holder #B0381F) paces behind a white meeting table #F4F3EF. Christina Dross (38, slim 5'6" build, dark bob with blunt fringe, charcoal blazer, cream blouse) sits upright with a tablet. Daylight streaming through windows, natural corporate lighting, British workplace comedy --ar 16:9
+          </code>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Panel S04-09 (Taser Hit)</div>
+            <button class="copy-btn" onclick="copyText('p09')">Copy Prompt</button>
+          </div>
+          <code id="p09" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px;">
+High-resolution 35mm film-still, 50mm medium two-shot showing Jan Peach slumping face-first to Location #3 floor unconscious while Rick (40, grey polo, broad build) stands planted 4 feet behind him holding a yellow prop Taser calmly --ar 16:9
+          </code>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIO TAB -->
+    <div id="audio" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Sound Design & Foley Cue Sheet</h1>
+        <p class="page-desc">Complete 22 sound, music, and foley cues — <b>Delegated to Native Video AI Audio Generation (Veo / Sora)</b>.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-title">📹 Video AI Sound Generation Workflow</div>
+        <p style="font-size:0.88rem; color:var(--text-muted); margin-top:0.5rem;">
+          Sound effects, foley impacts, room tone, and glass smashes are rendered natively by the video generation model during clip synthesis (e.g. Google Veo 2 / Sora video-with-audio prompts). Character dialogue is dubbed using the locked local Qwen3-TTS voices.
+        </p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Cue #</th>
+              <th>Scene & Set</th>
+              <th>Category</th>
+              <th>Trigger & Description</th>
+              <th>Video AI Audio Prompt Specification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>[SFX-01]</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>Foley</td>
+              <td>Jan sits back in task chair</td>
+              <td>Desk chair swivel metal creak sound</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-02]</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>Foley</td>
+              <td>Christina swipes presentation tablet</td>
+              <td>Glass screen tap & subtle swipe rustle</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-03]</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>Music Cut</td>
+              <td>Jan shouts "GET OUT NOW YOU STUPID COW!"</td>
+              <td>Music bed cuts out dead into total silence</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-04]</b></td>
+              <td>Scene 1 (Jan's Office)</td>
+              <td>SFX</td>
+              <td>Christina closes glass meeting room door</td>
+              <td>Glass door soft hydraulic CLICK</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-05]</b></td>
+              <td>Scene 2 (Jan's Office)</td>
+              <td>Foley</td>
+              <td>Jan unbuttons shirt mid-chest</td>
+              <td>Heavy audible panting & shirt fabric rustle</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-06]</b></td>
+              <td>Scene 2 (Jan's Office)</td>
+              <td>SFX</td>
+              <td>Sharon barges in without knocking</td>
+              <td>Abrupt glass door swinging open burst</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-07]</b></td>
+              <td>Scene 2 (Jan's Office)</td>
+              <td>Music Sting</td>
+              <td>Tilt down to Jan's shaved chest hair arrow</td>
+              <td>Low comedic baritone brass sting note</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-08]</b></td>
+              <td>Scene 2 (Jan's Office)</td>
+              <td>Foley / SFX</td>
+              <td>Jan snaps pull-cord to lower window blinds</td>
+              <td>Metallic window blinds SNAP-RATTLE</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-09]</b></td>
+              <td>Scene 2 (Jan's Office)</td>
+              <td>SFX</td>
+              <td>Glass office door locks</td>
+              <td>Heavy deadbolt door lock click (cl-CLACK)</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-10]</b></td>
+              <td>Scene 3 (Open Floor)</td>
+              <td>Foley</td>
+              <td>Jan gathers crowd in desking aisle</td>
+              <td>Double handclap (CLAP-CLAP)</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-11]</b></td>
+              <td>Scene 3 (Open Floor)</td>
+              <td>Ambience</td>
+              <td>Chris asks if Sharon gets a pass</td>
+              <td>Quiet sniggering & murmuring ripple</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-12]</b></td>
+              <td>Scene 3 (Open Floor)</td>
+              <td>Foley</td>
+              <td>Jan holds up orange Project Inception merch</td>
+              <td>Stress ball foam squeeze squeak</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-13]</b></td>
+              <td>Scene 3 (Open Floor)</td>
+              <td>Crowd Reaction</td>
+              <td>Jan announces £50k salary increase</td>
+              <td>Collective audible groan from 20 workers</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-14]</b></td>
+              <td>Scene 3 (Open Floor)</td>
+              <td>Foley</td>
+              <td>Jan shouts "GET BACK TO WORK!"</td>
+              <td>Scuffle of 20 task chairs rolling back</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-15]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Foley</td>
+              <td>Canteen worker says "Sorry, all gone"</td>
+              <td>Empty stainless steel pastry tray metal scrape</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-16]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Stunt SFX</td>
+              <td>Jan sweeps plates off counter to floor</td>
+              <td>CRASH-SHATTER! Explosive plate smash sound</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-17]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Audio Cut</td>
+              <td>20 canteen diners freeze in shock</td>
+              <td>Total room audio mute (dead room silence)</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-18]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Stunt SFX</td>
+              <td>Jan hurls heavy chair through glass window</td>
+              <td>LOUD GLASS EXPLOSION SMASH SOUND</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-19]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Stunt SFX</td>
+              <td>Rick fires prop Taser into Jan's back</td>
+              <td>POP-CRACKLE-ZAP! High-voltage electrical arc discharge</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-20]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Foley</td>
+              <td>Jan slumps face-first to tile floor</td>
+              <td>Heavy deadweight body thud on tile floor</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-21]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Foley</td>
+              <td>Rick stows Taser after de-escalation</td>
+              <td>Taser slide back into leather holster clip</td>
+            </tr>
+            <tr>
+              <td><b>[SFX-22]</b></td>
+              <td>Scene 4 (Canteen)</td>
+              <td>Music / Ambience</td>
+              <td>Closing overhead crane & fade to black</td>
+              <td>Police siren wail fading in over end credits</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INVENTORY TAB -->
+    <div id="inventory" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">Costume & Prop Master Inventory</h1>
+        <p class="page-desc">Prism lanyards, Project Inception merch, Rick's Taser, and stunt props.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Prism Corporate Lanyard & Badge Unit</div>
+            <span class="tag">Branding</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            <b>Lanyard Strap:</b> 15mm navy blue strap (<code>#16294A</code>) printed with white "Prism" wordmark repeating.<br>
+            <b>Badge Holder:</b> Burnt orange rigid plastic card holder (<code>#B0381F</code>).<br>
+            <b>ID Card:</b> Photo ID card with barcode, NFC chip graphic, and "PRISM HQ — ACCESS LEVEL 2". Worn by all main cast members.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">"Project Inception" Merch Package</div>
+            <span class="tag">Scene 3 Props</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            <b>Stress Balls:</b> 100 burnt orange foam units printed with <i>"PROJECT INCEPTION — PRISM"</i>.<br>
+            <b>Pens & Notebooks:</b> Matte black ballpoint pens with orange clips + A5 grid notebooks.<br>
+            <b>Shipping Box:</b> Cardboard box labeled <code>SHIP TO: JAN PEACH (CEO) - 1000 X MERCH SET</code>.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Rick's Prop Taser Unit</div>
+            <span class="tag">Scene 4 Stunt Prop</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            <b>Device:</b> 1:1 scale yellow/black tactical prop Taser unit with blue LED armed light.<br>
+            <b>VFX Overlay:</b> 2-frame digital electrical arc spark overlay between Taser contacts and Jan's back.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Canteen Stunt Props (Plate & Window Glass)</div>
+            <span class="tag">Scene 4 Stunt Props</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            <b>Breakaway Plates:</b> 10 plaster breakaway plates for the counter sweep.<br>
+            <b>Breakaway Window:</b> 4ft x 6ft breakaway sugar-glass window pane + lightweight meeting chair.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUEUE TAB -->
+    <div id="queue" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">5:21 PM Batch Execution Queue</h1>
+        <p class="page-desc">Paced batch schedule for rendering Locations 03 through 09.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Batch 1 (5:21 PM)</div>
+            <span class="tag">3 Locations</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            • <b>Location 03</b>: Staff Restaurant / Canteen<br>
+            • <b>Location 04</b>: Open-Plan Office Floor<br>
+            • <b>Location 05</b>: Glass Meeting Room ("Jan's Office")
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Batch 2 (5:23 PM)</div>
+            <span class="tag">2 Locations</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            • <b>Location 06</b>: Breakout & Kitchenette Nooks<br>
+            • <b>Location 07</b>: Landscaped Podium Courtyard
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Batch 3 (5:25 PM)</div>
+            <span class="tag">2 Locations</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">
+            • <b>Location 08</b>: Corridors, Locker Bays & Washrooms<br>
+            • <b>Location 09</b>: Rear / Staff-Only Entrance
+          </p>
+        </div>
+    <!-- QWEN3-TTS TAB -->
+    <div id="qwentts" class="tab-content">
+      <div class="page-header">
+        <h1 class="page-title">ComfyUI Qwen3-TTS Node & Instruct Setup</h1>
+        <p class="page-desc">Preset mappings & structured `instruct` templates for Voice Design and Voice Instruct nodes inside ComfyUI.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-title">ComfyUI QwenTTS Node Quick Reference</div>
+        <p style="font-size:0.88rem; color:var(--text-muted); margin-top:0.5rem;">
+          <b>• Custom Voice Node:</b> Pick 1 of 9 built-in speakers (<i>Aiden, Dylan, Eric, Ono_Anna, Ryan, Serena, Sohee, Uncle_Fu, Vivian</i>).<br>
+          <b>• Voice Design Node:</b> Describe new voice in free-text <code>instruct</code> input.<br>
+          <b>• Voice Instruct Node:</b> Wire before CustomVoice or VoiceDesign node. Pick <b>Character Preset</b> (14 options) + <b>Style Preset</b> (40 options).
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- JAN PEACH -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Jan Peach (CEO)</div>
+              <div class="card-subtitle">Presets: Senior Male | Angry / Authoritative</div>
+            </div>
+            <button class="copy-btn" onclick="copyText('q_jan_struct')">Copy Instruct</button>
+          </div>
+          <code id="q_jan_struct" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px; white-space:pre-wrap;">
+pitch: High, sharp, strained tenor.
+speed: Fast, erratic, anxious.
+emotion: Hysterical, pompous, angry.
+personality: Arrogant, thin-skinned corporate tyrant.
+accent: British Received Pronunciation (RP).
+          </code>
+        </div>
+
+        <!-- CHRISTINA DROSS -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Christina Dross (Comms Lead)</div>
+              <div class="card-subtitle">Presets: Adult Female | Calm / Serious</div>
+            </div>
+            <button class="copy-btn" onclick="copyText('q_christina_struct')">Copy Instruct</button>
+          </div>
+          <code id="q_christina_struct" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px; white-space:pre-wrap;">
+gender: Female.
+age: 38 years old adult female.
+pitch: Feminine alto voice.
+speed: Measured, unhurried, steady.
+emotion: Cold, deadpan, calm female speaker.
+personality: Sharp female corporate strategist.
+accent: Clear British London RP female.
+          </code>
+        </div>
+
+        <!-- SHARON ENFIELD -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Sharon Enfield (Staff)</div>
+              <div class="card-subtitle">Presets: Adult Female | Warm / Calm</div>
+            </div>
+            <button class="copy-btn" onclick="copyText('q_sharon_struct')">Copy Instruct</button>
+          </div>
+          <code id="q_sharon_struct" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px; white-space:pre-wrap;">
+pitch: Warm, confident, grounded adult female.
+speed: Casual, relaxed.
+emotion: Unbothered, amused, transactional.
+personality: Self-assured opportunist.
+accent: Scottish (West Coast / Edinburgh).
+          </code>
+        </div>
+
+        <!-- CHRIS -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Chris (Staff)</div>
+              <div class="card-subtitle">Presets: Young Male | Cheerful / Storytelling</div>
+            </div>
+            <button class="copy-btn" onclick="copyText('q_chris_struct')">Copy Instruct</button>
+          </div>
+          <code id="q_chris_struct" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px; white-space:pre-wrap;">
+gender: Male.
+age: 32 years old young adult male.
+pitch: Conversational British baritone voice.
+speed: Quick-witted, casual, sharp pacing.
+emotion: Sarcastic, deadpan, amused male speaker.
+personality: Office smart-mouth and comic relief.
+accent: Dry South London Estuary British accent.
+          </code>
+        </div>
+
+        <!-- RICK -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Rick (Staff)</div>
+              <div class="card-subtitle">Presets: Adult Male | Serious / Documentary</div>
+            </div>
+            <button class="copy-btn" onclick="copyText('q_rick_struct')">Copy Instruct</button>
+          </div>
+          <code id="q_rick_struct" style="font-size:0.8rem; color:var(--text-muted); display:block; background:#08090D; padding:0.8rem; border-radius:6px; white-space:pre-wrap;">
+pitch: Deep, gravelly bass-baritone.
+speed: Slow, deliberate monotone.
+emotion: Flat, unhurried.
+personality: Blunt realist, unblinking Taser operator.
+accent: Flat Midlands / East Anglian.
+          </code>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text);
+      alert('Prompt copied to clipboard!');
+    }
+
+    // Web Speech API Live Browser Voice Synthesizer (£0 Extra Cost)
+    function speakLine(text, voiceName, pitch = 1.0, rate = 1.0) {
+      if (!('speechSynthesis' in window)) {
+        alert('Web Speech API is not supported in this browser.');
+        return;
+      }
+      window.speechSynthesis.cancel(); // Stop any ongoing speech
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.pitch = pitch;
+      utter.rate = rate;
+
+      const voices = window.speechSynthesis.getVoices();
+      const match = voices.find(v => v.name.includes(voiceName) || (v.lang.startsWith('en') && v.name.includes('UK')));
+      if (match) utter.voice = match;
+
+      window.speechSynthesis.speak(utter);
+    }
+  </script>
+</body>
+</html>

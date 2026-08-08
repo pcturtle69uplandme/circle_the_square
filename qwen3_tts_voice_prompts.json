@@ -1,0 +1,47 @@
+{
+  "project": "Circle the Square",
+  "engine": "Qwen3-TTS (ComfyUI-QwenTTS)",
+  "models_path": "C:/ai/ComfyUI/ComfyUI/models/TTS/Qwen3-TTS/",
+  "workflow_path": "C:/ai/ComfyUI/ComfyUI/custom_nodes/ComfyUI-QwenTTS/example_workflows/QwenTTS_sample_workflow.json",
+  "instruct_structure_guide": {
+    "node_type": "Voice Design / Voice Instruct (QwenTTS)",
+    "template_format": "pitch: ...\nspeed: ...\nemotion: ...\npersonality: ...\naccent: ..."
+  },
+  "characters": {
+    "jan_peach": {
+      "name": "Jan Peach (CEO)",
+      "character_preset": "Senior Male",
+      "style_preset": "Angry / Authoritative",
+      "structured_instruct": "pitch: High, sharp, strained tenor.\nspeed: Fast, erratic, anxious.\nemotion: Hysterical, pompous, angry.\npersonality: Arrogant, thin-skinned corporate tyrant.\naccent: British Received Pronunciation (RP).",
+      "sample_text": "Great. Make it so. GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED!"
+    },
+    "christina_dross": {
+      "name": "Christina Dross (Comms Lead)",
+      "character_preset": "Adult Female",
+      "style_preset": "Calm / Serious",
+      "structured_instruct": "gender: Female.\nage: 38 years old adult female.\npitch: Feminine alto voice.\nspeed: Measured, unhurried, steady.\nemotion: Cold, deadpan, calm female speaker.\npersonality: Sharp female corporate strategist.\naccent: Clear British London RP female.",
+      "sample_text": "Well every two weeks on a Friday we do a breakfast meeting and offer some pastries loaded with as much sugar as humanly possible."
+    },
+    "sharon_enfield": {
+      "name": "Sharon Enfield (Staff)",
+      "character_preset": "Adult Female",
+      "style_preset": "Warm / Calm",
+      "structured_instruct": "gender: Female.\nage: 34 years old adult female.\npitch: Warm, confident adult female alto voice.\nspeed: Unhurried, transactional, blunt pacing.\nemotion: Level, unbothered, confident female speaker.\npersonality: Plain-spoken opportunist.\naccent: Welsh adult female accent with a subtle natural lilt.",
+      "sample_text": "Well I have needs too Jan that must be met."
+    },
+    "chris": {
+      "name": "Chris (Staff)",
+      "character_preset": "Young Male",
+      "style_preset": "Cheerful / Storytelling",
+      "structured_instruct": "gender: Male.\nage: 32 years old young adult male.\npitch: Conversational British baritone voice.\nspeed: Quick-witted, casual, sharp pacing.\nemotion: Sarcastic, deadpan, amused male speaker.\npersonality: Office smart-mouth and comic relief.\naccent: Dry South London Estuary British accent.",
+      "sample_text": "You are dreaming Jan. Inception is the name of a film about dreams Jan."
+    },
+    "rick": {
+      "name": "Rick (Staff)",
+      "character_preset": "Adult Male",
+      "style_preset": "Serious / Documentary",
+      "structured_instruct": "pitch: Deep, gravelly bass-baritone.\nspeed: Slow, deliberate monotone.\nemotion: Flat, unhurried.\npersonality: Blunt realist, unblinking Taser operator.\naccent: Flat Midlands / East Anglian.",
+      "sample_text": "No relax, he will be out for a while. I think we need the police here."
+    }
+  }
+}

@@ -121,8 +121,19 @@ The master inventory is locked at:
 
 ## 9. 🖼️ PANEL-BY-PANEL STORYBOARD PROMPT ENGINE
 
-The 34-camera panel prompt engine is locked at:  
-📄 **[Storyboard Prompt Engine](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/storyboard_prompt_engine.md)**
+The 5-shot opening sequence copy-paste-ready Veo 2 / Gemini prompt engine is locked at:  
+📄 **Filename**: `storyboard_prompt_engine.md`  
+📄 **Full Path**: [`file:///C:/ai/Circle the Square/storyboard_prompt_engine.md`](file:///C:/ai/Circle%20the%20Square/storyboard_prompt_engine.md)
+
+Contents:
+- ✅ Shot 01 Prompt (High Aerial & Prow Swoop) + 2 image refs
+- ✅ Shot 02 Prompt (Forecourt Plaza Push) + 2 image refs
+- ✅ Shot 03 Prompt (Atrium Speed Gate Push-Through) + 2 image refs
+- ✅ Shot 04 Prompt (Office Central Aisle Flyby) + 2 image refs
+- ✅ Shot 05 Prompt (Group Photo Meltdown Stinger) + 3 image refs
+- ✅ Per-shot native audio prompts
+- ✅ Supplementary character & location reference sheet table
+- ✅ What NOT to do (attention dilution rules)
 
 ---
 

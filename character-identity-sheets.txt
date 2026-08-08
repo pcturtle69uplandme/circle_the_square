@@ -1,0 +1,377 @@
+CIRCLE THE SQUARE — CHARACTER IDENTITY & SCALE SHEETS
+Generated from character-bible.html. Each block below is a self-contained prompt spec
+for one character sheet image (turnaround + head detail + cinematic close-up), in the
+same layout as the reference sheet: MAIN IDENTITY & SCALE SHEET / HEAD DETAIL SHEET /
+CHARACTER CORE / PERSONALITY & TRAITS / COLOR PALETTE / WARDROBE-ACCESSORIES /
+PROPS / NOTES PANEL / CLOSE-UP POSE (CINEMATIC).
+
+Shared brand note: Prism's accent color (lanyards, badges, signage) is a burnt
+orange/red — #B0381F — reuse it across every character for visual consistency.
+
+================================================================
+[Image #1] — JAN PEACH — CHARACTER IDENTITY & SCALE SHEET
+================================================================
+
+MAIN IDENTITY & SCALE SHEET
+  Front view / 3-4 view / Side view / Back view — full body, neutral studio grey
+  backdrop, even studio lighting, scale ruler 0-190cm, arms relaxed at sides,
+  smug default expression held across all four views.
+
+CHARACTER CORE
+  Name: Jan Peach
+  Alias / Title: CEO, Prism — "Project Inception" lead
+  Gender: Male
+  Age: 52
+  Height: 5'10" (178cm)
+  Body Type: Soft, overweight build — noticeable gut straining shirt buttons,
+    rounded shoulders, soft hands
+  Ethnicity: White British (placeholder — adjust to cast)
+  Role: CEO
+  Archetype: Blustering corporate tyrant / protagonist-antagonist
+
+PERSONALITY & TRAITS
+  Personality: Arrogant, thin-skinned, credential-obsessed, convinced every
+    failure is someone else's fault
+  Core Theme: Authority vs. incompetence — control masking insecurity
+  Emotional Range: Oily corporate calm to full screaming rage in one line, no
+    warning
+  Behavior Notes: Chest out, chin up, hands on hips or fingers steepled when
+    holding court; reddens and sweats visibly under stress, neck veins visible,
+    finger-jabbing when shouting
+  Speech Style / Accent: British corporate-speak by default; quotes Star Trek
+    unironically; explodes into all-caps shouting mid-scene
+
+COLOR PALETTE
+  Skin Tone: Pale, ruddy British complexion — base #E3B7A0, flushed #C97A63
+  Hair: Mid-brown, greying at temples, product-slicked comb-over — #6B5643
+  Outfit — Primary: Dark navy two-button suit, slightly too tight — #1B2436
+  Outfit — Secondary: White dress shirt — #F5F1E6
+  Accent: Prism-brand burnt orange (lanyard/badge) — #B0381F
+  Tech/Metal: Black phone, oversized silver-and-gold wristwatch, plain gold
+    wedding ring
+
+WARDROBE / ACCESSORIES
+  Top: White dress shirt, top button undone, tie loosened; comes off/is torn
+    open by the canteen scene
+  Bottom: Navy suit trousers
+  Shoes: Polished but scuffed black oxfords
+  Accessories: Oversized flashy wristwatch, wedding ring, Prism lanyard/ID badge
+
+PROPS (OPTIONAL)
+  Phone (always in hand), Prism-branded coffee mug, meeting-room chair (for the
+    window-smash beat)
+
+NOTES PANEL
+  - Default expression: thin-lipped smug half-smile, thick brows half-raised
+  - Stress state: deep red face, visible neck veins, sweat sheen, finger jabbing
+  - Keep silhouette "puffed out" even mid-meltdown — pride never visually drops
+    until he's on the floor
+  - Track shirt continuity: buttoned → undone → off/untucked across the episode
+  - Final-state reference: slumped unconscious on the floor, one arm splayed,
+    shirt untucked
+
+HEAD DETAIL SHEET
+  Front / Side / 3-4 / Top / Low angle / Dynamic angle — same lighting rig as
+  body sheet; one pass at neutral smug default, one pass red-faced mid-shout.
+
+CLOSE-UP POSE (CINEMATIC)
+  Tight head-and-shoulders crop, red-faced mid-shout, neck veins visible, hard
+  side key light, shallow depth of field, blurred office background.
+
+
+================================================================
+[Image #2] — CHRISTINA DROSS — CHARACTER IDENTITY & SCALE SHEET
+================================================================
+
+MAIN IDENTITY & SCALE SHEET
+  Front view / 3-4 view / Side view / Back view — full body, neutral studio grey
+  backdrop, even studio lighting, scale ruler 0-180cm, composed poised stance
+  held across all four views.
+
+CHARACTER CORE
+  Name: Christina Dross
+  Alias / Title: Comms / staff-engagement lead, Prism
+  Gender: Female
+  Age: 38
+  Height: 5'6" (168cm)
+  Body Type: Slim, upright, squared shoulders
+  Ethnicity: White British (placeholder — adjust to cast)
+  Role: Comms lead
+  Archetype: The quiet strategist — always two steps ahead
+
+PERSONALITY & TRAITS
+  Personality: Calm on the surface, dry and calculating underneath
+  Core Theme: Real control hides behind soft-skills language
+  Emotional Range: Narrow and controlled — flat deadpan even under Jan's
+    outbursts; never visibly rattled
+  Behavior Notes: Stays still and level while others react; slight head tilt
+    when delivering a dry line
+  Speech Style / Accent: Measured, professional, deadpan delivery of lines that
+    are quietly savage
+
+COLOR PALETTE
+  Skin Tone: Light, even complexion — #C9A67C
+  Hair: Dark brown sleek bob, blunt fringe or crisp side part — #2E211A
+  Outfit — Primary: Charcoal/navy tailored blazer — #2B2E33
+  Outfit — Secondary: Cream blouse — #EFE6D8
+  Accent: Prism-brand burnt orange (lanyard) — #B0381F
+  Tech/Metal: Minimal gold jewellery, silver tablet case
+
+WARDROBE / ACCESSORIES
+  Top: Tailored blazer over blouse
+  Bottom: Tailored trousers or pencil skirt
+  Shoes: Low block heels
+  Accessories: Minimal gold jewellery, Prism lanyard, tablet or clipboard
+
+PROPS (OPTIONAL)
+  Tablet/clipboard with "staff engagement" notes, travel mug
+
+NOTES PANEL
+  - Default expression: composed, faint knowing half-smile
+  - Never sweats, never raises her voice — the visual contrast to Jan
+  - Reads best in two-shots directly beside/across from Jan for contrast
+  - No canteen or crowd-scene continuity needed — she exits after scene 1
+
+HEAD DETAIL SHEET
+  Front / Side / 3-4 / Top / Low angle / Dynamic angle — same lighting rig as
+  body sheet, composed default expression throughout.
+
+CLOSE-UP POSE (CINEMATIC)
+  Tight head-and-shoulders crop, flat unimpressed deadpan expression, soft even
+  key light, shallow depth of field, meeting-room background.
+
+
+================================================================
+[Image #3] — SHARON ENFIELD — CHARACTER IDENTITY & SCALE SHEET
+================================================================
+
+MAIN IDENTITY & SCALE SHEET
+  Front view / 3-4 view / Side view / Back view — full body, neutral studio grey
+  backdrop, even studio lighting, scale ruler 0-175cm. Generate TWO wardrobe
+  states across the turnaround: (A) composed arriving, (B) dishevelled leaving.
+
+CHARACTER CORE
+  Name: Sharon Enfield
+  Alias / Title: Staff (department unspecified)
+  Gender: Female
+  Age: 34
+  Height: 5'5" (165cm)
+  Body Type: Curvy build
+  Ethnicity: White British (placeholder — adjust to cast)
+  Role: Staff — having an affair with Jan
+  Archetype: Unbothered opportunist
+
+PERSONALITY & TRAITS
+  Personality: Transactional, plain-spoken, entirely unbothered by workplace
+    propriety
+  Core Theme: States what she wants and gets it, gossip be damned
+  Emotional Range: Confident and level; stays unbothered even when caught out
+  Behavior Notes: Confident/unhurried arriving; relaxed and unhurried leaving
+    too — dishevelled but never flustered
+  Speech Style / Accent: Blunt, transactional, matter-of-fact
+
+COLOR PALETTE
+  Skin Tone: Fair, flushes easily — base #F0C9B0, flushed #E08A72
+  Hair: Auburn, shoulder-length wavy — #7A3B2E
+  Outfit — Primary: Jewel-tone fitted blouse (emerald) — #1F5C4A
+  Outfit — Secondary: Black pencil skirt — #1A1A1A
+  Accent: Prism-brand burnt orange (lanyard) — #B0381F
+  Tech/Metal: Small gold hoop earrings
+
+WARDROBE / ACCESSORIES
+  Top: Fitted jewel-tone blouse — buttoned/composed (A) vs. untucked/askew (B)
+  Bottom: Pencil skirt
+  Shoes: Heels — worn (A) vs. carried in hand (B)
+  Accessories: Small handbag, Prism lanyard, phone
+
+PROPS (OPTIONAL)
+  Handbag, phone
+
+NOTES PANEL
+  - Two costume states are the whole character arc: composed in → dishevelled
+    out, same outfit, same props
+  - Hair mussed and makeup slightly smudged in state (B), expression unbothered
+  - No stress signals — the joke is how little this fazes her
+  - Everything explicit stays off-camera; only the before/after states are shot
+
+HEAD DETAIL SHEET
+  Front / Side / 3-4 / Top / Low angle / Dynamic angle — one pass composed
+  (state A), one pass dishevelled (state B).
+
+CLOSE-UP POSE (CINEMATIC)
+  Tight head-and-shoulders crop, state (B), amused/unbothered half-smile while
+  smoothing her hair, soft key light, corridor background.
+
+
+================================================================
+[Image #4] — CHRIS — CHARACTER IDENTITY & SCALE SHEET
+================================================================
+
+MAIN IDENTITY & SCALE SHEET
+  Front view / 3-4 view / Side view / Back view — full body, neutral studio grey
+  backdrop, even studio lighting, scale ruler 0-185cm, relaxed slouched stance
+  held across all four views.
+
+CHARACTER CORE
+  Name: Chris
+  Alias / Title: Staff — rank and file
+  Gender: Male (inferred — no pronoun given in script; adjust if you cast
+    otherwise)
+  Age: 32
+  Height: 5'11" (180cm)
+  Body Type: Lean build
+  Ethnicity: White British (placeholder — adjust to cast)
+  Role: Staff
+  Archetype: Deadpan wit / comic relief
+
+PERSONALITY & TRAITS
+  Personality: Office's designated smart mouth — quick with a jab, unfazed by
+    almost everything
+  Core Theme: Says the obvious thing out loud that everyone else is too
+    careful to say
+  Emotional Range: Flat and amused; barely reacts even to a taser incident
+  Behavior Notes: Leaning/slouched stance, arms crossed, deadpan half-grin
+  Speech Style / Accent: Dry, quick, casual British
+
+COLOR PALETTE
+  Skin Tone: Medium complexion — #C68A5D
+  Hair: Short, textured dark hair — #1F1B18
+  Outfit — Primary: Light blue shirt, untucked/sleeves rolled — #6E93B5
+  Outfit — Secondary: Dark casual trousers — #2A2A2A
+  Accent: Prism-brand burnt orange (lanyard) — #B0381F
+  Tech/Metal: Phone, coffee cup
+
+WARDROBE / ACCESSORIES
+  Top: Casual shirt, untucked or sleeves rolled, no tie
+  Bottom: Dark casual trousers
+  Shoes: Sneakers or casual shoes
+  Accessories: Prism lanyard, phone
+
+PROPS (OPTIONAL)
+  Coffee cup, Prism "Project Inception" branded stress ball
+
+NOTES PANEL
+  - Default expression: smirk, one eyebrow habitually cocked
+  - Reads best in a crowd/group shot alongside Rick (scene 3)
+  - Needs a clean solo coverage shot in the canteen for the closing beat
+    ("Have you killed him?")
+
+HEAD DETAIL SHEET
+  Front / Side / 3-4 / Top / Low angle / Dynamic angle — same lighting rig as
+  body sheet, smirking default expression throughout.
+
+CLOSE-UP POSE (CINEMATIC)
+  Tight head-and-shoulders crop, amused deadpan smirk, crouched slightly as if
+  checking on someone off-frame, canteen background, soft overhead light.
+
+
+================================================================
+[Image #5] — RICK — CHARACTER IDENTITY & SCALE SHEET
+================================================================
+
+MAIN IDENTITY & SCALE SHEET
+  Front view / 3-4 view / Side view / Back view — full body, neutral studio grey
+  backdrop, even studio lighting, scale ruler 0-190cm, arms crossed, feet
+  planted stance held across all four views.
+
+CHARACTER CORE
+  Name: Rick
+  Alias / Title: Staff — rank and file
+  Gender: Male
+  Age: 40
+  Height: 6'0" (183cm)
+  Body Type: Sturdy, broad build
+  Ethnicity: White British (placeholder — adjust to cast)
+  Role: Staff
+  Archetype: Blunt realist with a concealed edge (carries a taser "for this
+    place")
+
+PERSONALITY & TRAITS
+  Personality: The realist of the group — blunt rather than showy, says the
+    uncomfortable true thing out loud
+  Core Theme: Quiet preparedness under a flat, unbothered exterior
+  Emotional Range: Steady and calm throughout, including while de-escalating
+    Jan with a taser
+  Behavior Notes: Arms crossed, feet planted, flat brows that rarely move
+  Speech Style / Accent: Blunt, plain, matter-of-fact British
+
+COLOR PALETTE
+  Skin Tone: Ruddy, weathered complexion — #C99C7C
+  Hair: Short, greying — #6E6A63
+  Outfit — Primary: Plain grey polo/button-down, sleeves rolled — #55585C
+  Outfit — Secondary: Navy sturdy trousers — #262B33
+  Accent: Prism-brand burnt orange (lanyard) — #B0381F
+  Tech/Metal: Concealed taser (prop only — non-functional), phone
+
+WARDROBE / ACCESSORIES
+  Top: Plain polo or button-down, sleeves rolled
+  Bottom: Sturdy trousers
+  Shoes: Practical shoes
+  Accessories: Prism lanyard, phone, concealed prop taser
+
+PROPS (OPTIONAL)
+  Prop taser (must read as visibly fake/non-functional — do not depict a real
+    device), phone
+
+NOTES PANEL
+  - Default expression: flat, unimpressed, rarely surprised
+  - Only visible change across the episode: taser drawn, then standing calmly
+    over an unconscious Jan
+  - Reads best in a crowd/group shot alongside Chris (scene 3), then a solo
+    action beat in the canteen (scene 4)
+
+HEAD DETAIL SHEET
+  Front / Side / 3-4 / Top / Low angle / Dynamic angle — same lighting rig as
+  body sheet, flat unimpressed default expression throughout.
+
+CLOSE-UP POSE (CINEMATIC)
+  Tight head-and-shoulders crop, calm focused expression, prop taser held
+  low in frame, hard side light, canteen background.
+
+
+================================================================
+[Image #6] — CANTEEN WORKER — CHARACTER IDENTITY & SCALE SHEET
+================================================================
+(Walk-on, one line — script gives no distinguishing traits. Minimal sheet,
+kept only so the same extra reads consistently if reused across takes.)
+
+MAIN IDENTITY & SCALE SHEET
+  Front view / 3-4 view — full body, neutral studio grey backdrop, standing
+  behind a counter, apron on, neutral expression.
+
+CHARACTER CORE
+  Name: Unnamed (canteen worker)
+  Gender: Unspecified — cast as convenient
+  Age: Adult, unspecified
+  Height: Unspecified
+  Body Type: Average build
+  Ethnicity: Unspecified — cast as convenient
+  Role: Canteen staff, one line ("Sorry, all gone.")
+  Archetype: Background functional role
+
+PERSONALITY & TRAITS
+  Personality: Neutral, matter-of-fact
+  Behavior Notes: Slight apologetic shrug delivering the line
+
+COLOR PALETTE
+  Outfit — Primary: Beige canteen apron — #C9BBA0
+  Outfit — Secondary: Plain white shirt underneath — #EFEFE6
+  Accent: Generic blank name badge (no Prism branding needed)
+
+WARDROBE / ACCESSORIES
+  Top: Apron over plain shirt, hairnet if hair is long
+  Accessories: Blank name badge
+
+PROPS (OPTIONAL)
+  Serving tongs, empty pastry tray
+
+NOTES PANEL
+  - Any extra or crew member can cover this — no continuity beyond the apron
+    and empty tray is required
+  - Single beat: gesture at empty tray, deliver line, done
+
+HEAD DETAIL SHEET
+  Front view only — neutral expression.
+
+CLOSE-UP POSE (CINEMATIC)
+  Not required — background role, wide/medium coverage only.

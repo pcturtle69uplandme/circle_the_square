@@ -1,0 +1,36 @@
+
+The Prism — Exam Administration Mothership
+
+A walkable, top-down model of The Triangle office building, rendered directly from the architects' CAD drawings. It runs as a static browser page — double-click web/index.html, no server, no build step (all data loads through <script src> globals rather than fetch(), precisely so file:// works).
+
+Currently at v1.43.
+
+What it is
+
+Four floors of a real building — real walls, real desk and chair symbols, real door-swing arcs pulled from the DXF entities — that you walk around as a little vector person. It's not a game with objectives yet; it's a very high-fidelity, fully-simulated space with working systems in it.
+
+What's in it
+
+The building. F0–F3 from CAD (A100/A101/A102 DXF, F3 from a PDF-derived extraction). 207 of 207 named rooms and zones are reachable walking in from the front door — that's the strict audit, not per-floor coverage — and all 41 stair/lift landings work. Plus a press-5 FX test room for trying assets before they go in the real maps.
+
+Getting in. The main entrance has revolving doors that you physically push: step into a pocket, lean on the leaf, the drum turns and carries you round. No auto-spin, no coasting — it reads your angular velocity around the hub. Either side are powered accessible doors that open only for their blue wall pad (E), never by walking up. Five revolving doors on the ground floor in total, all on the same rules.
+
+Reception, and checking in. The lobby is cordoned. Walk in and the speed gates in front of you are locked. Touch the counter and reception asks your name:
+- On today's list (levels/staff.json) → staff badge, all four floors.
+- Not on it → visitor pass, ground floor only — stairs, lifts and the floor keys all refuse it.
+
+The lanyard drops onto your sprite (blue/amber), the gates then open on approach. Come back with a badge and it's small talk instead of the form, templated per person — staff get told which floor their department is on. There are four controlled lines on F0 (reception bank of six lanes, a west rail lane, the west atrium bank of three, and a STAFF-only service entrance).
+
+Outside. A paved forecourt with two rows of trees — trunks are solid, canopies are not, so you walk under one and the leaves close over you. And a rear courtyard in the middle of the building (added in v1.43), open air, reachable only through the atrium revolving door.
+
+The cast. Everyone — you included — is drawn by one vector function. 26 characters, ten hand-authored and sixteen sampled off a top-view sheet. The game opens on a character select and remembers your choice. NPCs sit at desks; the twelve registered employees are seated at their own real desks, so the name over someone's head is the name that opens the gate.
+
+The architecture, in one line
+
+Two deliberately decoupled halves: collision is a per-floor walkable-pixel bitmask (walls, doors, and every desk and chair baked in — movement samples this and nothing else), and rendering is raw CAD line segments stroked to Canvas 2D, tile-culled, so it never blurs at any zoom. Because they're separate, the drawing can be as detailed as the source allows with no risk of disagreeing with what's walkable.
+
+There are exactly three documented exceptions to "the mask is the only truth" — security gates, revolving doors, and pass-restricted rooms — each because a fixed bitmap can't express "solid, but it turns" or "solid unless you're carrying a badge."
+
+Tooling around it
+
+A full Python rebuild chain (CAD → mask → tour → web bundle), a browser-based outline editor served by edit_server.py, a sprite workbench, and python qa.py — one exit code over every audit and seven headless-Chrome probes, currently 245 checks passing. The CAD source itself is 609 MB and lives outside the repo, with an encrypted 80 MB backup committed.

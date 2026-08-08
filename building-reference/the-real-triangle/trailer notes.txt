@@ -1,0 +1,162 @@
+THE PRISM
+
+Trailer treatment & prompt pack
+
+---
+The spine
+
+Every good trailer has one idea. Yours is the dissolve: a real building, photographed, drains of colour and resolves into the plan — and the plan is where you play. Reality becomes schematic, and the schematic is somehow more alive than the photograph. You cut back and forth across that line for sixty seconds.
+
+The tension isn't guns. It's access. A locked gate, a name you can't prove, a badge you haven't earned. Shoot bureaucracy like a heist and it plays as a thriller — which is exactly the joke Exam Administration Mothership is already making.
+
+---
+Style anchors — paste into every prompt
+
+Consistency is the whole battle with image generators. Keep two registers and never blend them mid-shot.
+
+REGISTER A — THE REAL (photoreal, use with your own photos as reference/img2img)
+photorealistic architectural photography, modern triangular office building,
+glass curtain wall and pale stone, overcast Northern European morning light,
+cool neutral grade, muted teal-grey sky, no lens flare, no people's faces
+visible, shot on 35mm, deep focus, restrained and documentary
+
+REGISTER B — THE PLAN (the game's own look)
+flat vector top-down orthographic floor plan, viewed from directly overhead,
+no perspective, bone-white background #F4F3EF, ink-navy walls #1B2330,
+amber door swings #E8A000, orange stair cores #E88F1F, cyan lift cores #22B8CC,
+crisp thin linework, flat colour blocks with no outlines, no gradients,
+no text labels, architectural drawing crossed with clean mobile-game art
+
+NEGATIVE (all shots)
+isometric, three-quarter view, tilted camera, perspective distortion, drop
+shadows, bloom, lens flare, gradients, textu
+watermark, signature, gibberish text, readable signage, cluttered UI,
+photobashing, 3D render of a plan, faces
+
+▎ Note on your photos: the plan register hid from directly overhead people are hair andshoulders. The photoreal shots are where a colleague or a numberplate can end up on screen, so frame those on the
+▎ architecture.
+
+---
+Shot list
+
+1 — COLD OPEN · "It's just a building."
+
+Black. A low hum. The building at dawn, dead still, seen from across the road. It doesn't look like anywhere anything
+happens.
+
+REGISTER A. Wide establishing exterior of a ding
+at dawn, seen across an empty forecourt of pale paving slabs, two rows of
+young trees, glass entrance atrium glowing fue
+morning, no people, no cars, absolutely still, cinematic 2.39:1 framing
+
+2 — THE DISSOLVE · the signature shot
+
+The image loses its colour from the edges inward. Walls flatten. The roof lifts away. What's left is the plan — and
+it's the same building.
+
+Split-state transition image: the left third
+view of a triangular office building; the right two-thirds is the SAME
+building rendered as REGISTER B flat vector te
+#F4F3EF with ink-navy #1B2330 walls, the transition a hard clean vertical
+wipe with no feathering, no glow, as if the d
+by a drawing
+
+3 — ARRIVAL · one figure, from directly above
+
+A single person crosses the paving toward the doors. From this height they're a haircut and two shoulders. They're the
+only thing moving.
+
+REGISTER B. Top-down orthographic view of a ab
+course in a regular grid, two rows of round tree canopies drawn as flat
+dark-green discs, one small flat-vector persd
+walking toward a building entrance, mid-stride, long soft ground shadow
+cast down-right, the figure tiny in a large
+
+4 — THE DRUM · first real motion
+
+Revolving door. Four leaves sweeping. He pus
+
+REGISTER B. Extreme top-down close-up of a r
+circle enclosure ring in ink-navy, four glass leaves radiating from a central
+hub, pale amber-tinted glass, motion arc blu
+flat-vector figure inside a pocket being carried round, everything else
+razor-sharp
+
+5 — THE LINE · the wall of red
+
+Six lanes across the lobby. Every lamp red.
+
+REGISTER B. Top-down view of a bank of six s
+diagonal row, seven dark charcoal pedestals with glowing RED reader lamps,
+amber glass leaves shut across every lane, ae
+side, one small figure standing alone facing the barrier, cold and formal,
+strong negative space
+
+6 — THE DESK · "Name?"
+
+The counter. A receptionist turns to face hione beat: a question he might not be able toanswer.
+
+REGISTER B. Top-down two-figure composition at a long reception counter,
+a seated figure behind it turned to face a s
+both seen from directly overhead as hair and shoulders, warm timber counter
+tone against bone-white floor, intimate tigh
+                                                                                                                     7 — THE BADGE · the drop
+                                                                                                                     A lanyard falls into frame and settles. Blue
+                                                                                                                     REGISTER B. Macro top-down shot of a lanyardg
+against a figure's collar, the card a saturated staff-blue rectangle with a                                          pale photo strip, slight swing, seen from dirs
+the chest and only the badge at the collar is readable, everything else                                              falling away into soft bone-white
+                                                                                                                     8 — THE OPENING · the release
+                                                                                                                     Down the bank, one after another, red goes g Cut on the last one.
+                                                                                                                     REGISTER B. Top-down view down a diagonal ro
+lamps changing from red to GREEN in sequence along the row, glass leaves                                             sliding apart into the pedestals, one figure
+open lane, sense of a wave travelling away from camera                                                               
+9 — THE BUILDING WAKES · scale                                                                                       
+Pull up. Hundreds of them. All at once. This is the shot that sells the game.                                        
+REGISTER B. Very high top-down orthographic view of an entire office floor,                                          hundreds of tiny flat-vector people at desksns
+mid-stride along corridors, dense but perfectly legible, every figure a                                              distinct colour palette, the floor plan's li
+overwhelming population, no labels                                                                                   
+10 — VERTICAL · the stack                                                                                            
+Four floors pull apart in the air. You can see the whole thing at once. Nobody in the building has ever seen it like this.
+
+REGISTER B. Four identical triangular floor
+vertical arrangement, floating apart with clear space between each,
+orthographic and flat, thin cyan and orange
+lift and stair cores through all four levels, dark void background instead
+of bone-white, the plans glowing faintly
+
+11 — THE COURTYARD · the secret
+
+A void in the middle of the building. Walled door in. Hold on it a beat too long.
+
+REGISTER B. Top-down view of an enclosed recrt
+of a building, paved in a regular slab course, completely surrounded by
+ink-navy walls on all four sides, a single rth
+wall the only opening, one tiny figure standing alone in the centre of all
+that empty ground, still, isolated, slightly
+
+12 — TITLE
+
+Black. The triangle draws itself in one cont
+
+Minimal title card: a single thin ink-navy t
+bone-white field, geometric and precise, generous empty space, no other
+imagery, no gradients, no texture
+Over it: THE PRISM — and beneath, smaller: Exam Administration Mothership
+
+---
+Cutting notes
+
+Rhythm. Shots 1–7 breathe — hold each 2–3 sealve, then halve again. Shots 9–11 land inunder a second each. Silence on the title.
+
+Sound design does the heavy lifting (and costs nothing): room tone, footsteps on stone, the revolving door's rubber
+seal, a gate's refusal buzz, the chirp of aning to silence on shot 7 and bring it backhard on shot 8.
+
+The one line of copy, on black between shots 5 and 6:                                                                
+▎ 207 rooms. 1,670 people. One badge you haven't earned yet.                                                         
+---                                                                                                                  Practical
+                                                                                                                     - Aspect ratio 21:9 for everything; crop to headroom.
+- Lock a seed on your first successful Register B image and reuse it — that's what makes shots 3–11 feel like one gamrather than eleven pictures.
+- Generate Register B shots before Register A. The plan look is the harder one to nail, and once you have it you can grade the photos toward it rather than the r
+- Shots 1 and 2 are where your real photos go — feed them as img2img reference at low strength so the building stays
+yours.
+- Shot 2 is the money shot. If only one image is perfect, make it that one; it's also your thumbnail.

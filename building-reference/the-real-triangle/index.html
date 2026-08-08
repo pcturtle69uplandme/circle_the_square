@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Sim CUPA — Level 1: The Parking Run</title>
+<style>
+:root {
+  --brand:  #003865;
+  --accent: #e8a000;
+  --bg:     #f1f5f9;
+  --card:   #ffffff;
+  --border: #cbd5e1;
+  --code-bg:#1e293b;
+  --muted:  #64748b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #222; }
+#game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; inset: 0; pointer-events: none; }
+.hud-card {
+  position: absolute; background: rgba(15,23,42,.82); color: #fff;
+  border-radius: 10px; padding: .5rem .9rem; box-shadow: 0 2px 8px rgba(0,0,0,.4);
+}
+#hudClock { top: 12px; left: 12px; text-align: center; }
+#hudClock .time { font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+#hudClock .day { font-size: .75rem; color: #cbd5e1; }
+#hudClock.late .time { color: #f87171; }
+#hudBooking { top: 12px; right: 12px; text-align: right; }
+#hudBooking .bay { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+#hudBooking .label { font-size: .7rem; color: #cbd5e1; }
+#hudAlarms { top: 86px; right: 12px; font-size: .95rem; display: none; }
+#hint {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  background: rgba(15,23,42,.82); color: #e2e8f0; font-size: .9rem;
+  padding: .45rem 1rem; border-radius: 999px; max-width: 80%; text-align: center;
+}
+#phoneBtn {
+  position: absolute; bottom: 14px; right: 14px; pointer-events: auto;
+  background: var(--brand); color: #fff; border: 2px solid #fff3;
+  border-radius: 14px; width: 58px; height: 58px; font-size: 1.5rem; cursor: pointer;
+}
+#phoneBtn:hover { background: #00518f; }
+#resetBtn {
+  position: absolute; bottom: 14px; left: 14px; pointer-events: auto;
+  background: #334155; color: #fff; border: 1px solid #ffffff44;
+  border-radius: 10px; padding: .55rem .8rem; font-size: .85rem; cursor: pointer;
+}
+#resetBtn:hover { background: #475569; }
+
+/* ---------- Speedometer ---------- */
+#speedo { bottom: 78px; left: 14px; text-align: center; padding: .5rem .7rem .45rem; }
+#speedo .mphrow { font-size: .78rem; color: #cbd5e1; }
+#speedo .mphrow b { font-size: 1.25rem; color: #fff; font-variant-numeric: tabular-nums; }
+#speedo .zone { display: none; margin-top: .25rem; font-size: .62rem; font-weight: 700; color: #fff; background: #dc2626; border-radius: 999px; padding: .12rem .55rem; }
+#speedo.inzone .zone { display: inline-block; }
+#speedWarn {
+  position: absolute; top: 150px; left: 50%; transform: translateX(-50%);
+  background: #dc2626; color: #fff; font-weight: 800; font-size: 1.05rem;
+  padding: .55rem 1.2rem; border-radius: 12px; display: none; z-index: 36;
+  box-shadow: 0 4px 18px rgba(220,38,38,.55); animation: swpulse .45s infinite alternate;
+}
+@keyframes swpulse { from { opacity: 1; } to { opacity: .5; } }
+
+/* ---------- Score ---------- */
+#scoreCard { top: 10px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 12; }
+#scoreCard .lbl { font-size: .62rem; color: #cbd5e1; letter-spacing: .25em; }
+#scoreVal { font-size: 2.1rem; font-weight: 800; font-variant-numeric: tabular-nums; color: #fff; line-height: 1.1; }
+#scoreCard.hitanim #scoreVal { animation: scorehit .6s; }
+@keyframes scorehit {
+  0% { color: #ef4444; transform: scale(1.4); }
+  100% { color: #fff; transform: scale(1); }
+}
+.penaltyFx {
+  position: absolute; top: 110px; left: 50%;
+  font-size: 2.5rem; font-weight: 900; color: #ef4444; z-index: 37;
+  text-shadow: 0 2px 10px rgba(0,0,0,.65); white-space: nowrap;
+  animation: penfall 2.2s ease-out forwards; pointer-events: none;
+}
+@keyframes penfall {
+  0%   { transform: translate(-50%, 0) scale(.4); opacity: 0; }
+  12%  { transform: translate(-50%, 10px) scale(1.7); opacity: 1; }
+  30%  { transform: translate(-50%, 16px) scale(1.15); }
+  100% { transform: translate(-50%, 80px) scale(1); opacity: 0; }
+}
+.hs-title { margin-top: 1rem; font-weight: 700; color: #fff; }
+.hsrow { display: flex; justify-content: space-between; font-size: .85rem; padding: .2rem 0; color: #e2e8f0; }
+.hsrow.you { color: var(--accent); font-weight: 700; }
+#dlScores {
+  background: #334155; color: #fff; border: 1px solid #ffffff33; border-radius: 8px;
+  padding: .45rem .9rem; font-size: .78rem; cursor: pointer; margin-top: .7rem;
+}
+#dlScores:hover { background: #475569; }
+#hsPanel {
+  top: 50%; left: 12px; transform: translateY(-50%);
+  width: 215px; pointer-events: auto; z-index: 11; padding: .55rem .8rem;
+}
+#hsPanel .hs-head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .78rem; font-weight: 700; color: var(--accent);
+  letter-spacing: .08em; cursor: pointer; user-select: none;
+}
+#hsPanel .hs-head .tgl { color: #94a3b8; font-weight: 400; }
+#hsList { margin-top: .35rem; }
+#hsPanel.collapsed #hsList { display: none; }
+.hsmini { display: flex; justify-content: space-between; gap: .5rem; font-size: .72rem; color: #e2e8f0; padding: .12rem 0; border-bottom: 1px dashed #33415577; }
+.hsmini:last-child { border-bottom: none; }
+.hsmini .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hsmini .pts { font-variant-numeric: tabular-nums; color: #cbd5e1; flex: none; }
+.hsmini.none { color: #94a3b8; font-style: italic; border: none; }
+#hsReset {
+  display: block; width: 100%; margin-top: .45rem;
+  background: none; border: 1px solid #47556966; border-radius: 7px;
+  color: #94a3b8; font-size: .68rem; padding: .28rem 0; cursor: pointer;
+}
+#hsReset:hover { background: #7f1d1d55; color: #fca5a5; border-color: #b91c1c; }
+#hsPanel.collapsed #hsReset { display: none; }
+
+/* ---------- Phone ---------- */
+#phone {
+  position: absolute; bottom: 20px; right: 20px; width: 340px; height: 620px; max-height: 92vh;
+  background: #0b1220; border: 3px solid #334155; border-radius: 28px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.6); display: none; flex-direction: column;
+  color: #e2e8f0; overflow: hidden; z-index: 20;
+}
+#phone.open { display: flex; }
+#phoneStatus { flex: none; display: flex; justify-content: space-between; padding: .4rem .9rem; font-size: .72rem; color: #94a3b8; background: #0f172a; }
+.screen { flex: 1 1 auto; overflow-y: auto; padding: .9rem; display: none; }
+.screen.active { display: block; }
+.phone-h { font-size: 1.05rem; font-weight: 700; margin-bottom: .7rem; color: #fff; }
+.phone-sub { font-size: .78rem; color: #94a3b8; margin-bottom: .8rem; }
+.app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin-top: .8rem; }
+.app-icon { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: .8rem .3rem; text-align: center; cursor: pointer; }
+.app-icon:hover { background: #27354a; }
+.app-icon .glyph { font-size: 1.6rem; }
+.app-icon .name { font-size: .68rem; margin-top: .3rem; color: #cbd5e1; }
+.pk-card { background: #14532d22; border: 1px solid #334155; border-radius: 12px; padding: .7rem .8rem; margin-bottom: .6rem; cursor: pointer; }
+.pk-card:hover { border-color: #86efac; }
+.pk-card .nm { font-weight: 600; font-size: .88rem; }
+.pk-card .free { font-size: .74rem; color: #86efac; }
+.pk-card .free.none { color: #f87171; }
+.pk-card .env { font-size: .68rem; color: #94a3b8; }
+.pk-card .bonus { font-size: .72rem; color: var(--accent); font-weight: 600; }
+button.pbtn {
+  width: 100%; background: #65a30d; color: #fff; border: none; border-radius: 10px;
+  padding: .7rem; font-size: .95rem; font-weight: 600; cursor: pointer; margin-top: .6rem;
+}
+button.pbtn:hover { background: #4d7c0f; }
+button.pbtn.grey { background: #334155; }
+button.pbtn.grey:hover { background: #475569; }
+input.pinput {
+  width: 100%; padding: .6rem .7rem; border-radius: 10px; border: 1px solid #334155;
+  background: #1e293b; color: #fff; font-size: .95rem; margin: .4rem 0;
+}
+.backlink { font-size: .78rem; color: #7dd3fc; cursor: pointer; margin-bottom: .6rem; display: inline-block; }
+#mapCanvas { width: 100%; border-radius: 10px; background: #16331d; }
+.msg { background: #1e293b; border-radius: 12px; padding: .6rem .7rem; margin-bottom: .5rem; font-size: .8rem; }
+.msg .from { font-size: .68rem; color: var(--accent); font-weight: 700; }
+.confirm-bay { font-size: 2.2rem; font-weight: 800; color: var(--accent); text-align: center; margin: .8rem 0; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; background: #1e293b; border-radius: 10px; padding: .6rem .7rem; margin-top: .6rem; font-size: .82rem; }
+
+/* ---------- Dialogs & overlays ---------- */
+#dialog {
+  position: absolute; left: 50%; bottom: 90px; transform: translateX(-50%);
+  width: min(560px, 92vw); background: var(--card); border-radius: 14px;
+  border-left: 6px solid var(--accent); box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  padding: 1rem 1.2rem; display: none; z-index: 30;
+}
+#dialog .who { font-weight: 700; color: var(--brand); font-size: .85rem; }
+#dialog .text { margin: .4rem 0 .8rem; font-size: .95rem; color: #0f172a; }
+#dialog .btns { display: flex; gap: .6rem; flex-wrap: wrap; }
+#dialog button {
+  background: var(--brand); color: #fff; border: none; border-radius: 8px;
+  padding: .5rem .9rem; font-size: .85rem; cursor: pointer;
+}
+#dialog button.alt { background: var(--accent); }
+#dialog button:hover { filter: brightness(1.15); }
+.overlay {
+  position: absolute; inset: 0; background: rgba(2,6,23,.86); z-index: 40;
+  display: none; align-items: center; justify-content: center; color: #fff;
+}
+.overlay.show { display: flex; }
+.overlay .panel { max-width: 620px; width: 92vw; background: #0f172a; border: 1px solid #334155; border-radius: 16px; padding: 2rem; text-align: center; }
+.overlay h1 { font-size: 1.6rem; margin-bottom: .4rem; }
+.overlay h1 .lvl { color: var(--accent); }
+.overlay p { color: #cbd5e1; font-size: .92rem; margin: .5rem 0; }
+.overlay .keys { font-family: Consolas, monospace; background: #1e293b; display: inline-block; border-radius: 8px; padding: .5rem .9rem; margin: .6rem 0; font-size: .85rem; }
+.bonus-table { margin: .7rem auto .3rem; max-width: 470px; text-align: left; font-size: .82rem; }
+.bt-row { display: grid; grid-template-columns: 1fr auto auto; gap: .9rem; padding: .28rem .5rem; border-bottom: 1px dashed #334155; color: #e2e8f0; }
+.bt-row span:last-child { color: var(--accent); font-weight: 700; text-align: right; }
+.bt-head { font-size: .66rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .12em; border-bottom: 1px solid #334155; }
+.bt-head span:last-child { color: #94a3b8; font-weight: 400; }
+.d-easy { color: #4ade80; } .d-med { color: #facc15; } .d-hard { color: #f87171; }
+.overlay button {
+  background: var(--accent); border: none; color: #1a1a1a; font-weight: 700;
+  font-size: 1rem; border-radius: 10px; padding: .8rem 1.6rem; cursor: pointer; margin-top: 1rem;
+}
+.overlay button:hover { filter: brightness(1.1); }
+.scoreline { display: flex; justify-content: space-between; font-size: .88rem; color: #e2e8f0; border-bottom: 1px dashed #334155; padding: .35rem 0; }
+#toast {
+  position: absolute; top: 90px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #1a1a1a; font-weight: 600; font-size: .88rem;
+  padding: .5rem 1.1rem; border-radius: 999px; display: none; z-index: 35;
+}
+footer.credit { position: absolute; bottom: 2px; left: 8px; font-size: .62rem; color: #64748b88; z-index: 5; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div id="hudClock" class="hud-card"><div class="time">07:30</div><div class="day">Monday</div></div>
+  <div id="hudBooking" class="hud-card"><div class="label">BOOKED BAY</div><div class="bay">—</div><div class="label" id="hudPlate">—</div></div>
+  <div id="hudAlarms" class="hud-card">🚨 <span id="alarmCount">0</span>/3</div>
+  <div id="scoreCard" class="hud-card"><div class="lbl">SCORE</div><div id="scoreVal">1,000,000</div></div>
+  <div id="hsPanel" class="hud-card">
+    <div class="hs-head" id="hsHead"><span>🏆 TOP 10</span><span class="tgl" id="hsTgl">▾</span></div>
+    <div id="hsList"></div>
+    <button id="hsReset">🗑 Reset table</button>
+  </div>
+  <div id="hint">Loading…</div>
+  <button id="phoneBtn" title="Phone (Tab)">📱</button>
+  <button id="resetBtn" title="Reset car (R)">↺ Reset (R)</button>
+  <div id="speedo" class="hud-card">
+    <svg width="112" height="62" viewBox="0 0 112 62">
+      <path d="M 12 56 A 44 44 0 0 1 100 56" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+      <path id="speedoArc" d="M 12 56 A 44 44 0 0 1 100 56" fill="none" stroke="#4ade80" stroke-width="6"
+            stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
+      <line x1="37" y1="23.1" x2="34" y2="17.9" stroke="#ef4444" stroke-width="1.6"/>
+      <line id="speedoNeedle" x1="56" y1="56" x2="21" y2="56" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="56" cy="56" r="3" fill="#e8a000"/>
+    </svg>
+    <div class="mphrow"><b id="mphVal">0</b> mph</div>
+    <div class="zone">15 mph ZONE</div>
+  </div>
+  <div id="speedWarn">⚠️ 15 mph LIMIT — SLOW DOWN</div>
+</div>
+
+<div id="phone">
+  <div id="phoneStatus"><span id="pClock">07:30</span><span>Parkable mini · 5G · 100%</span></div>
+
+  <div class="screen" id="scr-login">
+    <div class="phone-h">Parkable mini</div>
+    <div class="phone-sub">Staff parking · Cambridge University Press &amp; Assessment. Log in to book — no booking, no barrier.</div>
+    <input class="pinput" id="loginName" type="text" placeholder="Your name (anyone works)" maxlength="24">
+    <button class="pbtn" id="loginBtn">Log in</button>
+  </div>
+
+  <div class="screen" id="scr-home">
+    <div class="phone-h" id="homeHello">Hello</div>
+    <div class="phone-sub">You're in the office today. Park before 09:00.</div>
+    <div class="app-grid">
+      <div class="app-icon" data-app="parkable"><div class="glyph">🅿️</div><div class="name">Parkable</div></div>
+      <div class="app-icon" data-app="map"><div class="glyph">🗺️</div><div class="name">Map</div></div>
+      <div class="app-icon" data-app="messages"><div class="glyph">💬</div><div class="name">Messages</div></div>
+    </div>
+  </div>
+
+  <div class="screen" id="scr-parkable">
+    <span class="backlink" data-back="home">‹ Home</span>
+    <div class="phone-h">Parkable mini</div>
+    <div class="phone-sub" id="pkSub">Cambridge University Press &amp; Assessment</div>
+    <div id="pkList"></div>
+  </div>
+
+  <div class="screen" id="scr-confirm">
+    <span class="backlink" data-back="parkable">‹ Car parks</span>
+    <div class="phone-h" id="confTitle">Booked</div>
+    <div class="phone-sub" id="confPark">—</div>
+    <div class="confirm-bay" id="confBay">—</div>
+    <div class="phone-sub" id="confPlate">—</div>
+    <div class="phone-sub">Your bay is reserved. The ANPR camera will match your plate and lift the barrier. Bay locations are not shown — you know the site… right?</div>
+    <button class="pbtn grey" id="cancelBooking">Cancel booking</button>
+  </div>
+
+  <div class="screen" id="scr-map">
+    <span class="backlink" data-back="home">‹ Home</span>
+    <div class="phone-h">Site map</div>
+    <canvas id="mapCanvas" width="308" height="330"></canvas>
+    <div class="toggle-row"><span>Show bay IDs <span id="togLockNote">(locked)</span></span>
+      <input type="checkbox" id="bayIdToggle" disabled></div>
+  </div>
+
+  <div class="screen" id="scr-messages">
+    <span class="backlink" data-back="home">‹ Home</span>
+    <div class="phone-h">Messages</div>
+    <div id="msgList"></div>
+  </div>
+</div>
+
+<div id="dialog">
+  <div class="who" id="dlgWho">Reception</div>
+  <div class="text" id="dlgText"></div>
+  <div class="btns" id="dlgBtns"></div>
+</div>
+
+<div id="toast"></div>
+
+<div class="overlay show" id="startOverlay">
+  <div class="panel">
+    <h1>OFFICE SIM CUPA<br><span class="lvl">Level 1 — The Parking Run</span></h1>
+    <p>It's a weekday. You're in the office. The clock starts at <b>07:30</b> and runs fast — be parked, <i>properly</i>, in <i>your booked bay</i>, before <b>09:00</b>.</p>
+    <p><b>1,000,000 points</b> are on the table and burning down until 09:00. Crashes, speeding, tellings-off and — heaven forbid — <i>HR incidents</i> all cost you dearly. Park fast, park clean — and choose your car park wisely:</p>
+    <div class="bonus-table">
+      <div class="bt-row bt-head"><span>Car park</span><span>Difficulty</span><span>Bonus</span></div>
+      <div class="bt-row"><span>North Triangle · Cass</span><span class="d-easy">Easy — close by</span><span>+150,000</span></div>
+      <div class="bt-row"><span>Overflow</span><span class="d-med">Medium</span><span>+300,000</span></div>
+      <div class="bt-row"><span>Factory · South Triangle</span><span class="d-hard">Hard — far south</span><span>+500,000</span></div>
+    </div>
+    <div class="keys">WASD / Arrows — drive · Space — handbrake · E — park · Tab — phone · R — reset car</div>
+    <p><b>First:</b> book a bay on Parkable — the barrier ANPR camera matches your number plate to the booking. No booking, no entry. Stay on the tarmac, keep to <b>15 mph</b> everywhere on CUPA property — private roads and car parks alike (mind the signs) — and remember: bay IDs aren't painted anywhere… unless someone takes pity on you.</p>
+    <button id="startBtn">Start the day</button>
+  </div>
+</div>
+
+<div class="overlay" id="endOverlay">
+  <div class="panel">
+    <h1 id="endTitle">—</h1>
+    <p id="endText">—</p>
+    <div id="endScore"></div>
+    <button id="restartBtn">Try again</button>
+  </div>
+</div>
+
+<footer class="credit">Office Sim CUPA · personal fan project · v1 prototype</footer>
+
+<script id="game-js">
+'use strict';
+/* =========================================================================
+   OFFICE SIM CUPA — Level 1 "The Parking Run"  (v1 prototype)
+   World units: aerial % x 10  (world 0..1000 x, -170..1030 y; north = -y)
+   Geometry is a first playable approximation of data/carparks.json.
+   ========================================================================= */
+
+/* ---------------- Data (from data/carparks.json, embedded) -------------- */
+const BAY_L = 9.6, BAY_W = 5.2, AISLE = 13, BAY_PITCH = 5.5;
+
+/* entrance = confirmed junction point (ANPR/intercom trigger); arm = physical
+   barrier position on the access spur; gap = the one opening in the perimeter
+   fence ('E'/'W' vertical edge or 'S' horizontal edge, at = y or x coord). */
+const CARPARKS = [
+  { id:'factory', name:'South Printing House (Factory)', prefix:'F', env:'surface',
+    origin:[392,700], rot:0,
+    entrance:[520,700], arm:[495,702], barrierA:Math.PI/2, gap:{edge:'E', at:702},
+    rows:[
+      {from:1,to:15,aRepl:[10,11]}, {from:16,to:30}, {from:31,to:45},
+      {from:46,to:62,ev:true}, {from:63,to:79,ev:true}, {from:80,to:96,ev:true},
+      {from:97,to:113,ev:true}, {from:114,to:130,ev:true}, {from:131,to:147,ev:true},
+      {from:148,to:164,ev:true}, {from:165,to:181,ev:true}, {from:182,to:197,ev:true},
+      {from:198,to:212,ev:true}, {from:213,to:226,ev:true}, {from:227,to:239,ev:true},
+      {from:240,to:248,ev:true}, {from:249,to:256,ev:true} ] },
+  { id:'north-triangle', name:'North Triangle', prefix:'NC', env:'covered',
+    origin:[568,179], rot:-Math.PI/2,
+    entrance:[559,107], arm:[545,106], barrierA:Math.PI/2, gap:{edge:'W', at:107},
+    rows:[
+      {from:1,to:7}, {from:8,to:18}, {from:19,to:30},
+      {from:31,to:38,aAll:true}, {from:39,to:50}, {from:51,to:61},
+      {from:62,to:63,aAll:true}, {from:64,to:72}, {from:73,to:83},
+      {from:84,to:96}, {from:97,to:110}, {from:111,to:120},
+      {from:121,to:128}, {from:129,to:140,evAll:true}, {from:141,to:151} ] },
+  { id:'cass', name:'North Printing House (Cass)', prefix:'C', env:'surface',
+    origin:[205,302], rot:0,
+    entrance:[449,312], arm:[297,339], barrierA:Math.PI/2, gap:{edge:'E', at:339},
+    rows:[
+      {from:1,to:15}, {from:16,to:23}, {from:24,to:35},
+      {from:36,to:43}, {from:44,to:51}, {from:52,to:56,aRepl:[56]},
+      {from:57,to:66}, {from:67,to:77,ev:true} ] },
+  { id:'south-triangle', name:'South Triangle', prefix:'SC', env:'covered',
+    origin:[558,462], rot:0,
+    entrance:[567,662], arm:[600,545], barrierA:0, gap:{edge:'S', at:600},
+    rows:[
+      {from:1,to:5}, {from:6,to:15}, {from:16,to:26},
+      {from:28,to:31,aFrom:29}, {from:32,to:36} ] },
+  { id:'overflow', name:'Overflow (Occasional)', prefix:'OF', env:'surface',
+    origin:[352,442], rot:0,
+    entrance:[466,459], arm:[411,470], barrierA:Math.PI/2, gap:{edge:'E', at:470},
+    rows:[
+      {from:1,to:8}, {from:9,to:16}, {from:17,to:24},
+      {from:25,to:33}, {from:34,to:41} ] }
+];
+
+const ROADS = [
+  { pts:[[430,-170],[430,0],[450,400],[525,700],[530,1030]], w:20 },   // Shaftesbury Rd
+  { pts:[[100,-150],[900,-150]], w:20 },                                // Brooklands Ave
+  { pts:[[440,100],[559,107]], w:13 },                                  // NC access
+  { pts:[[449,312],[300,340],[205,330]], w:13 },                        // Cass lane
+  { pts:[[466,459],[420,470],[360,470]], w:13 },                        // Overflow lane
+  { pts:[[515,661],[567,662]], w:13 },                                  // south junction east
+  { pts:[[567,662],[590,600],[600,545]], w:13 },                        // SC ramp corridor
+  { pts:[[525,700],[485,702]], w:13 }                                   // Factory entrance spur (barrier at road end)
+];
+
+const BUILDINGS = [
+  { id:'wing-nw', rect:[550,78,800,196], solid:false, cutFor:'north-triangle', col:'#8fa0b3', door:[550,100.5,560,115] },
+  { id:'wing-se', rect:[535,445,785,560], solid:false, cutFor:'south-triangle', col:'#8fa0b3' },
+  { id:'atrium',  rect:[556,200,762,440], solid:true,  col:'#a9b7c6' },
+  { id:'factory-sheds', rect:[250,650,374,940], solid:true, col:'#475569' },
+  { id:'nat-england', rect:[180,196,400,268], solid:true, col:'#b8c2ce' },
+  { id:'chapel', rect:[140,486,308,600], solid:true, col:'#cdd5de' }
+];
+
+const RECEPTION_DOOR = [552,330];
+const CAR_COLORS = ['#b91c1c','#1d4ed8','#0f766e','#a16207','#6d28d9','#334155','#9ca3af','#e2e8f0','#111827','#7f1d1d'];
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+
+/* ---------------- Math helpers ---------------- */
+function obbCorners(o) { // o: {x,y,a,l,w} — l along heading a, w across
+  const c = Math.cos(o.a), s = Math.sin(o.a), hl = o.l/2, hw = o.w/2;
+  return [
+    [o.x + c*hl - s*hw, o.y + s*hl + c*hw],
+    [o.x + c*hl + s*hw, o.y + s*hl - c*hw],
+    [o.x - c*hl + s*hw, o.y - s*hl - c*hw],
+    [o.x - c*hl - s*hw, o.y - s*hl + c*hw]
+  ];
+}
+function obbOverlap(a, b) { // separating axis test for two OBBs
+  const ca = obbCorners(a), cb = obbCorners(b);
+  const axes = [
+    [Math.cos(a.a), Math.sin(a.a)], [-Math.sin(a.a), Math.cos(a.a)],
+    [Math.cos(b.a), Math.sin(b.a)], [-Math.sin(b.a), Math.cos(b.a)]
+  ];
+  for (const ax of axes) {
+    let mina = Infinity, maxa = -Infinity, minb = Infinity, maxb = -Infinity;
+    for (const p of ca) { const d = p[0]*ax[0] + p[1]*ax[1]; mina = Math.min(mina,d); maxa = Math.max(maxa,d); }
+    for (const p of cb) { const d = p[0]*ax[0] + p[1]*ax[1]; minb = Math.min(minb,d); maxb = Math.max(maxb,d); }
+    if (maxa < minb || maxb < mina) return false;
+  }
+  return true;
+}
+function pointInObb(px, py, o) {
+  const dx = px - o.x, dy = py - o.y, c = Math.cos(o.a), s = Math.sin(o.a);
+  const lx = dx*c + dy*s, ly = -dx*s + dy*c;
+  return Math.abs(lx) <= o.l/2 && Math.abs(ly) <= o.w/2;
+}
+function rectToObb(r) { return { x:(r[0]+r[2])/2, y:(r[1]+r[3])/2, a:0, l:r[2]-r[0], w:r[3]-r[1] }; }
+function distToSeg(px, py, x1, y1, x2, y2) {
+  const dx = x2-x1, dy = y2-y1, len2 = dx*dx + dy*dy;
+  let t = len2 ? ((px-x1)*dx + (py-y1)*dy) / len2 : 0;
+  t = Math.max(0, Math.min(1, t));
+  const cx = x1 + t*dx, cy = y1 + t*dy;
+  return Math.hypot(px-cx, py-cy);
+}
+const rand = (a,b) => a + Math.random()*(b-a);
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+
+/* ---------------- Bay generation ---------------- */
+const bays = []; // {id, x, y, a, l, w, type, cp, occupied, car}
+for (const cp of CARPARKS) {
+  const u = [Math.cos(cp.rot), Math.sin(cp.rot)];          // along the row
+  const v = [-Math.sin(cp.rot), Math.cos(cp.rot)];         // stacking direction
+  let vpos = 0;
+  cp.rows.forEach((row, idx) => {
+    const ids = [];
+    for (let n = row.from; n <= row.to; n++) {
+      let id = cp.prefix + n, type = 'standard';
+      if (row.aAll || (row.aRepl && row.aRepl.includes(n)) || (row.aFrom && n >= row.aFrom && n <= (row.aTo||row.to))) { id = cp.prefix + n + 'A'; type = 'accessible'; }
+      if (row.evAll) type = 'ev';
+      if (row.ev && n === row.to) { id = cp.prefix + n + 'EV'; type = 'ev'; }
+      ids.push({ id, type });
+    }
+    ids.forEach((b, i) => {
+      const upos = i * BAY_PITCH + BAY_PITCH/2;
+      const cx = cp.origin[0] + u[0]*upos + v[0]*(vpos + BAY_L/2);
+      const cy = cp.origin[1] + u[1]*upos + v[1]*(vpos + BAY_L/2);
+      bays.push({ id:b.id, x:cx, y:cy, a:Math.atan2(v[1], v[0]), l:BAY_L, w:BAY_W, type:b.type, cp:cp.id, occupied:false, car:null });
+    });
+    vpos += BAY_L;
+    if (idx % 2 === 1) vpos += AISLE;
+  });
+  // surface bounds for tarmac / cutaway / on-road test
+  let minx = Infinity, miny = Infinity, maxx = -Infinity, maxy = -Infinity;
+  for (const b of bays) if (b.cp === cp.id) for (const c of obbCorners(b)) {
+    minx = Math.min(minx, c[0]); miny = Math.min(miny, c[1]);
+    maxx = Math.max(maxx, c[0]); maxy = Math.max(maxy, c[1]);
+  }
+  cp.surface = [minx - 9, miny - 9, maxx + 9, maxy + 9];
+}
+
+/* Perimeter fences: every car park edge is walled except one gap at the
+   entrance — combined with grass being out of bounds, the barrier arm on the
+   access road is the only way in. */
+const GAP_HALF = 8;
+const FENCES = []; // OBBs {x,y,a,l,w,cp,covered}
+for (const cp of CARPARKS) {
+  const [x0, y0, x1, y1] = cp.surface, covered = cp.env === 'covered';
+  const g = cp.gap;
+  function fseg(ax, ay, bx, by) {
+    const len = Math.hypot(bx-ax, by-ay);
+    if (len < 1) return;
+    FENCES.push({ x:(ax+bx)/2, y:(ay+by)/2, a:Math.atan2(by-ay, bx-ax), l:len, w:1.2, cp:cp.id, covered });
+  }
+  // north edge
+  if (g.edge === 'N') { fseg(x0,y0, Math.max(x0,g.at-GAP_HALF),y0); fseg(Math.min(x1,g.at+GAP_HALF),y0, x1,y0); }
+  else fseg(x0,y0, x1,y0);
+  // south edge
+  if (g.edge === 'S') { fseg(x0,y1, Math.max(x0,g.at-GAP_HALF),y1); fseg(Math.min(x1,g.at+GAP_HALF),y1, x1,y1); }
+  else fseg(x0,y1, x1,y1);
+  // west edge
+  if (g.edge === 'W') { fseg(x0,y0, x0,Math.max(y0,g.at-GAP_HALF)); fseg(x0,Math.min(y1,g.at+GAP_HALF), x0,y1); }
+  else fseg(x0,y0, x0,y1);
+  // east edge
+  if (g.edge === 'E') { fseg(x1,y0, x1,Math.max(y0,g.at-GAP_HALF)); fseg(x1,Math.min(y1,g.at+GAP_HALF), x1,y1); }
+  else fseg(x1,y0, x1,y1);
+}
+
+/* ---------------- Game state ---------------- */
+const S = {
+  phase: 'start',            // start | play | dialog | won | lost
+  name: 'You',
+  day: pick(DAYS),
+  goodDay: Math.random() < 0.02,
+  realElapsed: 0,            // seconds since start
+  booking: null,             // {cp, bayId}
+  offers: {},                // cpId -> [bayIds] offered this day
+  idToggleUnlocked: false,
+  idToggleOn: false,
+  alarms: 0, collisions: 0, reparks: 0, resets: 0, casualties: 0, speedTickets: 0,
+  kerbCd: 0, resetCd: 0, speedCd: 0, inZone: false, speeding: false,
+  score: 1000000,            // burns down over the 10 real minutes to 09:00
+  anprShown: {},
+  receptionBusy: false,
+  npc: null,                 // {x,y,tx,ty,state}
+  barriers: {},              // cpId -> {open:0..1, denied:false}
+  intercomShown: {},
+  parkedDone: false,
+  messages: [
+    { from:'Facilities', text:'Reminder: you are IN OFFICE today. Parkable booking required for all car parks.' },
+    { from:'Team lead', text:'Stand-up at 9:00 sharp. Do not be late again 🙂' }
+  ]
+};
+function genPlate() { // UK-style, cosmetic
+  const L = 'ABCDEFGHJKLMNOPRSTUVWXYZ';
+  return pick(L) + pick(L) + '26 ' + pick(L) + pick(L) + pick(L);
+}
+const car = { x:430, y:-150, a:Math.PI/2, v:0, steer:0, color:pick(CAR_COLORS), plate:genPlate(), W:3.6, L:8.0, WHEELBASE:5.4 };
+const parkedCars = []; // {x,y,a,w,l,color,bay}
+for (const cp of CARPARKS) S.barriers[cp.id] = { open:0, denied:false };
+
+/* ---------------- Scenery, pedestrians & site traffic ---------------- */
+const SKINS  = ['#f2c9a0','#e0b088','#d9a066','#a9713f','#7c4a24'];
+const HAIRS  = ['#1f2937','#4b3621','#a16207','#d1d5db','#111827'];
+const SHIRTS = ['#dc2626','#2563eb','#16a34a','#7c3aed','#f97316','#0f766e','#eab308','#e2e8f0'];
+const RECEPTIONIST = { shirt:'#003865', hair:'#4b3621', skin:'#f2c9a0', badge:true };
+const CYCLIST_QUIPS = [
+  'Oi! I\'m cycling here!',
+  'That\'s going STRAIGHT on the helmet cam!',
+  'Strava is going to hear about this!',
+  'A metre and a half, mate. A METRE AND A HALF!',
+  'Nice signalling. Truly invisible.',
+  'This is why I have panniers full of complaints!'
+];
+const TRAFFIC_QUIPS = [
+  'Oi! MOT that steering!',
+  'They give licences away these days…',
+  'I\'ve got a dashcam, you know!',
+  'Mirror. Signal. ANY of it?!',
+  'Insurance details. NOW.'
+];
+
+function routeLen(pts) {
+  let L = 0;
+  for (let i = 0; i < pts.length-1; i++) L += Math.hypot(pts[i+1][0]-pts[i][0], pts[i+1][1]-pts[i][1]);
+  return L;
+}
+function routePoint(pts, d) { // position + heading at distance d along a polyline
+  if (d < 0) d = 0;
+  for (let i = 0; i < pts.length-1; i++) {
+    const dx = pts[i+1][0]-pts[i][0], dy = pts[i+1][1]-pts[i][1], len = Math.hypot(dx, dy);
+    if (d <= len) return [pts[i][0] + dx/len*d, pts[i][1] + dy/len*d, Math.atan2(dy, dx)];
+    d -= len;
+  }
+  const n = pts.length;
+  const dx = pts[n-1][0]-pts[n-2][0], dy = pts[n-1][1]-pts[n-2][1];
+  return [pts[n-1][0], pts[n-1][1], Math.atan2(dy, dx)];
+}
+function offsetRoute(pts, off) { // off > 0 = left of travel (UK driving side)
+  const out = [];
+  for (let i = 0; i < pts.length; i++) {
+    const p0 = pts[Math.max(0, i-1)], p1 = pts[Math.min(pts.length-1, i+1)];
+    const dx = p1[0]-p0[0], dy = p1[1]-p0[1], len = Math.hypot(dx, dy) || 1;
+    out.push([pts[i][0] + dy/len*off, pts[i][1] - dx/len*off]);
+  }
+  return out;
+}
+
+/* trees scattered over the empty grass (clear of roads, car parks, buildings) */
+const TREES = [];
+{
+  let tries = 0;
+  while (TREES.length < 42 && tries++ < 1200) {
+    const x = rand(140, 880), y = rand(-160, 1000);
+    if (x > 840 - (y - 60)*0.2826) continue;   // keep off the busway strip
+    if (!signSpotClear(x, y)) continue;
+    TREES.push([x, y, rand(2.4, 4.2)]);
+  }
+}
+
+/* morning street parking on Shaftesbury Rd, before the North Triangle turn */
+for (let sy = -120; sy <= -16; sy += 11.5)
+  parkedCars.push({ x:437.8, y:sy, a:Math.PI/2 + rand(-0.02,0.02), w:3.6, l:7.8,
+                    color:pick(CAR_COLORS), cpId:'street', bayId:null });
+for (let sy = 12; sy <= 88; sy += 11.5) {
+  const t = sy/400;
+  parkedCars.push({ x:430 + 20*t + 7.79, y:sy - 0.39, a:1.521 + rand(-0.02,0.02), w:3.6, l:7.8,
+                    color:pick(CAR_COLORS), cpId:'street', bayId:null });
+}
+
+/* NPC traffic: through-traffic on the public roads, plus site visitors that
+   turn into a private lane, U-turn at the barrier, and come back out */
+const TRAFFIC_ROUTES = [
+  { pts: offsetRoute(ROADS[0].pts, 3.9) },
+  { pts: offsetRoute(ROADS[0].pts.slice().reverse(), 3.9) },
+  { pts: offsetRoute(ROADS[1].pts, 3.9) },
+  { pts: offsetRoute(ROADS[1].pts.slice().reverse(), 3.9) }
+];
+const VISIT_LANES = [   // each stops just short of the barrier arm
+  [[440,100],[538,105]],              // NC access
+  [[449,312],[304,339]],              // Cass lane
+  [[466,459],[420,470]],              // Overflow lane
+  [[567,662],[590,600],[597,558]]     // SC ramp
+];
+for (const pts of VISIT_LANES)
+  TRAFFIC_ROUTES.push({ pts: [...offsetRoute(pts, 2.9), ...offsetRoute(pts.slice().reverse(), 2.9)], slow: true });
+const traffic = [];
+function makeTrafficCar(spread) {
+  const R = pick(TRAFFIC_ROUTES), route = R.pts, len = routeLen(route);
+  const cruise = R.slow ? rand(9, 13) : rand(16, 24), [x, y, a] = routePoint(route, 0);
+  return { route, len, d: spread ? rand(0, len) : -rand(5, 80), cruise, speed: cruise,
+           x, y, a, w:3.6, l:7.8, color: pick(CAR_COLORS) };
+}
+for (let i = 0; i < 10; i++) traffic.push(makeTrafficCar(true));
+function trafficUpdate(dt) {
+  for (const tc of traffic) {
+    const dxp = car.x - tc.x, dyp = car.y - tc.y;
+    const ahead = dxp*Math.cos(tc.a) + dyp*Math.sin(tc.a);
+    const lat = -dxp*Math.sin(tc.a) + dyp*Math.cos(tc.a);
+    const blocked = ahead > 4 && ahead < 17 && Math.abs(lat) < 5.5;
+    tc.speed += ((blocked ? 0 : tc.cruise) - tc.speed) * Math.min(1, dt * (blocked ? 7 : 1.4));
+    tc.d += tc.speed * dt;
+    if (tc.d > tc.len) Object.assign(tc, makeTrafficCar(false));
+    else if (tc.d >= 0) { const p = routePoint(tc.route, tc.d); tc.x = p[0]; tc.y = p[1]; tc.a = p[2]; }
+  }
+}
+
+/* cyclists ride random routes over every road on and around the site */
+const CYCLE_ROUTES = [];
+for (const r of ROADS) {
+  CYCLE_ROUTES.push(offsetRoute(r.pts, 2.3));
+  CYCLE_ROUTES.push(offsetRoute(r.pts.slice().reverse(), 2.3));
+}
+const cyclists = [];
+function makeCyclist(spread) {
+  const route = pick(CYCLE_ROUTES), len = routeLen(route);
+  const [x, y, a] = routePoint(route, 0);
+  return { route, len, d: spread ? rand(0, len) : 0, speed: rand(7, 11), x, y, a,
+           shirt: pick(SHIRTS), skin: pick(SKINS), helm: pick(['#dc2626','#f8fafc','#0ea5e9','#111827']),
+           hitCd: 0, down: 0, pedal: rand(0, 6) };
+}
+for (let i = 0; i < 10; i++) cyclists.push(makeCyclist(true));
+function cyclistUpdate(dt) {
+  for (const cy of cyclists) {
+    if (cy.hitCd > 0) cy.hitCd -= dt;
+    if (cy.down > 0) { cy.down -= dt; continue; }  // picking themselves back up
+    cy.d += cy.speed * dt; cy.pedal += dt * 9;
+    if (cy.d > cy.len) { Object.assign(cy, makeCyclist(false)); continue; }
+    const p = routePoint(cy.route, cy.d);
+    cy.x = p[0]; cy.y = p[1]; cy.a = p[2];
+  }
+}
+
+/* pedestrians wandering the pavements of the public roads */
+const peds = [];
+function makePed(spread) {
+  const r = pick([ROADS[0], ROADS[1]]);
+  const pts = Math.random() < 0.5 ? r.pts : r.pts.slice().reverse();
+  const route = offsetRoute(pts, pick([1, -1]) * (r.w/2 + 2.6));
+  const len = routeLen(route), [x, y, a] = routePoint(route, 0);
+  return { route, len, d: spread ? rand(0, len) : 0, speed: rand(2.5, 4.8), x, y, a,
+           walk: rand(0, 6), shirt: pick(SHIRTS), skin: pick(SKINS), hair: pick(HAIRS) };
+}
+for (let i = 0; i < 24; i++) peds.push(makePed(true));
+function pedUpdate(dt) {
+  for (const p of peds) {
+    p.d += p.speed * dt; p.walk += dt * 8;
+    if (p.d > p.len) { Object.assign(p, makePed(false)); continue; }
+    const q = routePoint(p.route, p.d);
+    p.x = q[0]; p.y = q[1]; p.a = q[2];
+  }
+}
+
+/* top-down human sprite: shadow, stepping feet, swinging arms, torso, head+hair */
+function drawHuman(x, y, a, walk, o) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a);
+  ctx.fillStyle = 'rgba(0,0,0,.22)';
+  ctx.beginPath(); ctx.ellipse(0.1, 0.1, 1.0, 0.8, 0, 0, 7); ctx.fill();
+  const step = Math.sin(walk) * 0.4;
+  ctx.fillStyle = '#1f2937';
+  ctx.beginPath(); ctx.ellipse(0.35 + step, -0.3, 0.28, 0.16, 0, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0.35 - step, 0.3, 0.28, 0.16, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = o.skin;
+  ctx.beginPath(); ctx.arc(-0.15 - step, -0.75, 0.22, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(-0.15 + step, 0.75, 0.22, 0, 7); ctx.fill();
+  ctx.fillStyle = o.shirt;
+  ctx.beginPath(); ctx.ellipse(-0.05, 0, 0.5, 0.8, 0, 0, 7); ctx.fill();
+  if (o.badge) { ctx.fillStyle = '#e8a000'; ctx.beginPath(); ctx.arc(0.28, 0, 0.14, 0, 7); ctx.fill(); }
+  ctx.fillStyle = o.skin;
+  ctx.beginPath(); ctx.arc(0.12, 0, 0.4, 0, 7); ctx.fill();
+  ctx.fillStyle = o.hair || '#1f2937';
+  ctx.beginPath(); ctx.arc(0.05, 0, 0.4, Math.PI*0.5, Math.PI*1.5); ctx.fill();
+  ctx.restore();
+}
+function drawCyclist(cy) {
+  ctx.save(); ctx.translate(cy.x, cy.y); ctx.rotate(cy.a + (cy.down > 0 ? 1.3 : 0));
+  ctx.fillStyle = 'rgba(0,0,0,.2)';
+  ctx.beginPath(); ctx.ellipse(0.1, 0.1, 2.0, 0.8, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#111827';                    // wheels
+  ctx.fillRect(0.65, -0.11, 1.35, 0.22);
+  ctx.fillRect(-2.0, -0.11, 1.35, 0.22);
+  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 0.2;
+  ctx.beginPath(); ctx.moveTo(-1.35, 0); ctx.lineTo(1.35, 0); ctx.stroke();
+  ctx.fillStyle = '#334155';                    // handlebars
+  ctx.fillRect(1.0, -0.65, 0.22, 1.3);
+  ctx.fillStyle = cy.skin;                      // hands
+  ctx.beginPath(); ctx.arc(1.05, -0.55, 0.18, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(1.05, 0.55, 0.18, 0, 7); ctx.fill();
+  ctx.fillStyle = cy.shirt;                     // leaned-forward torso
+  ctx.beginPath(); ctx.ellipse(-0.35, 0, 0.85, 0.55, 0, 0, 7); ctx.fill();
+  const k = Math.sin(cy.pedal) * 0.25;          // knees pumping
+  ctx.fillStyle = '#1f2937';
+  ctx.beginPath(); ctx.arc(-0.55, -0.45, 0.2 + k*0.2, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(-0.55, 0.45, 0.2 - k*0.2, 0, 7); ctx.fill();
+  ctx.fillStyle = cy.helm;                      // helmet
+  ctx.beginPath(); ctx.arc(0.45, 0, 0.38, 0, 7); ctx.fill();
+  ctx.restore();
+}
+
+/* ---------------- Impact FX & casualties (all very cartoon) ---------------- */
+const PED_QUIPS = [
+  'I had a meeting at nine…',
+  'Tell my spreadsheet… I loved it…',
+  'Not the quarterly review…!',
+  'I only came in for the biscuits…',
+  'Avenge… my… parking bay…'
+];
+const corpses = []; // the fallen stay where they landed
+const fx = [];      // cartoon smash stars
+function spawnStar(x, y, big) {
+  fx.push({ x, y, age: 0, life: 0.55, r: big ? 4.2 : 3, rot: rand(0, 6.28) });
+}
+function killPerson(x, y, look, isCyclist) {
+  if (corpses.length > 40) corpses.shift();
+  const dir = Math.atan2(y - car.y, x - car.x);   // shoved away from the bonnet
+  const kick = 6 + Math.abs(car.v) * 0.55;
+  corpses.push({
+    x, y, a: rand(0, 6.28),
+    vx: Math.cos(dir)*kick + Math.cos(car.a)*car.v*0.55,
+    vy: Math.sin(dir)*kick + Math.sin(car.a)*car.v*0.55,
+    spin: rand(-6, 6), rest: false, blood: 0, bike: isCyclist,
+    shirt: look.shirt, skin: look.skin, hair: look.hair || '#1f2937'
+  });
+  spawnStar(x, y, true);
+  S.casualties++;
+  scorePenalty(100000, 'HR INCIDENT!');
+  beep([[880,.06],[220,.2]]);
+}
+function corpseUpdate(dt) {
+  for (const c of corpses) {
+    if (!c.rest) {                                 // bouncing/tumbling off the car
+      c.x += c.vx*dt; c.y += c.vy*dt; c.a += c.spin*dt;
+      c.vx *= 1 - 4*dt; c.vy *= 1 - 4*dt; c.spin *= 1 - 4*dt;
+      if (Math.hypot(c.vx, c.vy) < 1.2) c.rest = true;
+    } else if (c.blood < 1) c.blood = Math.min(1, c.blood + dt/1.8);
+  }
+  for (let i = fx.length-1; i >= 0; i--) { fx[i].age += dt; if (fx[i].age >= fx[i].life) fx.splice(i, 1); }
+}
+
+/* clouds drifting over the site — only visible once the camera pulls out */
+const clouds = [];
+for (let i = 0; i < 14; i++) {
+  const puffs = [];
+  const n = 4 + Math.floor(Math.random()*3);
+  for (let p = 0; p < n; p++) puffs.push([rand(-1.6, 1.6), rand(-0.7, 0.7), rand(0.55, 1)]);
+  clouds.push({ x: rand(-100, 1100), y: rand(-250, 1100), s: rand(14, 30), puffs });
+}
+
+/* game clock: 07:30 + elapsed*9 (9 game-sec per real-sec) */
+const gameSec = () => 7.5*3600 + S.realElapsed*9;
+function clockStr() {
+  const t = gameSec(), h = Math.floor(t/3600), m = Math.floor((t%3600)/60);
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+
+/* ---------------- Booking / occupancy ---------------- */
+function buildOffers() {
+  for (const cp of CARPARKS) {
+    const std = bays.filter(b => b.cp === cp.id && b.type === 'standard');
+    const n = S.goodDay ? Math.max(3, Math.floor(std.length*0.3)) : 1 + Math.floor(Math.random()*3);
+    const offered = [];
+    const pool = std.slice();
+    while (offered.length < Math.min(n, pool.length)) {
+      const b = pool.splice(Math.floor(Math.random()*pool.length), 1)[0];
+      offered.push(b.id);
+    }
+    S.offers[cp.id] = offered;
+  }
+}
+function fillOccupancy(cpId, bookedBayId) {
+  // clear existing cars in this car park
+  for (let i = parkedCars.length-1; i >= 0; i--) if (parkedCars[i].cpId === cpId) parkedCars.splice(i,1);
+  const occupancy = S.goodDay ? 0.7 : 0.98;
+  const cpBays = bays.filter(b => b.cp === cpId);
+  const freeTraps = [];
+  const trapPool = cpBays.filter(b => b.id !== bookedBayId);
+  const nTraps = S.goodDay ? Math.floor(cpBays.length*0.3) : 2 + Math.floor(Math.random()*3);
+  while (freeTraps.length < nTraps && trapPool.length) {
+    freeTraps.push(trapPool.splice(Math.floor(Math.random()*trapPool.length),1)[0].id);
+  }
+  for (const b of cpBays) {
+    b.occupied = false; b.car = null;
+    if (b.id === bookedBayId || freeTraps.includes(b.id)) continue;
+    if (Math.random() > occupancy) continue;
+    b.occupied = true;
+    const sloppy = !S.goodDay && Math.random() < 0.25;
+    const pc = {
+      x: b.x + (sloppy ? rand(-1.1,1.1) : rand(-0.3,0.3)),
+      y: b.y + (sloppy ? rand(-1.1,1.1) : rand(-0.3,0.3)),
+      a: b.a + (sloppy ? rand(-0.14,0.14) : rand(-0.03,0.03)),
+      w: 3.6, l: 7.8, color: pick(CAR_COLORS), cpId, bayId: b.id
+    };
+    b.car = pc; parkedCars.push(pc);
+  }
+  // fill every other car park 100% so only the booked one has gaps
+  for (const cp of CARPARKS) {
+    if (cp.id === cpId) continue;
+    if (parkedCars.some(p => p.cpId === cp.id)) continue;
+    for (const b of bays) {
+      if (b.cp !== cp.id) continue;
+      b.occupied = true;
+      const pc = { x:b.x+rand(-0.3,0.3), y:b.y+rand(-0.3,0.3), a:b.a+rand(-0.03,0.03), w:3.6, l:7.8, color:pick(CAR_COLORS), cpId:cp.id, bayId:b.id };
+      b.car = pc; parkedCars.push(pc);
+    }
+  }
+}
+function book(cpId) {
+  const offered = S.offers[cpId];
+  if (!offered || !offered.length) return;
+  const bayId = pick(offered);
+  S.booking = { cp: cpId, bayId };
+  fillOccupancy(cpId, bayId);
+  const cp = CARPARKS.find(c => c.id === cpId);
+  document.getElementById('confPark').textContent = cp.name + ' Car Park';
+  document.getElementById('confBay').textContent = bayId;
+  document.getElementById('confPlate').textContent = 'Registered vehicle: ' + car.plate;
+  document.querySelector('#hudBooking .bay').textContent = bayId;
+  showScreen('confirm');
+  beep([[880,.08],[1175,.12]]);
+  if (S.phase === 'booking') {
+    S.phase = 'play';
+    toast('Booked! Close your phone (Tab) and drive — the ANPR knows ' + car.plate + '.');
+  }
+}
+function cancelBooking() {
+  S.booking = null;
+  document.querySelector('#hudBooking .bay').textContent = '—';
+  showScreen('parkable');
+  renderParkList();
+}
+
+/* ---------------- Phone UI ---------------- */
+const phone = document.getElementById('phone');
+let phoneScreen = 'login';
+function showScreen(name) {
+  phoneScreen = name;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('scr-' + name).classList.add('active');
+  if (name === 'map') drawMiniMap();
+  if (name === 'messages') renderMessages();
+  if (name === 'parkable') renderParkList();
+}
+function togglePhone(force) {
+  const open = force !== undefined ? force : !phone.classList.contains('open');
+  if (!open && (S.phase === 'booking' || S.phase === 'login')) { toast('Book a bay first — no booking, no barrier.'); return; }
+  if (open && Math.abs(car.v) > 1 && S.phase === 'play') { toast('Stop the car to use your phone.'); return; }
+  phone.classList.toggle('open', open);
+}
+function renderParkList() {
+  const list = document.getElementById('pkList');
+  while (list.firstChild) list.removeChild(list.firstChild);
+  document.getElementById('pkSub').textContent = S.day + ' · ' + (S.goodDay ? 'quiet day, somehow' : 'busy day — spaces are going fast');
+  for (const cp of CARPARKS) {
+    const n = (S.offers[cp.id] || []).length;
+    const card = document.createElement('div');
+    card.className = 'pk-card';
+    const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = cp.name + ' Car Park';
+    const env = document.createElement('div'); env.className = 'env';
+    env.textContent = cp.env === 'covered' ? 'Covered — under the office' : 'Outdoor surface car park';
+    const free = document.createElement('div'); free.className = 'free' + (n ? '' : ' none');
+    free.textContent = n ? (n + (n === 1 ? ' bay left — tap to book' : ' bays left — tap to book')) : 'FULL';
+    const bn = document.createElement('div'); bn.className = 'bonus';
+    bn.textContent = '🎁 +' + (CP_BONUS[cp.id] || 0).toLocaleString('en-GB') + ' pts parking bonus';
+    card.appendChild(nm); card.appendChild(env); card.appendChild(bn); card.appendChild(free);
+    if (n) card.addEventListener('click', () => book(cp.id));
+    list.appendChild(card);
+  }
+}
+function renderMessages() {
+  const list = document.getElementById('msgList');
+  while (list.firstChild) list.removeChild(list.firstChild);
+  for (const m of S.messages) {
+    const d = document.createElement('div'); d.className = 'msg';
+    const f = document.createElement('div'); f.className = 'from'; f.textContent = m.from;
+    const t = document.createElement('div'); t.textContent = m.text;
+    d.appendChild(f); d.appendChild(t); list.appendChild(d);
+  }
+}
+function drawMiniMap() {
+  const cv = document.getElementById('mapCanvas'), c = cv.getContext('2d');
+  const sx = cv.width/1000, sy = cv.height/1240, oy = 170; // world -170..1030
+  c.fillStyle = '#22391f'; c.fillRect(0,0,cv.width,cv.height);
+  c.strokeStyle = '#8a93a3'; c.lineCap = 'round';
+  for (const r of ROADS) {
+    c.lineWidth = Math.max(2, r.w*sx*0.7); c.beginPath();
+    r.pts.forEach((p,i) => i ? c.lineTo(p[0]*sx,(p[1]+oy)*sy) : c.moveTo(p[0]*sx,(p[1]+oy)*sy));
+    c.stroke();
+  }
+  for (const b of BUILDINGS) {
+    c.fillStyle = '#5a6b7d';
+    c.fillRect(b.rect[0]*sx,(b.rect[1]+oy)*sy,(b.rect[2]-b.rect[0])*sx,(b.rect[3]-b.rect[1])*sy);
+  }
+  for (const cp of CARPARKS) {
+    const s = cp.surface;
+    const booked = S.booking && S.booking.cp === cp.id;
+    c.fillStyle = booked ? '#e8a000' : '#3b82f6';
+    c.globalAlpha = booked ? 0.9 : 0.55;
+    c.fillRect(s[0]*sx,(s[1]+oy)*sy,(s[2]-s[0])*sx,(s[3]-s[1])*sy);
+    c.globalAlpha = 1;
+    c.fillStyle = '#fff'; c.font = '9px Segoe UI';
+    c.fillText(cp.prefix, s[0]*sx + 2, (s[1]+oy)*sy + 10);
+  }
+  c.fillStyle = '#fbbf24';
+  c.beginPath(); c.arc(car.x*sx,(car.y+oy)*sy,4,0,7); c.fill();
+  c.strokeStyle = '#fff'; c.lineWidth = 1; c.stroke();
+}
+
+/* ---------------- Dialog / toast / audio ---------------- */
+const dlg = document.getElementById('dialog');
+function showDialog(who, text, buttons) {
+  S.phase = 'dialog';
+  document.getElementById('dlgWho').textContent = who;
+  document.getElementById('dlgText').textContent = text;
+  const btns = document.getElementById('dlgBtns');
+  while (btns.firstChild) btns.removeChild(btns.firstChild);
+  buttons.forEach((b, i) => {
+    const el = document.createElement('button');
+    if (i > 0) el.className = 'alt';
+    el.textContent = b.label;
+    el.addEventListener('click', () => { dlg.style.display = 'none'; S.phase = 'play'; b.fn && b.fn(); });
+    btns.appendChild(el);
+  });
+  dlg.style.display = 'block';
+}
+let toastTimer = null;
+function toast(text) {
+  const t = document.getElementById('toast');
+  t.textContent = text; t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display = 'none', 2600);
+}
+/* ---------------- Scoring ---------------- */
+/* the further the car park, the bigger the pay-off for parking there */
+const CP_BONUS = {
+  'factory': 500000, 'south-triangle': 500000,   // deep south — the long haul
+  'overflow': 300000,
+  'north-triangle': 150000, 'cass': 150000       // close to the entrance
+};
+function scorePenalty(amount, label) {
+  S.score -= amount;
+  const card = document.getElementById('scoreCard');
+  card.classList.remove('hitanim'); void card.offsetWidth; card.classList.add('hitanim');
+  const d = document.createElement('div');
+  d.className = 'penaltyFx';
+  d.textContent = '-' + amount.toLocaleString('en-GB') + (label ? '  ' + label : '');
+  document.getElementById('hud').appendChild(d);
+  d.addEventListener('animationend', () => d.remove());
+}
+const HS_KEY = 'cupa-parking-highscores';
+function loadScores() {
+  try { return JSON.parse(localStorage.getItem(HS_KEY)) || []; } catch (e) { return []; }
+}
+function saveScore(entry) {
+  const list = loadScores();
+  list.push(entry);
+  list.sort((a, b) => b.score - a.score);
+  if (list.length > 10) list.length = 10;
+  localStorage.setItem(HS_KEY, JSON.stringify(list, null, 2));
+  return list;
+}
+function renderHsPanel() {
+  const list = document.getElementById('hsList');
+  while (list.firstChild) list.removeChild(list.firstChild);
+  const scores = loadScores();
+  if (!scores.length) {
+    const d = document.createElement('div');
+    d.className = 'hsmini none'; d.textContent = 'No scores yet — be first!';
+    list.appendChild(d);
+    return;
+  }
+  scores.forEach((e, i) => {
+    const r = document.createElement('div'); r.className = 'hsmini';
+    const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = (i+1) + '. ' + e.name;
+    const pts = document.createElement('span'); pts.className = 'pts'; pts.textContent = e.score.toLocaleString('en-GB');
+    r.appendChild(nm); r.appendChild(pts); list.appendChild(r);
+  });
+}
+function downloadScores() {
+  const blob = new Blob([localStorage.getItem(HS_KEY) || '[]'], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'highscores.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+/* if a highscores.json is hosted next to the game, merge it in (fails silently on file://) */
+fetch('highscores.json').then(r => r.ok ? r.json() : []).then(ext => {
+  if (!Array.isArray(ext) || !ext.length) return;
+  const cur = loadScores(), seen = new Set(cur.map(e => e.name + '|' + e.score + '|' + e.date));
+  let added = false;
+  for (const e of ext) if (e && !seen.has(e.name + '|' + e.score + '|' + e.date)) { cur.push(e); added = true; }
+  if (added) {
+    cur.sort((a, b) => b.score - a.score);
+    if (cur.length > 10) cur.length = 10;
+    localStorage.setItem(HS_KEY, JSON.stringify(cur, null, 2));
+    renderHsPanel();
+  }
+}).catch(() => {});
+
+let AC = null;
+function beep(seq) { // [[freq,dur],...]
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    let t = AC.currentTime;
+    for (const [f, d] of seq) {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.frequency.value = f; o.type = 'square';
+      g.gain.setValueAtTime(0.06, t); g.gain.exponentialRampToValueAtTime(0.001, t + d);
+      o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d);
+      t += d * 0.9;
+    }
+  } catch (e) { /* audio optional */ }
+}
+
+/* ---------------- Reception NPC ---------------- */
+function summonReception(reason, offerToggle) {
+  if (S.receptionBusy) return;
+  S.receptionBusy = true;
+  S.npc = { x:RECEPTION_DOOR[0], y:RECEPTION_DOOR[1], state:'run', reason, offerToggle };
+  toast('👀 Reception has spotted you — someone\'s coming over…');
+}
+function npcUpdate(dt) {
+  if (!S.npc) return;
+  const n = S.npc;
+  if (n.state === 'run') {
+    const dx = car.x - n.x, dy = car.y - n.y, d = Math.hypot(dx,dy);
+    if (d < 9) { n.state = 'talk'; npcTalk(); return; }
+    const sp = 42;   // she does not dawdle
+    n.x += dx/d*sp*dt; n.y += dy/d*sp*dt;
+  }
+}
+function npcTalk() {
+  const n = S.npc;
+  const texts = {
+    wrongbay: 'Excuse me! That is NOT your bay — you booked ' + (S.booking ? S.booking.bayId : '…nothing, actually') + '. Move the car please.',
+    lines: 'You cannot leave it like that — fully inside the lines, please. We have standards.',
+    special: 'That bay is reserved (accessible/EV). You know better than that. Move it.',
+    alarms: 'Three car alarms before nine? Reception can hear every one of them. Calm. Down.'
+  };
+  const buttons = [{ label:'I\'ll re-park', fn:() => { S.reparks++; scorePenalty(20000, 'RE-PARK ORDERED'); endNpc(); } }];
+  if (n.offerToggle && !S.idToggleUnlocked) {
+    buttons.push({ label:'…where IS my bay? (−50,000 pts)', fn:() => {
+      S.idToggleUnlocked = true; S.idToggleOn = true;
+      scorePenalty(50000, 'ASKED FOR HELP');
+      const tog = document.getElementById('bayIdToggle');
+      tog.disabled = false; tog.checked = true;
+      document.getElementById('togLockNote').textContent = '';
+      toast('Bay IDs now shown in the car park and on your map.');
+      endNpc();
+    }});
+  }
+  showDialog('Reception', texts[n.reason] || texts.lines, buttons);
+}
+function endNpc() {
+  if (S.npc) S.npc.state = 'leave';
+  setTimeout(() => { S.npc = null; S.receptionBusy = false; }, 400);
+}
+
+/* ---------------- Parking validation ---------------- */
+function tryPark() {
+  if (Math.abs(car.v) > 0.8) { toast('Come to a stop first (handbrake: Space).'); return; }
+  const carObb = { x:car.x, y:car.y, a:car.a, l:car.L, w:car.W };
+  const corners = obbCorners(carObb);
+  let inside = null, touching = [];
+  for (const b of bays) {
+    if (obbOverlap(carObb, b)) touching.push(b);
+    if (corners.every(p => pointInObb(p[0], p[1], b))) inside = b;
+  }
+  if (!touching.length) { toast('You are not in a parking bay.'); return; }
+  if (!inside) {
+    beep([[220,.15]]);
+    summonReception('lines', true);
+    return;
+  }
+  if (!S.booking) { summonReception('wrongbay', true); return; }
+  if (inside.id === S.booking.bayId) {
+    win();
+  } else if (inside.type !== 'standard') {
+    beep([[220,.15]]);
+    summonReception('special', true);
+  } else {
+    beep([[220,.15]]);
+    summonReception('wrongbay', true);
+  }
+}
+
+/* ---------------- Win / lose ---------------- */
+function fmtGameTime() { return clockStr(); }
+function win() {
+  S.phase = 'won'; S.parkedDone = true;
+  const bonus = CP_BONUS[S.booking.cp] || 0;
+  S.score += bonus;                       // distance bonus lands on top
+  beep([[784,.1],[988,.1],[1319,.2]]);
+  const o = document.getElementById('endOverlay');
+  document.getElementById('endTitle').textContent = '★ Parked! ★';
+  document.getElementById('endText').textContent =
+    'Bay ' + S.booking.bayId + ' — perfectly inside the lines at ' + fmtGameTime() +
+    '. You walk to ' + (CARPARKS.find(c=>c.id===S.booking.cp).env==='covered' ? 'the concierge desk' : 'reception') +
+    '. Level 2 — finding your desk — awaits.';
+  const sc = document.getElementById('endScore');
+  while (sc.firstChild) sc.removeChild(sc.firstChild);
+  const cost = (n, per) => String(n) + (n ? '  (−' + (n*per).toLocaleString('en-GB') + ' pts)' : '');
+  const timeCost = Math.round(S.realElapsed * (1000000/600));
+  const lines = [
+    ['Parked at', fmtGameTime() + '  (−' + timeCost.toLocaleString('en-GB') + ' pts of time)'],
+    ['Collisions', cost(S.collisions, 25000)],
+    ['Car alarms set off', cost(S.alarms, 15000)],
+    ['Re-parks demanded', cost(S.reparks, 20000)],
+    ['Road resets', cost(S.resets, 10000)],
+    ['Speeding warnings', cost(S.speedTickets, 10000)],
+    ['People flattened', cost(S.casualties, 100000) + (S.casualties ? ' — HR has been notified' : '')],
+    ['Bay IDs revealed', S.idToggleUnlocked ? 'yes  (−50,000 pts)' : 'no — found it solo!'],
+    ['Car park bonus', '+' + bonus.toLocaleString('en-GB') + ' pts (' + CARPARKS.find(c => c.id === S.booking.cp).name + ')'],
+    ['FINAL SCORE', Math.round(S.score).toLocaleString('en-GB')]
+  ];
+  for (const [k,v] of lines) {
+    const d = document.createElement('div'); d.className = 'scoreline';
+    const a = document.createElement('span'); a.textContent = k;
+    const b = document.createElement('span'); b.textContent = v;
+    d.appendChild(a); d.appendChild(b); sc.appendChild(d);
+  }
+  // high scores — player name is the Parkable login
+  const entry = { name: S.name, score: Math.round(S.score), bay: S.booking.bayId,
+                  time: fmtGameTime(), date: new Date().toISOString().slice(0, 10) };
+  const table = saveScore(entry);
+  renderHsPanel();
+  const ht = document.createElement('div'); ht.className = 'hs-title'; ht.textContent = '🏆 HIGH SCORES';
+  sc.appendChild(ht);
+  table.forEach((e, i) => {
+    const r = document.createElement('div'); r.className = 'hsrow' + (e === entry ? ' you' : '');
+    const a = document.createElement('span'); a.textContent = (i+1) + '. ' + e.name + ' — ' + e.bay + ' at ' + e.time;
+    const b = document.createElement('span'); b.textContent = e.score.toLocaleString('en-GB');
+    r.appendChild(a); r.appendChild(b); sc.appendChild(r);
+  });
+  const dl = document.createElement('button'); dl.id = 'dlScores';
+  dl.textContent = '⬇ Download highscores.json';
+  dl.addEventListener('click', downloadScores);
+  sc.appendChild(dl);
+  document.getElementById('restartBtn').textContent = 'Play again';
+  o.classList.add('show');
+}
+function lose(reason) {
+  if (S.phase !== 'play' && S.phase !== 'dialog') return;
+  S.phase = 'lost';
+  beep([[196,.3],[147,.4]]);
+  const o = document.getElementById('endOverlay');
+  document.getElementById('endTitle').textContent = 'GAME OVER';
+  document.getElementById('endText').textContent = reason + ' Final score: ' +
+    Math.round(S.score).toLocaleString('en-GB') + ' — high scores are for people who park.';
+  const sc = document.getElementById('endScore');
+  while (sc.firstChild) sc.removeChild(sc.firstChild);
+  document.getElementById('restartBtn').textContent = 'Try again';
+  o.classList.add('show');
+}
+
+/* ---------------- Input ---------------- */
+const keys = {};
+window.addEventListener('keydown', e => {
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Tab'].includes(e.key)) e.preventDefault();
+  keys[e.key.toLowerCase()] = true;
+  if ((S.phase === 'booking' || S.phase === 'login') &&
+      ['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))
+    toast('📱 Please book a bay first — the car won\'t move until you\'ve booked.');
+  if (e.key === 'Tab') togglePhone();
+  if (e.key.toLowerCase() === 'e' && S.phase === 'play') tryPark();
+  if (e.key.toLowerCase() === 'r' && S.phase === 'play') resetCar();
+});
+function resetCar() {
+  if (S.resetCd > 0) { toast('Reset cooling down…'); return; }
+  let best = null;
+  for (const r of ROADS) for (let i = 0; i < r.pts.length-1; i++) {
+    const [x1,y1] = r.pts[i], [x2,y2] = r.pts[i+1];
+    const dx = x2-x1, dy = y2-y1, len2 = dx*dx + dy*dy;
+    let t = len2 ? ((car.x-x1)*dx + (car.y-y1)*dy) / len2 : 0;
+    t = Math.max(0, Math.min(1, t));
+    const cx = x1 + t*dx, cy = y1 + t*dy, d = Math.hypot(car.x-cx, car.y-cy);
+    if (!best || d < best.d) best = { d, x:cx, y:cy, a:Math.atan2(dy, dx) };
+  }
+  car.x = best.x; car.y = best.y; car.a = best.a; car.v = 0; car.steer = 0;
+  lastExX = null;   // don't streak exhaust smoke across the teleport
+  S.resets++; S.resetCd = 5;
+  scorePenalty(10000, 'ROADSIDE RESCUE');
+  toast('Car reset to the nearest road.');
+  beep([[392,.08],[523,.08]]);
+}
+window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+document.getElementById('phoneBtn').addEventListener('click', () => togglePhone());
+
+/* ---------------- Physics ---------------- */
+const MAX_MPH = 45;                       // top speed (1 world unit/s = 1 mph)
+const LIMIT_MPH = 15;                 // site-wide limit on CUPA private property
+const PRIVATE_ROADS = ROADS.slice(2); // every road except public Shaftesbury Rd / Brooklands Ave
+function inSpeedZone(x, y) {
+  // the limit covers the private access roads only — once you're through the
+  // barrier and inside a car park, you're off the clock (speed-wise)
+  for (const cp of CARPARKS) {
+    const s = cp.surface;
+    if (x > s[0] && x < s[2] && y > s[1] && y < s[3]) return false;
+  }
+  for (const r of PRIVATE_ROADS) for (let i = 0; i < r.pts.length-1; i++)
+    if (distToSeg(x, y, r.pts[i][0], r.pts[i][1], r.pts[i+1][0], r.pts[i+1][1]) < r.w/2 + 2) return true;
+  return false;
+}
+/* 15 mph signs posted along every private road, on whichever verge is clear */
+function signSpotClear(x, y) {
+  for (const cp of CARPARKS) {
+    const s = cp.surface;
+    if (x > s[0]-2 && x < s[2]+2 && y > s[1]-2 && y < s[3]+2) return false;
+  }
+  for (const b of BUILDINGS)
+    if (x > b.rect[0]-2 && x < b.rect[2]+2 && y > b.rect[1]-2 && y < b.rect[3]+2) return false;
+  for (const r of ROADS) for (let i = 0; i < r.pts.length-1; i++)
+    if (distToSeg(x, y, r.pts[i][0], r.pts[i][1], r.pts[i+1][0], r.pts[i+1][1]) < r.w/2 + 1.5) return false;
+  return true;
+}
+const SPEED_SIGNS = [];
+for (const r of PRIVATE_ROADS) for (let i = 0; i < r.pts.length-1; i++) {
+  const [x1, y1] = r.pts[i], [x2, y2] = r.pts[i+1];
+  const len = Math.hypot(x2-x1, y2-y1), ux = (x2-x1)/len, uy = (y2-y1)/len;
+  for (let d = 9; d < len; d += 50) {
+    const cx = x1 + ux*d, cy = y1 + uy*d, off = r.w/2 + 3.8;
+    const left = [cx - uy*off, cy + ux*off], right = [cx + uy*off, cy - ux*off];
+    if (signSpotClear(left[0], left[1])) SPEED_SIGNS.push(left);
+    else if (signSpotClear(right[0], right[1])) SPEED_SIGNS.push(right);
+  }
+}
+/* Exhaust smoke: idle chuff while the engine runs, a continuous plume under
+   throttle — puffs are laid down along the exhaust's path since the previous
+   frame so the trail stays unbroken at speed. */
+const smoke = []; // {x,y,vx,vy,age,life,r0,gr,al,dark}
+let lastExX = null, lastExY = null;
+function exhaustPos() {
+  const c = Math.cos(car.a), s = Math.sin(car.a);
+  const bx = car.x - c*(car.L/2 + 0.4), by = car.y - s*(car.L/2 + 0.4);
+  return [bx - s*0.95, by + c*0.95];          // exhaust pipe, rear-left corner
+}
+function spawnPuff(x, y, accel, launch) {
+  if (smoke.length > 320) smoke.splice(0, smoke.length - 320);
+  const c = Math.cos(car.a), s = Math.sin(car.a);
+  const kick = accel ? rand(4, 8) + launch*4 : rand(1, 2.5);
+  smoke.push({
+    x: x + rand(-0.15, 0.15), y: y + rand(-0.15, 0.15),
+    vx: c*(car.v*0.25 - kick) + rand(-1, 1),
+    vy: s*(car.v*0.25 - kick) + rand(-1, 1),
+    age: 0, life: accel ? rand(0.7, 1.1) : rand(0.5, 0.8),
+    r0: accel ? rand(0.45, 0.7) : rand(0.3, 0.45),
+    gr: accel ? rand(1.6, 2.6) : rand(0.8, 1.3),
+    al: accel ? 0.22 + 0.16*launch : 0.16,
+    dark: accel && launch > 0.5
+  });
+}
+function smokeUpdate(dt) {
+  const accel = keys['w'] || keys['arrowup'] || keys['s'] || keys['arrowdown'];
+  const launch = Math.max(0, 1 - Math.abs(car.v)/18); // puffing hardest when setting off
+  const [ex, ey] = exhaustPos();
+  if (lastExX === null) { lastExX = ex; lastExY = ey; }
+  S.smokeAcc = (S.smokeAcc || 0) + (accel ? 40 + 22*launch : 2.2) * dt;
+  const n = Math.floor(S.smokeAcc);
+  S.smokeAcc -= n;
+  for (let i = 0; i < n; i++) {                // lay puffs along the frame's path
+    const t = (i + 1) / n;
+    spawnPuff(lastExX + (ex - lastExX)*t, lastExY + (ey - lastExY)*t, accel, launch);
+  }
+  lastExX = ex; lastExY = ey;
+  for (let i = smoke.length - 1; i >= 0; i--) {
+    const p = smoke[i];
+    p.age += dt;
+    if (p.age >= p.life) { smoke.splice(i, 1); continue; }
+    p.x += p.vx*dt; p.y += p.vy*dt;
+    p.vx *= 1 - 2.2*dt; p.vy *= 1 - 2.2*dt;
+  }
+}
+function onSurface(x, y) {
+  for (const r of ROADS) for (let i = 0; i < r.pts.length-1; i++)
+    if (distToSeg(x, y, r.pts[i][0], r.pts[i][1], r.pts[i+1][0], r.pts[i+1][1]) < r.w/2 + 2) return true;
+  for (const cp of CARPARKS) {
+    const s = cp.surface;
+    if (x > s[0] && x < s[2] && y > s[1] && y < s[3]) return true;
+  }
+  return false;
+}
+function physics(dt) {
+  const up = keys['w'] || keys['arrowup'], dn = keys['s'] || keys['arrowdown'];
+  const lf = keys['a'] || keys['arrowleft'], rt = keys['d'] || keys['arrowright'];
+  const hb = keys[' '];
+  const steerIn = (rt?1:0) - (lf?1:0);
+  const maxSteer = 0.62 / (1 + Math.abs(car.v)/26);
+  const target = steerIn * maxSteer;
+  car.steer += (target - car.steer) * Math.min(1, dt*7);
+
+  if (up) car.v += (car.v < 0 ? 65 : 34) * dt;
+  if (dn) car.v -= (car.v > 0 ? 65 : 22) * dt;
+  if (hb) car.v -= Math.sign(car.v) * Math.min(Math.abs(car.v), 85*dt);
+  car.v -= car.v * 0.5 * dt;
+  if (!up && !dn) car.v -= Math.sign(car.v) * Math.min(Math.abs(car.v), 6*dt);
+  car.v = Math.max(-16, Math.min(MAX_MPH, car.v)); // 1 world unit/s = 1 mph, top speed 45
+  S.kerbCd -= dt; S.resetCd -= dt; S.speedCd -= dt;
+
+  const px = car.x, py = car.y, pa = car.a;
+  car.a += (car.v / car.WHEELBASE) * Math.tan(car.steer) * dt;
+  car.x += Math.cos(car.a) * car.v * dt;
+  car.y += Math.sin(car.a) * car.v * dt;
+
+  // tarmac only — grass is out of bounds (no barrier detours)
+  const cA = Math.cos(car.a), sA = Math.sin(car.a);
+  if (!onSurface(car.x, car.y) ||
+      !onSurface(car.x + cA*car.L/2, car.y + sA*car.L/2) ||
+      !onSurface(car.x - cA*car.L/2, car.y - sA*car.L/2)) {
+    car.x = px; car.y = py; car.a = pa;
+    car.v *= -0.15;
+    if (S.kerbCd <= 0) { S.kerbCd = 2; toast('Stay on the tarmac!'); beep([[110,.08]]); }
+  }
+
+  // collisions
+  const me = { x:car.x, y:car.y, a:car.a, l:car.L, w:car.W };
+  let hit = null, hitPt = null;
+  for (const pc of parkedCars) {
+    if (Math.abs(pc.x-car.x) > 14 || Math.abs(pc.y-car.y) > 14) continue;
+    if (obbOverlap(me, { x:pc.x, y:pc.y, a:pc.a, l:pc.l, w:pc.w })) {
+      hit = 'car'; hitPt = [(car.x+pc.x)/2, (car.y+pc.y)/2]; break;
+    }
+  }
+  if (!hit) for (const tc of traffic) {
+    if (Math.abs(tc.x - car.x) > 14 || Math.abs(tc.y - car.y) > 14) continue;
+    if (obbOverlap(me, { x:tc.x, y:tc.y, a:tc.a, l:tc.l, w:tc.w })) {
+      hit = 'traffic'; hitPt = [(car.x+tc.x)/2, (car.y+tc.y)/2]; break;
+    }
+  }
+  if (!hit) for (const b of BUILDINGS) {
+    if (!b.solid) continue;
+    if (obbOverlap(me, rectToObb(b.rect))) { hit = 'wall'; break; }
+  }
+  if (!hit) for (const f of FENCES) {
+    if (Math.abs(f.x-car.x) > f.l/2 + 12 || Math.abs(f.y-car.y) > f.l/2 + 12) continue;
+    if (obbOverlap(me, f)) { hit = 'wall'; break; }
+  }
+  if (!hit) for (const cp of CARPARKS) {
+    const bar = S.barriers[cp.id];
+    if (bar.open > 0.6) continue;
+    const arm = { x:cp.arm[0], y:cp.arm[1], a:cp.barrierA, l:14, w:1.6 };
+    if (obbOverlap(me, arm)) { hit = 'barrier'; break; }
+  }
+  if (hit) {
+    const speed = Math.abs(car.v);
+    if (!hitPt) hitPt = [car.x + Math.cos(car.a)*Math.sign(car.v || 1)*car.L/2,
+                         car.y + Math.sin(car.a)*Math.sign(car.v || 1)*car.L/2];
+    car.x = px; car.y = py; car.a = pa;
+    car.v *= -0.25;
+    if (speed > 6) {
+      S.collisions++;
+      spawnStar(hitPt[0], hitPt[1], hit === 'car' || hit === 'traffic');
+      scorePenalty(25000, 'COLLISION!');
+      if (hit === 'car') {
+        S.alarms++;
+        scorePenalty(15000, 'CAR ALARM!');
+        document.getElementById('hudAlarms').style.display = 'block';
+        document.getElementById('alarmCount').textContent = String(S.alarms);
+        beep([[1200,.07],[900,.07],[1200,.07],[900,.07]]);
+        if (S.alarms === 3) summonReception('alarms', false);
+      } else if (hit === 'traffic') {
+        beep([[523,.12],[523,.1]]);
+        toast('🚗 “' + pick(TRAFFIC_QUIPS) + '”');
+      } else {
+        beep([[160,.1]]);
+      }
+    }
+  }
+
+  // 15 mph zone: all CUPA private roads and car parks
+  S.inZone = inSpeedZone(car.x, car.y);
+  S.speeding = S.inZone && Math.abs(car.v) > LIMIT_MPH;
+  if (S.speeding && S.speedCd <= 0) {
+    S.speedCd = 2.5;
+    toast('⚠️ CUPA private property is a 15 mph zone — slow down!');
+    beep([[880,.09],[660,.09],[880,.09]]);
+    S.speedTickets++;
+    scorePenalty(10000, 'SPEEDING');
+  }
+
+  // barriers: ANPR camera reads the plate, matches against the booking
+  for (const cp of CARPARKS) {
+    const bar = S.barriers[cp.id];
+    const d = Math.hypot(car.x - cp.arm[0], car.y - cp.arm[1]);
+    const booked = S.booking && S.booking.cp === cp.id;
+    if (d < 26 && booked) {
+      if (!S.anprShown[cp.id]) {
+        S.anprShown[cp.id] = true;
+        toast('ANPR: ' + car.plate + ' ✓ matches booking — barrier lifting.');
+        beep([[988,.07],[1319,.1]]);
+      }
+      bar.open = Math.min(1, bar.open + dt/1.1);
+    } else if (d > 40) bar.open = Math.max(0, bar.open - dt/1.1);
+    if (d < 20 && !booked && !S.intercomShown[cp.id]) {
+      S.intercomShown[cp.id] = true;
+      toast('ANPR: ' + car.plate + ' — no booking found. "No booking, no barrier."');
+      beep([[440,.1],[330,.15]]);
+    }
+    if (d > 60) { S.intercomShown[cp.id] = false; S.anprShown[cp.id] = false; }
+  }
+
+  // live bay feedback: which bay is the car in, and how well does it fit?
+  S.curBay = null; S.bayFit = null;
+  if (Math.abs(car.v) < 12) {
+    const carObb = { x:car.x, y:car.y, a:car.a, l:car.L, w:car.W };
+    let corners = null;
+    for (const b of bays) {
+      if (Math.abs(b.x - car.x) > 12 || Math.abs(b.y - car.y) > 12) continue;
+      if (!obbOverlap(carObb, b)) continue;
+      corners = corners || obbCorners(carObb);
+      S.curBay = b;
+      S.bayFit = corners.every(p => pointInObb(p[0], p[1], b)) ? 'inside' : 'partial';
+      if (S.bayFit === 'inside') break;
+    }
+  }
+  const fitKey = S.curBay ? S.curBay.id + ':' + S.bayFit : '';
+  if (fitKey !== S.lastFitKey) {
+    if (S.bayFit === 'inside' && S.booking && S.curBay.id === S.booking.bayId)
+      beep([[988,.06],[1319,.09]]);   // chime: perfectly in YOUR bay
+    S.lastFitKey = fitKey;
+  }
+
+  smokeUpdate(dt);
+  trafficUpdate(dt); cyclistUpdate(dt); pedUpdate(dt);
+
+  // hitting people: they bounce off the bonnet and stay down
+  for (let i = cyclists.length - 1; i >= 0; i--) {
+    const cy = cyclists[i];
+    if (Math.hypot(cy.x - car.x, cy.y - car.y) < 4.6 && Math.abs(car.v) > 3) {
+      S.collisions++;
+      toast('🚴 “' + pick(CYCLIST_QUIPS) + '”');
+      killPerson(cy.x, cy.y, cy, true);
+      cyclists.splice(i, 1); cyclists.push(makeCyclist(false));
+    }
+  }
+  for (let i = peds.length - 1; i >= 0; i--) {
+    const p = peds[i];
+    if (Math.hypot(p.x - car.x, p.y - car.y) < 4.2 && Math.abs(car.v) > 2) {
+      S.collisions++;
+      toast('💀 “' + pick(PED_QUIPS) + '”');
+      killPerson(p.x, p.y, p, false);
+      peds.splice(i, 1); peds.push(makePed(false));
+    }
+  }
+  corpseUpdate(dt);
+}
+
+/* ---------------- Rendering ---------------- */
+const cvs = document.getElementById('game'), ctx = cvs.getContext('2d');
+function resize() { cvs.width = innerWidth; cvs.height = innerHeight; }
+window.addEventListener('resize', resize); resize();
+const cut = { 'north-triangle':1, 'south-triangle':1 }; // wing roof alpha
+
+function draw() {
+  const w = cvs.width, h = cvs.height;
+  const view = 150 + Math.abs(car.v) * 2.2;
+  const scale = Math.min(w, h) / view;
+  const camx = car.x + Math.cos(car.a) * Math.abs(car.v) * 0.5;
+  const camy = car.y + Math.sin(car.a) * Math.abs(car.v) * 0.5;
+
+  ctx.fillStyle = '#7da75c'; ctx.fillRect(0, 0, w, h);
+  ctx.save();
+  ctx.translate(w/2, h/2); ctx.scale(scale, scale); ctx.translate(-camx, -camy);
+
+  // busway strip (east boundary scenery)
+  ctx.strokeStyle = '#9aa3ae'; ctx.lineWidth = 26; ctx.lineCap = 'butt';
+  ctx.beginPath(); ctx.moveTo(860, 60); ctx.lineTo(600, 980); ctx.stroke();
+  ctx.strokeStyle = '#3f9142'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(848, 60); ctx.lineTo(588, 980); ctx.stroke();
+
+  // pavements flanking the public roads
+  for (const r of [ROADS[0], ROADS[1]]) {
+    ctx.strokeStyle = '#565e6a'; ctx.lineWidth = r.w + 7; ctx.lineCap = 'round';
+    ctx.beginPath();
+    r.pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+    ctx.stroke();
+  }
+
+  // roads — dark tarmac: light enough for tyres, dark enough for smoke
+  for (const r of ROADS) {
+    ctx.strokeStyle = '#3d444d'; ctx.lineWidth = r.w; ctx.lineCap = 'round';
+    ctx.beginPath();
+    r.pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+    ctx.stroke();
+    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5; ctx.setLineDash([6, 7]);
+    ctx.beginPath();
+    r.pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  // car park tarmac + bays + parked cars
+  for (const cp of CARPARKS) {
+    const s = cp.surface;
+    ctx.fillStyle = cp.env === 'covered' ? '#343a42' : '#464d57';
+    ctx.fillRect(s[0], s[1], s[2]-s[0], s[3]-s[1]);
+  }
+  const showIds = S.idToggleUnlocked && S.idToggleOn;
+  for (const b of bays) {
+    const cs = obbCorners(b);
+    if (b === S.curBay) {   // live feedback: tint the bay under the car
+      const pulse = 0.22 + 0.08 * Math.sin(performance.now() / 150);
+      const mine = S.booking && b.id === S.booking.bayId;
+      ctx.fillStyle = S.bayFit === 'partial' ? 'rgba(250,204,21,' + pulse + ')'
+                    : mine ? 'rgba(74,222,128,' + (pulse + 0.1) + ')'
+                    : 'rgba(248,113,113,' + pulse + ')';
+      ctx.beginPath();
+      ctx.moveTo(cs[0][0], cs[0][1]);
+      for (let i = 1; i < 4; i++) ctx.lineTo(cs[i][0], cs[i][1]);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.strokeStyle = b.type === 'accessible' ? '#facc15' : b.type === 'ev' ? '#86efac' : '#e5e7eb';
+    ctx.lineWidth = 0.45;
+    ctx.beginPath();
+    ctx.moveTo(cs[0][0], cs[0][1]);
+    for (let i = 1; i < 4; i++) ctx.lineTo(cs[i][0], cs[i][1]);
+    ctx.closePath(); ctx.stroke();
+    if (showIds && S.booking && b.cp === S.booking.cp && Math.hypot(b.x-car.x, b.y-car.y) < 95) {
+      ctx.fillStyle = b.id === S.booking.bayId ? '#e8a000' : '#f8fafc';
+      ctx.font = (b.id === S.booking.bayId ? 'bold ' : '') + '3px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText(b.id, b.x, b.y + 1);
+    }
+  }
+  // perimeter fences (hedge for outdoor, wall for covered)
+  for (const f of FENCES) {
+    ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.a);
+    ctx.fillStyle = f.covered ? '#64748b' : '#2f6b33';
+    ctx.fillRect(-f.l/2, -f.w/2, f.l, f.w);
+    ctx.restore();
+  }
+  // trees fill out the grass
+  for (const t of TREES) {
+    if (Math.abs(t[0] - camx) > view*1.4 || Math.abs(t[1] - camy) > view*1.4) continue;
+    ctx.fillStyle = 'rgba(0,0,0,.18)';
+    ctx.beginPath(); ctx.ellipse(t[0]+0.8, t[1]+0.8, t[2], t[2]*0.85, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#3c6b33';
+    ctx.beginPath(); ctx.arc(t[0], t[1], t[2], 0, 7); ctx.fill();
+    ctx.fillStyle = '#4b7f3d';
+    ctx.beginPath(); ctx.arc(t[0]-t[2]*0.25, t[1]-t[2]*0.25, t[2]*0.6, 0, 7); ctx.fill();
+  }
+
+  // the fallen: blood pools and bodies stay where they landed
+  for (const c of corpses) {
+    if (Math.abs(c.x - camx) > view*1.4 || Math.abs(c.y - camy) > view*1.4) continue;
+    if (c.blood > 0) {
+      ctx.fillStyle = 'rgba(136,19,19,.72)';
+      ctx.beginPath(); ctx.ellipse(c.x+0.4, c.y+0.3, 2.3*c.blood, 1.6*c.blood, c.a, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(c.x-0.7, c.y-0.5, 1.3*c.blood, 1.0*c.blood, c.a+0.9, 0, 7); ctx.fill();
+    }
+    if (c.bike) {                                // the bike, bent, a little way off
+      ctx.save(); ctx.translate(c.x+2.2, c.y+1.4); ctx.rotate(c.a+1.1);
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(0.65, -0.11, 1.35, 0.22); ctx.fillRect(-2.0, -0.11, 1.35, 0.22);
+      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 0.2;
+      ctx.beginPath(); ctx.moveTo(-1.35, 0); ctx.lineTo(0.2, 0); ctx.lineTo(1.35, 0.5); ctx.stroke();
+      ctx.restore();
+    }
+    drawHuman(c.x, c.y, c.a, 2.1, c);            // sprawled, limbs out
+  }
+
+  for (const pc of parkedCars) {
+    if (Math.abs(pc.x - camx) > view*1.3 || Math.abs(pc.y - camy) > view*1.3) continue;
+    drawCar(pc.x, pc.y, pc.a, pc.l, pc.w, pc.color, false, 0);
+  }
+
+  // moving NPCs: traffic, cyclists, pedestrians
+  for (const tc of traffic) {
+    if (tc.d < 0 || Math.abs(tc.x - camx) > view*1.4 || Math.abs(tc.y - camy) > view*1.4) continue;
+    drawCar(tc.x, tc.y, tc.a, tc.l, tc.w, tc.color, false, 0);
+  }
+  for (const cy of cyclists) {
+    if (Math.abs(cy.x - camx) > view*1.4 || Math.abs(cy.y - camy) > view*1.4) continue;
+    drawCyclist(cy);
+  }
+  for (const p of peds) {
+    if (Math.abs(p.x - camx) > view*1.4 || Math.abs(p.y - camy) > view*1.4) continue;
+    drawHuman(p.x, p.y, p.a, p.walk, p);
+  }
+
+  // exhaust smoke (under the car so the body stays crisp)
+  for (const p of smoke) {
+    const t = p.age / p.life;
+    ctx.globalAlpha = p.al * (1 - t);
+    ctx.fillStyle = p.dark ? '#475569' : '#94a3b8';
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r0 + p.gr*t, 0, 7); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // player car
+  drawCar(car.x, car.y, car.a, car.L, car.W, car.color, true, car.steer);
+
+  // reception NPC — a proper little person in CUPA navy with a gold lanyard
+  if (S.npc) {
+    const face = Math.atan2(car.y - S.npc.y, car.x - S.npc.x);
+    drawHuman(S.npc.x, S.npc.y, face, S.npc.state === 'run' ? performance.now()/70 : 0, RECEPTIONIST);
+  }
+
+  // barriers + ANPR camera posts
+  for (const cp of CARPARKS) {
+    const bar = S.barriers[cp.id];
+    ctx.save();
+    ctx.translate(cp.arm[0], cp.arm[1]);
+    ctx.rotate(cp.barrierA);
+    ctx.fillStyle = '#334155'; ctx.fillRect(-8, -1.4, 2.2, 2.8); // post
+    ctx.translate(-6.9, 0);                       // hinge sits on the post
+    // arm lifts vertically: seen from above it foreshortens toward the hinge
+    ctx.scale(Math.max(0.06, Math.cos(bar.open * Math.PI/2.05)), 1);
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, -0.55, 13.9, 1.1);
+    ctx.fillStyle = '#dc2626';
+    for (let i = 0; i < 3; i++) ctx.fillRect(2.9 + i*4.2, -0.55, 2.1, 1.1);
+    ctx.restore();
+    const camx = cp.arm[0] + Math.cos(cp.barrierA)*8.5;
+    const camy = cp.arm[1] + Math.sin(cp.barrierA)*8.5;
+    ctx.fillStyle = '#334155'; ctx.fillRect(camx-0.8, camy-0.8, 1.6, 1.6);
+    ctx.fillStyle = '#7dd3fc'; ctx.fillRect(camx-0.35, camy-0.35, 0.7, 0.7);
+  }
+
+  // 15 mph speed-limit signs along every CUPA private road
+  for (const [sgx, sgy] of SPEED_SIGNS) drawSpeedSign(sgx, sgy);
+
+  // buildings (roofs) — wings fade out when player inside
+  for (const b of BUILDINGS) {
+    let alpha = 1;
+    if (b.cutFor) {
+      const cp = CARPARKS.find(c => c.id === b.cutFor);
+      const s = cp.surface;
+      const inside = car.x > s[0]-6 && car.x < s[2]+6 && car.y > s[1]-6 && car.y < s[3]+6;
+      cut[b.cutFor] += ((inside ? 0.12 : 1) - cut[b.cutFor]) * 0.08;
+      alpha = cut[b.cutFor];
+    }
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = b.col;
+    ctx.fillRect(b.rect[0], b.rect[1], b.rect[2]-b.rect[0], b.rect[3]-b.rect[1]);
+    if (b.door) { // entrance mouth cut into the roof edge, aligned with the road
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(b.door[0], b.door[1], b.door[2]-b.door[0], b.door[3]-b.door[1]);
+    }
+    ctx.strokeStyle = '#00000022'; ctx.lineWidth = 1.5;
+    ctx.strokeRect(b.rect[0], b.rect[1], b.rect[2]-b.rect[0], b.rect[3]-b.rect[1]);
+    ctx.globalAlpha = 1;
+  }
+  // building labels
+  ctx.fillStyle = '#0f172a'; ctx.font = 'bold 9px Segoe UI'; ctx.textAlign = 'center';
+  if (cut['north-triangle'] > 0.5 && cut['south-triangle'] > 0.5)
+    ctx.fillText('THE TRIANGLE', 660, 320);
+
+  // cartoon smash stars, on top of everything
+  for (const f of fx) {
+    const t = f.age / f.life, s = f.r * (0.7 + 1.1*t);
+    ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot);
+    ctx.globalAlpha = 1 - t*t;
+    ctx.fillStyle = '#fbbf24'; ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 0.35;
+    ctx.beginPath();
+    for (let i = 0; i < 16; i++) {
+      const R = i % 2 ? s*0.42 : s*(0.85 + 0.15*((i>>1)%3));
+      const an = i/16*Math.PI*2;
+      i ? ctx.lineTo(Math.cos(an)*R, Math.sin(an)*R) : ctx.moveTo(Math.cos(an)*R, Math.sin(an)*R);
+    }
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.85)';
+    ctx.beginPath(); ctx.arc(0, 0, s*0.2, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+
+  // clouds: appear from ~80% of top speed, when the camera is fully pulled out
+  const cloudA = Math.max(0, Math.min(1, (view - 226) / 20));
+  if (cloudA > 0.01) for (const cl of clouds) {
+    if (Math.abs(cl.x - camx) > view*1.6 || Math.abs(cl.y - camy) > view*1.6) continue;
+    ctx.fillStyle = 'rgba(15,23,42,' + (0.07*cloudA).toFixed(3) + ')';  // ground shadow
+    for (const p of cl.puffs) {
+      ctx.beginPath();
+      ctx.ellipse(cl.x + p[0]*cl.s + cl.s*0.5, cl.y + p[1]*cl.s + cl.s*0.6, p[2]*cl.s, p[2]*cl.s*0.72, 0, 0, 7);
+      ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(248,250,252,' + (0.88*cloudA).toFixed(3) + ')';
+    for (const p of cl.puffs) {
+      ctx.beginPath();
+      ctx.ellipse(cl.x + p[0]*cl.s, cl.y + p[1]*cl.s, p[2]*cl.s, p[2]*cl.s*0.72, 0, 0, 7);
+      ctx.fill();
+    }
+  }
+
+  ctx.restore();
+}
+function drawSpeedSign(x, y) {
+  ctx.fillStyle = '#64748b';
+  ctx.fillRect(x - 0.3, y, 0.6, 4);                 // post
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(x, y, 3, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(x, y, 2.4, 0, 7); ctx.stroke();
+  ctx.fillStyle = '#0f172a'; ctx.font = 'bold 2.4px Segoe UI'; ctx.textAlign = 'center';
+  ctx.fillText('15', x, y + 0.85);
+}
+const shadeCache = new Map();
+function shade(hex, amt) { // lighten (amt>0) or darken (amt<0) a #rrggbb color
+  const key = hex + amt;
+  let v = shadeCache.get(key);
+  if (!v) {
+    const n = parseInt(hex.slice(1), 16);
+    let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    if (amt >= 0) { r += (255 - r) * amt; g += (255 - g) * amt; b += (255 - b) * amt; }
+    else { r *= 1 + amt; g *= 1 + amt; b *= 1 + amt; }
+    v = 'rgb(' + (r | 0) + ',' + (g | 0) + ',' + (b | 0) + ')';
+    shadeCache.set(key, v);
+  }
+  return v;
+}
+function bodyPath(x, y, w2, h2, r) {
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, w2, h2, r);
+  else ctx.rect(x, y, w2, h2);
+}
+function drawCar(x, y, a, l, w, color, isPlayer, steer) {
+  ctx.save();
+  ctx.translate(x, y); ctx.rotate(a);
+
+  // soft drop shadow
+  ctx.fillStyle = 'rgba(0,0,0,.22)';
+  ctx.beginPath(); ctx.ellipse(0.45, 0.55, l/2, w/2 + 0.25, 0, 0, 7); ctx.fill();
+
+  // wheels sit proud of the body; front pair pivots with the steering angle
+  const axF = l/2 - 1.5, axR = -l/2 + 1.5, track = w/2 + 0.18;
+  ctx.fillStyle = '#111827';
+  for (const sy of [-track, track]) {
+    ctx.save();
+    ctx.translate(axF, sy); ctx.rotate(steer || 0);
+    ctx.fillRect(-1.0, -0.45, 2.0, 0.9);
+    ctx.restore();
+    ctx.fillRect(axR - 1.0, sy - 0.45, 2.0, 0.9);
+  }
+
+  // body: darker flanks, glossy lighter centre line
+  const grad = ctx.createLinearGradient(0, -w/2, 0, w/2);
+  grad.addColorStop(0, shade(color, -0.22));
+  grad.addColorStop(0.5, shade(color, 0.22));
+  grad.addColorStop(1, shade(color, -0.22));
+  ctx.fillStyle = grad;
+  bodyPath(-l/2, -w/2, l, w, 1.4);
+  ctx.fill();
+  ctx.strokeStyle = shade(color, -0.5); ctx.lineWidth = 0.22; ctx.stroke();
+
+  // bumpers
+  ctx.fillStyle = shade(color, -0.38);
+  bodyPath(l/2 - 0.6, -w/2 + 0.15, 0.6, w - 0.3, 0.5); ctx.fill();
+  bodyPath(-l/2, -w/2 + 0.15, 0.6, w - 0.3, 0.5); ctx.fill();
+
+  // wing mirrors
+  ctx.fillStyle = shade(color, -0.25);
+  ctx.fillRect(l*0.03, -w/2 - 0.55, 0.85, 0.55);
+  ctx.fillRect(l*0.03,  w/2, 0.85, 0.55);
+
+  // roof panel
+  ctx.fillStyle = shade(color, 0.1);
+  bodyPath(-l*0.20, -w/2 + 0.55, l*0.30, w - 1.1, 0.8); ctx.fill();
+
+  // glass
+  const gw = w/2 - 0.55;
+  ctx.fillStyle = '#182338';
+  ctx.beginPath();                        // windscreen curves toward the nose
+  ctx.moveTo(l*0.06, -gw); ctx.lineTo(l*0.06, gw);
+  ctx.quadraticCurveTo(l*0.31, gw*0.72, l*0.30, 0);
+  ctx.quadraticCurveTo(l*0.31, -gw*0.72, l*0.06, -gw);
+  ctx.fill();
+  ctx.beginPath();                        // rear glass curves toward the tail
+  ctx.moveTo(-l*0.16, -gw*0.95); ctx.lineTo(-l*0.16, gw*0.95);
+  ctx.quadraticCurveTo(-l*0.33, gw*0.68, -l*0.32, 0);
+  ctx.quadraticCurveTo(-l*0.33, -gw*0.68, -l*0.16, -gw*0.95);
+  ctx.fill();
+  // windscreen sheen
+  ctx.fillStyle = 'rgba(255,255,255,.18)';
+  ctx.beginPath();
+  ctx.moveTo(l*0.08, -gw*0.85); ctx.lineTo(l*0.08, -gw*0.15);
+  ctx.quadraticCurveTo(l*0.24, -gw*0.2, l*0.26, -gw*0.45);
+  ctx.quadraticCurveTo(l*0.24, -gw*0.8, l*0.08, -gw*0.85);
+  ctx.fill();
+
+  // bonnet + boot highlight streaks
+  ctx.fillStyle = 'rgba(255,255,255,.22)';
+  bodyPath(l*0.32, -w*0.30, l*0.13, 0.5, 0.25); ctx.fill();
+  bodyPath(-l*0.44, -w*0.30, l*0.12, 0.5, 0.25); ctx.fill();
+
+  // headlights & tail lights
+  ctx.fillStyle = '#fef3c7';
+  ctx.fillRect(l/2 - 0.62, -w/2 + 0.28, 0.5, 0.85);
+  ctx.fillRect(l/2 - 0.62,  w/2 - 1.13, 0.5, 0.85);
+  ctx.fillStyle = '#b91c1c';
+  ctx.fillRect(-l/2 + 0.12, -w/2 + 0.28, 0.45, 0.8);
+  ctx.fillRect(-l/2 + 0.12,  w/2 - 1.08, 0.45, 0.8);
+
+  if (isPlayer) {
+    const braking = keys[' '] || ((keys['s'] || keys['arrowdown']) && car.v > 0.5);
+    const reversing = car.v < -0.5;
+    if (braking || reversing) {           // brake / reverse light glow
+      ctx.fillStyle = braking ? 'rgba(248,60,60,.9)' : 'rgba(255,255,255,.9)';
+      ctx.fillRect(-l/2 + 0.12, -w/2 + 0.28, 0.45, 0.8);
+      ctx.fillRect(-l/2 + 0.12,  w/2 - 1.08, 0.45, 0.8);
+      ctx.fillStyle = braking ? 'rgba(248,60,60,.2)' : 'rgba(255,255,255,.18)';
+      ctx.beginPath(); ctx.ellipse(-l/2 - 0.15, -w/2 + 0.68, 0.85, 0.6, 0, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(-l/2 - 0.15,  w/2 - 0.68, 0.85, 0.6, 0, 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = '#fbbf24';            // number plate (ANPR reads this)
+    ctx.fillRect(-l/2 - 0.15, -1.1, 0.5, 2.2);
+  }
+  ctx.restore();
+}
+
+/* ---------------- HUD update / hints ---------------- */
+function hudUpdate() {
+  const clockEl = document.getElementById('hudClock');
+  clockEl.querySelector('.time').textContent = clockStr();
+  clockEl.querySelector('.day').textContent = S.day;
+  clockEl.classList.toggle('late', gameSec() > 8.67*3600);
+  document.getElementById('pClock').textContent = clockStr();
+  document.getElementById('scoreVal').textContent = Math.round(S.score).toLocaleString('en-GB');
+
+  // speedometer
+  const mph = Math.min(MAX_MPH, Math.abs(car.v));
+  const frac = mph / MAX_MPH;
+  document.getElementById('mphVal').textContent = String(Math.round(mph));
+  const arc = document.getElementById('speedoArc');
+  arc.setAttribute('stroke-dashoffset', String((138.2 * (1 - frac)).toFixed(1)));
+  arc.setAttribute('stroke', S.speeding ? '#ef4444' : mph > 30 ? '#facc15' : '#4ade80');
+  document.getElementById('speedoNeedle').setAttribute('transform', 'rotate(' + (frac * 180).toFixed(1) + ' 56 56)');
+  document.getElementById('speedo').classList.toggle('inzone', S.inZone);
+  document.getElementById('speedWarn').style.display = (S.speeding && S.phase === 'play') ? 'block' : 'none';
+
+  const hint = document.getElementById('hint');
+  if (S.phase === 'login') hint.textContent = '📱 Log in to Parkable — the clock starts when you do.';
+  else if (S.phase === 'booking') hint.textContent = '📱 Book a bay — the clock is already running.';
+  else if (!S.booking) hint.textContent = '📱 Tab — book a bay on Parkable before you hit a barrier.';
+  else {
+    const cp = CARPARKS.find(c => c.id === S.booking.cp);
+    const d = Math.hypot(car.x - cp.entrance[0], car.y - cp.entrance[1]);
+    const s = cp.surface;
+    const insidePark = car.x > s[0] && car.x < s[2] && car.y > s[1] && car.y < s[3];
+    const idsOn = S.idToggleUnlocked && S.idToggleOn;
+    if (S.curBay && S.bayFit === 'inside' && S.curBay.id === S.booking.bayId)
+      hint.textContent = '✅ Bay ' + S.curBay.id + ' — that\'s YOUR bay! Press E to park.';
+    else if (S.curBay && S.bayFit === 'partial')
+      hint.textContent = '↔ Almost — get fully inside the lines' + (idsOn ? ' of ' + S.curBay.id : '') + '.';
+    else if (S.curBay && S.bayFit === 'inside')
+      hint.textContent = '❌ ' + (idsOn ? S.curBay.id + ' is not yours' : 'Not your bay') +
+        (S.curBay.type !== 'standard' ? ' — and it\'s reserved!' : '') + ' You booked ' + S.booking.bayId + '.';
+    else if (insidePark) hint.textContent = 'Find bay ' + S.booking.bayId + ' — park fully in the lines, then press E.';
+    else if (d < 60) hint.textContent = 'Barrier ahead — ' + cp.name + '. It knows you\'re booked.';
+    else hint.textContent = 'Booked: ' + S.booking.bayId + ' at ' + cp.name + '. Drive there — watch the clock.';
+  }
+}
+
+/* ---------------- Main loop ---------------- */
+let last = 0, acc = 0;
+const STEP = 1/60;
+function frame(t) {
+  const dt = Math.min(0.1, (t - last)/1000 || 0); last = t;
+  const clockRuns = S.phase === 'play' || S.phase === 'dialog' || S.phase === 'booking';
+  if (clockRuns) {
+    S.realElapsed += dt;   // the day does not pause for app-fumbling or tellings-off
+    S.score -= dt * (1000000 / 600);   // 1,000,000 burns to zero over the 10 minutes to 09:00
+    if (S.phase === 'play') {
+      acc += dt;
+      while (acc > STEP) { physics(STEP); npcUpdate(STEP); acc -= STEP; }
+    } else if (S.phase === 'dialog') {
+      npcUpdate(dt);
+    }
+    if (gameSec() >= 9*3600) lose('09:00. You never parked. You missed the start of your day — and stand-up. The team lead is typing…');
+    if (gameSec() > 8.5*3600 && !S.msgLate) {
+      S.msgLate = true;
+      S.messages.push({ from:'Team lead', text:'It\'s 8:30. Where are you?' });
+      toast('💬 New message from Team lead');
+    }
+  }
+  for (const cl of clouds) {           // clouds drift whatever the game state
+    cl.x += 2.2*dt; cl.y += 0.9*dt;
+    if (cl.x - cl.s*3 > 1150) cl.x = -160;
+    if (cl.y - cl.s*3 > 1120) cl.y = -300;
+  }
+  draw(); hudUpdate();
+  requestAnimationFrame(frame);
+}
+
+/* ---------------- Wire-up ---------------- */
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const n = document.getElementById('loginName').value.trim();
+  S.name = n || 'Mystery Employee';
+  document.getElementById('homeHello').textContent = 'Hello, ' + S.name;
+  showScreen('home');
+  if (S.phase === 'login') {
+    S.phase = 'booking';   // the day — and the 1,000,000 — starts burning now
+    toast('⏱ Clock\'s running, ' + S.name + ' — book a bay!');
+  }
+});
+document.querySelectorAll('.app-icon').forEach(el =>
+  el.addEventListener('click', () => showScreen(el.dataset.app)));
+document.querySelectorAll('.backlink').forEach(el =>
+  el.addEventListener('click', () => showScreen(el.dataset.back)));
+document.getElementById('cancelBooking').addEventListener('click', cancelBooking);
+document.getElementById('bayIdToggle').addEventListener('change', e => { S.idToggleOn = e.target.checked; });
+document.getElementById('startBtn').addEventListener('click', () => {
+  document.getElementById('startOverlay').classList.remove('show');
+  buildOffers();
+  S.phase = 'login';     // clock and score hold until the player logs in
+  togglePhone(true); showScreen('login');
+  beep([[523,.08],[659,.1]]);
+});
+document.getElementById('restartBtn').addEventListener('click', () => location.reload());
+document.getElementById('resetBtn').addEventListener('click', () => { if (S.phase === 'play') resetCar(); });
+document.getElementById('hudPlate').textContent = 'Vehicle: ' + car.plate;
+document.getElementById('hsHead').addEventListener('click', () => {
+  const p = document.getElementById('hsPanel');
+  p.classList.toggle('collapsed');
+  document.getElementById('hsTgl').textContent = p.classList.contains('collapsed') ? '▸' : '▾';
+});
+/* two-step reset: first click arms it, second click (within 3 s) wipes the table */
+let hsResetArm = null;
+document.getElementById('hsReset').addEventListener('click', () => {
+  const btn = document.getElementById('hsReset');
+  if (hsResetArm === null) {
+    btn.textContent = '⚠ Sure? Click again to wipe';
+    hsResetArm = setTimeout(() => { btn.textContent = '🗑 Reset table'; hsResetArm = null; }, 3000);
+  } else {
+    clearTimeout(hsResetArm); hsResetArm = null;
+    localStorage.removeItem(HS_KEY);
+    renderHsPanel();
+    btn.textContent = '🗑 Reset table';
+    toast('High score table wiped. A fresh start for everyone.');
+  }
+});
+renderHsPanel();
+
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

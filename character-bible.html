@@ -1,0 +1,716 @@
+<title>Circle the Square — Character Bible</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #211d17;
+      --paper-raised: #2a251d;
+      --paper-tab: #171310;
+      --ink: #ede6d6;
+      --ink-soft: #b7ae99;
+      --line: #4a4030;
+      --accent: #e2603f;
+      --accent-soft: rgba(226, 96, 63, 0.18);
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #211d17;
+    --paper-raised: #2a251d;
+    --paper-tab: #171310;
+    --ink: #ede6d6;
+    --ink-soft: #b7ae99;
+    --line: #4a4030;
+    --accent: #e2603f;
+    --accent-soft: rgba(226, 96, 63, 0.18);
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
+
+  :root {
+    --paper: #e4dfcf;
+    --paper-raised: #f3efe3;
+    --paper-tab: #d8cfb4;
+    --ink: #2a2620;
+    --ink-soft: #6b6455;
+    --line: #c9c0a8;
+    --accent: #b0381f;
+    --accent-soft: rgba(176, 56, 31, 0.1);
+    --shadow: rgba(42, 38, 32, 0.18);
+
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.55;
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Cover / header ---------- */
+  .cover {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    padding: 2rem 2rem 1.6rem;
+    position: relative;
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: -8px; left: 28px;
+    width: 34px; height: 16px;
+    background: var(--paper-tab);
+    border: 1px solid var(--line);
+    border-bottom: none;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 4.4vw, 2.6rem);
+    margin: 0.25rem 0 0.4rem;
+    text-wrap: balance;
+  }
+  .cover-sub {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--line);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .cover-meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Cast directory ---------- */
+  .directory {
+    margin-top: 1.6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.7rem;
+  }
+  .dir-card {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .dir-badge {
+    flex: none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dir-name { font-size: 0.86rem; font-weight: 600; line-height: 1.2; }
+  .dir-role { font-size: 0.72rem; color: var(--ink-soft); }
+
+  /* ---------- File sections ---------- */
+  section.file {
+    margin-top: 2.4rem;
+    position: relative;
+  }
+  .tab {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    background: var(--paper-tab);
+    border: 1px solid var(--line);
+    border-bottom: none;
+    padding: 0.4rem 0.9rem 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .folder {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    padding: 1.6rem 1.8rem 1.8rem;
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+  .file-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+  .file-name {
+    font-family: var(--display);
+    font-size: 1.7rem;
+    margin: 0;
+  }
+  .file-role { color: var(--ink-soft); font-size: 0.9rem; margin-top: 0.15rem; }
+  .stamp {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    padding: 0.28rem 0.55rem;
+    transform: rotate(-3deg);
+    white-space: nowrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.8rem;
+  }
+  @media (max-width: 620px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .fields dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: 0.55rem;
+    column-gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+  .fields dt {
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.68rem;
+    padding-top: 0.15rem;
+  }
+  .fields dd { margin: 0; }
+
+  .narrative h4 {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 1.1rem 0 0.3rem;
+  }
+  .narrative h4:first-child { margin-top: 0; }
+  .narrative p { margin: 0 0 0.2rem; font-size: 0.95rem; }
+
+  blockquote {
+    margin: 0.3rem 0 0;
+    padding: 0.15rem 0 0.15rem 0.9rem;
+    border-left: 2px solid var(--accent);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  blockquote + blockquote { margin-top: 0.5rem; }
+
+  .flag {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--accent);
+  }
+
+  /* ---------- Production notes ---------- */
+  .notes {
+    margin-top: 2.4rem;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    padding: 1.6rem 1.8rem;
+  }
+  .notes h3 {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    margin: 0 0 0.9rem;
+  }
+  .notes ul { margin: 0; padding-left: 1.2rem; }
+  .notes li { margin-bottom: 0.6rem; font-size: 0.92rem; }
+  .notes b { color: var(--accent); }
+
+  .visual-ref {
+    margin-top: 1.4rem;
+    border-top: 1px dashed var(--line);
+    padding-top: 1.2rem;
+  }
+  .visual-ref h4 {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 1.1rem 0 0.4rem;
+  }
+  .visual-ref h4:first-child { margin-top: 0; }
+  .vr-sub {
+    margin: 0 0 0.9rem;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    max-width: 62ch;
+  }
+  .vr-fields {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    row-gap: 0.6rem;
+    column-gap: 1rem;
+  }
+  .vr-fields dt {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-top: 0.15rem;
+  }
+  .vr-fields dd {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+  .vr-shots {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .vr-shots li { font-size: 0.9rem; }
+  .vr-shots b { color: var(--ink); }
+
+  footer {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow">Prism &nbsp;·&nbsp; Personnel File &nbsp;·&nbsp; Confidential Draft</div>
+    <h1>Circle the Square — Character Bible</h1>
+    <p class="cover-sub">Cast profiles pulled from the featurette script, prepped for storyboarding and a shoot on location in your real office.</p>
+    <div class="cover-meta">
+      <span><b>6</b> characters (5 speaking, 1 walk-on)</span>
+      <span><b>4</b> scenes / 2 locations</span>
+      <span>Source: CTS‑Featurette episode</span>
+    </div>
+  </div>
+
+  <div class="directory">
+    <a class="dir-card" href="#jan"><span class="dir-badge">JP</span><span><span class="dir-name">Jan Peach</span><br><span class="dir-role">CEO</span></span></a>
+    <a class="dir-card" href="#christina"><span class="dir-badge">CD</span><span><span class="dir-name">Christina Dross</span><br><span class="dir-role">Comms lead</span></span></a>
+    <a class="dir-card" href="#sharon"><span class="dir-badge">SE</span><span><span class="dir-name">Sharon Enfield</span><br><span class="dir-role">Staff</span></span></a>
+    <a class="dir-card" href="#chris"><span class="dir-badge">C</span><span><span class="dir-name">Chris</span><br><span class="dir-role">Staff</span></span></a>
+    <a class="dir-card" href="#rick"><span class="dir-badge">R</span><span><span class="dir-name">Rick</span><br><span class="dir-role">Staff</span></span></a>
+    <a class="dir-card" href="#canteen"><span class="dir-badge">–</span><span><span class="dir-name">Canteen worker</span><br><span class="dir-role">Walk-on</span></span></a>
+  </div>
+
+  <!-- JAN PEACH -->
+  <section class="file" id="jan">
+    <div class="tab">File 01 / Lead</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Jan Peach</p>
+          <p class="file-role">CEO, Prism — self-appointed lead, "Project Inception"</p>
+        </div>
+        <div class="stamp">Protagonist / Antagonist</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>Late 40s–50s</dd>
+            <dt>First seen</dt><dd>Scene 1 — his office, morning</dd>
+            <dt>Wardrobe</dt><dd>Suit, slightly too proud of itself; shirt comes off mid-episode</dd>
+            <dt>Temper</dt><dd>Zero to shouting, no warning</dd>
+            <dt>Fate</dt><dd>Tasered, unconscious, scene 4</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Personality &amp; voice</h4>
+          <p>Convinced every failure downstream of him is someone else's incompetence. Leans hard on his MBA as a credential that ends arguments. Quotes Star Trek unironically and is baffled when no one gets the reference. Swings from oily corporate-speak to screaming in about one line of dialogue.</p>
+          <h4>Key relationships</h4>
+          <p>Bulldozes Christina, is secretly sleeping with Sharon behind a locked office door, gets openly mocked by Chris and Rick and doesn't notice.</p>
+          <h4>Arc</h4>
+          <p>Opens the episode arrogant and merely annoying; by the canteen scene he's smashing furniture and screaming about his MBA. Rick has to taser him to stop it.</p>
+          <h4>Notable lines</h4>
+          <blockquote>"Great. Make it so…"</blockquote>
+          <blockquote>"GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED"</blockquote>
+          <blockquote>"I HAVE AN MBA, NOBODY APPRECIATES MY IMMENSE TALENT."</blockquote>
+          <h4>Shoot notes — real office</h4>
+          <p>Use the most "executive" meeting room you've got for his office scenes — glass door helps for the blinds-closing beat. The chair-through-the-window moment and the shirt-off gag both need a call before storyboarding.</p>
+          <span class="flag">Flag: window smash + shirt-off beat — see production notes below</span>
+        </div>
+      </div>
+
+      <div class="visual-ref">
+        <h4>Visual reference — photoreal generation base</h4>
+        <p class="vr-sub">Physical breakdown for building a consistent AI-generated image set. Reuse the description verbatim across shots so the same "actor" reads consistently from image to image.</p>
+        <dl class="vr-fields">
+          <dt>Age / build</dt><dd>52 years old, 5'10", soft overweight build — noticeable gut straining his shirt buttons, rounded shoulders, soft hands</dd>
+          <dt>Face</dt><dd>Round, jowly face with the start of a double chin; thin-lipped mouth set in a default smug half-smile</dd>
+          <dt>Hair</dt><dd>Thinning mid-brown hair greying at the temples, side-parted and combed over a receding hairline, visibly product-slicked</dd>
+          <dt>Eyes / brows</dt><dd>Small, pale blue-grey eyes; thick eyebrows permanently half-raised in self-satisfaction, narrowing when irritated</dd>
+          <dt>Complexion</dt><dd>Pale, ruddy British complexion that reddens deeply and sweats visibly under stress; clean-shaven with a five-o-clock shadow by end of day</dd>
+          <dt>Wardrobe (default)</dt><dd>Slightly-too-tight dark navy two-button suit, white dress shirt, top button often undone with tie loosened, polished but scuffed black shoes, oversized flashy wristwatch, wedding ring</dd>
+          <dt>Signature props</dt><dd>Phone constantly in hand, Prism-branded lanyard/ID badge, Prism-branded coffee mug</dd>
+          <dt>Default posture</dt><dd>Chest out, chin up, hands on hips or fingers steepled when holding court; when angry — red-faced, neck veins visible, finger jabbing, sweat sheen</dd>
+        </dl>
+
+        <h4>Ten reference shots to generate</h4>
+        <ol class="vr-shots">
+          <li><b>Master reference</b> — full-body neutral standing portrait, arms crossed, smug half-smile, three-quarter angle, office backdrop</li>
+          <li><b>Headshot</b> — close-up head-and-shoulders, neutral corporate lighting, front-facing</li>
+          <li><b>At his desk</b> — sitting behind desk, leaning back, hands behind head, feet up</li>
+          <li><b>Mid-lecture</b> — one arm raised pointing at an unseen audience, mouth open mid-sentence</li>
+          <li><b>Shouting</b> — close-up, red-faced, neck veins bulging</li>
+          <li><b>Flustered</b> — sweating, tie loosened, top button undone, cuffs being unbuttoned</li>
+          <li><b>Throwing the chair</b> — full-body action pose, mid-swing, jacket flaring</li>
+          <li><b>Corridor walk</b> — full-body, striding down an office corridor, phone to ear, chin up</li>
+          <li><b>Tasered</b> — slumped unconscious on the floor, one arm splayed, shirt untucked</li>
+          <li><b>"Make it so"</b> — seated at the head of a meeting table, self-satisfied grin, one fist half-raised</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHRISTINA DROSS -->
+  <section class="file" id="christina">
+    <div class="tab">File 02 / Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Christina Dross</p>
+          <p class="file-role">Comms / staff-engagement lead</p>
+        </div>
+        <div class="stamp">Supporting</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>30s–40s</dd>
+            <dt>First seen</dt><dd>Scene 1 — pitches "breakfast meetings" to Jan</dd>
+            <dt>Wardrobe</dt><dd>Sharp, composed office wear</dd>
+            <dt>Register</dt><dd>Calm on the surface, dry underneath</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Personality &amp; voice</h4>
+          <p>The only character who's actually thinking two steps ahead. Pitches Jan a "communication" idea that's really a plan to sugar-drug the staff into compliance — and later has the canteen team load the pastries with more sugar than anyone's comfortable with. Answers Jan's outbursts with a flat deadpan rather than pushing back.</p>
+          <h4>Key relationships</h4>
+          <p>Reports to Jan, absorbs his tantrums without flinching, quietly runs circles around him.</p>
+          <h4>Arc</h4>
+          <p>Sets the "sugar the staff" plan in motion in scene 1; it's her oversized pastry order that empties out before Jan gets one, the spark for his canteen meltdown. Whether that's a happy accident or not is a nice ambiguity to play with in blocking.</p>
+          <h4>Notable lines</h4>
+          <blockquote>"Well every two weeks on a Friday we do a 'breakfast meeting' and offer some pastries... loaded with as much sugar as humanly possible..."</blockquote>
+          <blockquote>"Made Up Place?"</blockquote>
+          <h4>Shoot notes — real office</h4>
+          <p>Same meeting room as Jan for scene 1. Doesn't appear again after she's dismissed — no canteen or crowd scene blocking needed for her.</p>
+        </div>
+      </div>
+
+      <div class="visual-ref">
+        <h4>Visual reference — photoreal generation base</h4>
+        <p class="vr-sub">Physical breakdown for building a consistent AI-generated image set. Reuse the description verbatim across shots so the same "actor" reads consistently from image to image.</p>
+        <dl class="vr-fields">
+          <dt>Age / build</dt><dd>38 years old, 5'6", slim, upright build with squared shoulders</dd>
+          <dt>Face</dt><dd>Oval face, sharp cheekbones, composed neutral default expression with a faint knowing half-smile</dd>
+          <dt>Hair</dt><dd>Sleek dark brown bob, blunt fringe or crisp side part, always neatly set — never out of place</dd>
+          <dt>Eyes / brows</dt><dd>Dark brown eyes, sharp assessing gaze; neatly shaped brows that rarely move even when Jan is shouting</dd>
+          <dt>Complexion</dt><dd>Light olive complexion, even and unflushed — visibly the calmest person in any room</dd>
+          <dt>Wardrobe (default)</dt><dd>Tailored charcoal or navy blazer over a cream blouse, tailored trousers or pencil skirt, low block heels, minimal gold jewellery, Prism lanyard</dd>
+          <dt>Signature props</dt><dd>Tablet or clipboard with "staff engagement" notes, travel mug, phone face-down on the table</dd>
+          <dt>Default posture</dt><dd>Hands clasped or one hand resting on hip; slight head tilt when delivering a dry line; stays still and level while others react around her</dd>
+        </dl>
+
+        <h4>Reference shots to generate</h4>
+        <ol class="vr-shots">
+          <li><b>Master reference</b> — full-body neutral standing portrait, hands loosely clasped, three-quarter angle, office backdrop</li>
+          <li><b>Headshot</b> — close-up head-and-shoulders, composed expression, front-facing</li>
+          <li><b>Pitching</b> — leaning slightly forward across the meeting table, tablet in hand, persuasive half-smile, addressing Jan off-frame</li>
+          <li><b>Deadpan reaction</b> — close-up, flat unimpressed expression while shouting happens off-frame</li>
+          <li><b>Corridor walk</b> — full-body, brisk purposeful stride, clipboard under one arm</li>
+          <li><b>Dismissed</b> — three-quarter rear view leaving the room, unreadable expression</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARON ENFIELD -->
+  <section class="file" id="sharon">
+    <div class="tab">File 03 / Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Sharon Enfield</p>
+          <p class="file-role">Staff — department unspecified</p>
+        </div>
+        <div class="stamp">Supporting</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>First seen</dt><dd>Scene 2 — barges into Jan's office</dd>
+            <dt>Wardrobe</dt><dd>Put-together going in, visibly dishevelled coming out</dd>
+            <dt>Screen time</dt><dd>Brief — one scene, implied off-screen</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Personality &amp; voice</h4>
+          <p>Transactional and entirely unbothered by workplace propriety. States what she wants plainly and gets it — including the rest of the day off. Everyone else clocks the affair instantly; she doesn't seem to care that they do.</p>
+          <h4>Key relationships</h4>
+          <p>Having an affair with Jan; the subject of open office gossip (Chris and Rick both notice and comment).</p>
+          <h4>Notable lines</h4>
+          <blockquote>"I hear Christina is doing breakfast meetings now."</blockquote>
+          <blockquote>"Well I have needs too Jan that must be met."</blockquote>
+          <h4>Shoot notes — real office</h4>
+          <p>Everything explicit happens behind a closed door with the blinds down — easy to shoot tastefully as a door-close / time-cut. All you need on camera is her walking in composed and leaving dishevelled a "few minutes" later.</p>
+          <span class="flag">Flag: affair implication — handled off-screen, see production notes</span>
+        </div>
+      </div>
+
+      <div class="visual-ref">
+        <h4>Visual reference — photoreal generation base</h4>
+        <p class="vr-sub">Physical breakdown for building a consistent AI-generated image set. Reuse the description verbatim across shots so the same "actor" reads consistently from image to image.</p>
+        <dl class="vr-fields">
+          <dt>Age / build</dt><dd>34 years old, 5'5", curvy build</dd>
+          <dt>Face</dt><dd>Heart-shaped face, full lips, confident level gaze; default expression is an unbothered half-smile</dd>
+          <dt>Hair</dt><dd>Shoulder-length wavy auburn hair, worn loose or half-up when composed</dd>
+          <dt>Eyes / brows</dt><dd>Green eyes, arched expressive brows that lift into a smirk rather than embarrassment</dd>
+          <dt>Complexion</dt><dd>Fair complexion, cheeks flush easily</dd>
+          <dt>Wardrobe (composed)</dt><dd>Fitted jewel-tone blouse, pencil skirt, heels, hair and makeup neatly done, Prism lanyard</dd>
+          <dt>Wardrobe (dishevelled)</dt><dd>Same outfit — blouse untucked or buttons slightly askew, hair mussed, heels in hand or one shoe off, makeup smudged, no visible urgency</dd>
+          <dt>Signature props</dt><dd>Phone, small handbag, Prism lanyard</dd>
+          <dt>Default posture</dt><dd>Unhurried and self-assured; dishevelled state stays relaxed rather than flustered — smoothing her hair, not smoothing her story</dd>
+        </dl>
+
+        <h4>Reference shots to generate</h4>
+        <ol class="vr-shots">
+          <li><b>Master reference</b> — full-body, composed outfit, confident standing pose, three-quarter angle</li>
+          <li><b>Headshot</b> — composed, confident half-smile, front-facing</li>
+          <li><b>Barging in</b> — mid-stride entering the office, purposeful expression, composed wardrobe</li>
+          <li><b>Dishevelled exit</b> — leaving the office, mussed hair, straightening blouse, unbothered smile</li>
+          <li><b>Reaction shot</b> — close-up, amused and unfazed while colleagues clock the affair</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHRIS -->
+  <section class="file" id="chris">
+    <div class="tab">File 04 / Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Chris</p>
+          <p class="file-role">Staff — rank and file</p>
+        </div>
+        <div class="stamp">Comic relief</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>First seen</dt><dd>Scene 3 — staff gather round Jan</dd>
+            <dt>Wardrobe</dt><dd>Ordinary office wear, no special notes</dd>
+            <dt>Register</dt><dd>Deadpan, quick with a jab</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Personality &amp; voice</h4>
+          <p>The office's designated smart mouth — lands the "Inception" joke, needles Jan in front of the crowd, and is the one who calmly checks whether Jan's actually dead after the taser hits. Unfazed by almost everything.</p>
+          <h4>Key relationships</h4>
+          <p>Working alongside Rick as the two most switched-on people in the room; happy to mock Jan to his face.</p>
+          <h4>Notable lines</h4>
+          <blockquote>"You're dreaming Jan." / "Inception is the name of a film about dreams Jan."</blockquote>
+          <blockquote>"Have you killed him?"</blockquote>
+          <h4>Shoot notes — real office</h4>
+          <p>Needs to read clearly in a crowd shot in scene 3 (open desk area works well) and get a clean coverage shot in the canteen for the closing beat.</p>
+        </div>
+      </div>
+
+      <div class="visual-ref">
+        <h4>Visual reference — photoreal generation base</h4>
+        <p class="vr-sub">Physical breakdown for building a consistent AI-generated image set. Reuse the description verbatim across shots so the same "actor" reads consistently from image to image.</p>
+        <dl class="vr-fields">
+          <dt>Age / build</dt><dd>32 years old, 5'11", lean build</dd>
+          <dt>Face</dt><dd>Angular face, quick smirk that's basically his resting expression</dd>
+          <dt>Hair</dt><dd>Short, textured dark hair</dd>
+          <dt>Eyes / brows</dt><dd>Dark eyes, one eyebrow habitually cocked half-raised</dd>
+          <dt>Complexion</dt><dd>Medium, even complexion</dd>
+          <dt>Wardrobe (default)</dt><dd>Casual-smart office wear — shirt untucked or sleeves rolled, no tie, Prism lanyard, casual shoes or sneakers</dd>
+          <dt>Signature props</dt><dd>Coffee cup, phone, a "Project Inception" branded stress ball</dd>
+          <dt>Default posture</dt><dd>Slouched or leaning against something, arms crossed, deadpan half-grin, never visibly rattled</dd>
+        </dl>
+
+        <h4>Reference shots to generate</h4>
+        <ol class="vr-shots">
+          <li><b>Master reference</b> — full-body, arms crossed, leaning stance, three-quarter angle</li>
+          <li><b>Headshot</b> — smirking, front-facing</li>
+          <li><b>Cracking the joke</b> — one hand raised mid-gesture, mouth open mid-line, crowd context</li>
+          <li><b>Crowd shot</b> — standing among the staff group in scene 3, arms crossed, amused</li>
+          <li><b>Canteen check-in</b> — crouched over unconscious Jan, curious deadpan expression</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- RICK -->
+  <section class="file" id="rick">
+    <div class="tab">File 05 / Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Rick</p>
+          <p class="file-role">Staff — rank and file</p>
+        </div>
+        <div class="stamp">Comic relief</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>First seen</dt><dd>Scene 3 — calls out the last failed project</dd>
+            <dt>Wardrobe</dt><dd>Ordinary office wear</dd>
+            <dt>Key prop</dt><dd>Taser (his own, unexplained)</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Personality &amp; voice</h4>
+          <p>The realist of the group — points out that the "previous project" is actually still failing, out loud, in front of everyone. Blunt rather than showy. Turns out to be carrying a taser "for this place," which he uses without much hesitation once Jan starts throwing furniture.</p>
+          <h4>Key relationships</h4>
+          <p>Works alongside Chris; ends the episode as the one person who actually de-escalates Jan.</p>
+          <h4>Notable lines</h4>
+          <blockquote>"What happened to the last project for this, isn't it ongoing? By that I mean completely failing."</blockquote>
+          <blockquote>"No relax, he will be out for a while. I knew this Taser would come in useful one day in this place. I think we need the police here…"</blockquote>
+          <h4>Shoot notes — real office</h4>
+          <p>The taser hit is the episode's button — needs a prop taser (non-functional) and a rehearsed fall for whoever plays Jan. Don't use a real device.</p>
+          <span class="flag">Flag: taser gag — prop only, see production notes</span>
+        </div>
+      </div>
+
+      <div class="visual-ref">
+        <h4>Visual reference — photoreal generation base</h4>
+        <p class="vr-sub">Physical breakdown for building a consistent AI-generated image set. Reuse the description verbatim across shots so the same "actor" reads consistently from image to image.</p>
+        <dl class="vr-fields">
+          <dt>Age / build</dt><dd>40 years old, 6'0", sturdy/broad build</dd>
+          <dt>Face</dt><dd>Square jaw, weathered no-nonsense expression, rarely surprised</dd>
+          <dt>Hair</dt><dd>Short greying hair, near-buzzcut</dd>
+          <dt>Eyes / brows</dt><dd>Steady, unblinking gaze; flat brows that don't move even when tasering a co-worker</dd>
+          <dt>Complexion</dt><dd>Ruddy, weathered complexion</dd>
+          <dt>Wardrobe (default)</dt><dd>Plain button-down or polo shirt, sleeves rolled, sturdy trousers, practical shoes, Prism lanyard</dd>
+          <dt>Signature props</dt><dd>Taser (concealed by default, drawn in scene 4 — visibly fake/prop version only), phone</dd>
+          <dt>Default posture</dt><dd>Arms crossed, feet planted, blunt and unbothered — treats a workplace taser incident as a Tuesday</dd>
+        </dl>
+
+        <h4>Reference shots to generate</h4>
+        <ol class="vr-shots">
+          <li><b>Master reference</b> — full-body, arms crossed, feet planted, three-quarter angle</li>
+          <li><b>Headshot</b> — flat, unimpressed expression, front-facing</li>
+          <li><b>Calling it out</b> — one hand raised pointing, blunt expression, crowd context</li>
+          <li><b>Drawing the taser</b> — action pose, prop taser raised, focused expression</li>
+          <li><b>Standing over Jan</b> — looking down at unconscious Jan, taser lowered, calm</li>
+          <li><b>On the phone</b> — phone to ear, weary "we need the police here" expression</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- CANTEEN WORKER -->
+  <section class="file" id="canteen">
+    <div class="tab">File 06 / Walk-on</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Canteen worker</p>
+          <p class="file-role">Unnamed — one line</p>
+        </div>
+        <div class="stamp">Background</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>First seen</dt><dd>Scene 4 — canteen</dd>
+            <dt>Lines</dt><dd>1</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Function</h4>
+          <p>Delivers the line that lights Jan's fuse — simply out of pastries. Any extra or crew member can cover this; no distinguishing traits given in the script.</p>
+          <h4>Notable line</h4>
+          <blockquote>"Sorry, all gone."</blockquote>
+        </div>
+      </div>
+
+      <div class="visual-ref">
+        <h4>Visual reference — photoreal generation base</h4>
+        <p class="vr-sub">Script gives no distinguishing traits — this is a minimal, castable-by-anyone base, kept only for shot-to-shot consistency if the same extra covers all canteen takes.</p>
+        <dl class="vr-fields">
+          <dt>Age / build</dt><dd>Adult, average build — no age or build specified in script</dd>
+          <dt>Wardrobe</dt><dd>Canteen apron over plain shirt, hairnet if hair is long, generic blank name badge</dd>
+          <dt>Signature props</dt><dd>Serving tongs, empty pastry tray</dd>
+          <dt>Default posture</dt><dd>Standing behind the counter, slight apologetic shrug</dd>
+        </dl>
+
+        <h4>Reference shots to generate</h4>
+        <ol class="vr-shots">
+          <li><b>Master reference</b> — standing behind the canteen counter, apron, neutral expression</li>
+          <li><b>Delivering the line</b> — gesturing to the empty tray, apologetic shrug</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h3>General production notes — shooting in a real office</h3>
+    <ul>
+      <li><b>Locations needed:</b> one meeting room ("Jan's office," ideally with a door and blinds), one open desk area (staff gather-round), one kitchen/break room ("canteen").</li>
+      <li><b>Window smash (scene 4):</b> don't break a real window. Options: cut away before impact and sell it with sound + a stunt pane/breakaway prop, or reframe so the chair hits an off-camera surface and cut to a pre-broken practical panel.</li>
+      <li><b>Taser hit (scene 4):</b> use a visibly fake/prop taser, choreograph Jan's fall on a mat out of frame if needed, and keep the "device" itself brief and off-focus — the reaction sells it.</li>
+      <li><b>Affair beat (scene 2):</b> nothing explicit is required by the script — blinds down, door closed, then cut to Sharon leaving dishevelled. Easy to shoot clean.</li>
+      <li><b>Shirt-off gag (scene 1–2):</b> optional depending on how comfortable your cast/office is with it; can be softened (Jan just changes his shirt) without losing the scene's function.</li>
+      <li><b>Props to source:</b> a tray of pastries, a stack of "Project Inception" branded stress balls/pens/t-shirts (worth mocking up simple printed versions for the sight gag in scene 3).</li>
+    </ul>
+  </div>
+
+  <footer>Circle the Square — Character Bible · draft for storyboard planning</footer>
+</div>

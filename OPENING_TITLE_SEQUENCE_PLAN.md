@@ -120,6 +120,8 @@ Yes! The generator explicitly combines your real office background photographs f
    - Office Shot 4 (Group Photo Setup): [`IMG_20260804_131855397.jpg`](file:///C:/ai/Circle%20the%20Square/building-reference/use-images/IMG_20260804_131855397.jpg) (Faceted Orange Desk & Triangle Accent Wall)
 2. **Foreground Character Sheet References**:
    - [`jan_peach_identity_sheet.jpg`](file:///C:/ai/Circle%20the%20Square/character-refs/jan_peach_identity_sheet.jpg)
+   - 📄 **Interactive Asset Portal**: [`opening_sequence_preview.html`](file:///C:/ai/Circle%20the%20Square/opening_sequence_preview.html)
+   - 📄 **6-Panel Director's Storyboard Board**: [`opening_sequence_storyboard.html`](file:///C:/ai/Circle%20the%20Square/opening_sequence_storyboard.html)
    - [`christina_dross_identity_sheet.jpg`](file:///C:/ai/Circle%20the%20Square/character-refs/christina_dross_identity_sheet.jpg)
    - [`sharon_enfield_identity_sheet.jpg`](file:///C:/ai/Circle%20the%20Square/character-refs/sharon_enfield_identity_sheet.jpg)
    - [`chris_identity_sheet.jpg`](file:///C:/ai/Circle%20the%20Square/character-refs/chris_identity_sheet.jpg)

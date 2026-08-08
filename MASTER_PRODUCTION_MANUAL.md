@@ -143,6 +143,10 @@ Interactive Visual Asset Portal:
 📄 **Filename**: `opening_sequence_preview.html`  
 📄 **Full Path**: [`file:///C:/ai/Circle the Square/opening_sequence_preview.html`](file:///C:/ai/Circle%20the%20Square/opening_sequence_preview.html)  
 
+6-Panel Vector Director's Storyboard Board:  
+📄 **Filename**: `opening_sequence_storyboard.html`  
+📄 **Full Path**: [`file:///C:/ai/Circle the Square/opening_sequence_storyboard.html`](file:///C:/ai/Circle%20the%20Square/opening_sequence_storyboard.html)  
+
 ---
 
 ## 11. 🎙️ LOCKED VOICE SPECIFICATION & AUDIO ROSTER (QWEN3-TTS & NEURAL)

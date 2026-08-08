@@ -45,18 +45,15 @@ The opening sequence for *Circle the Square* is designed as a continuous 30-seco
 
 ---
 
-## 3. ⏱️ 30-Second Directorial Shot-by-Shot Timeline
+## 3. ⏱️ 30-Second Directorial Shot-by-Shot Timeline (Strict 2–3 Images Per Shot)
 
-| Timestamp | Camera Motion | Visual Target & Reference File | Audio & Score Cue |
+| Timestamp | Shot ID & Camera Motion | Hero Reference Assets (Strict 2–3 Max) | Audio & Score Cue |
 | :--- | :--- | :--- | :--- |
-| `0:00 - 0:03` | High FPV Drone Orbit, 24mm lens, 100m → 50m descending over site. | High aerial drone overview of the entire 2.5-hectare triangular building complex, roof courtyards, tower & railway line (`building-reference/use-images/P24.jpg`) into prow dusk flyby (`DL-EPA-CA-5580-online.jpg`). | Solitary 7/8 acoustic guitar strumming over low HVAC hum & distance train rumble. |
-| `0:03 - 0:06` | Sweeping low FPV curve around prow along perimeter road. | Curved sand-brick facade prow under blue sky (`building-reference/use-images/ep_tri_362-c-raftery-lowe-web.jpg`) into hero dusk prow (`P01.jpg`). | Guitar strum builds with light marimba tick. |
-| `0:06 - 0:09` | High drone glide over podium roof courtyard terrace. | Landscaped podium courtyard terrace, benches, hedge borders & precast concrete grid facade (`building-reference/use-images/IMG_20260804_130414582_HDR.jpg`). | Pizzicato strings join score. |
-| `0:09 - 0:12` | Rapid low push-in across Shaftesbury Road forecourt plaza. | Symmetrical plaza twilight approach with glazed link facade (`building-reference/the-real-triangle/ep_tri_364-c-raftery-lowe-scaled.jpg`) and circular concrete planters (`building-reference/the-real-triangle/1765397625156-20171003-104945-cropped-1170x780.jpg`). | Subtle shoe taps on paving; crisp hi-hat. |
-| `0:12 - 0:15` | Speed-ramped push through revolving glass doors into atrium. | Double-height atrium interior with main grand staircase, concrete columns & glass speed gates (`building-reference/use-images/ep_tri_372-c-raftery-lowe-resized.jpg`) and reception desk nook (`building-reference/the-real-triangle/IMG_20260804_131820446.jpg`). | Glass door click, scanning chime (*shhhk-shhhk*). |
-| `0:15 - 0:20` | Smooth low-altitude interior fly-through down office central aisle. | Open-plan timber desk rows, silver anglepoise lamps, hanging red/black/white triangle felt acoustic screens (`building-reference/use-images/P12.jpg`, `P20.jpg`, `DSC_2029.JPG`, `IMG_20260804_133747384_HDR.jpg`). | Sub-bass swell & brass accent; distant mechanical keyboard clacking & paper rustle. |
-| `0:20 - 0:24` | Curving pan around concrete pillar into reception nook. | Faceted burnt-orange desk (`IMG_20260804_131855397.jpg`) and black-and-white triangle wall. | Satirical corporate choir vocal crescendo (*"Aaaa-ll Under One Roof..."*). |
-| `0:24 - 0:30` | **TRIPOD LOCK**: Static 35mm wide shot (2.39:1 aspect ratio). | **Group Photo Meltdown**: Jan shouting, Rick/Chris making bunny ears, Sharon glaring, Christina checking compact mirror, Trevor deadpan staring. | **DEAD TENSION SILENCE**: Music stops dead on camera flash pop + CEO yelling + compact mirror snap click. |
+| `0:00 - 0:06` | **SHOT 01**: High FPV Drone Orbit (100m → 30m) swooping around curved prow. | 1. `P24.jpg` *(Master 100m site overview)*<br>2. `DL-EPA-CA-5580-online.jpg` *(Dusk prow & tower lantern)* | Solitary 7/8 acoustic guitar strumming over low HVAC hum & distance train rumble. |
+| `0:06 - 0:12` | **SHOT 02**: Low Forecourt Plaza Push-in heading for main entrance. | 1. `ep_tri_364-c-raftery-lowe-scaled.jpg` *(Symmetrical twilight plaza)*<br>2. `1765397625156-20171003-104945-cropped-1170x780.jpg` *(Plaza concrete planters)* | Pizzicato strings join score; subtle shoe taps on paving slabs. |
+| `0:12 - 0:17` | **SHOT 03**: Atrium Push-through passing speed gates to grand staircase. | 1. `ep_tri_372-c-raftery-lowe-resized.jpg` *(Double-height atrium & staircase)*<br>2. `IMG_20260804_131820446.jpg` *(Angular reception desk nook)* | Glass door click, scanning chime (*shhhk-shhhk*). |
+| `0:17 - 0:22` | **SHOT 04**: Open-Plan Office Central Aisle Fly-Through. | 1. `P12.jpg` *(Office aisle, timber benches & triangle screens)*<br>2. `P20.jpg` *(Central aisle high perspective & staff motion)* | Sub-bass swell & brass accent; distant mechanical keyboard clacking & paper rustle. |
+| `0:22 - 0:30` | **SHOT 05**: **TRIPOD LOCK**: Wide 35mm Corporate Group Photo Meltdown. | 1. `IMG_20260804_131855397.jpg` *(Faceted orange desk & triangle wall)*<br>2. `jan_peach_identity_sheet.jpg` *(Jan CEO shouting turnaround)*<br>3. `christina_dross_identity_sheet.jpg` *(Christina compact mirror turnaround)* | **DEAD TENSION SILENCE**: Music snaps off dead on camera flash pop + CEO yelling + compact mirror snap click. |
 
 ---
 

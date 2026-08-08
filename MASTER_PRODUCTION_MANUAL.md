@@ -84,21 +84,35 @@ The screenplay is saved at:
 
 ## 5. 🎬 DIRECTOR'S SHOT LIST & STAGING SUMMARY
 
-The complete 34-shot directorial breakdown is archived across:
-* 📄 **[Scene 1 Breakdown](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/scene_1_director_breakdown.md)** *(Pitch Meeting & Star Trek Joke)*
-* 📄 **[Scene 2 Breakdown](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/scene_2_director_breakdown.md)** *(Office Affair & Manscaped Arrow Reveal)*
-* 📄 **[Scene 3 Breakdown](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/scene_3_director_breakdown.md)** *(Project Inception & £50k Pay Rise)*
-* 📄 **[Scene 4 Breakdown](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/scene_4_director_breakdown.md)** *(Canteen Meltdown & Taser Hit)*
+The complete scene-by-scene shot list is locked at:  
+📄 **Filename**: `featurette_shot_list.md`  
+📄 **Full Path**: [`file:///C:/ai/Circle the Square/featurette_shot_list.md`](file:///C:/ai/Circle%20the%20Square/featurette_shot_list.md)
+
+Contents:
+- ✅ Scene 1 shot-by-shot breakdown (Jan's Office)
+- ✅ Scene 2 shot-by-shot breakdown (Corridor & Open-Plan Floor)
+- ✅ Scene 3 shot-by-shot breakdown (Canteen Meltdown & Taser)
+- ✅ Character + location ref assignments per shot
+- ✅ Jan shirt continuity tracker across all scenes
+- ✅ Sharon wardrobe state A/B tracker
+- ✅ Production notes (branding masking, canteen extra)
 
 ---
 
 ## 6. 🔁 SCENE TRANSITIONS & EDITORIAL MAP
 
-The transition map is locked at:  
-📄 **[Scene Transitions Guide](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/scene_transitions_guide.md)**
-
 ```
-[SCENE 1: Jan's Office] ──(Door Click)──> [SCENE 2: Blinds Snap] ──(Locker Cutaway)──> [SCENE 3: Open Floor] ──(Exterior Dawn)──> [SCENE 4: Canteen Meltdown]
+[SCENE 1: Jan's Office]
+    ──(Christina exits, glass door click)──>
+[SCENE 1B: Jan's Office — Sharon enters without knocking]
+    ──(Blinds snap down, door locks)──>
+[SCENE 2: Corridor — Chris & Rick watch, Sharon exits dishevelled]
+    ──(Jan re-buttons shirt, claps hands)──>
+[SCENE 2B: Open-Plan Floor — Project Inception announcement]
+    ──(TIME CUT: "Next Morning")──>
+[SCENE 3: Staff Restaurant / Canteen — Pastry shortage → Meltdown → Taser]
+    ──(FADE OUT)──>
+[END TITLE CARD]
 ```
 
 ---
@@ -107,15 +121,26 @@ The transition map is locked at:
 
 Sound effects, foley impacts, room tone, glass smashes, and taser arcs are delegated directly to **Video AI Native Audio Generation** (e.g., Google Veo 2 / Sora video-with-audio prompts) during clip synthesis. Character dialogue is dubbed using the locked local Qwen3-TTS GPU voices.
 
-The sound design guide is locked at:  
-📄 **[Sound Design Cue Sheet](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/sound_design_cues.md)**
+Key audio events per scene:
+- **Scene 1**: Office ambient hum, glass door click, blinds mechanical snap
+- **Scene 2**: Corridor ambient, printer hum, crowd groan SFX, stress ball squeak
+- **Scene 3**: Canteen clatter, CRASH of plates, GLASS SHATTER, POP-CRACKLE taser arc, body slump
+
+Dialogue audio files: [`C:\ai\Circle the Square\audio-refs\`](file:///C:/ai/Circle%20the%20Square/audio-refs/)
 
 ---
 
 ## 8. 🧰 COSTUME & PROP MASTER INVENTORY
 
-The master inventory is locked at:  
-📄 **[Costume & Prop Master Inventory](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/costume_and_props_inventory.md)**
+| Character | Props | Continuity Notes |
+| :--- | :--- | :--- |
+| **Jan Peach** | Black phone, oversized watch, Prism mug, meeting chair (for window smash) | Shirt: Scene 1 = buttoned → unbuttoned → off; Scene 2 = re-buttoned askew; Scene 3 = shirt off, tie gone |
+| **Christina Dross** | Tablet/clipboard, travel mug | Scene 1 only — exits before Scene 2 |
+| **Sharon Enfield** | Handbag, phone | State A (composed arriving) → State B (dishevelled leaving); heels carried in Scene 2 |
+| **Chris** | Coffee cup, Project Inception stress ball | Present Scenes 2 & 3 |
+| **Rick** | Concealed prop taser (must read fake/non-functional) | Taser drawn only in Scene 3 finale |
+| **Canteen Worker** | Apron, empty pastry tray, serving tongs | Walk-on, one line only |
+| **SET DRESSING** | 1,000 Project Inception stress balls/pens/t-shirts (background), pain au chocolat pastries (Scene 3), broken china (post-smash), shattered window prop | Continuity: pastry tray must be visibly empty when Jan arrives |
 
 ---
 
@@ -137,10 +162,15 @@ Contents:
 
 ---
 
-## 10. ⏱️ 5:21 PM BATCH EXECUTION QUEUE
+## 10. 🗂️ FEATURETTE PRODUCTION PACKAGE
 
-The 5:21 PM execution plan is locked at:  
-📄 **[5:21 PM Batch Queue](file:///C:/Users/konti/.gemini/antigravity-cli/brain/57c1f740-fca4-4824-bae1-f66bfdbcd9d1/batch_queue_5pm.md)**
+The full featurette production package consists of:
+
+| Document | Filename | Full Path |
+| :--- | :--- | :--- |
+| **Fountain Screenplay** | `CTS_Featurette_Episode.fountain` | [`file:///C:/ai/Circle the Square/CTS_Featurette_Episode.fountain`](file:///C:/ai/Circle%20the%20Square/CTS_Featurette_Episode.fountain) |
+| **Scene-by-Scene Shot List** | `featurette_shot_list.md` | [`file:///C:/ai/Circle the Square/featurette_shot_list.md`](file:///C:/ai/Circle%20the%20Square/featurette_shot_list.md) |
+| **Featurette Prompt Engine** | `featurette_prompt_engine.md` | [`file:///C:/ai/Circle the Square/featurette_prompt_engine.md`](file:///C:/ai/Circle%20the%20Square/featurette_prompt_engine.md) |
 
 ---
 

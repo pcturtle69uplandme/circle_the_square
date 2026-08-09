@@ -6,7 +6,7 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 title_img = r"C:\ai\Circle the Square\images\circle the square.jpeg"
 clips_dir = r"C:\ai\Circle the Square\clips"
-orchestral_audio = r"C:\ai\Circle the Square\audio-refs\full_orchestral_action_soundtrack.wav"
+cinematic_score = r"C:\ai\Circle the Square\audio-refs\non_repeating_cinematic_score.wav"
 output_master = r"C:\ai\Circle the Square\clips\ACTION_TRAILER_MASTER_60S.mp4"
 
 s01 = os.path.join(clips_dir, "OPENING_S01_drone_orbit.mp4")
@@ -98,9 +98,9 @@ ms_s09 = int(t_offsets[8] * 1000)
 fade_out_start = max(0.0, total_duration - 1.5)
 filter_graph += f"[vout_raw]fade=t=out:st={fade_out_start:.2f}:d=1.5[vout];"
 
-# TWO-STAGE AUDIO MIX FILTER TO PREVENT AMIX VOLUME CRUSHING:
-# Stage 1: Mix all 5 dialogue streams into [dialogue_mix]
-# Stage 2: Mix Orchestral Music [bg_orch] + [dialogue_mix] with weights=1.2 2.2
+# TWO-STAGE AUDIO MIX:
+# Mix 5 dialogue streams -> [dialogue_mix]
+# Mix [bg_score] + [dialogue_mix] with weights=1.2 2.5
 audio_filter = (
     f"[3:a]volume=2.5,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
     f"[4:a]volume=2.5,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
@@ -108,8 +108,8 @@ audio_filter = (
     f"[6:a]volume=2.5,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
     f"[8:a]volume=2.5,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
     f"[a_s04][a_s05][a_s06][a_s07][a_s09]amix=inputs=5:duration=longest:dropout_transition=0[dialogue_mix];"
-    f"[10:a]volume=0.85,atrim=0:{total_duration:.2f},aresample=48000[bg_orch];"
-    f"[bg_orch][dialogue_mix]amix=inputs=2:weights=1.2 2.2:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
+    f"[10:a]volume=0.90,atrim=0:{total_duration:.2f},aresample=48000[bg_score];"
+    f"[bg_score][dialogue_mix]amix=inputs=2:weights=1.2 2.5:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
 )
 
 full_filter = filter_graph + audio_filter
@@ -117,7 +117,7 @@ full_filter = filter_graph + audio_filter
 cmd_master = [FFMPEG, "-y"]
 for p in clip_list:
     cmd_master.extend(["-i", p])
-cmd_master.extend(["-i", orchestral_audio])
+cmd_master.extend(["-i", cinematic_score])
 
 cmd_master.extend([
     "-filter_complex", full_filter,
@@ -138,11 +138,11 @@ cmd_master.extend([
     output_master
 ])
 
-print(f"\n--- Assembling Full Orchestral Action Movie Trailer Cut (Fade Out at {fade_out_start:.2f}s) ---")
+print(f"\n--- Assembling Non-Repeating Hollywood Score Master Action Trailer ---")
 res = subprocess.run(cmd_master, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 if res.returncode == 0 and os.path.exists(output_master):
-    print(f"\n[SUCCESS] Master Full Orchestral Action Trailer created successfully!")
+    print(f"\n[SUCCESS] Master Action Trailer with Non-Repeating Hollywood Score created successfully!")
     print(f"Output File: {output_master} ({os.path.getsize(output_master)/1024/1024:.2f} MB)")
 else:
     print(f"\n[ERROR] FFmpeg master action trailer render error:\n{res.stderr}")

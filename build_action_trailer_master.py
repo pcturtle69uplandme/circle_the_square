@@ -6,7 +6,7 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 title_img = r"C:\ai\Circle the Square\images\circle the square.jpeg"
 clips_dir = r"C:\ai\Circle the Square\clips"
-cinematic_score = r"C:\ai\Circle the Square\audio-refs\master_action_score_85s.wav"
+unified_theme = r"C:\ai\Circle the Square\audio-refs\constant_unified_action_theme.wav"
 output_master = r"C:\ai\Circle the Square\clips\ACTION_TRAILER_MASTER_60S.mp4"
 
 s01 = os.path.join(clips_dir, "OPENING_S01_drone_orbit.mp4")
@@ -101,7 +101,7 @@ filter_graph += f"[vout_raw]fade=t=out:st={fade_out_start:.2f}:d=1.5[vout];"
 
 # TWO-STAGE AUDIO MIX:
 # Mix ALL 6 dialogue streams (S04, S05, S06, S07, S08, S09) with volume=3.0 boost -> [dialogue_mix]
-# Mix 85s Master Action Score [bg_score] + [dialogue_mix] with weights=1.2 2.8
+# Mix 85s Constant Unified Theme [bg_theme] + [dialogue_mix] with weights=1.2 2.8
 audio_filter = (
     f"[3:a]volume=3.0,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
     f"[4:a]volume=3.0,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
@@ -110,8 +110,8 @@ audio_filter = (
     f"[7:a]volume=3.0,adelay={ms_s08}|{ms_s08},apad=whole_dur={total_duration:.2f},aresample=48000[a_s08];"
     f"[8:a]volume=3.0,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
     f"[a_s04][a_s05][a_s06][a_s07][a_s08][a_s09]amix=inputs=6:duration=longest:dropout_transition=0[dialogue_mix];"
-    f"[10:a]volume=0.90,atrim=0:{total_duration:.2f},aresample=48000[bg_score];"
-    f"[bg_score][dialogue_mix]amix=inputs=2:weights=1.2 2.8:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
+    f"[10:a]volume=0.95,atrim=0:{total_duration:.2f},aresample=48000[bg_theme];"
+    f"[bg_theme][dialogue_mix]amix=inputs=2:weights=1.2 2.8:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
 )
 
 full_filter = filter_graph + audio_filter
@@ -119,7 +119,7 @@ full_filter = filter_graph + audio_filter
 cmd_master = [FFMPEG, "-y"]
 for p in clip_list:
     cmd_master.extend(["-i", p])
-cmd_master.extend(["-i", cinematic_score])
+cmd_master.extend(["-i", unified_theme])
 
 cmd_master.extend([
     "-filter_complex", full_filter,
@@ -140,11 +140,11 @@ cmd_master.extend([
     output_master
 ])
 
-print(f"\n--- Assembling 85s Master Action Score Trailer (Full Outro Coverage to {total_duration:.2f}s) ---")
+print(f"\n--- Assembling Constant Unified Action Theme Master Trailer (Fade Out at {fade_out_start:.2f}s) ---")
 res = subprocess.run(cmd_master, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 if res.returncode == 0 and os.path.exists(output_master):
-    print(f"\n[SUCCESS] Master Action Trailer with 85s Score & Full Outro Coverage created successfully!")
+    print(f"\n[SUCCESS] Master Action Trailer with Constant Unified Theme created successfully!")
     print(f"Output File: {output_master} ({os.path.getsize(output_master)/1024/1024:.2f} MB)")
 else:
     print(f"\n[ERROR] FFmpeg master action trailer render error:\n{res.stderr}")

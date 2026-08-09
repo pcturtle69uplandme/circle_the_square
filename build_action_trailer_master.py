@@ -6,7 +6,8 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 title_img = r"C:\ai\Circle the Square\images\circle the square.jpeg"
 clips_dir = r"C:\ai\Circle the Square\clips"
-action_audio = r"C:\ai\Circle the Square\audio-refs\action_trailer_soundtrack.wav"
+action_audio = r"C:\ai\Circle the Square\audio-refs\action_musicgen_epic.wav"
+fallback_audio = r"C:\ai\Circle the Square\audio-refs\action_trailer_soundtrack.wav"
 output_master = r"C:\ai\Circle the Square\clips\ACTION_TRAILER_MASTER_60S.mp4"
 
 s01 = os.path.join(clips_dir, "OPENING_S01_drone_orbit.mp4")
@@ -19,7 +20,10 @@ s07 = os.path.join(clips_dir, "OPENING_S07.mp4")
 s08 = os.path.join(clips_dir, "OPENING_S08_trimmed.mp4")
 s09 = os.path.join(clips_dir, "OPENING_S09.mp4")
 
-# 1. Generate 5s Title Card Video with Text Overlay & Black Fade Out
+# Selected audio track (prefers new Meta MusicGen Action AI soundtrack)
+audio_track = action_audio if os.path.exists(action_audio) and os.path.getsize(action_audio) > 100000 else fallback_audio
+
+# 1. Generate Title Card Video with TOP OF SCREEN Text Overlay & Black Fade Out
 title_video_end = os.path.join(clips_dir, "temp_action_title_end_5s.mp4")
 cmd_title_end = [
     FFMPEG, "-y",
@@ -28,7 +32,7 @@ cmd_title_end = [
     "-t", "5.0",
     "-vf", (
         "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,format=yuv420p,"
-        "drawtext=text='THIS AUTUMN - THERE IS NO ESCAPE':fontcolor=white:fontsize=36:x=(w-text_w)/2:y=h-100:box=1:boxcolor=black@0.6:boxborderw=10,"
+        "drawtext=text='THIS AUTUMN - THERE IS NO ESCAPE':fontcolor=white:fontsize=36:x=(w-text_w)/2:y=60:box=1:boxcolor=black@0.6:boxborderw=10,"
         "fade=t=out:st=3.5:d=1.5"
     ),
     "-c:v", "libx264",
@@ -38,13 +42,10 @@ cmd_title_end = [
     "-r", "24",
     title_video_end
 ]
-print("Creating Action Title Card video with text overlay...")
+print("Creating Action Title Card video with TOP OF SCREEN text overlay...")
 subprocess.run(cmd_title_end, check=True)
 
-# 9 Source Clips + Title Card
 clip_list = [s01, s02, s03, s04, s05, s06, s07, s08, s09, title_video_end]
-
-# Custom Action Transitions sequence
 wipes = ["fade", "wipeleft", "wiperight", "circlecrop", "slideleft", "slideright", "diagtl", "fade", "fade"]
 trans_duration = 0.6
 
@@ -62,13 +63,13 @@ print(f"Clip durations: {[round(d, 2) for d in durations]}")
 
 filter_graph = ""
 
-# Stream 0 (S01): Draw overlay text
-filter_graph += f"[0:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24,format=yuv420p,drawtext=text='EVERY CORPORATION HAS A SECRET...':fontcolor=white:fontsize=36:x=(w-text_w)/2:y=h-120:box=1:boxcolor=black@0.6:boxborderw=10[v0_scaled];"
+# Stream 0 (S01): Draw overlay text AT TOP OF SCREEN (y=60)
+filter_graph += f"[0:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24,format=yuv420p,drawtext=text='EVERY CORPORATION HAS A SECRET...':fontcolor=white:fontsize=36:x=(w-text_w)/2:y=60:box=1:boxcolor=black@0.6:boxborderw=10[v0_scaled];"
 
-# Stream 1 (S02): Draw overlay text
-filter_graph += f"[1:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24,format=yuv420p,drawtext=text='EVERY BOARDROOM HAS A PRICE.':fontcolor=white:fontsize=36:x=(w-text_w)/2:y=h-120:box=1:boxcolor=black@0.6:boxborderw=10[v1_scaled];"
+# Stream 1 (S02): Draw overlay text AT TOP OF SCREEN (y=60)
+filter_graph += f"[1:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24,format=yuv420p,drawtext=text='EVERY BOARDROOM HAS A PRICE.':fontcolor=white:fontsize=36:x=(w-text_w)/2:y=60:box=1:boxcolor=black@0.6:boxborderw=10[v1_scaled];"
 
-# Remaining streams
+# Remaining video streams
 for i in range(2, len(clip_list)):
     filter_graph += f"[{i}:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,fps=24,format=yuv420p[v{i}_scaled];"
 
@@ -87,14 +88,7 @@ for i in range(len(clip_list) - 1):
 total_duration = curr_offset + durations[-1] - trans_duration
 print(f"Total Action Trailer Duration: {total_duration:.2f} seconds")
 
-# Calculate exact start timestamps for talking head dialogue streams
-# Clips with active dialogue soundbites:
-# Index 3: s04 (Jan speech)
-# Index 4: s05 (Chris soundbite)
-# Index 5: s06 (Rick soundbite)
-# Index 6: s07 (Female worker soundbite)
-# Index 8: s09 (Jan climax confrontation)
-
+# Calculate exact start timestamps for ALL dialogue soundbites:
 t_offsets = [0.0]
 for i in range(len(clip_list) - 1):
     t_offsets.append(t_offsets[-1] + durations[i] - trans_duration)
@@ -105,18 +99,21 @@ ms_s06 = int(t_offsets[5] * 1000)
 ms_s07 = int(t_offsets[6] * 1000)
 ms_s09 = int(t_offsets[8] * 1000)
 
+print(f"Dialogue offsets: S04={ms_s04}ms, S05={ms_s05}ms, S06={ms_s06}ms, S07={ms_s07}ms, S09(1min clip)={ms_s09}ms")
+
 fade_out_start = max(0.0, total_duration - 1.5)
 filter_graph += f"[vout_raw]fade=t=out:st={fade_out_start:.2f}:d=1.5[vout];"
 
-# Audio Filter: Combine dialogue soundbites + Action BRAAM soundtrack + Auto Ducking
-# Input 10 is action_trailer_soundtrack.wav (index 10)
+# AUDIO FILTER:
+# DUCK MUSIC TO 0.15 (-16dB) WHEN PEOPLE ARE SPEAKING!
+# High-volume boost (volume=2.2) on ALL staff & executive dialogue soundbites!
 audio_filter = (
-    f"[3:a]volume=1.8,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
-    f"[4:a]volume=1.8,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
-    f"[5:a]volume=1.8,adelay={ms_s06}|{ms_s06},apad=whole_dur={total_duration:.2f},aresample=48000[a_s06];"
-    f"[6:a]volume=1.8,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
-    f"[8:a]volume=1.8,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
-    f"[10:a]volume=0.35,atrim=0:{total_duration:.2f},aresample=48000[bg_action];"
+    f"[3:a]volume=2.2,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
+    f"[4:a]volume=2.2,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
+    f"[5:a]volume=2.2,adelay={ms_s06}|{ms_s06},apad=whole_dur={total_duration:.2f},aresample=48000[a_s06];"
+    f"[6:a]volume=2.2,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
+    f"[8:a]volume=2.2,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
+    f"[10:a]volume=0.15,atrim=0:{total_duration:.2f},aresample=48000[bg_action];"
     f"[bg_action][a_s04][a_s05][a_s06][a_s07][a_s09]amix=inputs=6:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
 )
 
@@ -125,7 +122,7 @@ full_filter = filter_graph + audio_filter
 cmd_master = [FFMPEG, "-y"]
 for p in clip_list:
     cmd_master.extend(["-i", p])
-cmd_master.extend(["-i", action_audio])
+cmd_master.extend(["-i", audio_track])
 
 cmd_master.extend([
     "-filter_complex", full_filter,
@@ -146,11 +143,11 @@ cmd_master.extend([
     output_master
 ])
 
-print(f"\n--- Assembling 60-Second Action Movie Trailer Cut (Fade Out at {fade_out_start:.2f}s) ---")
+print(f"\n--- Assembling Action Movie Trailer with Top Text, Amplified S09 Voice & Ducked AI Music ---")
 res = subprocess.run(cmd_master, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 if res.returncode == 0 and os.path.exists(output_master):
-    print(f"\n[SUCCESS] 60-Second Action Movie Trailer Cut created successfully!")
+    print(f"\n[SUCCESS] Master Action Movie Trailer created successfully!")
     print(f"Output File: {output_master} ({os.path.getsize(output_master)/1024/1024:.2f} MB)")
 else:
     print(f"\n[ERROR] FFmpeg master action trailer render error:\n{res.stderr}")

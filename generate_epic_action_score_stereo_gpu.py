@@ -21,50 +21,60 @@ local_dir = r"C:\ai\models\musicgen-stereo-large"
 os.makedirs(local_dir, exist_ok=True)
 dtype = torch.float16 if device == "cuda" else torch.float32
 
-print(f"[3/5] Downloading/loading {model_id} (stereo 3.3B checkpoint)...")
+print(f"[3/5] Loading {model_id} (stereo 3.3B checkpoint, already cached locally)...")
 processor = AutoProcessor.from_pretrained(model_id, cache_dir=local_dir)
 model = MusicgenForConditionalGeneration.from_pretrained(model_id, cache_dir=local_dir, dtype=dtype).to(device)
 
-print(f"[4/5] Model Loaded! Audio channels: {model.config.audio_encoder.audio_channels}")
-print("Composing 3-movement epic action trailer score (~80s stereo, matches 77.9s master cut)...")
+print("[4/5] Model Loaded! Composing 4-movement upbeat action trailer score (~82s stereo)...")
 
-# Movement 1 (~24s): Acts I - The Deceptive Calm (S01-S03, ominous drone architecture)
+# Movement 1 (~22s): Acts I - Driving energetic opening (S01-S03)
 prompt1 = (
-    "Ominous cinematic trailer intro, slow evolving orchestral drone, deep sub-bass hum, "
-    "metallic ticking clock pulse, distant low brass swell building tension, dark atmospheric "
-    "Hans Zimmer style corporate thriller score, wide stereo image, pristine 32kHz studio master recording."
+    "High-energy Hollywood action trailer opener, driving rhythmic pulse, punchy taiko drums, "
+    "energetic staccato brass stabs, propulsive string ostinato, confident heroic momentum building, "
+    "modern blockbuster trailer music, wide stereo image, pristine 32kHz studio master recording."
 )
 
-# Movement 2 (~40s): Acts II-III - Executive speech into whistleblower montage (S04-S07)
+# Movement 2 (~22s): Acts II - Executive speech, upbeat but sharp (S04)
 prompt2 = (
-    "Escalating Hollywood trailer soundtrack, rising suspenseful strings, non-repeating staccato "
-    "violin ostinato, pulsing low brass hits, heartbeat percussion accelerating, corporate conspiracy "
-    "thriller tension building to a breaking point, dramatic evolving orchestral progression, "
+    "Upbeat action-packed Hollywood trailer soundtrack, punchy brass hits, fast energetic string runs, "
+    "driving snare and taiko percussion, confident heroic swagger, corporate power-play energy, "
     "wide stereo image, pristine studio master recording."
 )
 
-# Movement 3 (~20s): Acts IV-V - Meltdown climax, BRAAM stings, title stinger (S08-S09 + title card)
+# Movement 3 (~22s): Acts III - Whistleblower montage, fast and chaotic-fun (S05-S07)
 prompt3 = (
-    "Epic Hollywood blockbuster climax action soundtrack, heavy cinematic BRAAM low-frequency "
-    "impact hits, explosive taiko drum rolls, soaring heroic French horn and brass crescendo, "
-    "fast non-repeating staccato strings, dramatic action movie finale swell resolving into a "
-    "final metallic impact sting, wide stereo image, pristine studio master recording."
+    "Fast-paced action montage soundtrack, energetic non-repeating staccato violins, driving electric "
+    "energy, punchy horn stabs, relentless rhythmic percussion, thrilling chase-scene momentum, "
+    "upbeat heroic action energy, wide stereo image, pristine studio master recording."
 )
 
-print("[5/5] Neural-synthesizing 3 stereo studio music movements...")
+# Movement 4 (~22s): Acts IV-V - Meltdown climax, BRAAM stings, triumphant title stinger (S08-S09 + title card)
+prompt4 = (
+    "Epic Hollywood blockbuster climax action soundtrack, heavy cinematic BRAAM low-frequency impact "
+    "hits, explosive taiko drum rolls, soaring triumphant French horn and brass crescendo, fast "
+    "energetic staccato strings, upbeat heroic action movie finale resolving into a big triumphant "
+    "final impact sting, wide stereo image, pristine studio master recording."
+)
+
+print("[5/5] Neural-synthesizing 4 stereo studio music movements (max 22s each — safely inside MusicGen's coherent generation window)...")
 
 def synth(prompt, seconds, label):
     tokens = int(seconds * 50)
     print(f"  -> {label}: {seconds}s ({tokens} tokens)")
     inputs = processor(text=[prompt], padding=True, return_tensors="pt").to(device)
     with torch.inference_mode():
-        audio = model.generate(**inputs, max_new_tokens=tokens)
-    # audio shape: [batch, channels, samples] -> (channels, samples) float32
-    return audio[0].to(torch.float32).cpu().numpy()
+        audio = model.generate(**inputs, max_new_tokens=tokens, guidance_scale=3.0)
+    arr = audio[0].to(torch.float32).cpu().numpy()
+    peak = np.abs(arr).max()
+    if peak > 0.98:
+        arr = arr / peak * 0.95
+        print(f"     [normalize] peak was {peak:.2f} -> rescaled to 0.95")
+    return arr
 
-a1 = synth(prompt1, 24, "Movement 1 (Calm/Ominous)")
-a2 = synth(prompt2, 39, "Movement 2 (Rising Tension)")
-a3 = synth(prompt3, 20, "Movement 3 (Climax/Title)")
+a1 = synth(prompt1, 22, "Movement 1 (Driving Opener)")
+a2 = synth(prompt2, 22, "Movement 2 (Confident Power-Play)")
+a3 = synth(prompt3, 22, "Movement 3 (Chase Montage)")
+a4 = synth(prompt4, 22, "Movement 4 (Climax/Title)")
 
 sampling_rate = model.config.audio_encoder.sampling_rate
 
@@ -79,12 +89,25 @@ def crossfade(a, b, seconds=2.0):
 
 merged = crossfade(a1, a2, 2.0)
 merged = crossfade(merged, a3, 2.0)
+merged = crossfade(merged, a4, 2.0)
+
+# Final safety clamp — belt-and-braces against any residual overshoot/clicks
+peak = np.abs(merged).max()
+if peak > 0.98:
+    merged = merged / peak * 0.95
+    print(f"[final normalize] peak was {peak:.2f} -> rescaled to 0.95")
+merged = np.clip(merged, -0.99, 0.99)
+
+nan_count = np.isnan(merged).sum()
+if nan_count:
+    print(f"[WARNING] {nan_count} NaN samples found — zeroing them out")
+    merged = np.nan_to_num(merged)
 
 out_dir = r"C:\ai\Circle the Square\audio-refs"
 os.makedirs(out_dir, exist_ok=True)
 out_wav = os.path.join(out_dir, "musicgen_large_neural_score.wav")
 
-# scipy expects (samples, channels) for stereo
-scipy.io.wavfile.write(out_wav, rate=sampling_rate, data=merged.T)
-print(f"\n[MASTER SUCCESS] Meta MusicGen Large STEREO (3.3B) Epic Action Score Generated!")
-print(f"Output File: {out_wav} ({merged.shape[1]/sampling_rate:.1f}s, {merged.shape[0]} channels)")
+# scipy expects (samples, channels) for stereo; write as 32-bit float (widely compatible)
+scipy.io.wavfile.write(out_wav, rate=sampling_rate, data=merged.T.astype(np.float32))
+print(f"\n[MASTER SUCCESS] Meta MusicGen Large STEREO (3.3B) Upbeat Action Score Generated!")
+print(f"Output File: {out_wav} ({merged.shape[1]/sampling_rate:.1f}s, {merged.shape[0]} channels, peak {np.abs(merged).max():.2f})")

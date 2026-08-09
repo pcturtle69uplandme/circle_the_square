@@ -16,7 +16,7 @@ s04 = os.path.join(clips_dir, "OPENING_S04_jan.mp4")
 s05 = os.path.join(clips_dir, "OPENING_S05.mp4")
 s06 = os.path.join(clips_dir, "OPENING_S06.mp4")
 s07 = os.path.join(clips_dir, "OPENING_S07.mp4")
-s08 = os.path.join(clips_dir, "OPENING_S08_trimmed.mp4")
+s08 = os.path.join(clips_dir, "OPENING_S08.mp4") # USE UNTRIMMED S08 WITH FULL VOICE!
 s09 = os.path.join(clips_dir, "OPENING_S09.mp4")
 
 # 1. Generate Title Card Video with TOP OF SCREEN Text Overlay & Black Fade Out
@@ -93,23 +93,27 @@ ms_s04 = int(t_offsets[3] * 1000)
 ms_s05 = int(t_offsets[4] * 1000)
 ms_s06 = int(t_offsets[5] * 1000)
 ms_s07 = int(t_offsets[6] * 1000)
-ms_s09 = int(t_offsets[8] * 1000)
+ms_s08 = int(t_offsets[7] * 1000) # S08 VOICE AT 1 MINUTE MARK!
+ms_s09 = int(t_offsets[8] * 1000) # S09 VOICE AT 1 MIN 6 SEC MARK!
+
+print(f"Dialogue offsets: S04={ms_s04}ms, S05={ms_s05}ms, S06={ms_s06}ms, S07={ms_s07}ms, S08(1min clip)={ms_s08}ms, S09={ms_s09}ms")
 
 fade_out_start = max(0.0, total_duration - 1.5)
 filter_graph += f"[vout_raw]fade=t=out:st={fade_out_start:.2f}:d=1.5[vout];"
 
 # TWO-STAGE AUDIO MIX:
-# Mix 5 dialogue streams -> [dialogue_mix]
-# Mix [bg_score] + [dialogue_mix] with weights=1.2 2.5
+# Mix ALL 6 dialogue streams (S04, S05, S06, S07, S08, S09) with volume=3.0 boost -> [dialogue_mix]
+# Mix [bg_score] + [dialogue_mix] with weights=1.2 2.8
 audio_filter = (
-    f"[3:a]volume=2.5,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
-    f"[4:a]volume=2.5,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
-    f"[5:a]volume=2.5,adelay={ms_s06}|{ms_s06},apad=whole_dur={total_duration:.2f},aresample=48000[a_s06];"
-    f"[6:a]volume=2.5,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
-    f"[8:a]volume=2.5,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
-    f"[a_s04][a_s05][a_s06][a_s07][a_s09]amix=inputs=5:duration=longest:dropout_transition=0[dialogue_mix];"
-    f"[10:a]volume=0.90,atrim=0:{total_duration:.2f},aresample=48000[bg_score];"
-    f"[bg_score][dialogue_mix]amix=inputs=2:weights=1.2 2.5:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
+    f"[3:a]volume=3.0,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
+    f"[4:a]volume=3.0,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
+    f"[5:a]volume=3.0,adelay={ms_s06}|{ms_s06},apad=whole_dur={total_duration:.2f},aresample=48000[a_s06];"
+    f"[6:a]volume=3.0,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
+    f"[7:a]volume=3.0,adelay={ms_s08}|{ms_s08},apad=whole_dur={total_duration:.2f},aresample=48000[a_s08];"
+    f"[8:a]volume=3.0,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
+    f"[a_s04][a_s05][a_s06][a_s07][a_s08][a_s09]amix=inputs=6:duration=longest:dropout_transition=0[dialogue_mix];"
+    f"[10:a]volume=0.85,atrim=0:{total_duration:.2f},aresample=48000[bg_score];"
+    f"[bg_score][dialogue_mix]amix=inputs=2:weights=1.2 2.8:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
 )
 
 full_filter = filter_graph + audio_filter
@@ -138,11 +142,11 @@ cmd_master.extend([
     output_master
 ])
 
-print(f"\n--- Assembling Non-Repeating Hollywood Score Master Action Trailer ---")
+print(f"\n--- Assembling Master Action Trailer with Restored S08 & S09 Voice Dialogue ---")
 res = subprocess.run(cmd_master, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 if res.returncode == 0 and os.path.exists(output_master):
-    print(f"\n[SUCCESS] Master Action Trailer with Non-Repeating Hollywood Score created successfully!")
+    print(f"\n[SUCCESS] Master Action Trailer with Restored 1-Min Voice Dialogue created successfully!")
     print(f"Output File: {output_master} ({os.path.getsize(output_master)/1024/1024:.2f} MB)")
 else:
     print(f"\n[ERROR] FFmpeg master action trailer render error:\n{res.stderr}")

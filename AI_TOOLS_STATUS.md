@@ -1,11 +1,12 @@
 # ⚡ AI TOOLS — CAPABILITY & STATUS REFERENCE
 > **Plan**: Google AI Pro ($19.99/month)  
-> **Last Updated**: 2026-08-09 22:08
+> **Last Updated**: 2026-08-09 22:35
 
 ---
 
-## 🎵 TOOL 5 — Meta MusicGen Large (Default AI Music & Sound Model)
+## 🎵 TOOL 5 — Meta MusicGen Large (3.3B Parameters — MANDATORY DEFAULT)
 **Model**: `facebook/musicgen-large` (3.3 Billion Parameters)  
+**Location**: `C:\ai\models\musicgen-large\`  
 **Access via**: Local PyTorch / Transformers on machine
 
 | Capability | Detail |
@@ -13,7 +14,7 @@
 | **What it generates** | Master studio-quality 32kHz cinematic film scores, soundtrack stems, sound effects |
 | **Model Size** | **3.3 Billion Parameters** (Meta AI Flagship Music Transformer) |
 | **Quota** | None — runs locally on machine |
-| **Default Model** | ✅ **YES — Primary Default AI Music Generator** |
+| **Default Model** | ✅ **YES — Permanent Mandatory Default AI Music Generator** |
 | **Current state** | 🟢 **ACTIVE / DEFAULT** |
 
 ---
@@ -81,7 +82,7 @@
 
 | Tool | State | Resets |
 | :--- | :--- | :--- |
-| 🟢 **Meta MusicGen Large (3.3B)** | **DEFAULT MUSIC MODEL** | No quota |
+| 🟢 **Meta MusicGen Large (3.3B)** | **PERMANENT DEFAULT** | No quota |
 | 🟢 Gemini Flash Image | AVAILABLE | Daily reset |
 | 🟢 Veo 3.1 Video | AVAILABLE | Daily reset |
 | 🟢 Qwen3-TTS (Local) | AVAILABLE | No quota |

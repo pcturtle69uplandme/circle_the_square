@@ -1,0 +1,95 @@
+================================================================================
+CIRCLE THE SQUARE — SCENE 1 GOOGLE FLOW PROMPTS (16:9 & POLICY SAFE)
+Target AI: Google Flow (Veo 3.1)
+Rules: 
+  - NO physical descriptions (Google Flow uses uploaded character profiles)
+  - Actions, motions, framing, and expressions ONLY
+  - Standard 16:9 aspect ratio
+  - 100% Policy-Safe (no profanity, no nudity/groin refs, no aggressive violence)
+================================================================================
+
+--------------------------------------------------------------------------------
+SHOT 01 — Office Discussion
+Duration: 6 seconds
+Aspect Ratio: 16:9
+Images to Attach:
+  1. Background: C:\kontitemp\ai\circle_the_square\location-refs\jan_office_location_sheet.jpg
+  2. Character 1: @Jan
+  3. Character 2: @Christina
+--------------------------------------------------------------------------------
+PROMPT:
+A cinematic 4K medium wide shot inside a modern corporate executive office. @Jan sits behind a sleek executive desk looking exhausted and rubbing his temples. @Christina enters holding a clipboard and stands across from him. Warm interior morning sunlight spills through glass partitions. Natural motion, 24mm wide-angle lens, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Christina (speaking in a cold, deadpan British accent): "Morning Jan. Survive the weekend?"
+@Jan (sighing heavily in a stressed tone): "Barely. Another day dealing with these morons..."
+
+
+--------------------------------------------------------------------------------
+SHOT 02 — The Sugar Breakfast Strategy
+Duration: 7 seconds
+Aspect Ratio: 16:9
+Images to Attach:
+  1. Background: C:\kontitemp\ai\circle_the_square\location-refs\jan_office_location_sheet.jpg
+  2. Character 1: @Jan
+  3. Character 2: @Christina
+--------------------------------------------------------------------------------
+PROMPT:
+A medium over-the-shoulder shot focusing on @Christina speaking calmly, then cutting to a close-up of @Jan as his face lights up with sudden scheming enthusiasm. @Jan leans over his desk, eyes widening in agreement. Modern office background, warm directional lighting, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Christina (speaking in a measured corporate tone): "Every two weeks on a Friday we do a breakfast meeting with pastries loaded with sugar."
+@Jan (speaking with sudden bright enthusiasm): "I am liking the idea of this so far! This is strategic MBA thinking!"
+
+
+--------------------------------------------------------------------------------
+SHOT 03 — Star Trek Banter & Outburst
+Duration: 8 seconds max
+Aspect Ratio: 16:9
+Images to Attach:
+  1. Background: C:\kontitemp\ai\circle_the_square\location-refs\jan_office_location_sheet.jpg
+  2. Character 1: @Jan
+  3. Character 2: @Christina
+--------------------------------------------------------------------------------
+PROMPT:
+A dramatic medium close-up of @Jan shouting in frustration at his desk. In the background glass door, @Christina calmly steps out into the hallway without flinching. High energy corporate comedy, sharp focus on @Jan, 35mm lens, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan (enthusiastic): "Make it so!"
+@Christina (deadpan sarcasm): "Shockingly no."
+@Jan (shouting in frustration): "GET OUT NOW! JUST GET THAT DAMN MEETING ORGANISED!"
+
+
+--------------------------------------------------------------------------------
+SHOT 04 — Stressed Jan & Sharon's Entrance
+Duration: 6 seconds
+Aspect Ratio: 16:9
+Images to Attach:
+  1. Background: C:\kontitemp\ai\circle_the_square\location-refs\jan_office_location_sheet.jpg
+  2. Character 1: @Jan
+  3. Character 2: @Sharon
+--------------------------------------------------------------------------------
+PROMPT:
+A medium shot of @Jan standing in his office sweating, loosening his tie and unbuttoning his top collar. Suddenly @Sharon opens the office door without knocking, looking unbothered and giving @Jan a calm glance. Modern UK corporate office setting, natural lighting, 35mm lens, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan (flustered): "BLOODY HELL SHARON. KNOCK ON THE DOOR WILL YOU!"
+SFX: Heavy out-of-breath panting, door handle click.
+
+
+--------------------------------------------------------------------------------
+SHOT 05 — Lowering Blinds & Locking Door
+Duration: 7 seconds
+Aspect Ratio: 16:9
+Images to Attach:
+  1. Background: C:\kontitemp\ai\circle_the_square\location-refs\jan_office_location_sheet.jpg
+  2. Character 1: @Sharon
+  3. Character 2: @Jan
+--------------------------------------------------------------------------------
+PROMPT:
+A smooth pan shot showing @Sharon standing composed with arms crossed. Camera sweeps to @Jan quickly pulling down the venetian window blinds to block the hallway view and turning the office door lock knob. Warm interior lighting, shallow depth of field, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Sharon (speaking in a calm, confident tone): "Well I have needs too Jan that must be met."
+SFX: Venetian blinds clattering down, door lock click.
+================================================================================

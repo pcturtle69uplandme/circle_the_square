@@ -25,8 +25,8 @@ For each shot clip below:
 ### 📎 Reference Images to Attach (2 Max)
 | # | Filename | Role | Full Path |
 |---|----------|------|-----------|
-| 1 | `P24.jpg` | **Start Frame** — 100m overhead site overview | `C:\ai\Circle the Square\building-reference\use-images\P24.jpg` |
-| 2 | `DL-EPA-CA-5580-online.jpg` | **End Frame** — Dusk prow & amber tower lantern | `C:\ai\Circle the Square\building-reference\use-images\DL-EPA-CA-5580-online.jpg` |
+| 1 | `P24.jpg` | **Start Frame** — 100m overhead site overview | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P24.jpg` |
+| 2 | `DL-EPA-CA-5580-online.jpg` | **End Frame** — Dusk prow & amber tower lantern | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\DL-EPA-CA-5580-online.jpg` |
 
 ### 🎬 VIDEO PROMPT (Veo 2 / Sora / Kling)
 ```
@@ -51,8 +51,8 @@ A single solitary acoustic guitar strumming a rhythmic 7/8 time signature melody
 ### 📎 Reference Images to Attach (2 Max)
 | # | Filename | Role | Full Path |
 |---|----------|------|-----------|
-| 1 | `ep_tri_364-c-raftery-lowe-scaled.jpg` | **Primary Plate** — Symmetrical twilight plaza & glazed entrance | `C:\ai\Circle the Square\building-reference\the-real-triangle\ep_tri_364-c-raftery-lowe-scaled.jpg` |
-| 2 | `1765397625156-20171003-104945-cropped-1170x780.jpg` | **Ground Detail** — Forecourt concrete planter bowls & paving | `C:\ai\Circle the Square\building-reference\the-real-triangle\1765397625156-20171003-104945-cropped-1170x780.jpg` |
+| 1 | `ep_tri_364-c-raftery-lowe-scaled.jpg` | **Primary Plate** — Symmetrical twilight plaza & glazed entrance | `C:\kontitemp\ai\circle_the_square\building-reference\the-real-triangle\ep_tri_364-c-raftery-lowe-scaled.jpg` |
+| 2 | `1765397625156-20171003-104945-cropped-1170x780.jpg` | **Ground Detail** — Forecourt concrete planter bowls & paving | `C:\kontitemp\ai\circle_the_square\building-reference\the-real-triangle\1765397625156-20171003-104945-cropped-1170x780.jpg` |
 
 ### 🎬 VIDEO PROMPT (Veo 2 / Sora / Kling)
 ```
@@ -77,8 +77,8 @@ Pizzicato string notes join the acoustic guitar. A crisp hi-hat tick on every be
 ### 📎 Reference Images to Attach (2 Max)
 | # | Filename | Role | Full Path |
 |---|----------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Primary Plate** — Double-height atrium, concrete columns, speed gates & grand staircase | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `IMG_20260804_131820446.jpg` | **Secondary Plate** — Angular reception desk nook & digital wall display | `C:\ai\Circle the Square\building-reference\the-real-triangle\IMG_20260804_131820446.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Primary Plate** — Double-height atrium, concrete columns, speed gates & grand staircase | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `IMG_20260804_131820446.jpg` | **Secondary Plate** — Angular reception desk nook & digital wall display | `C:\kontitemp\ai\circle_the_square\building-reference\the-real-triangle\IMG_20260804_131820446.jpg` |
 
 ### 🎬 VIDEO PROMPT (Veo 2 / Sora / Kling)
 ```
@@ -103,8 +103,8 @@ A heavy pneumatic revolving glass door click and whoosh. Two electronic scanning
 ### 📎 Reference Images to Attach (2 Max)
 | # | Filename | Role | Full Path |
 |---|----------|------|-----------|
-| 1 | `P12.jpg` | **Primary Plate** — Office central aisle, timber bench desks & red/black/white triangle acoustic screens | `C:\ai\Circle the Square\building-reference\use-images\P12.jpg` |
-| 2 | `P20.jpg` | **Secondary Plate** — Central aisle high perspective, staff motion & hanging acoustic baffles | `C:\ai\Circle the Square\building-reference\use-images\P20.jpg` |
+| 1 | `P12.jpg` | **Primary Plate** — Office central aisle, timber bench desks & red/black/white triangle acoustic screens | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` |
+| 2 | `P20.jpg` | **Secondary Plate** — Central aisle high perspective, staff motion & hanging acoustic baffles | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P20.jpg` |
 
 ### 🎬 VIDEO PROMPT (Veo 2 / Sora / Kling)
 ```
@@ -129,9 +129,9 @@ A full sub-bass string swell rises under the acoustic guitar. A single brass acc
 ### 📎 Reference Images to Attach (3 Max)
 | # | Filename | Role | Full Path |
 |---|----------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Environment Plate** — Faceted orange reception desk & black/white triangle accent wall | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character Ref A** — Jan Peach (CEO): 52yr old male, navy suit, soft overweight build, rage face | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
-| 3 | `christina_dross_identity_sheet.jpg` | **Character Ref B** — Christina Dross (Comms): 38yr old female, beige blazer, compact mirror | `C:\ai\Circle the Square\character-refs\christina_dross_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Environment Plate** — Faceted orange reception desk & black/white triangle accent wall | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character Ref A** — Jan Peach (CEO): 52yr old male, navy suit, soft overweight build, rage face | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
+| 3 | `christina_dross_identity_sheet.jpg` | **Character Ref B** — Christina Dross (Comms): 38yr old female, beige blazer, compact mirror | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT (Veo 2 / Sora / Kling)
 ```
@@ -179,11 +179,11 @@ Complete cut to black with no music. End credits silence.
 
 | Character | Sheet File | Full Path |
 |-----------|-----------|-----------|
-| Jan Peach (CEO) | `jan_peach_identity_sheet.jpg` | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
-| Christina Dross (Comms Lead) | `christina_dross_identity_sheet.jpg` | `C:\ai\Circle the Square\character-refs\christina_dross_identity_sheet.jpg` |
-| Sharon Enfield (Operations) | `sharon_enfield_identity_sheet.jpg` | `C:\ai\Circle the Square\character-refs\sharon_enfield_identity_sheet.jpg` |
-| Chris (Staff) | `chris_identity_sheet.jpg` | `C:\ai\Circle the Square\character-refs\chris_identity_sheet.jpg` |
-| Rick (Security) | `rick_identity_sheet.jpg` | `C:\ai\Circle the Square\character-refs\rick_identity_sheet.jpg` |
+| Jan Peach (CEO) | `jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
+| Christina Dross (Comms Lead) | `christina_dross_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` |
+| Sharon Enfield (Operations) | `sharon_enfield_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` |
+| Chris (Staff) | `chris_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg` |
+| Rick (Security) | `rick_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` |
 
 ---
 
@@ -193,8 +193,8 @@ Complete cut to black with no music. End credits silence.
 
 | Location | Sheet File | Full Path |
 |----------|-----------|-----------|
-| Exterior Forecourt | `exterior_forecourt_location_sheet.jpg` | `C:\ai\Circle the Square\location-refs\exterior_forecourt_location_sheet.jpg` |
-| Reception & Atrium | `reception_atrium_location_sheet.jpg` | `C:\ai\Circle the Square\location-refs\reception_atrium_location_sheet.jpg` |
+| Exterior Forecourt | `exterior_forecourt_location_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\location-refs\exterior_forecourt_location_sheet.jpg` |
+| Reception & Atrium | `reception_atrium_location_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\location-refs\reception_atrium_location_sheet.jpg` |
 
 ---
 
@@ -214,11 +214,11 @@ Complete cut to black with no music. End credits silence.
 
 | Asset | Full UNC Path |
 |-------|--------------|
-| Building Reference Plates | `C:\ai\Circle the Square\building-reference\use-images\` |
-| The Real Triangle Building Photos | `C:\ai\Circle the Square\building-reference\the-real-triangle\` |
-| Character Identity Sheets | `C:\ai\Circle the Square\character-refs\` |
-| Location Identity Sheets | `C:\ai\Circle the Square\location-refs\` |
-| Interactive Asset Portal | `C:\ai\Circle the Square\opening_sequence_preview.html` |
-| 6-Panel Storyboard Board | `C:\ai\Circle the Square\opening_sequence_storyboard.html` |
-| Full Shot Timeline | `C:\ai\Circle the Square\OPENING_TITLE_SEQUENCE_PLAN.md` |
-| Master Production Manual | `C:\ai\Circle the Square\MASTER_PRODUCTION_MANUAL.md` |
+| Building Reference Plates | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\` |
+| The Real Triangle Building Photos | `C:\kontitemp\ai\circle_the_square\building-reference\the-real-triangle\` |
+| Character Identity Sheets | `C:\kontitemp\ai\circle_the_square\character-refs\` |
+| Location Identity Sheets | `C:\kontitemp\ai\circle_the_square\location-refs\` |
+| Interactive Asset Portal | `C:\kontitemp\ai\circle_the_square\opening_sequence_preview.html` |
+| 6-Panel Storyboard Board | `C:\kontitemp\ai\circle_the_square\opening_sequence_storyboard.html` |
+| Full Shot Timeline | `C:\kontitemp\ai\circle_the_square\OPENING_TITLE_SEQUENCE_PLAN.md` |
+| Master Production Manual | `C:\kontitemp\ai\circle_the_square\MASTER_PRODUCTION_MANUAL.md` |

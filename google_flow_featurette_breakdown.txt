@@ -1,0 +1,219 @@
+================================================================================
+CIRCLE THE SQUARE — GOOGLE FLOW VIDEO GENERATION BREAKDOWN (16:9 & POLICY SAFE)
+Title: Circle the Square — Featurette Episode: Project Inception
+Target AI: Google Flow (Veo 3.1)
+Rules:
+  - NO physical descriptions (Google Flow relies on character identity profiles)
+  - Action, motion, framing, and expressions ONLY
+  - Standard 16:9 aspect ratio
+  - 100% Policy-Safe (no profanity, no nudity/groin refs, no weapons/tasers)
+================================================================================
+
+--------------------------------------------------------------------------------
+CHARACTER IDENTITY TAGS FOR GOOGLE FLOW
+--------------------------------------------------------------------------------
+@Jan            : Jan Peach (CEO)
+@Christina      : Christina Dross (Comms Lead)
+@Sharon         : Sharon Enfield (Operations)
+@Chris          : Chris (Staff)
+@Rick           : Rick (Security / Staff)
+@CanteenWorker  : Canteen Worker
+
+
+================================================================================
+SCENE 1: INT. JAN'S OFFICE - DAY
+================================================================================
+
+--------------------------------------------------------------------------------
+SHOT 01 — Office Discussion
+Duration: 6 seconds | Aspect Ratio: 16:9
+Images: Background (jan_office_location_sheet.jpg) + @Jan + @Christina
+--------------------------------------------------------------------------------
+PROMPT:
+A cinematic 4K medium wide shot inside a modern corporate executive office. @Jan sits behind a sleek executive desk looking exhausted and rubbing his temples. @Christina enters holding a clipboard and stands across from him. Warm interior morning sunlight spills through glass partitions. Natural motion, 24mm wide-angle lens, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Christina (cold, deadpan tone): "Morning Jan. Survive the weekend?"
+@Jan (sighing heavily): "Barely. Another day dealing with these morons..."
+
+
+--------------------------------------------------------------------------------
+SHOT 02 — The Sugar Breakfast Strategy
+Duration: 7 seconds | Aspect Ratio: 16:9
+Images: Background (jan_office_location_sheet.jpg) + @Jan + @Christina
+--------------------------------------------------------------------------------
+PROMPT:
+A medium over-the-shoulder shot focusing on @Christina speaking calmly, then cutting to a close-up of @Jan as his face lights up with sudden scheming enthusiasm. @Jan leans over his desk, eyes widening in agreement. Modern office background, warm directional lighting, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Christina (measured corporate tone): "Every two weeks on a Friday we do a breakfast meeting with pastries loaded with sugar."
+@Jan (bright enthusiasm): "I am liking the idea of this so far! This is strategic MBA thinking!"
+
+
+--------------------------------------------------------------------------------
+SHOT 03 — Star Trek Banter & Outburst
+Duration: 8 seconds max | Aspect Ratio: 16:9
+Images: Background (jan_office_location_sheet.jpg) + @Jan + @Christina
+--------------------------------------------------------------------------------
+PROMPT:
+A dramatic medium close-up of @Jan shouting in frustration at his desk. In the background glass door, @Christina calmly steps out into the hallway without flinching. High energy corporate comedy, sharp focus on @Jan, 35mm lens, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan (enthusiastic): "Make it so!"
+@Christina (deadpan sarcasm): "Shockingly no."
+@Jan (shouting): "GET OUT NOW! JUST GET THAT DAMN MEETING ORGANISED!"
+
+
+--------------------------------------------------------------------------------
+SHOT 04 — Stressed Jan & Sharon's Entrance
+Duration: 6 seconds | Aspect Ratio: 16:9
+Images: Background (jan_office_location_sheet.jpg) + @Jan + @Sharon
+--------------------------------------------------------------------------------
+PROMPT:
+A medium shot of @Jan standing in his office sweating, loosening his tie and unbuttoning his top collar. Suddenly @Sharon opens the office door without knocking, looking unbothered and giving @Jan a calm glance. Modern UK corporate office setting, natural lighting, 35mm lens, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan (flustered): "BLOODY HELL SHARON. KNOCK ON THE DOOR WILL YOU!"
+SFX: Heavy out-of-breath panting, door handle click.
+
+
+--------------------------------------------------------------------------------
+SHOT 05 — Lowering Blinds & Locking Door
+Duration: 7 seconds | Aspect Ratio: 16:9
+Images: Background (jan_office_location_sheet.jpg) + @Sharon + @Jan
+--------------------------------------------------------------------------------
+PROMPT:
+A smooth pan shot showing @Sharon standing composed with arms crossed. Camera sweeps to @Jan quickly pulling down the venetian window blinds to block the hallway view and turning the office door lock knob. Warm interior lighting, shallow depth of field, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Sharon (calm, confident tone): "Well I have needs too Jan that must be met."
+SFX: Venetian blinds clattering down, door lock click.
+
+
+================================================================================
+SCENE 2: INT. CORRIDOR / OPEN-PLAN FLOOR - CONTINUOUS
+================================================================================
+
+--------------------------------------------------------------------------------
+SHOT 06 — Corridor Gossip Observation
+Duration: 6 seconds | Aspect Ratio: 16:9
+Images: Background (open_plan_floor_location_sheet.jpg) + @Chris + @Rick + @Sharon
+--------------------------------------------------------------------------------
+PROMPT:
+A tracking medium 2-shot of @Chris smirking and @Rick standing deadpan next to a row of office desks. In the background corridor, @Sharon walks past looking dishevelled. Bright open-plan corporate lighting, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Chris: "Christ! They don't even try to hide it any more do they."
+@Rick (flat): "Never have. Give it another five minutes."
+
+
+--------------------------------------------------------------------------------
+SHOT 07 — Jan's Emergency Gathering
+Duration: 7 seconds | Aspect Ratio: 16:9
+Images: Background (open_plan_floor_location_sheet.jpg) + @Jan + @Chris + @Rick
+--------------------------------------------------------------------------------
+PROMPT:
+A high-angle wide shot looking down an open-plan office aisle. @Jan emerges from his office with his shirt hastily tucked in and claps his hands loudly to gather the seated office workers. Timber desks, computer monitors, corporate acoustic baffles overhead, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan: "Right guys, as you know --"
+@Chris: "Does Sharon get a pass on attending this?"
+@Jan: "Err... yes she does..." (crowd sniggers)
+
+
+--------------------------------------------------------------------------------
+SHOT 08 — "Project Inception" Heckle
+Duration: 8 seconds max | Aspect Ratio: 16:9
+Images: Background (open_plan_floor_location_sheet.jpg) + @Jan + @Chris
+--------------------------------------------------------------------------------
+PROMPT:
+A snappy reaction cut: @Chris calling out with a loud grin from his desk, cutting to @Jan looking flustered while holding up an orange foam stress ball. @Jan's face flushes as workers laugh around him. Shallow depth of field, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan: "We need a new project... I have decided to call the project Inception."
+@Chris (shouting): "Inception is the name of a film about dreams Jan!"
+@Jan (flustered): "Oh, well it is also the name of this project."
+
+
+--------------------------------------------------------------------------------
+SHOT 09 — Self-Appointment & £50k Raise Outburst
+Duration: 7 seconds | Aspect Ratio: 16:9
+Images: Background (open_plan_floor_location_sheet.jpg) + @Jan
+--------------------------------------------------------------------------------
+PROMPT:
+A low-angle push-in on @Jan standing over the open-plan floor shouting authoritatively. As he announces taking a £50k raise, hands wave in discontent in the foreground. Dramatic lighting, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan: "The position has been filled... by me! It will add £50k to my salary! NOW GET BACK TO WORK!"
+SFX: Loud chorus of groans and murmuring from office crowd.
+
+
+================================================================================
+SCENE 3: INT. STAFF RESTAURANT / CANTEEN - NEXT MORNING
+================================================================================
+
+--------------------------------------------------------------------------------
+SHOT 10 — Canteen Pastry Shortage
+Duration: 6 seconds | Aspect Ratio: 16:9
+Images: Background (canteen_location_sheet.jpg) + @Jan + @CanteenWorker
+--------------------------------------------------------------------------------
+PROMPT:
+A bright wide shot of a modern corporate canteen service counter. Empty stainless steel pastry trays sit on display. @Jan walks up expecting food, looking hungry. @CanteenWorker shakes head behind the counter. Clean corporate aesthetic, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Jan: "Is there any more pain au chocolat?"
+@CanteenWorker: "Sorry, all gone."
+@Jan: "OH THAT IS IT!"
+
+
+--------------------------------------------------------------------------------
+SHOT 11 — The Plate Sweeping Meltdown
+Duration: 7 seconds | Aspect Ratio: 16:9
+Images: Background (canteen_location_sheet.jpg) + @Jan
+--------------------------------------------------------------------------------
+PROMPT:
+A high-speed slow-motion action shot of @Jan sweeping a stack of ceramic plates off the canteen counter, causing them to clatter onto the floor. Dramatic corporate comedy lighting, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+SFX: Loud crash of plates hitting floor.
+@Jan (screaming): "I HAVE HAD IT WITH THIS PLACE! I HAVE AN MBA!"
+
+
+--------------------------------------------------------------------------------
+SHOT 12 — Chair Disruption
+Duration: 8 seconds max | Aspect Ratio: 16:9
+Images: Background (canteen_location_sheet.jpg) + @Jan
+--------------------------------------------------------------------------------
+PROMPT:
+A wide action shot of @Jan angrily knocking over a heavy canteen chair and shouting in frustration near the glass partition wall. Dynamic movement, motion blur, 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+SFX: Loud thud of chair hitting floor, gasps from canteen patrons.
+@Jan: "NOBODY APPRECIATES MY IMMENSE TALENT!"
+
+
+--------------------------------------------------------------------------------
+SHOT 13 — The Sudden Takedown
+Duration: 6 seconds | Aspect Ratio: 16:9
+Images: Background (canteen_location_sheet.jpg) + @Jan + @Rick
+--------------------------------------------------------------------------------
+PROMPT:
+A low-angle shot showing @Rick standing calm holding a small security remote device. In the foreground, @Jan suddenly loses balance and slumps onto the canteen floor tiles. 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+SFX: Buzzing sound, heavy body thud on floor.
+
+
+--------------------------------------------------------------------------------
+SHOT 14 — Aftermath & Fade Out
+Duration: 6 seconds | Aspect Ratio: 16:9
+Images: Background (canteen_location_sheet.jpg) + @Chris + @Rick + @Jan
+--------------------------------------------------------------------------------
+PROMPT:
+A medium 2-shot of @Chris crouching down next to unconscious @Jan on the floor, looking up at @Rick. @Rick calmly stands over him without emotion. The camera slowly zooms out and fades to black. 16:9 aspect ratio.
+
+AUDIO / DIALOGUE:
+@Chris (crouching): "Have you killed him?"
+@Rick (calmly): "No relax, he will be out for a while. I think we need the police here..."
+SFX: Ambient canteen hum fading out.
+================================================================================

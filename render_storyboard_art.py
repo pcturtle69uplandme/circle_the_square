@@ -91,6 +91,6 @@ draw.text((80, 75), "CIRCLE THE SQUARE — SHOT S58.5 GROUPSHOOT STINGER", fill=
 draw.text((80, 100), "CAM: Tripod Lock 35mm (2.39:1 Aspect Ratio) • Prism Atrium Lobby", fill=bone_white)
 
 # Save high-res PNG image
-output_path = os.path.join(r"C:\ai\Circle the Square", "storyboard_group_photo_render.png")
+output_path = os.path.join(r"C:\kontitemp\ai\circle_the_square", "storyboard_group_photo_render.png")
 img.save(output_path, "PNG")
 print(f"Successfully generated image: {output_path}")

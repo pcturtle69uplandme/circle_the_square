@@ -121,7 +121,7 @@
 A zero-cost Python script using PIL & FFMPEG to generate the exact 16:9 / 2.39:1 opening title card clip (`clips/title_card_v03.mp4`):
 
 ```powershell
-cd "C:\ai\Circle the Square"
+cd "C:\kontitemp\ai\circle_the_square"
 python build_title_card_v3.py
 ```
 

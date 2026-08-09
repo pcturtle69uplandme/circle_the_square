@@ -32,7 +32,7 @@ if Qwen3TTSModel:
     print(f"Synthesizing Jan line: '{text_jan}'...")
     wavs_jan, sr = model_wrapper.generate_custom_voice(text=text_jan, speaker="Ryan", language="english")
     
-    out_jan = r"C:\ai\Circle the Square\audio-refs\jan_qwen_custom.wav"
+    out_jan = r"C:\kontitemp\ai\circle_the_square\audio-refs\jan_qwen_custom.wav"
     sf.write(out_jan, wavs_jan[0], sr)
     print(f"Saved Jan Qwen3-TTS Audio: {out_jan} ({os.path.getsize(out_jan)} bytes)")
 
@@ -41,6 +41,6 @@ if Qwen3TTSModel:
     print(f"Synthesizing Sharon line: '{text_sharon}'...")
     wavs_sharon, sr = model_wrapper.generate_custom_voice(text=text_sharon, speaker="Vivian", language="english")
     
-    out_sharon = r"C:\ai\Circle the Square\audio-refs\sharon_qwen_custom.wav"
+    out_sharon = r"C:\kontitemp\ai\circle_the_square\audio-refs\sharon_qwen_custom.wav"
     sf.write(out_sharon, wavs_sharon[0], sr)
     print(f"Saved Sharon Qwen3-TTS Audio: {out_sharon} ({os.path.getsize(out_sharon)} bytes)")

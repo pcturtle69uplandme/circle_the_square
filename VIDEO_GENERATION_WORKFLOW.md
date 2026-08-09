@@ -19,13 +19,13 @@ This is the correct subscription-based route. No API key required.
 
 1. **Open**: [aistudio.google.com](https://aistudio.google.com) — sign in with your Google account
 2. **Select**: `Veo 2` or `Veo 3` from the model dropdown
-3. **Open**: [`featurette_prompt_engine.md`](file:///C:/ai/Circle%20the%20Square/featurette_prompt_engine.md) — navigate to the shot you're on (e.g. S01)
+3. **Open**: [`featurette_prompt_engine.md`](file:///C:/kontitemp/ai/circle_the_square/featurette_prompt_engine.md) — navigate to the shot you're on (e.g. S01)
 4. **Paste**: The `VIDEO PROMPT` block for that shot into AI Studio's prompt field
 5. **Upload**: The 2–3 reference images listed for that shot as image conditioning inputs
 6. **Set duration**: 5–10 seconds as specified per shot
 7. **Generate** — wait ~2–5 minutes
 8. **Download** the `.mp4` — save to:  
-   📁 `C:\ai\Circle the Square\clips\S01_office_establishing.mp4` (adjust number per shot)
+   📁 `C:\kontitemp\ai\circle_the_square\clips\S01_office_establishing.mp4` (adjust number per shot)
 9. **Watch** the clip — run through the **GATE CHECK** in the prompt engine
 10. ✅ Approved → move to next shot | ❌ Rejected → tweak prompt → regenerate
 
@@ -75,7 +75,7 @@ Mark each shot below as you go:
 ## 📁 All Clips Save To
 
 **Filename**: `clips\` folder  
-**Full Path**: [`C:\ai\Circle the Square\clips\`](file:///C:/ai/Circle%20the%20Square/clips/)
+**Full Path**: [`C:\kontitemp\ai\circle_the_square\clips\`](file:///C:/kontitemp/ai/circle_the_square/clips/)
 
 ---
 
@@ -93,6 +93,6 @@ Mark each shot below as you go:
 
 | File | Path |
 |------|------|
-| Shot Prompt Engine | [`C:\ai\Circle the Square\featurette_prompt_engine.md`](file:///C:/ai/Circle%20the%20Square/featurette_prompt_engine.md) |
-| Shot List | [`C:\ai\Circle the Square\featurette_shot_list.md`](file:///C:/ai/Circle%20the%20Square/featurette_shot_list.md) |
-| Clips Output Folder | [`C:\ai\Circle the Square\clips\`](file:///C:/ai/Circle%20the%20Square/clips/) |
+| Shot Prompt Engine | [`C:\kontitemp\ai\circle_the_square\featurette_prompt_engine.md`](file:///C:/kontitemp/ai/circle_the_square/featurette_prompt_engine.md) |
+| Shot List | [`C:\kontitemp\ai\circle_the_square\featurette_shot_list.md`](file:///C:/kontitemp/ai/circle_the_square/featurette_shot_list.md) |
+| Clips Output Folder | [`C:\kontitemp\ai\circle_the_square\clips\`](file:///C:/kontitemp/ai/circle_the_square/clips/) |

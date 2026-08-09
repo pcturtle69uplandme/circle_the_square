@@ -17,7 +17,7 @@ Qwen3TTSModel = _load_qwen3_model()
 
 if Qwen3TTSModel:
     model_dir = r"C:\ai\ComfyUI\ComfyUI\models\TTS\Qwen3-TTS\Qwen3-TTS-12Hz-1.7B-VoiceDesign"
-    out_dir = r"C:\ai\Circle the Square\audio-refs"
+    out_dir = r"C:\kontitemp\ai\circle_the_square\audio-refs"
     
     print(f"Loading Qwen3-TTS VoiceDesign model from {model_dir}...")
     model_wrapper = Qwen3TTSModel.from_pretrained(

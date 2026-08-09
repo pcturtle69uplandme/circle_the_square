@@ -82,8 +82,8 @@ Photoreal cinematic 35mm footage. Modern UK corporate office building interior. 
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Faceted orange desk & triangle wall | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan Peach CEO, navy suit, buttoned shirt | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Faceted orange desk & triangle wall | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan Peach CEO, navy suit, buttoned shirt | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -115,8 +115,8 @@ Quiet office ambient. Low HVAC hum. Distant keyboard tapping. No music. Two voic
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, smug default expression | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, smug default expression | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -145,8 +145,8 @@ Pompous senior British male voice, measured and self-assured. Office ambient ver
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `christina_dross_identity_sheet.jpg` | **Character** — Christina, deadpan composed expression | `C:\ai\Circle the Square\character-refs\christina_dross_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `christina_dross_identity_sheet.jpg` | **Character** — Christina, deadpan composed expression | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -174,8 +174,8 @@ Measured, crisp British professional female voice. Deadpan delivery of a dry, qu
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Blurred office behind | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, early stress state, reddening | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Blurred office behind | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, early stress state, reddening | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -203,9 +203,9 @@ CEO voice rising in pitch. Breathing slightly audible. A shirt collar rustle sou
 ### 📎 Attach These Images (3 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character A** — Jan, shirt off | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
-| 3 | `sharon_enfield_identity_sheet.jpg` | **Character B** — Sharon State A: composed, emerald blouse | `C:\ai\Circle the Square\character-refs\sharon_enfield_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character A** — Jan, shirt off | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
+| 3 | `sharon_enfield_identity_sheet.jpg` | **Character B** — Sharon State A: composed, emerald blouse | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -235,8 +235,8 @@ CEO mid-sentence stops dead. Brief shocked silence. Venetian blind motor hum beg
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `sharon_enfield_identity_sheet.jpg` | **Character** — Sharon, neutral unbothered expression | `C:\ai\Circle the Square\character-refs\sharon_enfield_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `sharon_enfield_identity_sheet.jpg` | **Character** — Sharon, neutral unbothered expression | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -264,8 +264,8 @@ Warm confident British female voice — blunt, transactional, completely unruffl
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\ai\Circle the Square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, shirtless, panicked | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `IMG_20260804_131855397.jpg` | **Env Plate** — Office backdrop | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, shirtless, panicked | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -300,8 +300,8 @@ Venetian blind mechanical slam-drop. Door lock click. CEO heavy breathing. No mu
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `P20.jpg` | **Env Plate** — Open-plan central aisle, corridor perspective | `C:\ai\Circle the Square\building-reference\use-images\P20.jpg` |
-| 2 | `sharon_enfield_identity_sheet.jpg` | **Character** — Sharon, **State B** (dishevelled) | `C:\ai\Circle the Square\character-refs\sharon_enfield_identity_sheet.jpg` |
+| 1 | `P20.jpg` | **Env Plate** — Open-plan central aisle, corridor perspective | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P20.jpg` |
+| 2 | `sharon_enfield_identity_sheet.jpg` | **Character** — Sharon, **State B** (dishevelled) | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -331,8 +331,8 @@ Office ambient hum. Faint distant printer. Sharon's flat footsteps on carpet —
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `P12.jpg` | **Env Plate** — Office desk rows, triangle screens | `C:\ai\Circle the Square\building-reference\use-images\P12.jpg` |
-| 2 | `chris_identity_sheet.jpg` | **Character A** — Chris, smirking | `C:\ai\Circle the Square\character-refs\chris_identity_sheet.jpg` |
+| 1 | `P12.jpg` | **Env Plate** — Office desk rows, triangle screens | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` |
+| 2 | `chris_identity_sheet.jpg` | **Character A** — Chris, smirking | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -362,9 +362,9 @@ Chris voice — dry, quick, South London baritone: "Christ! They don't even try 
 ### 📎 Attach These Images (3 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `P12.jpg` | **Env Plate** — Open-plan office desk rows & triangle screens | `C:\ai\Circle the Square\building-reference\use-images\P12.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character A** — Jan, shirt re-buttoned askew, sweaty | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
-| 3 | `rick_identity_sheet.jpg` | **Character B** — Rick in crowd | `C:\ai\Circle the Square\character-refs\rick_identity_sheet.jpg` |
+| 1 | `P12.jpg` | **Env Plate** — Open-plan office desk rows & triangle screens | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character A** — Jan, shirt re-buttoned askew, sweaty | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
+| 3 | `rick_identity_sheet.jpg` | **Character B** — Rick in crowd | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -393,8 +393,8 @@ Loud double hand-clap echoes in the office. Keyboard typing stops. Chairs scrapi
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `P12.jpg` | **Env Plate** — Office, blurred crowd behind | `C:\ai\Circle the Square\building-reference\use-images\P12.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, stress state, shirt askew | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `P12.jpg` | **Env Plate** — Office, blurred crowd behind | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, stress state, shirt askew | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -422,8 +422,8 @@ Pompous CEO voice peaks in self-satisfaction: "...the position has already been 
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `P12.jpg` | **Env Plate** — Office desk rows, workers assembled | `C:\ai\Circle the Square\building-reference\use-images\P12.jpg` |
-| 2 | `chris_identity_sheet.jpg` | **Character** — Chris, barely containing amusement | `C:\ai\Circle the Square\character-refs\chris_identity_sheet.jpg` |
+| 1 | `P12.jpg` | **Env Plate** — Office desk rows, workers assembled | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` |
+| 2 | `chris_identity_sheet.jpg` | **Character** — Chris, barely containing amusement | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -455,8 +455,8 @@ A ripple of low groans and suppressed sighs from the office crowd. Chris voice �
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Atrium/canteen space, concrete columns, large glazing | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan (NOT YET PRESENT — for ref continuity only) | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Atrium/canteen space, concrete columns, large glazing | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan (NOT YET PRESENT — for ref continuity only) | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -482,8 +482,8 @@ Morning canteen ambient — low cheerful background chatter, cutlery clinking, a
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen space | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, early extreme stress state | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen space | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, early extreme stress state | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -511,9 +511,9 @@ Confident CEO footsteps. Canteen ambient. Jan's voice — dangerously controlled
 ### 📎 Attach These Images (3 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen space with large windows | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, extreme rage/meltdown state | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
-| 3 | `rick_identity_sheet.jpg` | **Character B** — Rick visible in background crowd watching | `C:\ai\Circle the Square\character-refs\rick_identity_sheet.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen space with large windows | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, extreme rage/meltdown state | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
+| 3 | `rick_identity_sheet.jpg` | **Character B** — Rick visible in background crowd watching | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -543,8 +543,8 @@ CEO erupts — screaming incoherent rage about his MBA. MASSIVE CRASH of china p
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen, slightly blurred | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `rick_identity_sheet.jpg` | **Character** — Rick, calm, taser raised | `C:\ai\Circle the Square\character-refs\rick_identity_sheet.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen, slightly blurred | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `rick_identity_sheet.jpg` | **Character** — Rick, calm, taser raised | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -572,7 +572,7 @@ Complete canteen silence except for Jan raging off-camera. A quiet, deliberate c
 ### 📎 Attach These Images (1 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env context only** | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env context only** | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -597,8 +597,8 @@ A sharp loud POP-CRACKLE electric discharge sound. Immediate dead silence after.
 ### 📎 Attach These Images (2 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen floor space | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, unconscious face-down final state | `C:\ai\Circle the Square\character-refs\jan_peach_identity_sheet.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen floor space | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `jan_peach_identity_sheet.jpg` | **Character** — Jan, unconscious face-down final state | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -627,9 +627,9 @@ A single heavy body-slump THUD on a hard floor. Broken china pieces settling. Th
 ### 📎 Attach These Images (3 Max)
 | # | File | Role | Full Path |
 |---|------|------|-----------|
-| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen, broken glass bg | `C:\ai\Circle the Square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
-| 2 | `chris_identity_sheet.jpg` | **Character A** — Chris crouching, concerned-amused | `C:\ai\Circle the Square\character-refs\chris_identity_sheet.jpg` |
-| 3 | `rick_identity_sheet.jpg` | **Character B** — Rick standing calmly, taser being pocketed | `C:\ai\Circle the Square\character-refs\rick_identity_sheet.jpg` |
+| 1 | `ep_tri_372-c-raftery-lowe-resized.jpg` | **Env Plate** — Canteen, broken glass bg | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` |
+| 2 | `chris_identity_sheet.jpg` | **Character A** — Chris crouching, concerned-amused | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg` |
+| 3 | `rick_identity_sheet.jpg` | **Character B** — Rick standing calmly, taser being pocketed | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT
 ```
@@ -685,7 +685,7 @@ S13 → S14 → S15 → S16 → S17 → S18 → S19
 | S19 | Chris | "Have you killed him?" | `chris_qwen_custom.wav` |
 | S19 | Rick | "No relax, he will be out for a while..." | `rick_qwen_custom.wav` |
 
-**TTS Prompts JSON**: `C:\ai\Circle the Square\qwen3_tts_voice_prompts.json`
+**TTS Prompts JSON**: `C:\kontitemp\ai\circle_the_square\qwen3_tts_voice_prompts.json`
 
 ---
 
@@ -693,11 +693,11 @@ S13 → S14 → S15 → S16 → S17 → S18 → S19
 
 | Asset | Full UNC Path |
 |-------|--------------|
-| Fountain Screenplay | `C:\ai\Circle the Square\CTS_Featurette_Episode.fountain` |
-| Scene Shot List | `C:\ai\Circle the Square\featurette_shot_list.md` |
-| Building Refs | `C:\ai\Circle the Square\building-reference\use-images\` |
-| Character Sheets | `C:\ai\Circle the Square\character-refs\` |
-| Location Sheets | `C:\ai\Circle the Square\location-refs\` |
-| Audio Voice Refs | `C:\ai\Circle the Square\audio-refs\` |
-| TTS Prompts JSON | `C:\ai\Circle the Square\qwen3_tts_voice_prompts.json` |
-| Master Production Manual | `C:\ai\Circle the Square\MASTER_PRODUCTION_MANUAL.md` |
+| Fountain Screenplay | `C:\kontitemp\ai\circle_the_square\CTS_Featurette_Episode.fountain` |
+| Scene Shot List | `C:\kontitemp\ai\circle_the_square\featurette_shot_list.md` |
+| Building Refs | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\` |
+| Character Sheets | `C:\kontitemp\ai\circle_the_square\character-refs\` |
+| Location Sheets | `C:\kontitemp\ai\circle_the_square\location-refs\` |
+| Audio Voice Refs | `C:\kontitemp\ai\circle_the_square\audio-refs\` |
+| TTS Prompts JSON | `C:\kontitemp\ai\circle_the_square\qwen3_tts_voice_prompts.json` |
+| Master Production Manual | `C:\kontitemp\ai\circle_the_square\MASTER_PRODUCTION_MANUAL.md` |

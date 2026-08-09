@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.Speech
 
-$outDir = "C:\ai\Circle the Square\audio-refs"
+$outDir = "C:\kontitemp\ai\circle_the_square\audio-refs"
 if (!(Test-Path $outDir)) {
     New-Item -ItemType Directory -Path $outDir | Out-Null
 }

@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 
 AI_DIR = Path(r"C:\ai\AI")
-OUT_DIR = Path(r"C:\ai\Circle the Square\location-refs")
+OUT_DIR = Path(r"C:\kontitemp\ai\circle_the_square\location-refs")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 LOCATIONS = [

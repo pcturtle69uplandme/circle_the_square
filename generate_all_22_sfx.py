@@ -1,6 +1,6 @@
 import math, wave, struct, os, random
 
-out_dir = r"C:\ai\Circle the Square\audio-refs"
+out_dir = r"C:\kontitemp\ai\circle_the_square\audio-refs"
 os.makedirs(out_dir, exist_ok=True)
 
 def write_wav(filename, samples, sample_rate=44100):

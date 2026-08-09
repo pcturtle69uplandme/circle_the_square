@@ -6,8 +6,7 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 title_img = r"C:\ai\Circle the Square\images\circle the square.jpeg"
 clips_dir = r"C:\ai\Circle the Square\clips"
-action_audio = r"C:\ai\Circle the Square\audio-refs\action_musicgen_epic.wav"
-fallback_audio = r"C:\ai\Circle the Square\audio-refs\action_trailer_soundtrack.wav"
+orchestral_audio = r"C:\ai\Circle the Square\audio-refs\full_orchestral_action_soundtrack.wav"
 output_master = r"C:\ai\Circle the Square\clips\ACTION_TRAILER_MASTER_60S.mp4"
 
 s01 = os.path.join(clips_dir, "OPENING_S01_drone_orbit.mp4")
@@ -19,9 +18,6 @@ s06 = os.path.join(clips_dir, "OPENING_S06.mp4")
 s07 = os.path.join(clips_dir, "OPENING_S07.mp4")
 s08 = os.path.join(clips_dir, "OPENING_S08_trimmed.mp4")
 s09 = os.path.join(clips_dir, "OPENING_S09.mp4")
-
-# Selected audio track (prefers new Meta MusicGen Action AI soundtrack)
-audio_track = action_audio if os.path.exists(action_audio) and os.path.getsize(action_audio) > 100000 else fallback_audio
 
 # 1. Generate Title Card Video with TOP OF SCREEN Text Overlay & Black Fade Out
 title_video_end = os.path.join(clips_dir, "temp_action_title_end_5s.mp4")
@@ -99,22 +95,21 @@ ms_s06 = int(t_offsets[5] * 1000)
 ms_s07 = int(t_offsets[6] * 1000)
 ms_s09 = int(t_offsets[8] * 1000)
 
-print(f"Dialogue offsets: S04={ms_s04}ms, S05={ms_s05}ms, S06={ms_s06}ms, S07={ms_s07}ms, S09(1min clip)={ms_s09}ms")
-
 fade_out_start = max(0.0, total_duration - 1.5)
 filter_graph += f"[vout_raw]fade=t=out:st={fade_out_start:.2f}:d=1.5[vout];"
 
-# AUDIO FILTER:
-# DUCK MUSIC TO 0.15 (-16dB) WHEN PEOPLE ARE SPEAKING!
-# High-volume boost (volume=2.2) on ALL staff & executive dialogue soundbites!
+# TWO-STAGE AUDIO MIX FILTER TO PREVENT AMIX VOLUME CRUSHING:
+# Stage 1: Mix all 5 dialogue streams into [dialogue_mix]
+# Stage 2: Mix Orchestral Music [bg_orch] + [dialogue_mix] with weights=1.2 2.2
 audio_filter = (
-    f"[3:a]volume=2.2,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
-    f"[4:a]volume=2.2,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
-    f"[5:a]volume=2.2,adelay={ms_s06}|{ms_s06},apad=whole_dur={total_duration:.2f},aresample=48000[a_s06];"
-    f"[6:a]volume=2.2,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
-    f"[8:a]volume=2.2,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
-    f"[10:a]volume=0.15,atrim=0:{total_duration:.2f},aresample=48000[bg_action];"
-    f"[bg_action][a_s04][a_s05][a_s06][a_s07][a_s09]amix=inputs=6:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
+    f"[3:a]volume=2.5,adelay={ms_s04}|{ms_s04},apad=whole_dur={total_duration:.2f},aresample=48000[a_s04];"
+    f"[4:a]volume=2.5,adelay={ms_s05}|{ms_s05},apad=whole_dur={total_duration:.2f},aresample=48000[a_s05];"
+    f"[5:a]volume=2.5,adelay={ms_s06}|{ms_s06},apad=whole_dur={total_duration:.2f},aresample=48000[a_s06];"
+    f"[6:a]volume=2.5,adelay={ms_s07}|{ms_s07},apad=whole_dur={total_duration:.2f},aresample=48000[a_s07];"
+    f"[8:a]volume=2.5,adelay={ms_s09}|{ms_s09},apad=whole_dur={total_duration:.2f},aresample=48000[a_s09];"
+    f"[a_s04][a_s05][a_s06][a_s07][a_s09]amix=inputs=5:duration=longest:dropout_transition=0[dialogue_mix];"
+    f"[10:a]volume=0.85,atrim=0:{total_duration:.2f},aresample=48000[bg_orch];"
+    f"[bg_orch][dialogue_mix]amix=inputs=2:weights=1.2 2.2:duration=longest:dropout_transition=0,afade=t=out:st={fade_out_start:.2f}:d=1.5,aresample=48000[aout]"
 )
 
 full_filter = filter_graph + audio_filter
@@ -122,7 +117,7 @@ full_filter = filter_graph + audio_filter
 cmd_master = [FFMPEG, "-y"]
 for p in clip_list:
     cmd_master.extend(["-i", p])
-cmd_master.extend(["-i", audio_track])
+cmd_master.extend(["-i", orchestral_audio])
 
 cmd_master.extend([
     "-filter_complex", full_filter,
@@ -143,11 +138,11 @@ cmd_master.extend([
     output_master
 ])
 
-print(f"\n--- Assembling Action Movie Trailer with Top Text, Amplified S09 Voice & Ducked AI Music ---")
+print(f"\n--- Assembling Full Orchestral Action Movie Trailer Cut (Fade Out at {fade_out_start:.2f}s) ---")
 res = subprocess.run(cmd_master, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 if res.returncode == 0 and os.path.exists(output_master):
-    print(f"\n[SUCCESS] Master Action Movie Trailer created successfully!")
+    print(f"\n[SUCCESS] Master Full Orchestral Action Trailer created successfully!")
     print(f"Output File: {output_master} ({os.path.getsize(output_master)/1024/1024:.2f} MB)")
 else:
     print(f"\n[ERROR] FFmpeg master action trailer render error:\n{res.stderr}")

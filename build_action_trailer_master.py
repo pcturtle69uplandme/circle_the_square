@@ -6,12 +6,16 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 title_img = r"C:\ai\Circle the Square\images\circle the square.jpeg"
 clips_dir = r"C:\ai\Circle the Square\clips"
+neural_score_mockumentary = r"C:\ai\Circle the Square\audio-refs\musicgen_mockumentary_score.wav"
 neural_score_large = r"C:\ai\Circle the Square\audio-refs\musicgen_large_neural_score.wav"
 neural_score = r"C:\ai\Circle the Square\audio-refs\musicgen_neural_score_master.wav"
 output_master = r"C:\ai\Circle the Square\clips\ACTION_TRAILER_MASTER_60S.mp4"
 
-# Select 3.3B Neural AI Score if ready, else 300M Neural AI Score
-if os.path.exists(neural_score_large) and os.path.getsize(neural_score_large) > 1000000:
+# Select acoustic mockumentary score if ready, else 3.3B action score, else 300M fallback
+if os.path.exists(neural_score_mockumentary) and os.path.getsize(neural_score_mockumentary) > 1000000:
+    active_neural_audio = neural_score_mockumentary
+    print("Using Meta MusicGen Large STEREO Acoustic Mockumentary Score!")
+elif os.path.exists(neural_score_large) and os.path.getsize(neural_score_large) > 1000000:
     active_neural_audio = neural_score_large
     print("Using 3.3B Meta MusicGen Large Neural AI Score!")
 else:

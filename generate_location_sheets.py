@@ -5,9 +5,17 @@ import os
 import sys
 import subprocess
 from pathlib import Path
-
-AI_DIR = Path(r"C:\ai\AI")
-OUT_DIR = Path(r"C:\kontitemp\ai\circle_the_square\location-refs")
+# Add AI tools directory to import path for gemini_key
+sys.path.append(os.path.abspath(r"C:\\AI\\AI"))
+from gemini_key import get_key
+key = get_key()
+if not key:
+    sys.exit('No Gemini API key found. Please store it with python gemini_key.py')
+# Set only GEMINI_API_KEY for Google genai client
+os.environ['GEMINI_API_KEY'] = key
+os.environ.pop('GOOGLE_API_KEY', None)
+AI_DIR = Path(r"C:\\ai\\AI")
+OUT_DIR = Path(r"C:\\ai\\Circle the Square\\location-refs")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 LOCATIONS = [
@@ -130,7 +138,36 @@ LOCATIONS = [
     }
 ]
 
-if __name__ == "__main__":
-    print(f"Loaded {len(LOCATIONS)} location specs for Circle the Square.")
+def generate_location_images(model="pro", aspect="16:9", size="2K"):
+    print(f"Generating {len(LOCATIONS)} location sheets with model={model}, aspect={aspect}, size={size}...")
     for loc in LOCATIONS:
-        print(f"[{loc['id']}] {loc['name']} -> {loc['file_prefix']}.jpg")
+        output_path = OUT_DIR / f"{loc['file_prefix']}.jpg"
+        if output_path.exists():
+            print(f"  Skipping {loc['name']} (already exists)")
+            continue
+        print(f"  Generating {loc['name']}...")
+        cmd = [
+            sys.executable,
+            str(AI_DIR / "gen_image.py"),
+            loc["prompt"],
+            "-m", model,
+            "--aspect", aspect,
+            "-o", str(OUT_DIR),
+            "--yes"
+        ]
+        if size:
+            cmd.extend(["--size", size])
+        res = subprocess.run(cmd, cwd=str(AI_DIR), capture_output=True, text=True)
+        if res.returncode == 0:
+            print(f"  Success! Output:\n{res.stdout.strip()}")
+        else:
+            print(f"  Error generating {loc['name']}:\n{res.stderr.strip()}")
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--model", default="pro")
+    parser.add_argument("--aspect", default="16:9")
+    parser.add_argument("--size", default="2K")
+    args = parser.parse_args()
+    generate_location_images(model=args.model, aspect=args.aspect, size=args.size)

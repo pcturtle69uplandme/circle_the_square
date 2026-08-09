@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Circle the Square — Storyboard Flipbook</title>
+<style>
+  :root {
+    --orange: #B0381F;
+    --orange-light: #E04B28;
+    --gold: #F2A34D;
+    --bg: #0A0A0C;
+    --bg2: #111116;
+    --bg3: #18181F;
+    --bg4: #1E1E28;
+    --border: rgba(255,255,255,0.08);
+    --text: #E8E6F0;
+    --text-muted: #8A87A0;
+    --text-dim: #4E4B60;
+    --green: #2ECC71;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+    min-height: 100vh;
+  }
+
+  .app { max-width: 1100px; margin: 0 auto; padding: 20px 20px 60px; }
+
+  header { text-align: center; margin-bottom: 18px; }
+  header h1 {
+    font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em;
+    background: linear-gradient(135deg, var(--gold), var(--orange-light));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  header p { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+
+  .scene-tabs {
+    display: flex; gap: 8px; justify-content: center; margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .scene-tab {
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text-muted);
+    padding: 8px 16px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; transition: all .15s ease;
+  }
+  .scene-tab:hover { color: var(--text); border-color: var(--gold); }
+  .scene-tab.active { background: var(--orange); color: #fff; border-color: var(--orange-light); }
+
+  .stage {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px; position: relative;
+  }
+
+  .stage-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; font-size: 0.78rem; color: var(--text-muted);
+  }
+  .stage-meta .badge {
+    background: var(--bg4); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 9px; font-family: 'JetBrains Mono', monospace; color: var(--gold);
+  }
+
+  .frame-box {
+    position: relative;
+    aspect-ratio: 2.39 / 1;
+    background: var(--bg4);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .frame-box img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .placeholder {
+    text-align: center; color: var(--text-dim); padding: 24px;
+  }
+  .placeholder .icon { font-size: 2.2rem; margin-bottom: 10px; opacity: .5; }
+  .placeholder .path {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted);
+    margin-top: 8px; background: var(--bg3); padding: 4px 10px; border-radius: 6px;
+    display: inline-block;
+  }
+
+  .bubble-layer {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 16px;
+    display: flex; justify-content: center; pointer-events: none;
+  }
+  .bubble {
+    max-width: 82%; background: #fdfaf3; color: #1a1a1a; border-radius: 18px;
+    padding: 12px 18px; font-size: 0.95rem; line-height: 1.4; position: relative;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    border: 2px solid #1a1a1a;
+  }
+  .bubble::after {
+    content: ''; position: absolute; left: 32px; bottom: -14px;
+    border-width: 14px 10px 0 0; border-style: solid;
+    border-color: #1a1a1a transparent transparent transparent;
+  }
+  .bubble::before {
+    content: ''; position: absolute; left: 34px; bottom: -10px;
+    border-width: 11px 8px 0 0; border-style: solid;
+    border-color: #fdfaf3 transparent transparent transparent; z-index: 1;
+  }
+  .bubble .speaker {
+    font-weight: 800; text-transform: uppercase; font-size: 0.68rem;
+    letter-spacing: 0.05em; color: var(--orange); margin-bottom: 2px; display: block;
+  }
+  .bubble.sfx {
+    background: var(--bg3); color: var(--text-muted); border: 1px dashed var(--border);
+    font-style: italic; font-size: 0.82rem;
+  }
+  .bubble.sfx::after, .bubble.sfx::before { display: none; }
+
+  .controls {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 16px;
+  }
+  .nav-btn {
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+    width: 44px; height: 44px; border-radius: 10px; font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s ease;
+  }
+  .nav-btn:hover { background: var(--orange); border-color: var(--orange-light); }
+  .nav-btn:disabled { opacity: .3; cursor: default; }
+  .nav-btn:disabled:hover { background: var(--bg3); border-color: var(--border); }
+
+  .counter { text-align: center; font-size: 0.85rem; color: var(--text-muted); }
+  .counter b { color: var(--text); }
+
+  .shot-info { text-align: center; font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; }
+
+  .thumbs {
+    display: flex; gap: 6px; overflow-x: auto; padding: 14px 2px 4px; margin-top: 8px;
+  }
+  .thumb {
+    flex: 0 0 auto; width: 52px; height: 22px; border-radius: 5px;
+    background: var(--bg4); border: 1px solid var(--border); cursor: pointer;
+    font-size: 0.6rem; color: var(--text-dim); display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; transition: all .12s ease;
+  }
+  .thumb:hover { border-color: var(--gold); color: var(--text); }
+  .thumb.current { background: var(--orange); color: #fff; border-color: var(--orange-light); }
+  .thumb.done::after { content: '●'; color: var(--green); margin-left: 3px; font-size: 0.5rem; }
+
+  footer {
+    text-align: center; margin-top: 22px; font-size: 0.75rem; color: var(--text-dim);
+  }
+  footer code {
+    background: var(--bg3); padding: 2px 6px; border-radius: 4px; color: var(--gold);
+  }
+
+  kbd {
+    background: var(--bg4); border: 1px solid var(--border); border-radius: 4px;
+    padding: 1px 6px; font-family: monospace; font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Circle the Square — "Project Inception"</h1>
+    <p>Storyboard flipbook · use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to navigate</p>
+  </header>
+
+  <div class="scene-tabs" id="sceneTabs"></div>
+
+  <div class="stage">
+    <div class="stage-meta">
+      <span class="badge" id="frameBadge">F01</span>
+      <span id="sceneLabel">Scene 1 — Jan's Office</span>
+      <span class="badge" id="shotBadge">S01</span>
+    </div>
+
+    <div class="frame-box" id="frameBox">
+      <img id="frameImg" alt="" style="display:none" />
+      <div class="placeholder" id="placeholder">
+        <div class="icon">🎬</div>
+        <div>Not generated yet</div>
+        <div class="path" id="placeholderPath">storyboard-frames/F01.jpg</div>
+      </div>
+      <div class="bubble-layer" id="bubbleLayer"></div>
+    </div>
+
+    <div class="controls">
+      <button class="nav-btn" id="prevBtn">&larr;</button>
+      <div>
+        <div class="counter">Frame <b id="counterCur">1</b> / <b id="counterTotal">64</b></div>
+        <div class="shot-info" id="beatInfo"></div>
+      </div>
+      <button class="nav-btn" id="nextBtn">&rarr;</button>
+    </div>
+
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+
+  <footer>
+    Save generated stills as <code>storyboard-frames/&lt;FRAME ID&gt;.jpg</code> (e.g. <code>storyboard-frames/F06a.jpg</code>) next to this file — they'll appear automatically on refresh.<br/>
+    Prompts &amp; @tag attachments: <code>featurette_storyboard_image_prompts.md</code>
+  </footer>
+</div>
+
+<script>
+const SCENES = [
+  { id: 1, label: "Scene 1 — Jan's Office" },
+  { id: 2, label: "Scene 2 — Corridor / Open-Plan" },
+  { id: 3, label: "Scene 3 — Canteen" },
+];
+
+// speaker: null => SFX/ambient caption. line: dialogue or SFX description.
+const FRAMES = [
+  { id:"F01", shot:"S01", scene:1, speaker:"Christina", line:"Morning Jan. Survive the weekend?" },
+  { id:"F02", shot:"S01", scene:1, speaker:"Jan (sighing)", line:"Barely. Another day dealing with these morons who cannot understand the discipline and brilliance it takes to run a place like this." },
+  { id:"F03", shot:"S02", scene:1, speaker:"Christina", line:"I see. Well, I might be able to help with that. I have an idea to help us communicate better with the whole department." },
+  { id:"F04", shot:"S02", scene:1, speaker:"Jan", line:"I'm listening." },
+  { id:"F05", shot:"S02", scene:1, speaker:"Christina", line:"Well, every two weeks on a Friday we do a 'breakfast meeting' and offer some pastries or some other junk loaded with as much sugar as humanly possible, and we give a talk about whatever for thirty mins. We then take any questions and pretend to listen." },
+  { id:"F06a", shot:"S03", scene:1, speaker:"Jan (enthused)", line:"I am liking the idea of this so far. Especially if we ensure that the sugar in the breakfast junk is just enough to pacify the workers' brains so as not to care what we are talking about, but not too much so as to result in no actual work being done afterwards." },
+  { id:"F06b", shot:"S03", scene:1, speaker:"Jan", line:"This is exactly the kind of strategic thinking they don't teach you unless you've got a real MBA." },
+  { id:"F07", shot:"S04", scene:1, speaker:"Christina (dry)", line:"Thought you would like it. Friday statistically is the least productive day anyway, so we could just up the sugar content as much as we like. Diminishing returns don't really apply if there were no returns to begin with." },
+  { id:"F08", shot:"S05", scene:1, speaker:"Jan", line:"Great. Make it so." },
+  { id:"F09", shot:"S05", scene:1, speaker:"Christina", line:"I am sorry, what?" },
+  { id:"F10", shot:"S05", scene:1, speaker:"Jan", line:"You never seen Star Trek Next Generation?" },
+  { id:"F11", shot:"S05", scene:1, speaker:"Christina (heavy sarcasm)", line:"Shockingly no." },
+  { id:"F12", shot:"S06", scene:1, speaker:"Jan", line:"Fine, just make it happen. Start tomorrow with the first meeting. Now get out, I have got to prepare for a short presentation to the whole staff in a few mins." },
+  { id:"F13", shot:"S06", scene:1, speaker:"Christina", line:"Is this another one of your poorly rehearsed presentations?" },
+  { id:"F14", shot:"S07", scene:1, speaker:"Jan", line:"Jesus! Everyone thinks they know better than me! I am the one with the MBA from the University of --" },
+  { id:"F15", shot:"S07", scene:1, speaker:"Christina", line:"Made Up Place?" },
+  { id:"F16", shot:"S07", scene:1, speaker:"Jan (screaming, red-faced)", line:"GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED!" },
+  { id:"F17", shot:"S08", scene:1, speaker:null, line:"Door clicks shut — calm exit, not even a flinch." },
+  { id:"F18", shot:"S09", scene:1, speaker:null, line:"Jan unbuttons his shirt, flustered and sweating." },
+  { id:"F19", shot:"S09", scene:1, speaker:null, line:"Shirt fully off — the arrow revealed." },
+  { id:"F20", shot:"S10", scene:1, speaker:"Jan", line:"BLOODY HELL SHARON. KNOCK ON THE DOOR WILL YOU!" },
+  { id:"F21", shot:"S11", scene:1, speaker:null, line:"Sharon's eyes flick down toward the arrow, expression neutral." },
+  { id:"F22", shot:"S11", scene:1, speaker:null, line:"Jan frozen, mortified." },
+  { id:"F23", shot:"S12", scene:1, speaker:"Sharon (unbothered)", line:"I hear Christina is doing breakfast meetings now." },
+  { id:"F24", shot:"S13", scene:1, speaker:"Jan", line:"I really don't have time for this now Sharon. I can't make any concessions for you to have some other nonsensical meeting --" },
+  { id:"F25", shot:"S13", scene:1, speaker:"Sharon", line:"Well I have needs too Jan that must be met." },
+  { id:"F26a", shot:"S14", scene:1, speaker:null, line:"Blinds slam down." },
+  { id:"F26b", shot:"S14", scene:1, speaker:null, line:"Door locks. Cut to corridor." },
+
+  { id:"F27", shot:"S15", scene:2, speaker:null, line:"Chris & Rick, establishing 2-shot by the desk run." },
+  { id:"F28", shot:"S16", scene:2, speaker:"Chris", line:"Christ! They don't even try to hide it any more do they." },
+  { id:"F29", shot:"S16", scene:2, speaker:"Rick (flat)", line:"Never have. Give it another five minutes." },
+  { id:"F30", shot:"S17", scene:2, speaker:null, line:"Sharon walks past, dishevelled, dripping sweat." },
+  { id:"F31", shot:"S18", scene:2, speaker:"Jan", line:"Right guys, as you know --" },
+  { id:"F32", shot:"S19", scene:2, speaker:"Chris", line:"Does Sharon get a pass on attending this?" },
+  { id:"F33", shot:"S19", scene:2, speaker:"Jan", line:"Err... yes she does. I have given her the rest of the day off for personal reasons." },
+  { id:"F34", shot:"S19", scene:2, speaker:null, line:"Quiet sniggering ripples through the crowd." },
+  { id:"F35", shot:"S20", scene:2, speaker:"Jan (flushed)", line:"SHUT UP! I am truly appalled by the lack of discipline in this place and that changes now! I have decided a new project is required to manage all the change around here." },
+  { id:"F36", shot:"S21", scene:2, speaker:"Rick", line:"What happened to the last project for this, isn't it ongoing? By that I mean completely failing." },
+  { id:"F37a", shot:"S22", scene:2, speaker:"Jan", line:"There's no need for the previous project as everything has been a great success even though most things were not delivered on time or within budget. I know because I see everything happening so am best placed to judge." },
+  { id:"F37b", shot:"S22", scene:2, speaker:"Jan", line:"We need a new project to continue the success of the previous project. So I have decided to call the project Inception." },
+  { id:"F38", shot:"S23", scene:2, speaker:"Chris (shouting to laughter)", line:"You're dreaming Jan!" },
+  { id:"F39", shot:"S23", scene:2, speaker:"Jan", line:"What?!" },
+  { id:"F40", shot:"S23", scene:2, speaker:"Chris", line:"Inception is the name of a film about dreams Jan." },
+  { id:"F41", shot:"S23", scene:2, speaker:"Jan (flustered)", line:"Oh, well it is also the name of this project." },
+  { id:"F42", shot:"S24", scene:2, speaker:null, line:"INSERT — 1,000 'PROJECT INCEPTION' stress balls, pens & t-shirts, already ordered." },
+  { id:"F43", shot:"S25", scene:2, speaker:"Chris", line:"Will there be a lead for this?" },
+  { id:"F44", shot:"S25", scene:2, speaker:"Jan", line:"At last something sensible is asked. Yes there will. However, it is with regret that I have to inform you all that the position has already been filled... by me." },
+  { id:"F45", shot:"S25", scene:2, speaker:null, line:"Groans echo from the crowd." },
+  { id:"F46", shot:"S26", scene:2, speaker:"Jan", line:"Yes groan all you like, but I am the one with the most talent and skills to deliver this. It will add £50k to my salary as I simply add this role into my duties. I will let you know when more information is available, now GET BACK TO WORK!" },
+
+  { id:"F47", shot:"S27", scene:3, speaker:null, line:"Canteen establishing — pastries prepped, high demand." },
+  { id:"F48", shot:"S28", scene:3, speaker:null, line:"Last pastry claimed — tray empty, just crumbs." },
+  { id:"F49", shot:"S29", scene:3, speaker:null, line:"Jan strides into the canteen, confident." },
+  { id:"F50", shot:"S29", scene:3, speaker:"Jan", line:"Is there any more pain au chocolat?" },
+  { id:"F51", shot:"S29", scene:3, speaker:"Canteen Worker", line:"Sorry, all gone." },
+  { id:"F52", shot:"S30", scene:3, speaker:"Jan (veins bulging)", line:"OH THAT IS IT!" },
+  { id:"F53", shot:"S31", scene:3, speaker:null, line:"Plates swept off the counter — CRASH." },
+  { id:"F54", shot:"S31", scene:3, speaker:null, line:"China shattered on the floor, crowd frozen, staring." },
+  { id:"F55", shot:"S32", scene:3, speaker:"Jan (screaming)", line:"I HAVE HAD IT WITH THIS PLACE! I HAVE AN MBA, NOBODY APPRECIATES MY IMMENSE TALENT!" },
+  { id:"F56", shot:"S33", scene:3, speaker:null, line:"Chair hurled through the window — GLASS SHATTERS." },
+  { id:"F57", shot:"S34", scene:3, speaker:null, line:"Jan reaches for a second chair; Rick steps forward, raising the taser." },
+  { id:"F58", shot:"S34", scene:3, speaker:null, line:"POP-CRACKLE — taser electric arc flash." },
+  { id:"F59", shot:"S34", scene:3, speaker:null, line:"Jan freezes, drops the chair, slumps face-first — unconscious." },
+  { id:"F60", shot:"S35", scene:3, speaker:"Chris (crouching down)", line:"Have you killed him?" },
+  { id:"F61", shot:"S35", scene:3, speaker:"Rick (calmly stowing Taser)", line:"No relax, he will be out for a while. I knew this Taser would come in useful one day in this place. I think we need the police here..." },
+];
+
+let sceneFilter = "all";
+let idx = 0;
+
+function visibleFrames() {
+  if (sceneFilter === "all") return FRAMES;
+  return FRAMES.filter(f => f.scene === sceneFilter);
+}
+
+function renderTabs() {
+  const el = document.getElementById("sceneTabs");
+  el.innerHTML = "";
+  const all = document.createElement("button");
+  all.className = "scene-tab" + (sceneFilter === "all" ? " active" : "");
+  all.textContent = "All Scenes";
+  all.onclick = () => { sceneFilter = "all"; idx = 0; renderAll(); };
+  el.appendChild(all);
+  SCENES.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "scene-tab" + (sceneFilter === s.id ? " active" : "");
+    btn.textContent = s.label.replace(/^Scene \d+ — /, "S" + s.id + " · ");
+    btn.onclick = () => { sceneFilter = s.id; idx = 0; renderAll(); };
+    el.appendChild(btn);
+  });
+}
+
+function renderThumbs() {
+  const el = document.getElementById("thumbs");
+  el.innerHTML = "";
+  const frames = visibleFrames();
+  frames.forEach((f, i) => {
+    const t = document.createElement("div");
+    t.className = "thumb" + (i === idx ? " current" : "");
+    t.textContent = f.id;
+    t.onclick = () => { idx = i; renderFrame(); };
+    el.appendChild(t);
+  });
+}
+
+function tryLoadImage(frame) {
+  const img = document.getElementById("frameImg");
+  const placeholder = document.getElementById("placeholder");
+  const path = `storyboard-frames/${frame.id}.jpg`;
+  document.getElementById("placeholderPath").textContent = path;
+  img.style.display = "none";
+  placeholder.style.display = "flex";
+  placeholder.style.flexDirection = "column";
+  placeholder.style.alignItems = "center";
+  placeholder.style.justifyContent = "center";
+
+  const probe = new Image();
+  probe.onload = () => {
+    img.src = path;
+    img.style.display = "block";
+    placeholder.style.display = "none";
+  };
+  probe.onerror = () => {
+    img.style.display = "none";
+    placeholder.style.display = "flex";
+  };
+  probe.src = path;
+}
+
+function renderFrame() {
+  const frames = visibleFrames();
+  if (idx < 0) idx = 0;
+  if (idx >= frames.length) idx = frames.length - 1;
+  const f = frames[idx];
+  if (!f) return;
+
+  document.getElementById("frameBadge").textContent = f.id;
+  document.getElementById("shotBadge").textContent = f.shot;
+  const scene = SCENES.find(s => s.id === f.scene);
+  document.getElementById("sceneLabel").textContent = scene.label;
+  document.getElementById("counterCur").textContent = String(idx + 1);
+  document.getElementById("counterTotal").textContent = String(frames.length);
+  document.getElementById("beatInfo").textContent = f.line.length > 90 ? f.line.slice(0, 90) + "…" : f.line;
+
+  tryLoadImage(f);
+
+  const bubbleLayer = document.getElementById("bubbleLayer");
+  bubbleLayer.innerHTML = "";
+  const bubble = document.createElement("div");
+  if (f.speaker) {
+    bubble.className = "bubble";
+    bubble.innerHTML = `<span class="speaker">${f.speaker}</span>${f.line}`;
+  } else {
+    bubble.className = "bubble sfx";
+    bubble.textContent = "🔇 " + f.line;
+  }
+  bubbleLayer.appendChild(bubble);
+
+  document.getElementById("prevBtn").disabled = idx === 0;
+  document.getElementById("nextBtn").disabled = idx === frames.length - 1;
+
+  renderThumbs();
+}
+
+function renderAll() {
+  renderTabs();
+  renderFrame();
+}
+
+document.getElementById("prevBtn").onclick = () => { if (idx > 0) { idx--; renderFrame(); } };
+document.getElementById("nextBtn").onclick = () => {
+  const frames = visibleFrames();
+  if (idx < frames.length - 1) { idx++; renderFrame(); }
+};
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") document.getElementById("prevBtn").click();
+  if (e.key === "ArrowRight") document.getElementById("nextBtn").click();
+});
+
+renderAll();
+</script>
+</body>
+</html>

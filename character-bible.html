@@ -250,6 +250,128 @@
     border: 1px solid var(--accent);
   }
 
+  /* ---------- Talking head / documentary ---------- */
+  .talking-head {
+    margin-top: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .talking-head blockquote {
+    position: relative;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.9rem 0.5rem 2.6rem;
+    border-left: 2px solid var(--ink-soft);
+    background: var(--accent-soft);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .talking-head blockquote::before {
+    content: "\1F3AC";
+    position: absolute;
+    left: 0.6rem;
+    top: 0.45rem;
+    font-style: normal;
+    font-size: 0.9rem;
+  }
+  .talking-head .th-context {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Voice profile ---------- */
+  .voice-profile {
+    margin-top: 1.4rem;
+    border-top: 1px dashed var(--line);
+    padding-top: 1.2rem;
+  }
+  .voice-profile-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .voice-profile-head h4 {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+  .voice-profile-head .vp-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 0.72rem;
+    flex: none;
+  }
+  .vp-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    row-gap: 0.6rem;
+    column-gap: 1rem;
+  }
+  .vp-grid dt {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-top: 0.15rem;
+  }
+  .vp-grid dd {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+  .vp-tts {
+    margin-top: 1rem;
+  }
+  .vp-tts h5 {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 0.4rem;
+  }
+  .vp-tts pre {
+    margin: 0;
+    padding: 0.7rem 0.9rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+  .vp-audio-refs {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .vp-audio-refs span {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--accent);
+  }
+
   /* ---------- Production notes ---------- */
   .notes {
     margin-top: 2.4rem;
@@ -378,9 +500,50 @@
           <blockquote>"Great. Make it so…"</blockquote>
           <blockquote>"GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED"</blockquote>
           <blockquote>"I HAVE AN MBA, NOBODY APPRECIATES MY IMMENSE TALENT."</blockquote>
+          <h4>Talking head — mock documentary</h4>
+          <div class="talking-head">
+            <blockquote>"People say I'm difficult to work with. I say those people don't have MBAs. I didn't spend three years at the University of — well, it's a very prestigious institution — to be told how to manage by people who can barely operate a photocopier. Leadership is lonely. That's just the price you pay for being the smartest person in every room you walk into."
+              <span class="th-context">— to camera, office backdrop, smug lean-back in chair</span>
+            </blockquote>
+            <blockquote>"I've actually modelled my leadership style on Captain Picard. 'Make it so.' Direct. Commanding. People respect that. Christina didn't get the reference, which tells you everything you need to know about the calibre of staff I'm dealing with here."
+              <span class="th-context">— to camera, hands steepled, chin raised</span>
+            </blockquote>
+            <blockquote>"The breakfast meetings were my idea, actually. Christina brought me the logistics but the strategic vision — the sugar content, the timing, the psychological element — that was all me. That's MBA thinking. You can't teach that. Well, you can. They taught me. At my MBA."
+              <span class="th-context">— to camera, tapping temple with index finger</span>
+            </blockquote>
+          </div>
           <h4>Shoot notes — real office</h4>
           <p>Use the most "executive" meeting room you've got for his office scenes — glass door helps for the blinds-closing beat. The chair-through-the-window moment and the shirt-off gag both need a call before storyboarding.</p>
           <span class="flag">Flag: window smash + shirt-off beat — see production notes below</span>
+
+          <div class="voice-profile">
+            <div class="voice-profile-head">
+              <span class="vp-icon">🎙</span>
+              <h4>Voice profile</h4>
+            </div>
+            <dl class="vp-grid">
+              <dt>Vocal quality</dt><dd>High, sharp, strained tenor — naturally thin and reedy, it climbs into a piercing screech under pressure and never fully drops into calm</dd>
+              <dt>Accent / dialect</dt><dd>British Received Pronunciation (RP) — the "boardroom" kind, leaned on hard as a status marker; the polish cracks the moment he raises his voice</dd>
+              <dt>Delivery style</dt><dd>Oscillates between oily corporate smoothness ("Make it so…") and unhinged screaming with no transitional gear — the switch is almost binary. Speaks <em>at</em> people, not to them; lectures rather than converses</dd>
+              <dt>Emotional range</dt><dd>Smug self-satisfaction → irritated condescension → full hysteria. Mostly lives at the extremes; calm Jan is just suppressed anger waiting for a trigger. Sweating and breathlessness colour the voice when stressed</dd>
+              <dt>Pacing</dt><dd>Fast, erratic, anxious — speeds up when agitated, words tumble over each other mid-rant; slower and ponderous when performing authority (the MBA speeches)</dd>
+              <dt>Verbal tics</dt><dd>Drops MBA references like trump cards; quotes Star Trek without self-awareness; calls colleagues "morons" reflexively; barks "GET OUT" and "GET BACK TO WORK" as punctuation</dd>
+              <dt>Performance notes</dt><dd>The voice must sell the arc: scene 1 opens with pompous calm, scene 3 is strained bluster, by scene 4 it's full throat-shredding hysteria. Each escalation should feel irreversible — he never returns to the earlier register</dd>
+            </dl>
+            <div class="vp-tts">
+              <h5>TTS engine instruct (Qwen3-TTS)</h5>
+              <pre>pitch: High, sharp, strained tenor.
+speed: Fast, erratic, anxious.
+emotion: Hysterical, pompous, angry.
+personality: Arrogant, thin-skinned corporate tyrant.
+accent: British Received Pronunciation (RP).</pre>
+            </div>
+            <div class="vp-audio-refs">
+              <span>📁 jan_human_sample.mp3</span>
+              <span>📁 jan_qwen_custom.wav</span>
+              <span>📁 jan_sample.wav</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -446,8 +609,51 @@
           <h4>Notable lines</h4>
           <blockquote>"Well every two weeks on a Friday we do a 'breakfast meeting' and offer some pastries... loaded with as much sugar as humanly possible..."</blockquote>
           <blockquote>"Made Up Place?"</blockquote>
+          <h4>Talking head — mock documentary</h4>
+          <div class="talking-head">
+            <blockquote>"My job title is Communications and Staff Engagement Lead. What that actually means is I find ways to make people do what Jan wants without them realising Jan is the reason they're miserable. It's not complicated. Pastries help. Sugar helps more."
+              <span class="th-context">— to camera, level gaze, hands clasped on desk</span>
+            </blockquote>
+            <blockquote>"He quoted Star Trek at me. In a meeting. Unironically. I just — [slight pause] — no, I'm not going to say what I was thinking. I'll just say I've updated my CV three times this month."
+              <span class="th-context">— to camera, one perfectly still blink</span>
+            </blockquote>
+            <blockquote>"Do I feel guilty about the sugar content in those pastries? No. They're pastries, not a controlled substance. If anything, I'm providing a public service. An hour of mild euphoria is the least this company owes these people after a Jan Peach all-hands."
+              <span class="th-context">— to camera, faint half-smile, phone face-down on table</span>
+            </blockquote>
+          </div>
           <h4>Shoot notes — real office</h4>
           <p>Same meeting room as Jan for scene 1. Doesn't appear again after she's dismissed — no canteen or crowd scene blocking needed for her.</p>
+
+          <div class="voice-profile">
+            <div class="voice-profile-head">
+              <span class="vp-icon">🎙</span>
+              <h4>Voice profile</h4>
+            </div>
+            <dl class="vp-grid">
+              <dt>Vocal quality</dt><dd>Feminine alto — smooth, controlled, with a naturally low resonance that never wavers; the kind of voice that sounds quieter than it is because it doesn't need volume</dd>
+              <dt>Accent / dialect</dt><dd>Clear British London RP — crisper and more neutral than Jan's; no regional colour, corporate-polished to the point of deliberate anonymity</dd>
+              <dt>Delivery style</dt><dd>Measured, unhurried, deadpan — treats every sentence like a press statement she's already rehearsed. Sarcasm is delivered completely straight; the joke is in the content, never the tone ("Made Up Place?" lands precisely because her voice doesn't change)</dd>
+              <dt>Emotional range</dt><dd>Almost none on the surface — cold competence → faint amusement → dry disgust, all micro-adjustments. She never raises her voice even when Jan is screaming at her; the contrast <em>is</em> the performance</dd>
+              <dt>Pacing</dt><dd>Steady and even — no rushed words, no pauses for emphasis, just an inexorable conversational metronome. The "sugar plan" pitch is delivered like a quarterly report</dd>
+              <dt>Verbal tics</dt><dd>Mirrors corporate jargon back at Jan just enough to keep him listening; drops the mask for exactly one beat of heavy sarcasm ("Shockingly no") before snapping back</dd>
+              <dt>Performance notes</dt><dd>She's the still point of the scene — everyone else orbits her emotionally. The audience should be unsure whether she's genuinely loyal or quietly sabotaging Jan. Voice must stay level enough to support either reading</dd>
+            </dl>
+            <div class="vp-tts">
+              <h5>TTS engine instruct (Qwen3-TTS)</h5>
+              <pre>gender: Female.
+age: 38 years old adult female.
+pitch: Feminine alto voice.
+speed: Measured, unhurried, steady.
+emotion: Cold, deadpan, calm female speaker.
+personality: Sharp female corporate strategist.
+accent: Clear British London RP female.</pre>
+            </div>
+            <div class="vp-audio-refs">
+              <span>📁 christina_human_sample.mp3</span>
+              <span>📁 christina_qwen_custom.wav</span>
+              <span>📁 christina_sample.wav</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -506,9 +712,49 @@
           <h4>Notable lines</h4>
           <blockquote>"I hear Christina is doing breakfast meetings now."</blockquote>
           <blockquote>"Well I have needs too Jan that must be met."</blockquote>
+          <h4>Talking head — mock documentary</h4>
+          <div class="talking-head">
+            <blockquote>"Look, I'm a very practical person. Jan has certain things I want — flexibility, time off, the good parking space. I have certain things Jan wants. It's a transaction. I don't see why everyone makes it more complicated than that."
+              <span class="th-context">— to camera, shrug, adjusting hair casually</span>
+            </blockquote>
+            <blockquote>"Do people talk about it? Probably. Do I care? I got half-day Fridays for the rest of the quarter, so — no. Not really. Chris gives me that look in the corridor sometimes. I just smile at him. He doesn't know what to do with that."
+              <span class="th-context">— to camera, unbothered smile, leaning back</span>
+            </blockquote>
+          </div>
           <h4>Shoot notes — real office</h4>
           <p>Everything explicit happens behind a closed door with the blinds down — easy to shoot tastefully as a door-close / time-cut. All you need on camera is her walking in composed and leaving dishevelled a "few minutes" later.</p>
           <span class="flag">Flag: affair implication — handled off-screen, see production notes</span>
+
+          <div class="voice-profile">
+            <div class="voice-profile-head">
+              <span class="vp-icon">🎙</span>
+              <h4>Voice profile</h4>
+            </div>
+            <dl class="vp-grid">
+              <dt>Vocal quality</dt><dd>Warm, confident adult female alto — full-bodied with a natural richness; carries effortlessly without projection, the voice of someone who's never had to raise it to get what she wants</dd>
+              <dt>Accent / dialect</dt><dd>Welsh accent with a subtle natural lilt — not broad Valleys, more of a soft South Wales sing-song that colours vowels and makes even transactional demands sound almost musical</dd>
+              <dt>Delivery style</dt><dd>Unhurried, transactional, blunt — states what she wants the way you'd order a coffee. No flirtation in the voice; the innuendo lives in the words, not the performance ("Well I have needs too Jan that must be met" is delivered flat, not coyly)</dd>
+              <dt>Emotional range</dt><dd>Level → unbothered → faintly amused. She doesn't do embarrassment; when colleagues clock the affair, her voice doesn't waver. The tone throughout is practical rather than emotional</dd>
+              <dt>Pacing</dt><dd>Unhurried with a natural Welsh cadence — sentences rise and fall melodically but never speed up, even when she's making a demand; comfortable silence sits easily in her delivery</dd>
+              <dt>Verbal tics</dt><dd>Drops oblique references to Jan's obligations without ever being explicit; uses "well" as a casual lead-in that implies she's already decided the outcome before the conversation started</dd>
+              <dt>Performance notes</dt><dd>The voice should read as entirely in control — the comedy comes from how little effort she puts in compared to how rattled everyone else is. Keep it breezy and level; the Welsh lilt does the charm work naturally</dd>
+            </dl>
+            <div class="vp-tts">
+              <h5>TTS engine instruct (Qwen3-TTS)</h5>
+              <pre>gender: Female.
+age: 34 years old adult female.
+pitch: Warm, confident adult female alto voice.
+speed: Unhurried, transactional, blunt pacing.
+emotion: Level, unbothered, confident female speaker.
+personality: Plain-spoken opportunist.
+accent: Welsh adult female accent with a subtle natural lilt.</pre>
+            </div>
+            <div class="vp-audio-refs">
+              <span>📁 sharon_human_sample.mp3</span>
+              <span>📁 sharon_qwen_custom.wav</span>
+              <span>📁 sharon_sample.wav</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -567,8 +813,51 @@
           <h4>Notable lines</h4>
           <blockquote>"You're dreaming Jan." / "Inception is the name of a film about dreams Jan."</blockquote>
           <blockquote>"Have you killed him?"</blockquote>
+          <h4>Talking head — mock documentary</h4>
+          <div class="talking-head">
+            <blockquote>"'Project Inception.' He actually said that. Out loud. To a room full of people. And he'd already ordered a thousand stress balls. A thousand. I almost felt sorry for him. Almost. Then he gave himself a fifty-grand pay rise and the moment passed."
+              <span class="th-context">— to camera, smirking, arms crossed</span>
+            </blockquote>
+            <blockquote>"The thing about Jan is, he genuinely doesn't know. Like, he really, truly believes he's good at this. That's the bit that gets me. I've worked for bad bosses before — at least they knew they were bad. Jan thinks he's Picard. He's not even Wesley."
+              <span class="th-context">— to camera, leaning forward, half-laugh</span>
+            </blockquote>
+            <blockquote>"Did I think Rick was actually going to taser him? Honestly? I thought about it for a second and my only question was 'what took you so long.' Then I checked if he was breathing. He was. Shame."
+              <span class="th-context">— to camera, deadpan, sipping coffee</span>
+            </blockquote>
+          </div>
           <h4>Shoot notes — real office</h4>
           <p>Needs to read clearly in a crowd shot in scene 3 (open desk area works well) and get a clean coverage shot in the canteen for the closing beat.</p>
+
+          <div class="voice-profile">
+            <div class="voice-profile-head">
+              <span class="vp-icon">🎙</span>
+              <h4>Voice profile</h4>
+            </div>
+            <dl class="vp-grid">
+              <dt>Vocal quality</dt><dd>Conversational British baritone — natural, relaxed, not especially deep but warm enough to carry a room; the kind of voice that makes a smartarse comment sound like a reasonable observation</dd>
+              <dt>Accent / dialect</dt><dd>Dry South London Estuary English — dropped t-glottals, relaxed vowels, feels mates-down-the-pub rather than corporate. Contrast with Jan's RP is deliberate and comic</dd>
+              <dt>Delivery style</dt><dd>Quick-witted, deadpan, sarcastic — drops punchlines like casual asides; the "Inception" joke lands because it's thrown away, not set up. Never performs outrage; his amusement is always wry and understated</dd>
+              <dt>Emotional range</dt><dd>Amused → snarky → curious (never worried). Even crouching over the unconscious Jan, the voice is more "huh, that's interesting" than alarmed. The comedy lives in the gap between the situation's gravity and his total lack of concern</dd>
+              <dt>Pacing</dt><dd>Quick and sharp — gets in, lands the line, gets out. No padding, no filler words; timing is everything. Slightly faster than natural conversation, giving a rat-a-tat comedy rhythm</dd>
+              <dt>Verbal tics</dt><dd>Addresses Jan by name at the end of sentences like a disappointed teacher ("You're dreaming, Jan"); uses rhetorical questions that aren't really questions ("Have you killed him?" is genuine curiosity but delivered like a quip)</dd>
+              <dt>Performance notes</dt><dd>Chris is the audience surrogate — the one who says what everyone's thinking. The voice should feel effortless and natural; if it sounds like he's trying to be funny, it's wrong. Every line should land like it just occurred to him</dd>
+            </dl>
+            <div class="vp-tts">
+              <h5>TTS engine instruct (Qwen3-TTS)</h5>
+              <pre>gender: Male.
+age: 32 years old young adult male.
+pitch: Conversational British baritone voice.
+speed: Quick-witted, casual, sharp pacing.
+emotion: Sarcastic, deadpan, amused male speaker.
+personality: Office smart-mouth and comic relief.
+accent: Dry South London Estuary British accent.</pre>
+            </div>
+            <div class="vp-audio-refs">
+              <span>📁 chris_human_sample.mp3</span>
+              <span>📁 chris_qwen_custom.wav</span>
+              <span>📁 chris_sample.wav</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -626,9 +915,50 @@
           <h4>Notable lines</h4>
           <blockquote>"What happened to the last project for this, isn't it ongoing? By that I mean completely failing."</blockquote>
           <blockquote>"No relax, he will be out for a while. I knew this Taser would come in useful one day in this place. I think we need the police here…"</blockquote>
+          <h4>Talking head — mock documentary</h4>
+          <div class="talking-head">
+            <blockquote>"Why do I carry a taser to work? [long pause] Have you met Jan?"
+              <span class="th-context">— to camera, flat stare, arms crossed</span>
+            </blockquote>
+            <blockquote>"The last project cost four hundred thousand pounds and delivered nothing. This one will cost more and also deliver nothing. The only difference is this one's called Inception and comes with stress balls. I'll keep one. Might need it."
+              <span class="th-context">— to camera, slow blink, zero expression</span>
+            </blockquote>
+            <blockquote>"People ask if I feel bad about the taser. I don't. He was throwing furniture at people. I neutralised the threat. Filled in an incident form afterwards. HR said they'd 'look into it.' They also said that about the last three things I reported, so I imagine nothing will happen. As usual."
+              <span class="th-context">— to camera, monotone, slight shrug</span>
+            </blockquote>
+          </div>
           <h4>Shoot notes — real office</h4>
           <p>The taser hit is the episode's button — needs a prop taser (non-functional) and a rehearsed fall for whoever plays Jan. Don't use a real device.</p>
           <span class="flag">Flag: taser gag — prop only, see production notes</span>
+
+          <div class="voice-profile">
+            <div class="voice-profile-head">
+              <span class="vp-icon">🎙</span>
+              <h4>Voice profile</h4>
+            </div>
+            <dl class="vp-grid">
+              <dt>Vocal quality</dt><dd>Deep, gravelly bass-baritone — low rumble that sits in the chest; sounds like it's been weathered by decades of not being impressed by anything. The voice equivalent of arms crossed and feet planted</dd>
+              <dt>Accent / dialect</dt><dd>Flat Midlands / East Anglian — unhurried, vowels slightly flattened, no regional flourishes; deliberately unplaceable, the accent of someone who's been everywhere and cared about none of it</dd>
+              <dt>Delivery style</dt><dd>Slow, deliberate, monotone — every word is weighed and found adequate but not exciting. States facts and observations without editorialising; even "I knew this Taser would come in useful" is delivered like he's describing the weather</dd>
+              <dt>Emotional range</dt><dd>Flat → slightly less flat. Rick does not do emotional variation. The comedy is structural — he tasers a colleague and his voice doesn't change register at all. "No relax" is genuinely reassuring in the same tone you'd use for "pass the milk"</dd>
+              <dt>Pacing</dt><dd>Slow and deliberate — leaves gaps between phrases, never rushes, never fills silence. The anti-Jan: where Jan accelerates into chaos, Rick decelerates everything around him by sheer vocal inertia</dd>
+              <dt>Verbal tics</dt><dd>Drops blunt truth-bombs without preamble ("By that I mean completely failing"); uses "no relax" as a standalone reassurance with zero urgency; speaks in short, declarative sentences with no subordinate clauses</dd>
+              <dt>Performance notes</dt><dd>Rick is the episode's full stop — literally ends it. The voice must be unshakeable from first appearance to last. The taser scene works because there's zero escalation in his delivery; he neutralises Jan the same way he'd unplug a jammed printer</dd>
+            </dl>
+            <div class="vp-tts">
+              <h5>TTS engine instruct (Qwen3-TTS)</h5>
+              <pre>pitch: Deep, gravelly bass-baritone.
+speed: Slow, deliberate monotone.
+emotion: Flat, unhurried.
+personality: Blunt realist, unblinking Taser operator.
+accent: Flat Midlands / East Anglian.</pre>
+            </div>
+            <div class="vp-audio-refs">
+              <span>📁 rick_human_sample.mp3</span>
+              <span>📁 rick_qwen_custom.wav</span>
+              <span>📁 rick_sample.wav</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -683,6 +1013,26 @@
           <p>Delivers the line that lights Jan's fuse — simply out of pastries. Any extra or crew member can cover this; no distinguishing traits given in the script.</p>
           <h4>Notable line</h4>
           <blockquote>"Sorry, all gone."</blockquote>
+          <h4>Talking head — mock documentary</h4>
+          <div class="talking-head">
+            <blockquote>"Christina told us to put extra sugar in. We put extra sugar in. Then she said put more in. So we did. I've been doing this job eleven years and I've never seen anyone eat a pain au chocolat and visibly vibrate before. But here we are."
+              <span class="th-context">— to camera, behind counter, wiping hands on apron</span>
+            </blockquote>
+          </div>
+
+          <div class="voice-profile">
+            <div class="voice-profile-head">
+              <span class="vp-icon">🎙</span>
+              <h4>Voice profile</h4>
+            </div>
+            <dl class="vp-grid">
+              <dt>Vocal quality</dt><dd>Neutral, unremarkable — any natural adult speaking voice; this is a one-line walk-on and the voice should blend into the background of a working canteen</dd>
+              <dt>Accent / dialect</dt><dd>No specific accent required — whichever feels natural for the performer; mild and unobtrusive</dd>
+              <dt>Delivery style</dt><dd>Apologetic, matter-of-fact — a simple "sorry, all gone" delivered as a routine customer-service shrug, not a dramatic beat. The drama comes entirely from Jan's reaction, not from this line</dd>
+              <dt>Pacing</dt><dd>Quick — the line is two words and a sorry; say it and step back</dd>
+              <dt>Performance notes</dt><dd>The canteen worker is the match, not the explosion. Keep the delivery completely ordinary — the comedy is in the absurd disproportion between this tiny moment and Jan's nuclear meltdown that follows</dd>
+            </dl>
+          </div>
         </div>
       </div>
 

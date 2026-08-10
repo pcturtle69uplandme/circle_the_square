@@ -1,13 +1,13 @@
 # 🎬 CIRCLE THE SQUARE — MASTER STORYBOARD SESSION PROMPT PACK (START FROM F01)
 > **Goal**: Single-session generation from Frame F01 to F61 to lock in 100% character visual consistency.
-> **Platform**: **CLI `generate_image` ONLY** — Nano Banana / Gemini Image Model. **No browser. No AI Studio.**
+> **Platform**: **CLI `generate_image` first** (Nano Banana / Gemini). When CLI quota is exhausted, fall back to **Google Flow** in the browser and keep going.
 > See `.agents/rules/cli_image_quota_rules.md` §0 — that rule overrides anything below.
 > **Instructions**:
 > 1. Run one continuous CLI session so character memory carries across frames.
 > 2. For each frame, pass the specified character reference sheets (`@jan`, `@christina`, `@sharon`, `@chris`, `@rick`, `@office`, `@openplan`, `@canteen`).
 > 3. Send the **GLOBAL STYLE ANCHOR** + **FRAME PROMPT** through the CLI.
 > 4. Save each output as `storyboard-frames/Fxx.jpg` (e.g. `F01.jpg`, `F02.jpg`).
-> 5. **Quota:** 12 images per rolling 4-hour window. On `429 RESOURCE_EXHAUSTED`, stop, report the reset time, and wait — do not switch tools.
+> 5. **Quota:** 12 images per rolling 4-hour window. On `429 RESOURCE_EXHAUSTED`, report the reset time and switch to Google Flow; return to the CLI once the window clears.
 
 ---
 

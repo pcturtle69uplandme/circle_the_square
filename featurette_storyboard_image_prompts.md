@@ -1,7 +1,7 @@
 # 🎞️ CIRCLE THE SQUARE — FEATURETTE STORYBOARD / FLIPBOOK IMAGE PROMPTS
 > **"Project Inception" — Nano Banana Still-Frame Flipbook Workflow**
 > **Source of truth**: `CTS_Featurette_Episode.fountain` (the full screenplay)
-> **Generator**: Nano Banana (Gemini image model) via the **CLI `generate_image` tool ONLY — no browser, no AI Studio** (see `.agents/rules/cli_image_quota_rules.md` §0). Not the metered API script, not Flow, not fal.ai. Every frame passes its own reference images, tagged with `@name` so the model knows who's who.
+> **Generator**: Nano Banana via the **CLI `generate_image` tool first**; when CLI quota is spent, fall back to **Google Flow** in the browser (see `.agents/rules/cli_image_quota_rules.md` §0). Not the metered `gen_image.py` script — its prepay credits are depleted. Every frame passes its own reference images, tagged with `@name`; in Flow, use the saved Character entities instead.
 > **Viewer**: `storyboard_slideshow.html` (same folder) — scene-by-scene comic-style viewer with speech bubbles, since video rendering has been unreliable.
 > **Total Frames**: 64 (across 35 shots / 3 scenes)
 > **Status**: DRAFT v3 — Nano Banana `@tag` attachment format
@@ -10,7 +10,7 @@
 
 ## 🧭 HOW TO USE THIS DOC
 
-1. Pick the next frame, in order, **one at a time — no batching. Quota is 12 images per rolling 4-hour window; on `429 RESOURCE_EXHAUSTED`, stop and wait for the reset rather than switching tools.**
+1. Pick the next frame, in order, **one at a time — no batching. Quota is 12 images per rolling 4-hour window; on `429 RESOURCE_EXHAUSTED`, switch to Google Flow and keep going, then return to the CLI when the window clears.**
 2. In one continuous CLI session, pass that frame's attachment images **in the order listed**, matching each to its `@tag`.
 3. Send the **IMAGE STYLE ANCHOR** + that frame's **PROMPT** (already written using the `@tags`).
 4. Generate, approve or reroll.
@@ -52,27 +52,27 @@ Photoreal single film-still frame, not video. Documentary British mockumentary p
 
 | Frame | Shot | Scene | Beat | Status |
 |---|---|---|---|---|
-| F01 | S01 | 1 | Wide establishing — Christina enters, greets Jan | ✅ |
-| F02 | S01 | 1 | Jan sighs — "Barely..." | ✅ |
-| F03 | S02 | 1 | Christina pitches — "I have an idea..." | ✅ |
-| F04 | S02 | 1 | Jan — "I'm listening." | ✅ |
-| F05 | S02 | 1 | Christina explains breakfast-meeting concept | ✅ |
-| F06a | S03 | 1 | Jan enthused, steepled fingers | ✅ |
-| F06b | S03 | 1 | Jan gesturing, MBA name-drop | ✅ |
-| F07 | S04 | 1 | Christina deadpan — "Diminishing returns..." | ✅ |
-| F08 | S05 | 1 | Jan — "Great. Make it so." | ✅ |
-| F09 | S05 | 1 | Christina confused — "I am sorry, what?" | ✅ |
-| F10 | S05 | 1 | Jan — Star Trek reference | ✅ |
-| F11 | S05 | 1 | Christina — "Shockingly no." | ✅ |
-| F12 | S06 | 1 | Jan dismisses — "Fine, just make it happen..." | ✅ |
-| F13 | S06 | 1 | Christina — "poorly rehearsed presentations?" | ✅ |
-| F14 | S07 | 1 | Jan offended — "MBA from the University of --" | ✅ |
-| F15 | S07 | 1 | Christina cuts in — "Made Up Place?" | ✅ |
-| F16 | S07 | 1 | Jan screams — "GET OUT NOW YOU STUPID COW!" | ✅ |
-| F17 | S08 | 1 | Christina exits calmly, door shuts | ✅ |
+| F01 | S01 | 1 | Wide establishing — Christina enters, greets Jan | ⬜ |
+| F02 | S01 | 1 | Jan sighs — "Barely..." | ⬜ |
+| F03 | S02 | 1 | Christina pitches — "I have an idea..." | ⬜ |
+| F04 | S02 | 1 | Jan — "I'm listening." | ⬜ |
+| F05 | S02 | 1 | Christina explains breakfast-meeting concept | ⬜ |
+| F06a | S03 | 1 | Jan enthused, steepled fingers | ⬜ |
+| F06b | S03 | 1 | Jan gesturing, MBA name-drop | ⬜ |
+| F07 | S04 | 1 | Christina deadpan — "Diminishing returns..." | ⬜ |
+| F08 | S05 | 1 | Jan — "Great. Make it so." | ⬜ |
+| F09 | S05 | 1 | Christina confused — "I am sorry, what?" | ⬜ |
+| F10 | S05 | 1 | Jan — Star Trek reference | ⬜ |
+| F11 | S05 | 1 | Christina — "Shockingly no." | ⬜ |
+| F12 | S06 | 1 | Jan dismisses — "Fine, just make it happen..." | ⬜ |
+| F13 | S06 | 1 | Christina — "poorly rehearsed presentations?" | ⬜ |
+| F14 | S07 | 1 | Jan offended — "MBA from the University of --" | ⬜ |
+| F15 | S07 | 1 | Christina cuts in — "Made Up Place?" | ⬜ |
+| F16 | S07 | 1 | Jan screams — "GET OUT NOW YOU STUPID COW!" | ⬜ |
+| F17 | S08 | 1 | Christina exits calmly, door shuts | ⬜ |
 | F18 | S09 | 1 | Jan unbuttons shirt, flustered/sweating | ⬜ |
 | F19 | S09 | 1 | Jan removes shirt, arrow revealed | ⬜ |
-| F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ✅ |
+| F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ⬜ |
 | F21 | S11 | 1 | Sharon glances at the arrow | ⬜ |
 | F22 | S11 | 1 | Jan frozen, mortified | ⬜ |
 | F23 | S12 | 1 | Sharon — "breakfast meetings now." | ⬜ |

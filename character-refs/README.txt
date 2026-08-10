@@ -27,12 +27,20 @@ an image model as a reference.
 
 Rebuild status
 --------------
-  [x] Jan Peach      — cartoon model sheet generated (in Google Flow)
-  [ ] Christina Dross
-  [ ] Sharon Enfield
-  [ ] Chris
-  [ ] Rick
-  [ ] Trevor
+  PRINCIPALS
+  [x] Jan Peach          [x] Christina Dross    [x] Sharon Enfield
+  [x] Chris              [x] Rick
+
+  SUPPORTING
+  [x] Maureen (canteen)  [x] Gemma (reception)  [x] Priya Raghavan
+  [x] Barbara Whitlock   [x] Dev Osei           [x] Tomasz Wojcik
+
+  [ ] Trevor — no cartoon sheet; appears in no storyboard frame
+
+  All 11 sheets currently live ONLY in Google Flow. Not yet downloaded
+  here, and not yet saved as Flow Character entities.
+
+  Full specs for every character: ../CARTOON_CAST_BIBLE.md
 
 Cartoon style anchor
 --------------------

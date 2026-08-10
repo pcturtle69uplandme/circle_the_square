@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Circle the Square — Tools &amp; Scripts Technical Guide</title>
+<style>
+  :root{
+    --orange:#B0381F; --orange-light:#E04B28; --orange-glow:rgba(176,56,31,.25);
+    --gold:#F2A34D;
+    --bg:#0A0A0C; --bg2:#111116; --bg3:#18181F; --bg4:#1E1E28;
+    --border:rgba(255,255,255,.07); --border-bright:rgba(255,255,255,.14);
+    --text:#E8E6F0; --text-muted:#8B8799; --text-dim:#5A5768;
+    --green:#2ECC71; --green-dim:rgba(46,204,113,.14);
+    --red:#E74C3C;   --red-dim:rgba(231,76,60,.14);
+    --amber:#F39C12; --amber-dim:rgba(243,156,18,.14);
+    --blue:#5B8DEF;  --blue-dim:rgba(91,141,239,.14);
+    --purple:#9B59B6;--purple-dim:rgba(155,89,182,.14);
+    --mono:'JetBrains Mono','Cascadia Mono','Consolas',ui-monospace,monospace;
+    --sans:'Inter','Segoe UI Variable Display','Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+  /* ── HEADER ── */
+  .header{background:linear-gradient(135deg,#0A0A0C 0%,#15101A 50%,#0A0A0C 100%);border-bottom:1px solid var(--border);padding:38px 40px 30px;position:relative;overflow:hidden}
+  .header::before{content:'';position:absolute;top:-80px;left:-60px;width:340px;height:340px;background:radial-gradient(circle,var(--orange-glow) 0%,transparent 70%);pointer-events:none}
+  .header-inner{max-width:1180px;margin:0 auto;position:relative}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--orange-light);margin-bottom:10px}
+  h1{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+  h1 span{color:var(--gold)}
+  .sub{color:var(--text-muted);margin-top:10px;max-width:74ch}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .chip{font-family:var(--mono);font-size:11px;padding:5px 11px;border:1px solid var(--border-bright);border-radius:100px;color:var(--text-muted);background:rgba(255,255,255,.03)}
+
+  /* ── NAV ── */
+  nav{position:sticky;top:0;z-index:20;background:rgba(10,10,12,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .nav-inner{max-width:1180px;margin:0 auto;padding:0 40px;display:flex;gap:4px;overflow-x:auto}
+  nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;padding:14px 12px;white-space:nowrap;border-bottom:2px solid transparent}
+  nav a:hover{color:var(--gold);border-bottom-color:var(--orange)}
+
+  main{max-width:1180px;margin:0 auto;padding:8px 40px 90px}
+  section{padding-top:52px}
+  h2{font-size:21px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:11px;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:22px}
+  h2 .num{font-family:var(--mono);font-size:11px;color:var(--orange-light);border:1px solid var(--orange);border-radius:4px;padding:3px 7px;font-weight:600}
+  h3{font-size:15px;font-weight:700;margin:28px 0 12px;color:var(--gold);letter-spacing:.01em}
+  h4{font-size:13px;font-weight:600;margin:18px 0 8px;color:var(--text)}
+  p{margin-bottom:12px;color:var(--text-muted)}
+  p strong,li strong{color:var(--text);font-weight:600}
+  a{color:var(--blue)}
+  a:hover{color:#8FB2F5}
+  ul,ol{margin:0 0 14px 20px;color:var(--text-muted)}
+  li{margin-bottom:6px}
+  code{font-family:var(--mono);font-size:12.4px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.5px 5px;color:var(--gold);white-space:nowrap}
+  pre{font-family:var(--mono);font-size:12.4px;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:6px;padding:14px 16px;overflow-x:auto;margin-bottom:14px;color:#CFCBDC;line-height:1.6}
+  pre code{background:none;border:none;padding:0;color:inherit;white-space:pre}
+
+  /* ── TABLES ── */
+  .tw{overflow-x:auto;border:1px solid var(--border);border-radius:8px;margin-bottom:18px;background:var(--bg2)}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+  th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);background:var(--bg3);padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;white-space:nowrap}
+  td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.045);color:var(--text-muted);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:rgba(255,255,255,.022)}
+  td code{white-space:normal;word-break:break-word}
+  td.s{font-family:var(--mono);font-size:12px;color:var(--text);white-space:nowrap}
+
+  /* ── BADGES ── */
+  .b{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2.5px 7px;border-radius:4px;white-space:nowrap;display:inline-block}
+  .b-ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(46,204,113,.3)}
+  .b-no{background:var(--red-dim);color:var(--red);border:1px solid rgba(231,76,60,.3)}
+  .b-warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(243,156,18,.3)}
+  .b-local{background:var(--purple-dim);color:#C08FD8;border:1px solid rgba(155,89,182,.3)}
+  .b-cloud{background:var(--blue-dim);color:#8FB2F5;border:1px solid rgba(91,141,239,.3)}
+  .b-cpu{background:rgba(255,255,255,.05);color:var(--text-muted);border:1px solid var(--border-bright)}
+
+  /* ── CALLOUTS ── */
+  .callout{border-radius:8px;padding:16px 18px;margin-bottom:18px;border:1px solid;font-size:13.5px}
+  .callout p:last-child{margin-bottom:0}
+  .c-red{background:rgba(231,76,60,.06);border-color:rgba(231,76,60,.3)}
+  .c-amber{background:rgba(243,156,18,.06);border-color:rgba(243,156,18,.3)}
+  .c-blue{background:rgba(91,141,239,.06);border-color:rgba(91,141,239,.3)}
+  .c-green{background:rgba(46,204,113,.06);border-color:rgba(46,204,113,.3)}
+  .callout .t{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:8px;display:block}
+  .c-red .t{color:var(--red)} .c-amber .t{color:var(--amber)} .c-blue .t{color:#8FB2F5} .c-green .t{color:var(--green)}
+
+  /* ── CARDS ── */
+  .grid{display:grid;gap:16px;margin-bottom:18px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:18px}
+  .card h4{margin-top:0;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .card p{font-size:13px;margin-bottom:8px}
+  .card ul{font-size:13px;margin-bottom:0}
+  .kv{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .kv:last-child{border-bottom:none}
+  .kv span:first-child{color:var(--text-dim);font-family:var(--mono);font-size:11.5px}
+  .kv span:last-child{color:var(--text);text-align:right}
+
+  .stat{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px}
+  .stat .n{font-size:26px;font-weight:800;color:var(--gold);line-height:1.1;font-family:var(--mono)}
+  .stat .l{font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-top:6px}
+
+  /* ── DIAGRAMS ── */
+  .dwrap{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:22px 18px;margin-bottom:18px;overflow-x:auto}
+  .dwrap pre.mermaid{background:none;border:none;border-left:none;padding:0;margin:0;text-align:center;font-size:12px;color:var(--text-dim);line-height:1.5}
+  .dwrap pre.mermaid[data-processed="true"]{color:inherit}
+  .dwrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+
+  footer{border-top:1px solid var(--border);margin-top:70px;padding:26px 40px;text-align:center;color:var(--text-dim);font-size:12px;font-family:var(--mono)}
+  @media(max-width:640px){
+    .header,main,.nav-inner{padding-left:20px;padding-right:20px}
+    h1{font-size:24px}
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="eyebrow">Circle the Square · Production Technical Reference</div>
+    <h1>Tools &amp; Scripts <span>Technical Guide</span></h1>
+    <p class="sub">Every generator, model, script and pipeline in this project — what it is, whether it runs locally or in the cloud, what it writes, and where the source lives. Written as a durable reference for picking the project back up cold.</p>
+    <div class="meta-row">
+      <span class="chip">Repo · C:\kontitemp\ai\circle_the_square</span>
+      <span class="chip">66 Python + 1 PowerShell script</span>
+      <span class="chip">Environment verified 2026-08-10</span>
+      <span class="chip">Costs in GBP · rate assumption in §05</span>
+      <span class="chip">Branch · main</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#status">Machine status</a>
+    <a href="#legend">Tool legend</a>
+    <a href="#stack">The stack</a>
+    <a href="#models">Model registry</a>
+    <a href="#cost">Cost (GBP)</a>
+    <a href="#workflow">Workflow map</a>
+    <a href="#auth">Auth &amp; rules</a>
+    <a href="#scripts">Script index</a>
+    <a href="#runbooks">Runbooks</a>
+    <a href="#assets">Assets &amp; docs</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#sources">Sources</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ══════════════ 1 · STATUS ══════════════ -->
+<section id="status">
+  <h2><span class="num">01</span> Machine status — read this first</h2>
+
+  <div class="callout c-red">
+    <span class="t">⚠ The local GPU stack is not present on this machine</span>
+    <p>Checked on 2026-08-10: <code>C:\ai</code> does not exist. That means <strong>ComfyUI, the MusicGen model caches, the SDXL/RealVisXL checkpoints, and the <code>C:\AI\AI\gen_image.py</code> helper are all missing</strong>. There is also no <code>torch</code> installed and no NVIDIA driver tooling (<code>nvidia-smi</code> not found).</p>
+    <p>Practical effect: every <em>neural generation</em> script in this repo (MusicGen, Qwen3-TTS, SDXL, FLUX, LTX, IP-Adapter) will fail here today. The <em>editorial</em> scripts (FFmpeg assembly, PIL title cards, numpy/scipy audio) still run. Either this guide is being read on a different machine than the one the pipeline was built on, or the <code>C:\ai</code> tree was moved/wiped — restore it, or re-point the scripts, before expecting generation to work.</p>
+  </div>
+
+  <h3>Verified runtime — what is actually installed</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Component</th><th>Status</th><th>Detail</th><th>Needed by</th></tr></thead>
+      <tbody>
+        <tr><td class="s">Python</td><td><span class="b b-ok">Present</span></td><td>3.12.10 — <code>C:\Users\konti\AppData\Local\Programs\Python\Python312\python.exe</code></td><td>Everything</td></tr>
+        <tr><td class="s">numpy</td><td><span class="b b-ok">Present</span></td><td>Array maths</td><td>Synthetic audio, analysis</td></tr>
+        <tr><td class="s">scipy</td><td><span class="b b-ok">Present</span></td><td><code>scipy.io.wavfile</code> WAV writer</td><td>All audio scripts</td></tr>
+        <tr><td class="s">Pillow (PIL)</td><td><span class="b b-ok">Present</span></td><td>Frame/title-card rendering</td><td><code>build_title_card_v3</code>, <code>render_storyboard_art</code></td></tr>
+        <tr><td class="s">imageio-ffmpeg</td><td><span class="b b-ok">Present</span></td><td>Bundles the FFmpeg binary — no system install needed</td><td>All build/trim/analysis scripts</td></tr>
+        <tr><td class="s">google-genai</td><td><span class="b b-ok">Present</span></td><td>Google AI SDK (<code>google.genai</code>)</td><td>Gemini image generation</td></tr>
+        <tr><td class="s">moviepy</td><td><span class="b b-no">Missing</span></td><td><code>pip install moviepy</code></td><td>Audio-level QA scripts</td></tr>
+        <tr><td class="s">torch</td><td><span class="b b-no">Missing</span></td><td>CUDA build required — <code>pip install torch --index-url https://download.pytorch.org/whl/cu124</code></td><td>Every neural model</td></tr>
+        <tr><td class="s">transformers</td><td><span class="b b-no">Missing</span></td><td><code>pip install transformers</code></td><td>MusicGen</td></tr>
+        <tr><td class="s">diffusers</td><td><span class="b b-no">Missing</span></td><td><code>pip install diffusers</code></td><td>SDXL, FLUX, LTX-Video</td></tr>
+        <tr><td class="s">soundfile</td><td><span class="b b-no">Missing</span></td><td><code>pip install soundfile</code></td><td>Qwen3-TTS voice scripts</td></tr>
+        <tr><td class="s">pyperclip</td><td><span class="b b-no">Missing</span></td><td><code>pip install pyperclip</code></td><td><code>set_key_from_clipboard.py</code></td></tr>
+        <tr><td class="s">NVIDIA GPU / CUDA</td><td><span class="b b-no">Not detected</span></td><td><code>nvidia-smi</code> not on PATH. Docs describe an RTX 4080 target.</td><td>All GPU generation</td></tr>
+        <tr><td class="s">ComfyUI</td><td><span class="b b-no">Missing</span></td><td>Expected at <code>C:\ai\ComfyUI\ComfyUI</code>, API on <code>127.0.0.1:8188</code></td><td>Qwen3-TTS, IP-Adapter, SDXL workflows</td></tr>
+        <tr><td class="s">Model caches</td><td><span class="b b-no">Missing</span></td><td>Expected at <code>C:\ai\models\musicgen-stereo-large</code> etc.; no HuggingFace cache in <code>~/.cache</code> either</td><td>MusicGen</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g3">
+    <div class="stat"><div class="n">21</div><div class="l">Scripts runnable today</div></div>
+    <div class="stat"><div class="n">45</div><div class="l">Blocked on missing stack</div></div>
+    <div class="stat"><div class="n">44</div><div class="l">Hardcode the dead C:\ai path</div></div>
+  </div>
+  <p style="font-size:12.5px;color:var(--text-dim)">Counts are approximate groupings from the index below, not a test run.</p>
+</section>
+
+<!-- ══════════════ 2 · LEGEND ══════════════ -->
+<section id="legend">
+  <h2><span class="num">02</span> Tool legend — plain English</h2>
+  <p>Every name in this document, explained without jargon, with a link to look it up. If you only read one section, read this one.</p>
+
+  <h3>The vocabulary</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Term</th><th>What it actually means</th></tr></thead>
+      <tbody>
+        <tr><td class="s">Model</td><td>A trained AI file (often several gigabytes). You give it a text prompt; it gives back an image, a video, or audio. The model is the "engine"; the script is the "ignition key".</td></tr>
+        <tr><td class="s">Checkpoint</td><td>One saved version of a model, usually a <code>.safetensors</code> file. "RealVisXL V4.0" and "V5.0" are two checkpoints of the same family.</td></tr>
+        <tr><td class="s">Parameters (3.3B)</td><td>How big the model's brain is. 3.3 billion parameters = bigger, better, slower, more VRAM. "Large" beats "medium" beats "small".</td></tr>
+        <tr><td class="s">Local vs cloud</td><td><strong>Local</strong> = runs on your own graphics card. Free per-run, unlimited, private, but you need the hardware. <strong>Cloud</strong> = runs on someone else's servers. Costs money or quota, needs internet.</td></tr>
+        <tr><td class="s">GPU / VRAM / CUDA</td><td>The graphics card, its dedicated memory, and NVIDIA's software layer that lets AI use it. "Out of VRAM" = the model is too big for the card, not a bug.</td></tr>
+        <tr><td class="s">fp16</td><td>Half-precision maths. Roughly halves VRAM use and doubles speed, with no visible quality loss. Always on in these scripts.</td></tr>
+        <tr><td class="s">Inference step</td><td>One denoising pass an image model makes. More steps = slower, usually cleaner. "Lightning" models get there in 8 steps instead of 30.</td></tr>
+        <tr><td class="s">CFG / guidance_scale</td><td>How literally the model obeys your prompt. Too low = it ignores you. Too high = harsh, clipped, over-cooked output. The score clipping was fixed by dropping this from 3.0 to 2.0.</td></tr>
+        <tr><td class="s">Temperature</td><td>Randomness. Lower = safer and more repetitive; higher = wilder. 0.85 is the current setting for the score.</td></tr>
+        <tr><td class="s">Seed</td><td>The random starting number. Same seed + same prompt + same model = same output. Change it to get a different roll of the dice.</td></tr>
+        <tr><td class="s">Reroll</td><td>Generate again with a new seed because the last one wasn't right. Normal and expected — budget for it.</td></tr>
+        <tr><td class="s">Text-to-image / image-to-video</td><td>What goes in → what comes out. "Image conditioning" means you also hand it reference pictures so it copies the look.</td></tr>
+        <tr><td class="s">Identity lock</td><td>The trick that stops your character's face changing between shots — you feed a reference photo through IP-Adapter so every frame matches.</td></tr>
+        <tr><td class="s">Node graph</td><td>ComfyUI's visual wiring diagram of boxes and cables. Our scripts skip the diagram and post the equivalent JSON straight to its API.</td></tr>
+        <tr><td class="s">Filtergraph</td><td>FFmpeg's instruction string for transitions, fades and layering. What <code>video_wipe_editor.py</code> builds for you.</td></tr>
+        <tr><td class="s">Mux</td><td>Marrying a video track and an audio track into one file. The last step of every trailer build.</td></tr>
+        <tr><td class="s">Master</td><td>The final rendered file you actually show people — e.g. <code>SMALL_STAKES_TRAILER_MASTER_60S.mp4</code>.</td></tr>
+        <tr><td class="s">Quota</td><td>A usage allowance that refills (daily or monthly) rather than a bill. Google AI Pro works this way.</td></tr>
+        <tr><td class="s">OAuth / AQ. token</td><td>A temporary login pass, not a permanent password. Expires in hours. The <code>agy</code> CLI mints fresh ones.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The tools, one line each</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>🎵 Meta MusicGen <span class="b b-local">Local</span></h4>
+      <p>Type a sentence describing music ("calm acoustic guitar, warm room, documentary") and it composes and performs it. No loops, no samples — actually generated audio.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: the entire trailer score.</p>
+      <p style="margin-bottom:0"><a href="https://huggingface.co/facebook/musicgen-stereo-large">Model card</a> · <a href="https://huggingface.co/docs/transformers/model_doc/musicgen">How to run it</a> · <a href="https://github.com/facebookresearch/audiocraft">Meta's repo</a></p>
+    </div>
+    <div class="card">
+      <h4>🎙️ Qwen3-TTS <span class="b b-local">Local</span></h4>
+      <p>Text-to-speech. Give it a line of dialogue and a voice profile, get a realistic <code>.wav</code> of that character saying it.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: Jan, Christina, Sharon, Chris, Rick.</p>
+      <p style="margin-bottom:0"><a href="https://huggingface.co/Qwen">Qwen on HuggingFace</a> · <a href="https://github.com/comfyanonymous/ComfyUI">runs inside ComfyUI</a></p>
+    </div>
+    <div class="card">
+      <h4>🖼️ SDXL / RealVisXL <span class="b b-local">Local</span></h4>
+      <p>Stable Diffusion XL — the standard open image generator. RealVisXL is a photorealism-tuned version of it. Runs on your own card, unlimited.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: storyboard frames, style tests, anything you'll iterate on 50 times.</p>
+      <p style="margin-bottom:0"><a href="https://huggingface.co/SG161222/RealVisXL_V4.0">RealVisXL</a> · <a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0">SDXL base</a> · <a href="https://stable-diffusion-art.com/sdxl-model/">beginner explainer</a></p>
+    </div>
+    <div class="card">
+      <h4>🎭 IP-Adapter <span class="b b-local">Local</span></h4>
+      <p>An add-on that lets an image model copy a face or style from a reference photo. This is the difference between "five different blokes called Jan" and one consistent character.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: every frame a named character appears in.</p>
+      <p style="margin-bottom:0"><a href="https://huggingface.co/h94/IP-Adapter">Model + encoder</a> · <a href="https://github.com/tencent-ailab/IP-Adapter">Paper &amp; code</a></p>
+    </div>
+    <div class="card">
+      <h4>🕹️ ComfyUI <span class="b b-local">Local</span></h4>
+      <p>The program that hosts local image models. Normally a drag-and-drop node canvas in a browser; here it's driven headlessly by posting JSON to <code>127.0.0.1:8188</code>.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: anything needing IP-Adapter or a specific local checkpoint.</p>
+      <p style="margin-bottom:0"><a href="https://github.com/comfyanonymous/ComfyUI">GitHub</a> · <a href="https://docs.comfy.org/">Official docs</a> · <a href="https://comfyanonymous.github.io/ComfyUI_examples/">Example workflows</a></p>
+    </div>
+    <div class="card">
+      <h4>🌐 fal.ai (Flux) <span class="b b-cloud">Cloud</span></h4>
+      <p>A pay-per-image hosting service for the Flux family of image models. Fast, no GPU needed, costs fractions of a penny per image. Called by the off-repo <code>gen_image.py</code>.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: quick cinematic stills straight into <code>storyboard-frames/</code>.</p>
+      <p style="margin-bottom:0"><a href="https://fal.ai/models">Model catalogue</a> · <a href="https://fal.ai/pricing">Pricing</a> · <a href="https://docs.fal.ai/">Docs</a> · <a href="https://blackforestlabs.ai/">Flux by Black Forest Labs</a></p>
+    </div>
+    <div class="card">
+      <h4>✨ Gemini Flash Image <span class="b b-cloud">Cloud</span></h4>
+      <p>Google's image generator ("Nano Banana"). Strong at following long descriptive prompts and at editing an image over several turns of conversation.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: character and location bibles, hero stills.</p>
+      <p style="margin-bottom:0"><a href="https://aistudio.google.com">AI Studio</a> · <a href="https://ai.google.dev/gemini-api/docs/image-generation">Docs</a></p>
+    </div>
+    <div class="card">
+      <h4>🎬 Veo 3.1 <span class="b b-cloud">Cloud</span></h4>
+      <p>Google's video generator. Text or an image goes in; a 5–8 second 720p clip comes out, <em>with</em> its own sound. Included in the AI Pro subscription.</p>
+      <p style="font-size:12.5px;color:var(--text-dim)">Use for: every real shot in the trailer.</p>
+      <p style="margin-bottom:0"><a href="https://aistudio.google.com">AI Studio</a> · <a href="https://ai.google.dev/gemini-api/docs/video">Docs</a> · <a href="https://deepmind.google/models/veo/">About Veo</a></p>
+    </div>
+    <div class="card">
+      <h4>🎞️ LTX-Video <span class="b b-local">Local</span></h4>
+      <p>An open video model you can run yourself. Free and unlimited, but hungry for VRAM and not as good as Veo. Backup plan for title-sequence motion.</p>
+      <p style="margin-bottom:0"><a href="https://huggingface.co/Lightricks/LTX-Video">Model</a> · <a href="https://github.com/Lightricks/LTX-Video">GitHub</a></p>
+    </div>
+    <div class="card">
+      <h4>🔧 FFmpeg <span class="b b-cpu">Free</span></h4>
+      <p>The universal video Swiss-army knife. Does every cut, crossfade, wipe, trim and audio mux in this project. No AI involved, no cost, completely deterministic.</p>
+      <p style="margin-bottom:0"><a href="https://ffmpeg.org/documentation.html">Docs</a> · <a href="https://github.com/imageio/imageio-ffmpeg">imageio-ffmpeg (pip)</a> · <a href="https://img.ly/blog/ultimate-guide-to-ffmpeg/">Beginner guide</a></p>
+    </div>
+    <div class="card">
+      <h4>🖌️ Pillow (PIL) <span class="b b-cpu">Free</span></h4>
+      <p>A plain Python image library — no AI. Draws the title cards and layout blueprints pixel by pixel, so they're exact and repeatable every time.</p>
+      <p style="margin-bottom:0"><a href="https://pillow.readthedocs.io">Docs</a></p>
+    </div>
+    <div class="card">
+      <h4>🔑 agy CLI <span class="b b-cloud">Auth</span></h4>
+      <p>Not a generator — a login manager. It refreshes the short-lived Google token the cloud scripts need. When cloud generation "randomly" stops working, this is usually why.</p>
+      <p style="margin-bottom:0">See <a href="#auth">§07 Auth</a> · <code>.agents/rules/google_auth.md</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 3 · STACK ══════════════ -->
+<section id="stack">
+  <h2><span class="num">03</span> The stack — local vs cloud</h2>
+
+  <p>The project deliberately splits into two halves. <strong>Local</strong> = runs on your own GPU, no quota, no billing, fully reproducible. <strong>Cloud</strong> = Google AI Pro subscription, consumed through an OAuth session rather than API credits, quota-limited and non-deterministic.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>Local generation <span class="b b-local">On-machine</span></h4>
+      <div class="kv"><span>Music / score</span><span>Meta MusicGen Large (3.3B)</span></div>
+      <div class="kv"><span>Character voice</span><span>Qwen3-TTS via ComfyUI</span></div>
+      <div class="kv"><span>Stills</span><span>SDXL / RealVisXL, FLUX.2-klein</span></div>
+      <div class="kv"><span>Identity lock</span><span>IP-Adapter Plus + CLIP-ViT-H-14</span></div>
+      <div class="kv"><span>Video</span><span>LTX-Video (experimental)</span></div>
+      <div class="kv"><span>Edit / assembly</span><span>FFmpeg + MoviePy + PIL</span></div>
+      <div class="kv"><span>Cost</span><span>£0 · no quota</span></div>
+      <div class="kv"><span>Runs on</span><span>RTX 4080, fp16, <code>device="cuda"</code></span></div>
+    </div>
+    <div class="card">
+      <h4>Cloud generation <span class="b b-cloud">Subscription</span></h4>
+      <div class="kv"><span>Stills · pay/img</span><span>fal.ai Flux — schnell / dev / pro</span></div>
+      <div class="kv"><span>Stills · quota</span><span>Gemini Flash Image</span></div>
+      <div class="kv"><span>Video</span><span>Veo 3.1 (720p, 5–8s, native audio)</span></div>
+      <div class="kv"><span>Access route</span><span>fal.ai API · aistudio.google.com · <code>agy</code> CLI</span></div>
+      <div class="kv"><span>Auth</span><span>AQ. OAuth token, not an API key</span></div>
+      <div class="kv"><span>Plan</span><span>Google AI Pro (~$19.99/mo)</span></div>
+      <div class="kv"><span>Quota</span><span>Daily reset (stills) / monthly cap (Veo)</span></div>
+      <div class="kv"><span>Cost model</span><span>Subscription, <em>not</em> API credits</span></div>
+      <div class="kv"><span>Determinism</span><span>None — reroll until the gate check passes</span></div>
+    </div>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">Design rule the pipeline follows</span>
+    <p>Cloud does <strong>look development</strong> (stills, style frames, hero video); local does <strong>everything repeatable</strong> (score, voice, assembly, QA). Anything that has to be regenerated dozens of times was moved local, so quota exhaustion never blocks an edit.</p>
+  </div>
+</section>
+
+<!-- ══════════════ 3 · MODELS ══════════════ -->
+<section id="models">
+  <h2><span class="num">04</span> Model registry</h2>
+
+  <h3>Audio — music &amp; score</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Model</th><th>Where</th><th>Params</th><th>Role</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="s">facebook/musicgen-stereo-large</td>
+          <td><span class="b b-local">Local</span> <code>C:\ai\models\musicgen-stereo-large</code></td>
+          <td>3.3B</td>
+          <td><strong>Mandatory default.</strong> 32kHz stereo neural score. GPU fp16, <code>guidance_scale</code> ~2.0–3.0, stitched with crossfades for full-length coverage.</td>
+          <td><a href="https://huggingface.co/facebook/musicgen-stereo-large">HF model card</a></td>
+        </tr>
+        <tr>
+          <td class="s">facebook/musicgen-large</td>
+          <td><span class="b b-local">Local</span> <code>C:\ai\models\musicgen-large</code></td>
+          <td>3.3B</td>
+          <td>Mono predecessor. <span class="b b-warn">Fallback only</span> — superseded by the stereo checkpoint on 2026-08-09.</td>
+          <td><a href="https://huggingface.co/facebook/musicgen-large">HF model card</a></td>
+        </tr>
+        <tr>
+          <td class="s">facebook/musicgen-medium</td>
+          <td><span class="b b-local">Local</span></td>
+          <td>1.5B</td>
+          <td><span class="b b-no">Prohibited</span> by the project rule. Used only by the legacy <code>generate_studio_musician_score.py</code>.</td>
+          <td><a href="https://huggingface.co/facebook/musicgen-medium">HF model card</a></td>
+        </tr>
+        <tr>
+          <td class="s">facebook/musicgen-small</td>
+          <td><span class="b b-local">Local</span></td>
+          <td>300M</td>
+          <td><span class="b b-warn">Smoke test only</span> — <code>test_musicgen.py</code> uses it to prove the import chain on CPU. Never for deliverables.</td>
+          <td><a href="https://huggingface.co/facebook/musicgen-small">HF model card</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Audio — voice</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Model</th><th>Where</th><th>Role</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="s">Qwen3-TTS</td>
+          <td><span class="b b-local">Local</span> ComfyUI custom node <code>ComfyUI-QwenTTS</code>, loaded directly via <code>AILab_QwenTTS._load_qwen3_model</code></td>
+          <td>Hyper-realistic character dialogue <code>.wav</code>. Locked voices: Jan · Christina · Sharon · Chris · Rick. Prompts live in <code>qwen3_tts_voice_prompts.json</code>.</td>
+          <td><a href="https://huggingface.co/Qwen">Qwen on HF</a> · <a href="https://github.com/1038lab/ComfyUI-QwenTTS">node repo</a> <span class="b b-warn">verify org</span></td>
+        </tr>
+        <tr>
+          <td class="s">System.Speech (Windows SAPI)</td>
+          <td><span class="b b-cpu">Built-in</span> PowerShell</td>
+          <td>Zero-dependency scratch VO for timing passes. Robotic — placeholder only, never final.</td>
+          <td><a href="https://learn.microsoft.com/dotnet/api/system.speech.synthesis.speechsynthesizer">MS docs</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Image</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Model</th><th>Where</th><th>Role</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="s">gemini-3.1-flash-image</td>
+          <td><span class="b b-cloud">Cloud</span></td>
+          <td>Primary still generator: character sheets, location sheets, storyboard frames. 0.5K–4K, most aspect ratios, multi-turn editing, up to 3 conditioning images. No audio, no video.</td>
+          <td><a href="https://ai.google.dev/gemini-api/docs/image-generation">Docs</a> · <a href="https://aistudio.google.com">AI Studio</a></td>
+        </tr>
+        <tr>
+          <td class="s">FLUX · schnell / dev / pro</td>
+          <td><span class="b b-cloud">Cloud</span> hosted by fal.ai, called from <code>gen_image.py</code> (off-repo, <code>C:\AI\AI\</code>)</td>
+          <td>Pay-per-image cinematic 16:9 stills written straight to <code>storyboard-frames/</code>. Three tiers by speed/quality/price — see <a href="#cost">§05</a>. <span class="b b-ok">Key verified active</span></td>
+          <td><a href="https://fal.ai/models">fal.ai catalogue</a> · <a href="https://blackforestlabs.ai/">Black Forest Labs</a></td>
+        </tr>
+        <tr>
+          <td class="s">RealVisXL V4.0 / V5.0 Lightning</td>
+          <td><span class="b b-local">Local</span> <code>C:\ai\ComfyUI\ComfyUI\models\checkpoints</code></td>
+          <td>Photoreal SDXL checkpoint for storyboard frames. V5 Lightning-baked-VAE variant runs at 8 steps / CFG 2.0.</td>
+          <td><a href="https://huggingface.co/SG161222/RealVisXL_V4.0">V4.0</a> · <a href="https://huggingface.co/SG161222/RealVisXL_V5.0">V5.0</a></td>
+        </tr>
+        <tr>
+          <td class="s">stable-diffusion-xl-base-1.0</td>
+          <td><span class="b b-local">Local</span></td>
+          <td>Baseline SDXL fallback when RealVisXL is unavailable.</td>
+          <td><a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0">HF</a></td>
+        </tr>
+        <tr>
+          <td class="s">SDXL-Lightning 8-step UNet</td>
+          <td><span class="b b-local">Local</span></td>
+          <td>Speed variant probed by <code>test_sdxl_urls.py</code>.</td>
+          <td><a href="https://huggingface.co/ByteDance/SDXL-Lightning">HF</a></td>
+        </tr>
+        <tr>
+          <td class="s">black-forest-labs/FLUX.2-klein-4B</td>
+          <td><span class="b b-local">Local</span> via <code>AutoPipelineForText2Image</code></td>
+          <td>Alternative 4B text-to-image path for Scene 1 batch renders. <span class="b b-warn">Experimental</span></td>
+          <td><a href="https://huggingface.co/black-forest-labs/FLUX.2-klein-4B">HF</a> <span class="b b-warn">verify availability</span></td>
+        </tr>
+        <tr>
+          <td class="s">IP-Adapter Plus SDXL (ViT-H)</td>
+          <td><span class="b b-local">Local</span> <code>models\ipadapter\ip-adapter-plus_sdxl_vit-h.safetensors</code></td>
+          <td><strong>Character identity lock</strong> — conditions SDXL on the character identity sheets so faces stay consistent across frames.</td>
+          <td><a href="https://huggingface.co/h94/IP-Adapter">h94/IP-Adapter</a></td>
+        </tr>
+        <tr>
+          <td class="s">CLIP-ViT-H-14 (laion2B)</td>
+          <td><span class="b b-local">Local</span> <code>models\clip_vision\</code></td>
+          <td>Image encoder required by IP-Adapter / PuLID.</td>
+          <td><a href="https://huggingface.co/h94/IP-Adapter">same repo, image_encoder/</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Video</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Model</th><th>Where</th><th>Role</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="s">Veo 3.1</td>
+          <td><span class="b b-cloud">Cloud</span></td>
+          <td><strong>Primary video generator.</strong> 720p, 5–8s clips (8s is the sweet spot), 16:9 / 9:16, text-to-video and image-to-video, native ambient/SFX/dialogue audio, up to 4 variants per prompt. Veo 2 deprecated June 2026.</td>
+          <td><a href="https://ai.google.dev/gemini-api/docs/video">Docs</a> · <a href="https://aistudio.google.com">AI Studio</a></td>
+        </tr>
+        <tr>
+          <td class="s">Lightricks/LTX-Video</td>
+          <td><span class="b b-local">Local</span> via <code>diffusers.LTXPipeline</code></td>
+          <td>Local text-to-video for the title sequence. <span class="b b-warn">Experimental</span> — VRAM-hungry, quality below Veo.</td>
+          <td><a href="https://huggingface.co/Lightricks/LTX-Video">HF</a> · <a href="https://github.com/Lightricks/LTX-Video">GitHub</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Editorial / non-AI</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Tool</th><th>Role</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td class="s">FFmpeg (via imageio-ffmpeg)</td><td>Every concat, crossfade, wipe, trim, audio mux and master render. The binary ships with the pip package — <code>imageio_ffmpeg.get_ffmpeg_exe()</code> — so there is no system FFmpeg dependency.</td><td><a href="https://ffmpeg.org/documentation.html">FFmpeg docs</a> · <a href="https://github.com/imageio/imageio-ffmpeg">imageio-ffmpeg</a></td></tr>
+        <tr><td class="s">MoviePy</td><td>Programmatic clip inspection and audio-level sampling in the QA scripts.</td><td><a href="https://zulko.github.io/moviepy/">Docs</a></td></tr>
+        <tr><td class="s">Pillow (PIL)</td><td>Title cards and storyboard art rendered to PNG, then encoded to video by FFmpeg. Zero API cost.</td><td><a href="https://pillow.readthedocs.io">Docs</a></td></tr>
+        <tr><td class="s">ComfyUI</td><td>Node-graph host. Driven headlessly over its HTTP API at <code>127.0.0.1:8188</code> (<code>/object_info</code>, <code>/prompt</code>) rather than through the web UI.</td><td><a href="https://github.com/comfyanonymous/ComfyUI">GitHub</a></td></tr>
+        <tr><td class="s">agy CLI</td><td>Google OAuth session manager. Mints the short-lived <code>AQ.</code> token the generation scripts need.</td><td>Internal / vendor CLI</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ 5 · COST ══════════════ -->
+<section id="cost">
+  <h2><span class="num">05</span> Generation engines &amp; cost (GBP)</h2>
+
+  <div class="callout c-amber">
+    <span class="t">Currency assumption — update this before quoting anyone</span>
+    <p>Every supplier below prices in <strong>US dollars</strong>. GBP figures use an assumed rate of <strong>$1 = £0.79</strong> (£1 ≈ $1.27). Rates move; re-check before budgeting. Google also sets UK subscription prices regionally rather than by conversion, so check your actual billing statement for the real monthly figure.</p>
+  </div>
+
+  <h3>The four generation engines in the workspace</h3>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>1 · fal.ai Flux <span class="b b-cloud">Pay per image</span></h4>
+      <p>Called by <code>gen_image.py</code> (lives outside this repo, at <code>C:\AI\AI\</code>). Key verified active — the fingerprint is on file; it is deliberately not written into this document.</p>
+      <p>Outputs clean 16:9 cinematic stills straight into <code>storyboard-frames/</code>.</p>
+      <p style="margin-bottom:0"><a href="https://fal.ai/pricing">fal.ai pricing</a> · <a href="https://fal.ai/models">model catalogue</a></p>
+    </div>
+    <div class="card">
+      <h4>2 · Google AI Studio <span class="b b-cloud">Subscription</span></h4>
+      <p>Gemini Flash Image ("Nano Banana") and Veo 3.1. Web UI, manual <code>@tag</code> image attachment for reference conditioning. No per-image charge — you spend quota, not money.</p>
+      <p style="margin-bottom:0"><a href="https://aistudio.google.com">aistudio.google.com</a> · <a href="https://one.google.com/about/google-ai-plans/">plan pricing</a></p>
+    </div>
+    <div class="card">
+      <h4>3 · Local GPU stack <span class="b b-local">Electricity only</span></h4>
+      <p>MusicGen, Qwen3-TTS, SDXL/RealVisXL, IP-Adapter, LTX-Video. Zero marginal cost beyond power. Unlimited rerolls — this is why the score and voice work were moved local.</p>
+      <p style="margin-bottom:0">See <a href="#models">§04 Model registry</a></p>
+    </div>
+    <div class="card">
+      <h4>4 · Pillow graphics generator <span class="b b-cpu">Free</span></h4>
+      <p><code>render_storyboard_art.py</code> — scripted composite graphics for layout blueprints and group-photo stagers. Deterministic, no model, no cost, no quota.</p>
+      <p style="margin-bottom:0"><a href="https://pillow.readthedocs.io">Pillow docs</a></p>
+    </div>
+  </div>
+
+  <h3>Per-generation unit cost</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Engine / model</th><th>Speed</th><th>USD list</th><th>GBP each</th><th>GBP per 100</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="s">fal.ai · flux <strong>schnell</strong></td>
+          <td>~3 sec</td><td>$0.003 / image</td>
+          <td><strong>£0.0024</strong> <span style="color:var(--text-dim)">(0.24p)</span></td>
+          <td>£0.24</td>
+          <td><span class="b b-ok">Default</span> Bulk storyboard frames, composition tests, anything you'll reroll</td>
+        </tr>
+        <tr>
+          <td class="s">fal.ai · flux <strong>dev</strong></td>
+          <td>~10 sec</td><td>$0.025 / image</td>
+          <td><strong>£0.0198</strong> <span style="color:var(--text-dim)">(2.0p)</span></td>
+          <td>£1.98</td>
+          <td>Frames that made the cut and need real detail. 8× the cost of schnell</td>
+        </tr>
+        <tr>
+          <td class="s">fal.ai · flux <strong>pro</strong></td>
+          <td>~15 sec</td><td>$0.040 / image</td>
+          <td><strong>£0.0316</strong> <span style="color:var(--text-dim)">(3.2p)</span></td>
+          <td>£3.16</td>
+          <td>Hero stills only — posters, character bible masters. 13× schnell</td>
+        </tr>
+        <tr>
+          <td class="s">Gemini Flash Image</td>
+          <td>~10 sec</td><td colspan="2">Included in Google AI Pro</td>
+          <td>£0 marginal</td>
+          <td>Reference sheets needing long prompts + multi-turn editing. Daily quota</td>
+        </tr>
+        <tr>
+          <td class="s">Veo 3.1 video</td>
+          <td>2–5 min</td><td colspan="2">Included in Google AI Pro</td>
+          <td>£0 marginal</td>
+          <td>Every real shot. Monthly cap — the true scarce resource</td>
+        </tr>
+        <tr>
+          <td class="s">MusicGen stereo-large</td>
+          <td>~5–10 min</td><td colspan="2">Local — power only</td>
+          <td>~£0.01 / full score</td>
+          <td>The entire soundtrack. Unlimited rerolls</td>
+        </tr>
+        <tr>
+          <td class="s">Qwen3-TTS</td>
+          <td>~5 sec / line</td><td colspan="2">Local — power only</td>
+          <td>~£0.00</td>
+          <td>All character dialogue</td>
+        </tr>
+        <tr>
+          <td class="s">SDXL / RealVisXL local</td>
+          <td>~3–8 sec</td><td colspan="2">Local — power only</td>
+          <td>~£0.01 / 100 images</td>
+          <td>Identity-locked frames via IP-Adapter</td>
+        </tr>
+        <tr>
+          <td class="s">Pillow / FFmpeg</td>
+          <td>seconds</td><td colspan="2">Free</td>
+          <td>£0</td>
+          <td>Title cards, assembly, masters</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12.5px;color:var(--text-dim)">Local power estimate: ~320W card × runtime at ~£0.25/kWh. A 10-minute MusicGen render ≈ 0.05 kWh ≈ £0.013. Treat local generation as free.</p>
+
+  <h3>Fixed monthly costs</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Item</th><th>USD</th><th>GBP (assumed rate)</th><th>What it buys</th></tr></thead>
+      <tbody>
+        <tr><td class="s">Google AI Pro</td><td>$19.99 / month</td><td><strong>≈ £15.79 / month</strong></td><td>Gemini Flash Image daily quota + Veo 3.1 monthly cap. <span class="b b-warn">Check real UK price</span></td></tr>
+        <tr><td class="s">fal.ai</td><td>Pay-as-you-go</td><td>No standing charge</td><td>Per-image only — you spend nothing in a month you don't generate</td></tr>
+        <tr><td class="s">Local stack</td><td>—</td><td>£0 + electricity</td><td>One-off hardware cost already sunk</td></tr>
+        <tr><td class="s">GitHub</td><td>Free tier</td><td>£0</td><td>Private backup of this repo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Worked example — what one 60-second trailer costs</h3>
+  <p>Assumes 19 shots, 64 storyboard frames, 5 character sheets, 9 location sheets, and a realistic <strong>2× reroll factor</strong> on stills. Rerolls, not first attempts, are what actually drives the bill.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Stage</th><th>Volume</th><th>Budget route<br><span style="font-weight:400;text-transform:none;letter-spacing:0">schnell + local</span></th><th>Quality route<br><span style="font-weight:400;text-transform:none;letter-spacing:0">dev/pro stills</span></th></tr></thead>
+      <tbody>
+        <tr><td>Storyboard frames</td><td>64 × 2 = 128 images</td><td>£0.30</td><td>£2.53 <span style="color:var(--text-dim)">(dev)</span></td></tr>
+        <tr><td>Character identity sheets</td><td>5 chars × 4 × 2 = 40</td><td>£0.10</td><td>£1.26 <span style="color:var(--text-dim)">(pro)</span></td></tr>
+        <tr><td>Location sheets</td><td>9 × 2 = 18</td><td>£0.04</td><td>£0.57 <span style="color:var(--text-dim)">(pro)</span></td></tr>
+        <tr><td>Veo 3.1 shot clips</td><td>19 shots × 3 attempts = 57</td><td>£0 <span style="color:var(--text-dim)">(quota)</span></td><td>£0 <span style="color:var(--text-dim)">(quota)</span></td></tr>
+        <tr><td>Score — MusicGen</td><td>3–4 full rerolls</td><td>£0.05</td><td>£0.05</td></tr>
+        <tr><td>Dialogue — Qwen3-TTS</td><td>~30 lines + rerolls</td><td>£0.01</td><td>£0.01</td></tr>
+        <tr><td>Title cards, assembly, QA</td><td>unlimited</td><td>£0</td><td>£0</td></tr>
+        <tr style="background:rgba(242,163,77,.06)"><td><strong style="color:var(--gold)">Marginal total</strong></td><td>—</td><td><strong style="color:var(--gold)">≈ £0.50</strong></td><td><strong style="color:var(--gold)">≈ £4.42</strong></td></tr>
+        <tr><td>Plus subscription (monthly, shared across all work)</td><td>—</td><td>£15.79</td><td>£15.79</td></tr>
+        <tr style="background:rgba(46,204,113,.06)"><td><strong style="color:var(--green)">All-in, first trailer of the month</strong></td><td>—</td><td><strong style="color:var(--green)">≈ £16.29</strong></td><td><strong style="color:var(--green)">≈ £20.21</strong></td></tr>
+        <tr style="background:rgba(46,204,113,.06)"><td><strong style="color:var(--green)">Each additional trailer that month</strong></td><td>—</td><td><strong style="color:var(--green)">≈ £0.50</strong></td><td><strong style="color:var(--green)">≈ £4.42</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout c-green">
+    <span class="t">How to keep it cheap</span>
+    <ul style="margin-bottom:0">
+      <li><strong>Reroll on schnell, finish on dev.</strong> Find the composition at 0.24p, then re-render the ~20 keepers at 2p. Never iterate on pro.</li>
+      <li><strong>Veo is the real constraint, not money.</strong> It costs £0 but the monthly cap is finite. Lock the shot on a cheap still <em>before</em> spending a video generation.</li>
+      <li><strong>Push repeated work local.</strong> Score, voice and assembly get regenerated dozens of times — all of it free on your own card.</li>
+      <li><strong>The bill is rerolls.</strong> One clean pass over everything is under 30p. A 5× reroll factor on pro is over £11. Prompt discipline is the budget.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════ 6 · WORKFLOW ══════════════ -->
+<section id="workflow">
+  <h2><span class="num">06</span> Workflow map — how a full trailer gets made</h2>
+  <p>Six stages, script → master. Read left to right, top to bottom. Blue = cloud spend or quota, purple = local and free, grey = deterministic tooling.</p>
+
+  <h3>The full pipeline</h3>
+  <div class="dwrap">
+<pre class="mermaid">
+flowchart TD
+    subgraph S1["1 · WRITE"]
+        A1["Screenplay<br/>CTS_Featurette_Episode.fountain"] --> A2["Shot list<br/>featurette_shot_list.md"]
+        A2 --> A3["Prompt engine<br/>featurette_prompt_engine.md<br/><i>VIDEO PROMPT + GATE CHECK per shot</i>"]
+    end
+
+    subgraph S2["2 · LOOK DEVELOPMENT — cheap stills first"]
+        B1["Character sheets<br/>generate_character_sheets.py"]
+        B2["Location sheets<br/>run_location_sheets.py"]
+        B3["Storyboard frames<br/>generate_storyboard_sample.py"]
+        B4{"Look approved?"}
+        B1 --> B4
+        B2 --> B4
+        B3 --> B4
+        B4 -->|"No — reroll, pennies each"| B3
+    end
+
+    subgraph S3["3 · SHOOT — the expensive step"]
+        C1["Veo 3.1 in AI Studio<br/><i>prompt + 2-3 reference images</i>"]
+        C2{"GATE CHECK<br/>passes?"}
+        C3["Save to clips/<br/>OPENING_Sxx.mp4"]
+        C1 --> C2
+        C2 -->|"No — tweak prompt"| C1
+        C2 -->|"Yes"| C3
+    end
+
+    subgraph S4["4 · SOUND — local, unlimited"]
+        D1["Score<br/>generate_mockumentary_score_stereo_gpu.py"]
+        D2["Dialogue<br/>synthesize_all_qwen.py"]
+        D3["SFX<br/>generate_all_22_sfx.py"]
+    end
+
+    subgraph S5["5 · ASSEMBLE"]
+        E1["Title card<br/>build_title_card_v3.py"]
+        E2["Trailer build<br/>build_small_stakes_trailer.py<br/><i>concat + wipes + audio mux</i>"]
+        E1 --> E2
+    end
+
+    subgraph S6["6 · QA"]
+        F1["Audio levels<br/>verify_orchestral_audio_levels.py"]
+        F2["Outro coverage<br/>analyze_master_audio_outro.py"]
+        F3{"Passes?"}
+        F1 --> F3
+        F2 --> F3
+    end
+
+    A3 --> B3
+    A3 --> C1
+    B4 -->|"Yes — these become<br/>Veo reference images"| C1
+    C3 --> E2
+    D1 --> E2
+    D2 --> E2
+    D3 --> E2
+    E2 --> F1
+    E2 --> F2
+    F3 -->|"No — clipping? lower guidance_scale"| D1
+    F3 -->|"No — bad shot?"| C1
+    F3 -->|"Yes"| G1["MASTER<br/>clips/*_TRAILER_MASTER_*.mp4"]
+
+    classDef cloud fill:#16223d,stroke:#5B8DEF,color:#cfe0ff
+    classDef local fill:#2a1b33,stroke:#9B59B6,color:#efdcf7
+    classDef tool  fill:#1c1c24,stroke:#6E6B80,color:#d8d5e2
+    classDef gate  fill:#3a2410,stroke:#F39C12,color:#ffdfae
+    classDef final fill:#12331f,stroke:#2ECC71,color:#c9f7db
+
+    class A1,A2,A3 tool
+    class B1,B2,B3,C1 cloud
+    class D1,D2,D3 local
+    class E1,E2,F1,F2 tool
+    class B4,C2,F3 gate
+    class C3 cloud
+    class G1 final
+</pre>
+  </div>
+
+  <h3>Base workflow — the skeleton to copy for anything new</h3>
+  <p>Strip the trailer pipeline down and this is the shape underneath. It generalises to a scene, a teaser, a title sequence — anything.</p>
+  <div class="dwrap">
+<pre class="mermaid">
+flowchart LR
+    P1["① PROMPT<br/>Write it down<br/>in a .md file"] --> P2["② CHEAP PROOF<br/>Generate a still<br/>~0.24p"]
+    P2 --> P3{"Right?"}
+    P3 -->|No| P2
+    P3 -->|Yes| P4["③ EXPENSIVE RENDER<br/>Veo clip or dev-grade still<br/>quota / pennies"]
+    P4 --> P5["④ LOCAL AUDIO<br/>MusicGen + Qwen3-TTS<br/>free, unlimited"]
+    P5 --> P6["⑤ ASSEMBLE<br/>FFmpeg build script<br/>free, deterministic"]
+    P6 --> P7["⑥ VERIFY<br/>QA scripts<br/>free"]
+    P7 --> P8{"Ships?"}
+    P8 -->|No| P2
+    P8 -->|Yes| P9["MASTER.mp4"]
+
+    classDef cheap fill:#2a1b33,stroke:#9B59B6,color:#efdcf7
+    classDef spend fill:#16223d,stroke:#5B8DEF,color:#cfe0ff
+    classDef gate  fill:#3a2410,stroke:#F39C12,color:#ffdfae
+    classDef final fill:#12331f,stroke:#2ECC71,color:#c9f7db
+    class P1,P5,P6,P7 cheap
+    class P2,P4 spend
+    class P3,P8 gate
+    class P9 final
+</pre>
+  </div>
+  <div class="callout c-blue">
+    <span class="t">The one rule that makes this work</span>
+    <p><strong>Never spend the expensive resource to answer a question a cheap one can answer.</strong> A 0.24p still tells you whether the framing, the wardrobe and the light are right. Only once it does should you spend a Veo generation from a capped monthly allowance. Every stage above is ordered by that principle.</p>
+  </div>
+
+  <h3>Which image engine should I use?</h3>
+  <div class="dwrap">
+<pre class="mermaid">
+flowchart TD
+    Q1{"Does a named character's<br/>face need to match<br/>other shots?"}
+    Q1 -->|Yes| R1["ComfyUI + IP-Adapter<br/>batch_render_ipadapter_scene1.py<br/><i>local · free · identity locked</i>"]
+    Q1 -->|No| Q2{"Is this a throwaway<br/>composition test?"}
+    Q2 -->|Yes| R2["fal.ai flux schnell<br/><i>0.24p · 3 sec</i>"]
+    Q2 -->|No| Q3{"Does the prompt need<br/>long description or<br/>multi-turn editing?"}
+    Q3 -->|Yes| R3["Gemini Flash Image<br/>AI Studio<br/><i>quota · best prompt following</i>"]
+    Q3 -->|No| Q4{"Is it a hero asset —<br/>poster, bible master?"}
+    Q4 -->|Yes| R4["fal.ai flux pro<br/><i>3.2p · highest fidelity</i>"]
+    Q4 -->|No| R5["fal.ai flux dev<br/><i>2p · the sensible middle</i>"]
+
+    classDef local fill:#2a1b33,stroke:#9B59B6,color:#efdcf7
+    classDef cloud fill:#16223d,stroke:#5B8DEF,color:#cfe0ff
+    classDef gate  fill:#3a2410,stroke:#F39C12,color:#ffdfae
+    class Q1,Q2,Q3,Q4 gate
+    class R1 local
+    class R2,R3,R4,R5 cloud
+</pre>
+  </div>
+</section>
+
+<!-- ══════════════ 7 · AUTH ══════════════ -->
+<section id="auth">
+  <h2><span class="num">07</span> Auth &amp; standing rules</h2>
+
+  <h3>Google auth — the AQ. token model</h3>
+  <p>This is the part that breaks most often, so it is worth understanding rather than pattern-matching.</p>
+  <ul>
+    <li>Scripts call the <code>google-genai</code> SDK's <code>interactions.create()</code> endpoint. That endpoint requires an <strong><code>AQ.</code> OAuth token</strong> — a plain <code>AIza…</code> API key will not work.</li>
+    <li>The <code>agy</code> CLI mints that token and exposes it as <code>GEMINI_API_KEY</code>. Tokens expire after a few hours; that is normal, not a fault.</li>
+    <li>The refresh token lives at <code>%USERPROFILE%\.gemini\oauth_creds.json</code>.</li>
+    <li><code>GOOGLE_API_KEY</code> must be <strong>unset</strong> in the child process — if present it overrides <code>GEMINI_API_KEY</code> and auth fails confusingly.</li>
+  </ul>
+
+  <p><strong>Always go through the wrapper</strong>, which refreshes the token then shells out with a clean env:</p>
+  <pre><code>python run_location_sheets.py</code></pre>
+  <p>Internally: run <code>agy --print</code> to force a token refresh → read <code>GEMINI_API_KEY</code> → spawn <code>generate_location_sheets.py</code> with that token and with <code>GOOGLE_API_KEY</code> popped.</p>
+
+  <div class="callout c-red">
+    <span class="t">Never do these</span>
+    <ul style="margin-bottom:0">
+      <li><code>setx GEMINI_API_KEY</code> / <code>setx GOOGLE_API_KEY</code> — a stale machine-level env var poisons every future run.</li>
+      <li>Hand-pasting <code>AQ.</code> keys — they expire in hours.</li>
+      <li>Confusing the AI Pro <em>subscription</em> (consumer OAuth) with API <em>credits</em> (separate billing). The pipeline is subscription-only by design.</li>
+    </ul>
+  </div>
+  <p style="font-size:12.5px">On auth failure: re-run the wrapper; if it still fails, open a fresh <code>agy</code> session (the token refreshes on startup) and retry. Full rule: <code>.agents/rules/google_auth.md</code>.</p>
+
+  <h3>Music rule — MusicGen Large only</h3>
+  <div class="callout c-amber">
+    <span class="t">Standing user directive · .agents/rules/neural_ai_music_only.md</span>
+    <p><strong>All music, score and soundtrack must come from a MusicGen Large 3.3B checkpoint</strong>, default <code>facebook/musicgen-stereo-large</code>. Two hard prohibitions:</p>
+    <ol style="margin-bottom:8px">
+      <li><strong>No synthetic/algorithmic audio</strong> — no sine/saw ostinatos, no pitch-step loops, no mathematically generated music.</li>
+      <li><strong>No downgrading</strong> to <code>-medium</code>, <code>-small</code>, or any other smaller checkpoint for deliverables.</li>
+    </ol>
+    <p>Also mandated: 32kHz stereo output, full-duration <code>max_new_tokens</code> blocks crossfade-stitched so the score covers the closing card and final fade with no gap, and GPU execution (<code>device="cuda"</code>, fp16) — CPU is prohibitively slow at 3.3B.</p>
+  </div>
+  <p>The nine <code>create_*.py</code> audio scripts predate this rule and violate prohibition #1. They are kept for history only — see the index below.</p>
+</section>
+
+<!-- ══════════════ 5 · SCRIPT INDEX ══════════════ -->
+<section id="scripts">
+  <h2><span class="num">08</span> Script index</h2>
+  <p>Grouped by job. <span class="b b-local">Local</span> needs the GPU stack · <span class="b b-cloud">Cloud</span> needs a live Google token · <span class="b b-cpu">CPU</span> runs anywhere Python does.</p>
+
+  <h3>🎵 Music &amp; score — neural (MusicGen)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>Engine</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="s">generate_mockumentary_score_stereo_gpu.py</td><td><span class="b b-local">Local</span> stereo-large</td><td><span class="b b-ok">Current</span> The live cue generator — one calm, continuous acoustic mockumentary score. Tuned <code>guidance_scale</code> 2.0 / temperature 0.85 to kill the clipping and glitching of earlier rolls. Crossfade-stitched multi-block generation.</td></tr>
+        <tr><td class="s">generate_epic_action_score_stereo_gpu.py</td><td><span class="b b-local">Local</span> stereo-large</td><td>Epic/action variant on the stereo checkpoint, <code>guidance_scale</code> 3.0. The upbeat trailer alternative to the calm cue.</td></tr>
+        <tr><td class="s">generate_epic_action_score_large_gpu.py</td><td><span class="b b-local">Local</span> mono large</td><td>Mono predecessor of the above. Superseded by the stereo version.</td></tr>
+        <tr><td class="s">generate_action_musicgen.py</td><td><span class="b b-local">Local</span></td><td>Earlier single-shot action cue generator.</td></tr>
+        <tr><td class="s">generate_neural_ai_score_large.py</td><td><span class="b b-local">Local</span></td><td><span class="b b-warn">Misnamed</span> Says "large" but actually loads <code>musicgen-small</code>. Violates the music rule — do not use for deliverables.</td></tr>
+        <tr><td class="s">generate_studio_musician_score.py</td><td><span class="b b-local">Local</span> medium 1.5B</td><td><span class="b b-warn">Below rule</span> Uses <code>musicgen-medium</code>. Historical.</td></tr>
+        <tr><td class="s">download_musicgen_large_complete.py</td><td><span class="b b-local">Local</span></td><td>Pulls the 3.3B weights to 100% completion and verifies. The one to run on a fresh machine.</td></tr>
+        <tr><td class="s">download_musicgen_large_direct.py</td><td><span class="b b-local">Local</span></td><td>Direct-URL download variant, for when the HF cache path misbehaves.</td></tr>
+        <tr><td class="s">download_and_run_musicgen_large.py</td><td><span class="b b-local">Local</span></td><td>Download-then-immediately-generate combo.</td></tr>
+        <tr><td class="s">test_musicgen.py</td><td><span class="b b-cpu">CPU</span> small</td><td>Import + CPU smoke test on <code>musicgen-small</code>. Proves the transformers chain works before committing GPU time.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>🔇 Synthetic audio — legacy, rule-violating</h3>
+  <div class="callout c-amber">
+    <span class="t">Deprecated — kept for history</span>
+    <p>These build audio from numpy sine/saw waves and Karplus-Strong plucks. Prohibition #1 of the music rule bans exactly this. They still <em>run</em> on this machine (numpy + scipy are installed), which makes them a tempting trap. Don't use them for deliverables.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>Duration</th><th>What it built</th></tr></thead>
+      <tbody>
+        <tr><td class="s">create_constant_unified_theme.py</td><td>85.0s</td><td>Unified action theme sized for full trailer coverage. Output survives as <code>audio-refs/constant_unified_action_theme.wav</code>.</td></tr>
+        <tr><td class="s">create_master_action_score_85s.py</td><td>85.0s</td><td>Master action score with 7s margin over a 77.87s cut.</td></tr>
+        <tr><td class="s">create_full_orchestral_soundtrack.py</td><td>80.0s</td><td>Synthetic "orchestral" bed.</td></tr>
+        <tr><td class="s">create_non_repeating_cinematic_score.py</td><td>80.0s</td><td>Attempt at avoiding audible loop repetition.</td></tr>
+        <tr><td class="s">create_action_trailer_audio.py</td><td>65.0s</td><td>Early action trailer bed.</td></tr>
+        <tr><td class="s">create_studio_acoustic_theme.py</td><td>45.0s</td><td>Karplus-Strong plucked-string acoustic theme.</td></tr>
+        <tr><td class="s">create_upbeat_joyful_music.py</td><td>45.0s</td><td>Upbeat variant.</td></tr>
+        <tr><td class="s">create_corporate_theme_music.py</td><td>38.0s</td><td>Corporate sting for the office material.</td></tr>
+        <tr><td class="s">create_melodic_music_and_zone_sfx.py</td><td>—</td><td>Melody plus a clean hiss-free ambient "zone" SFX bed.</td></tr>
+        <tr><td class="s">generate_all_22_sfx.py</td><td>—</td><td>22 discrete SFX via the stdlib <code>wave</code> module. <span class="b b-ok">Still fine</span> — the music rule targets score, not foley.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>🎙️ Voice &amp; dialogue</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>Engine</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="s">synthesize_all_qwen.py</td><td><span class="b b-local">Local</span> Qwen3-TTS</td><td>Batch-synthesises every character line. The main VO entry point.</td></tr>
+        <tr><td class="s">synthesize_structured_qwen.py</td><td><span class="b b-local">Local</span> Qwen3-TTS</td><td>Structured pass driven by the scene/line schema rather than a flat list.</td></tr>
+        <tr><td class="s">test_qwen_synthesis.py</td><td><span class="b b-local">Local</span></td><td>Single-line smoke test — confirms the ComfyUI custom-node import path resolves before a full batch.</td></tr>
+        <tr><td class="s">reroll_jan_qwen.py</td><td><span class="b b-local">Local</span></td><td>Re-roll Jan's takes only.</td></tr>
+        <tr><td class="s">reroll_christina_qwen.py</td><td><span class="b b-local">Local</span></td><td>Re-roll Christina.</td></tr>
+        <tr><td class="s">reroll_christina_female.py</td><td><span class="b b-local">Local</span></td><td>Christina with a corrected female voice profile.</td></tr>
+        <tr><td class="s">reroll_chris_qwen.py</td><td><span class="b b-local">Local</span></td><td>Re-roll Chris.</td></tr>
+        <tr><td class="s">reroll_sharon_welsh.py</td><td><span class="b b-local">Local</span></td><td>Sharon with a Welsh accent profile.</td></tr>
+        <tr><td class="s">reroll_sharon_exact.py</td><td><span class="b b-local">Local</span></td><td>Sharon pinned to an exact reference delivery.</td></tr>
+        <tr><td class="s">generate_voices.ps1</td><td><span class="b b-cpu">CPU</span> SAPI</td><td>PowerShell / <code>System.Speech</code> placeholder VO for the five leads. Zero dependencies — useful for timing an edit before real VO exists.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12.5px">All Qwen scripts bootstrap identically: push <code>C:\ai\ComfyUI\ComfyUI</code>, its <code>custom_nodes/ComfyUI-QwenTTS</code>, and that node's <code>qwen_tts</code> dir onto <code>sys.path</code>, then import <code>_load_qwen3_model</code> / <code>_ensure_qwen_package</code> from <code>AILab_QwenTTS</code>. They bypass the ComfyUI graph and call the loader directly.</p>
+
+  <h3>🖼️ Stills — cloud (fal.ai Flux + Gemini)</h3>
+  <p style="font-size:12.5px">These all shell out to <code>C:\AI\AI\gen_image.py</code>, which lives <strong>outside this repo</strong> and routes to <strong>fal.ai Flux</strong> (schnell / dev / pro). It is the single choke point for cloud still generation — and it is not present on this machine. Costs per image: <a href="#cost">§05</a>.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="s">run_location_sheets.py</td><td><span class="b b-ok">Start here</span> The auth wrapper. Refreshes the <code>agy</code> token, then runs the location-sheet generator with a clean env. Double-clickable.</td></tr>
+        <tr><td class="s">generate_location_sheets.py</td><td>Generates all 9 master location spec sheets → <code>location-refs/</code>. Shells out to <code>C:\AI\AI\gen_image.py</code> per image.</td></tr>
+        <tr><td class="s">generate_character_sheets.py</td><td>Character turnaround identity sheets → <code>character-refs/</code>. These are the reference images IP-Adapter later conditions on.</td></tr>
+        <tr><td class="s">generate_storyboard_sample.py</td><td>Small paced batch (F01–F05, the Scene 1 office-greeting beats) at 21:9, one at a time with pauses to stay under quota. Review in <code>storyboard_slideshow.html</code>, then widen <code>FRAMES</code> toward the 64 frames in the prompt doc.</td></tr>
+        <tr><td class="s">set_key_from_clipboard.py</td><td>Reads a Gemini key from the Windows clipboard into <code>.env</code>. <span class="b b-warn">Legacy</span> — the AQ. token flow superseded this; needs <code>pyperclip</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>🖼️ Stills — local (SDXL / FLUX / ComfyUI)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="s">generate_sdxl_storyboard_frames.py</td><td>Direct <code>diffusers</code> SDXL render of storyboard frames off the local RealVisXL V5 Lightning checkpoint.</td></tr>
+        <tr><td class="s">batch_render_ipadapter_scene1.py</td><td><span class="b b-ok">Identity path</span> Batch-renders pending Scene 1 frames through the ComfyUI HTTP API with IP-Adapter conditioning on the character sheets — this is what keeps faces consistent.</td></tr>
+        <tr><td class="s">batch_render_flux2_scene1.py</td><td>Same Scene 1 batch through FLUX.2-klein-4B via <code>AutoPipelineForText2Image</code>.</td></tr>
+        <tr><td class="s">test_comfyui_ipadapter_f18_v4.py</td><td>Current single-frame IP-Adapter workflow probe (frame F18, RealVisXL V4). Iterate here before batching.</td></tr>
+        <tr><td class="s">test_comfyui_ipadapter_f18.py</td><td>Earlier revision of the same probe.</td></tr>
+        <tr><td class="s">test_comfyui_sdxl_gen.py</td><td>Plain SDXL generation over the ComfyUI API — 8 steps, CFG 2.0, euler/normal (Lightning settings).</td></tr>
+        <tr><td class="s">test_comfyui_nodes.py</td><td>Queries <code>/object_info</code> and prints available checkpoints, CLIP and UNET models. First thing to run when ComfyUI "can't find" a model.</td></tr>
+        <tr><td class="s">check_ipadapter_nodes.py</td><td>Lists every IP-Adapter / PuLID node ComfyUI has loaded. Confirms the custom nodes actually installed.</td></tr>
+        <tr><td class="s">download_realvisxl.py</td><td>Fetches the RealVisXL V4.0 checkpoint (6.46 GB) into ComfyUI's checkpoints dir.</td></tr>
+        <tr><td class="s">download_identity_models.py</td><td>Fetches IP-Adapter Plus SDXL + the CLIP-ViT-H-14 image encoder into the right ComfyUI folders. Skips files already &gt;100MB.</td></tr>
+        <tr><td class="s">find_all_checkpoints.py</td><td>Walks <code>C:\ai</code> and <code>~/.cache</code> for every <code>.safetensors/.ckpt/.bin/.pth</code>. Use it to find where weights actually landed.</td></tr>
+        <tr><td class="s">test_sdxl_local.py</td><td>Loads the local SDXL safetensors and reports GPU + success.</td></tr>
+        <tr><td class="s">test_sdxl_urls.py</td><td>HEAD-requests the four candidate checkpoint URLs and prints size in GB. Run before a long download.</td></tr>
+        <tr><td class="s">test_diffusers_flux_sdxl.py</td><td>Verifies <code>FluxPipeline</code> + <code>StableDiffusionXLPipeline</code> import and CUDA is visible.</td></tr>
+        <tr><td class="s">test_flux2_klein.py</td><td>FLUX.2-klein-4B load test with full traceback on failure.</td></tr>
+        <tr><td class="s">render_storyboard_art.py</td><td><span class="b b-cpu">CPU</span> Pure-PIL 1920×1080 storyboard panel rendering. No model, no cost.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>🎬 Video generation — local</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="s">generate_ltx_title_sequence.py</td><td>LTX-Video render of the opening title sequence via <code>diffusers.LTXPipeline</code> + <code>export_to_video</code>.</td></tr>
+        <tr><td class="s">generate_ltx_t01_video.py</td><td>Single T01 title shot through the same pipeline.</td></tr>
+        <tr><td class="s">test_ltx_env.py</td><td>Prints Python, CUDA availability, GPU name, free/total VRAM, and whether <code>LTXPipeline</code> imports. Run this before any LTX attempt — VRAM is the usual blocker.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12.5px">Veo 3.1 clips are <strong>not</strong> scripted — they are generated by hand in AI Studio and dropped into <code>clips/</code>. See the runbook below.</p>
+
+  <h3>✂️ Edit &amp; assembly (FFmpeg)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>Output</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="s">build_paper_trail_trailer.py</td><td class="s">PAPER_TRAIL_TRAILER_MASTER_78S.mp4</td><td><span class="b b-ok">Newest</span> 78s master cut to <em>The Paper Trail</em>. Uses <code>BASE_DIR</code> — path-portable.</td></tr>
+        <tr><td class="s">build_small_stakes_trailer.py</td><td class="s">SMALL_STAKES_TRAILER_MASTER_60S.mp4</td><td><span class="b b-ok">Newest</span> 60s master cut to <em>Small Stakes</em>. Also <code>BASE_DIR</code>-portable.</td></tr>
+        <tr><td class="s">build_action_trailer_master.py</td><td class="s">ACTION_TRAILER_MASTER_60S.mp4</td><td>60s action master: title card → S01–S09 → 5s end card, over the MusicGen mockumentary score. <span class="b b-no">Hardcoded dead path</span></td></tr>
+        <tr><td class="s">build_full_opening_trailer.py</td><td class="s">OPENING_TRAILER_MASTER.mp4</td><td>Original full opening assembly with the MusicGen bed plus the zone ambient SFX layer. <span class="b b-no">Hardcoded dead path</span></td></tr>
+        <tr><td class="s">build_title_card_v3.py</td><td class="s">clips/title_card_v03.mp4</td><td><span class="b b-cpu">CPU</span> "ALL UNDER ONE ROOF" title card — 1920×1080 @ 24fps, 8.0s, rendered with PIL then encoded by FFmpeg. Zero API cost.</td></tr>
+        <tr><td class="s">video_wipe_editor.py</td><td>—</td><td>Reusable wipe-transition helper: probes clip durations from FFmpeg stderr and builds the transition filtergraph. Shared by the build scripts.</td></tr>
+        <tr><td class="s">trim_s08_clip.py</td><td class="s">OPENING_S08.mp4</td><td>Trims S08 to 6.8s to drop a stray voice at the tail. Backs up the original first.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>🔍 QA &amp; analysis</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Script</th><th>Needs</th><th>What it checks</th></tr></thead>
+      <tbody>
+        <tr><td class="s">verify_orchestral_audio_levels.py</td><td>moviepy</td><td>Samples the master's audio level every 5s across the full duration — catches clipping and dead-air gaps.</td></tr>
+        <tr><td class="s">analyze_master_audio_outro.py</td><td>moviepy</td><td>Specifically verifies the score still covers the closing title card and final fade (the rule's "outro continuation" requirement).</td></tr>
+        <tr><td class="s">verify_s09_voice.py</td><td>moviepy</td><td>Extracts S09's audio to WAV and confirms the confrontation dialogue is present and audible.</td></tr>
+        <tr><td class="s">analyze_s08_video.py</td><td>ffmpeg</td><td>Dumps S08 frames to <code>frames/s08_analysis</code> for a visual pass.</td></tr>
+        <tr><td class="s">detailed_s08_timestamps.py</td><td>moviepy</td><td>Prints S08 duration / fps / size and per-beat timestamps — used to pick the 6.8s trim point.</td></tr>
+        <tr><td class="s">inspect_1min_clip_dialogue.py</td><td>moviepy</td><td>Walks the clips in the 1-minute cut and reports where dialogue actually falls.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ 6 · RUNBOOKS ══════════════ -->
+<section id="runbooks">
+  <h2><span class="num">09</span> Runbooks</h2>
+
+  <h3>A · Rebuild the local stack on a fresh machine</h3>
+  <pre><code># 1. CUDA PyTorch first — everything else depends on it
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+pip install transformers diffusers accelerate safetensors soundfile moviepy imageio-ffmpeg pillow scipy numpy
+
+# 2. Confirm the GPU is actually visible
+python test_ltx_env.py          # prints CUDA, GPU name, free/total VRAM
+
+# 3. Pull the mandatory music model (3.3B, several GB)
+python download_musicgen_large_complete.py
+
+# 4. ComfyUI + identity models (only if doing local stills / voice)
+#    clone ComfyUI to C:\ai\ComfyUI\ComfyUI, then:
+python download_realvisxl.py        # 6.46 GB SDXL checkpoint
+python download_identity_models.py  # IP-Adapter Plus + CLIP-ViT-H-14
+python test_comfyui_nodes.py        # confirm ComfyUI sees them
+python check_ipadapter_nodes.py     # confirm the custom nodes loaded</code></pre>
+
+  <h3>B · Regenerate the score and re-master a trailer</h3>
+  <pre><code># 1. Generate the cue (GPU, stereo 3.3B, several minutes)
+python generate_mockumentary_score_stereo_gpu.py
+#    -> audio-refs/musicgen_mockumentary_score.wav
+
+# 2. Rebuild the master over it
+python build_small_stakes_trailer.py   # or build_paper_trail_trailer.py
+
+# 3. QA the result
+python verify_orchestral_audio_levels.py   # levels across the whole cut
+python analyze_master_audio_outro.py       # score covers the end card?</code></pre>
+  <div class="callout c-amber">
+    <span class="t">If the score clips or glitches</span>
+    <p>Lower <code>guidance_scale</code> (3.0 → 2.5 → 2.0) and temperature (→ 0.85) in the generation script. That exact adjustment is what fixed the earlier clipping, and the current mockumentary cue ships with those values.</p>
+  </div>
+
+  <h3>C · Generate a Veo shot (manual, subscription)</h3>
+  <ol>
+    <li>Open <a href="https://aistudio.google.com">aistudio.google.com</a> and sign in.</li>
+    <li>Pick <strong>Veo 3.1</strong> from the model dropdown.</li>
+    <li>Open <code>featurette_prompt_engine.md</code>, find the shot (e.g. S01), copy its <code>VIDEO PROMPT</code> block.</li>
+    <li>Upload the 2–3 reference images that shot lists as image conditioning.</li>
+    <li>Set duration per the shot spec (5–8s; 8s generates best).</li>
+    <li>Generate (~2–5 min), download the <code>.mp4</code>, save to <code>clips\S01_office_establishing.mp4</code> (name per the workflow table).</li>
+    <li>Run the shot's <strong>GATE CHECK</strong> from the prompt engine. Pass → next shot. Fail → tweak prompt → regenerate.</li>
+  </ol>
+  <p style="font-size:12.5px">Full 19-shot queue with filenames and per-shot durations: <code>VIDEO_GENERATION_WORKFLOW.md</code>.</p>
+
+  <h3>D · Generate reference stills (cloud)</h3>
+  <pre><code># Always via the wrapper — it refreshes the AQ. token for you
+python run_location_sheets.py     # all 9 location sheets -> location-refs/
+
+# Character identity sheets (needed before any IP-Adapter work)
+python generate_character_sheets.py   # -> character-refs/
+
+# Paced storyboard sample, quota-safe
+python generate_storyboard_sample.py  # F01-F05 -> storyboard-frames/
+#   then review storyboard_slideshow.html before widening FRAMES</code></pre>
+
+  <h3>E · Local identity-locked frames</h3>
+  <pre><code># ComfyUI must be running on 127.0.0.1:8188
+python check_ipadapter_nodes.py            # nodes present?
+python test_comfyui_ipadapter_f18_v4.py    # dial in one frame
+python batch_render_ipadapter_scene1.py    # then batch the scene</code></pre>
+</section>
+
+<!-- ══════════════ 7 · ASSETS ══════════════ -->
+<section id="assets">
+  <h2><span class="num">10</span> Assets, outputs &amp; companion docs</h2>
+
+  <h3>Where things land</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Folder</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td class="s">clips/</td><td>All video. Shot clips <code>OPENING_S01…S09</code>, plus the three masters: <code>ACTION_TRAILER_MASTER_60S.mp4</code>, <code>SMALL_STAKES_TRAILER_MASTER_60S.mp4</code>, <code>PAPER_TRAIL_TRAILER_MASTER_78S.mp4</code>, and <code>OPENING_TRAILER_MASTER.mp4</code>. <code>temp_*.mp4</code> is gitignored.</td></tr>
+        <tr><td class="s">audio-refs/</td><td>Score WAVs (<code>musicgen_mockumentary_score.wav</code>, <code>musicgen_large_neural_score.wav</code>, <code>musicgen_neural_score_master.wav</code>, <code>constant_unified_action_theme.wav</code>), the three MP3 song refs (<em>Small Stakes</em>, <em>The Paper Trail</em>, <em>Minor Details</em>), and human VO samples per character.</td></tr>
+        <tr><td class="s">character-refs/</td><td>Character identity/turnaround sheets — the IP-Adapter conditioning inputs.</td></tr>
+        <tr><td class="s">location-refs/</td><td>The 9 master location spec sheets.</td></tr>
+        <tr><td class="s">storyboard-frames/</td><td>Generated storyboard stills (F01…).</td></tr>
+        <tr><td class="s">images/</td><td>Title art, including <code>circle the square.jpeg</code> used by every build script.</td></tr>
+        <tr><td class="s">building-reference/</td><td>Real-world building photo reference (<code>the-real-triangle/</code>, <code>use-images/</code>).</td></tr>
+        <tr><td class="s">frames/</td><td>Scratch frame dumps from analysis scripts. Gitignored.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Companion documents</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>File</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td class="s">MASTER_PRODUCTION_MANUAL.md</td><td>The umbrella production document.</td></tr>
+        <tr><td class="s">featurette_prompt_engine.md</td><td>Per-shot VIDEO PROMPT blocks + GATE CHECK criteria. The single source of truth for Veo prompting.</td></tr>
+        <tr><td class="s">featurette_storyboard_image_prompts.md</td><td>64 storyboard frame prompts.</td></tr>
+        <tr><td class="s">featurette_shot_list.md</td><td>Shot list.</td></tr>
+        <tr><td class="s">VIDEO_GENERATION_WORKFLOW.md</td><td>The 19-shot queue, filenames, durations, quota notes.</td></tr>
+        <tr><td class="s">AI_TOOLS_STATUS.md</td><td>Live capability/quota status board for the five tools.</td></tr>
+        <tr><td class="s">ACTION_TRAILER_DIRECTORS_PLAN.md</td><td>Trailer cut plan.</td></tr>
+        <tr><td class="s">OPENING_TITLE_SEQUENCE_PLAN.md · TITLE_AND_CREDITS_PLAN.md</td><td>Title design and credits.</td></tr>
+        <tr><td class="s">CTS_Featurette_Episode.fountain</td><td>Screenplay in Fountain format (plus the .docx).</td></tr>
+        <tr><td class="s">character-identity-sheets.txt · location-identity-sheets.txt</td><td>Text specs behind the visual bibles.</td></tr>
+        <tr><td class="s">qwen3_tts_voice_prompts.json</td><td>Per-character TTS voice prompt definitions.</td></tr>
+        <tr><td class="s">google_flow_featurette_breakdown.md</td><td>Google Flow shot breakdown.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>HTML views in this repo</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>File</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td class="s">production_dashboard.html</td><td>Main production status dashboard.</td></tr>
+        <tr><td class="s">production_portal.html</td><td>Portal / index across the production docs.</td></tr>
+        <tr><td class="s">character-bible.html</td><td>Visual character bible.</td></tr>
+        <tr><td class="s">location-bible.html</td><td>Visual location bible.</td></tr>
+        <tr><td class="s">storyboard_slideshow.html</td><td>Storyboard frame review slideshow — the QA surface for generated stills.</td></tr>
+        <tr><td class="s">opening_sequence_preview.html · opening_sequence_storyboard.html</td><td>Opening sequence preview and board.</td></tr>
+        <tr><td class="s">TOOLS_AND_SCRIPTS_GUIDE.html</td><td><strong>This document.</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ 8 · GOTCHAS ══════════════ -->
+<section id="gotchas">
+  <h2><span class="num">11</span> Gotchas &amp; known issues</h2>
+
+  <div class="callout c-red">
+    <span class="t">1 · 44 scripts hardcode a directory that no longer exists</span>
+    <p>Two thirds of the Python files contain absolute paths under <code>C:\ai\Circle the Square\</code> — a location that is not present on this machine. The repo actually lives at <code>C:\kontitemp\ai\circle_the_square</code>. Those scripts will fail at the first file operation, or silently write into a directory tree nobody reads.</p>
+    <p>Only <code>build_small_stakes_trailer.py</code> and <code>build_paper_trail_trailer.py</code> use the correct pattern:</p>
+    <pre style="margin:8px 0 0"><code>BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+clips_dir = os.path.join(BASE_DIR, "clips")</code></pre>
+    <p style="margin-top:8px">Port older scripts to that pattern as you touch them, rather than doing one big risky sweep.</p>
+  </div>
+
+  <div class="callout c-amber">
+    <span class="t">2 · build_action_trailer_master.py points at a score file that isn't there</span>
+    <p>It references <code>audio-refs/musicgen_calm_mockumentary_score.wav</code>. The folder only contains <code>musicgen_mockumentary_score.wav</code>. Either the file was renamed or never committed — fix the reference before running.</p>
+  </div>
+
+  <div class="callout c-amber">
+    <span class="t">3 · Two scripts quietly violate the music rule</span>
+    <p><code>generate_neural_ai_score_large.py</code> is named "large" but loads <code>facebook/musicgen-small</code>. <code>generate_studio_musician_score.py</code> loads <code>musicgen-medium</code>. Both are below the mandated 3.3B floor. Reach for the <code>*_stereo_gpu.py</code> scripts instead.</p>
+  </div>
+
+  <div class="callout c-amber">
+    <span class="t">4 · The synthetic-audio scripts are the tempting wrong path</span>
+    <p>They are the only audio generators that run without torch or a GPU, so they will "just work" on a stripped machine while the correct ones fail. That's exactly the trap the standing rule exists to prevent.</p>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">5 · Auth failures are almost always GOOGLE_API_KEY</span>
+    <p>If <code>GOOGLE_API_KEY</code> is set anywhere in the environment it shadows <code>GEMINI_API_KEY</code> and the AQ. token never reaches the SDK. Check the machine-level env vars before debugging anything else.</p>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">6 · FFmpeg comes from pip, not the system</span>
+    <p>Every script resolves the binary through <code>imageio_ffmpeg.get_ffmpeg_exe()</code>. Don't "fix" a missing-FFmpeg error by installing FFmpeg system-wide — install <code>imageio-ffmpeg</code>.</p>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">7 · Veo 2 is dead</span>
+    <p>Deprecated June 2026. <code>VIDEO_GENERATION_WORKFLOW.md</code> still says "select Veo 2 or Veo 3" in places — always pick <strong>Veo 3.1</strong>.</p>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">8 · Gitignored, so not recoverable from the repo</span>
+    <p><code>.env</code>, <code>__pycache__/</code>, <code>*.log</code>, <code>clips/temp_*.mp4</code>, <code>frames/</code>. Anything in those paths lives on one machine only.</p>
+  </div>
+
+  <div class="callout c-red">
+    <span class="t">9 · gen_image.py is a single point of failure outside version control</span>
+    <p>Five scripts depend on <code>C:\AI\AI\gen_image.py</code> — it holds the fal.ai integration and the API key. It is <strong>not in this repo</strong>, not backed up by <code>backup-to-github</code>, and not on this machine. If that file is lost, all cloud still generation stops and has to be rewritten from scratch. Worth copying into the repo (with the key kept in <code>.env</code>, which is gitignored) the next time you have access to it.</p>
+  </div>
+</section>
+
+<!-- ══════════════ 9 · SOURCES ══════════════ -->
+<section id="sources">
+  <h2><span class="num">12</span> Source links</h2>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>Models — audio</h4>
+      <ul>
+        <li><a href="https://huggingface.co/facebook/musicgen-stereo-large">facebook/musicgen-stereo-large</a> — the default</li>
+        <li><a href="https://huggingface.co/facebook/musicgen-large">facebook/musicgen-large</a> — mono fallback</li>
+        <li><a href="https://huggingface.co/facebook/musicgen-medium">facebook/musicgen-medium</a></li>
+        <li><a href="https://huggingface.co/facebook/musicgen-small">facebook/musicgen-small</a></li>
+        <li><a href="https://huggingface.co/docs/transformers/model_doc/musicgen">MusicGen in transformers</a></li>
+        <li><a href="https://github.com/facebookresearch/audiocraft">facebookresearch/audiocraft</a></li>
+        <li><a href="https://huggingface.co/Qwen">Qwen on HuggingFace</a> — TTS family</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Models — image &amp; video</h4>
+      <ul>
+        <li><a href="https://huggingface.co/SG161222/RealVisXL_V4.0">RealVisXL V4.0</a> · <a href="https://huggingface.co/SG161222/RealVisXL_V5.0">V5.0</a></li>
+        <li><a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0">SDXL Base 1.0</a></li>
+        <li><a href="https://huggingface.co/ByteDance/SDXL-Lightning">SDXL-Lightning</a></li>
+        <li><a href="https://huggingface.co/h94/IP-Adapter">h94/IP-Adapter</a> — adapter + CLIP-ViT-H-14 encoder</li>
+        <li><a href="https://huggingface.co/black-forest-labs/FLUX.2-klein-4B">FLUX.2-klein-4B</a></li>
+        <li><a href="https://huggingface.co/Lightricks/LTX-Video">LTX-Video</a> · <a href="https://github.com/Lightricks/LTX-Video">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Cloud services</h4>
+      <ul>
+        <li><a href="https://fal.ai/models">fal.ai model catalogue</a> · <a href="https://fal.ai/pricing">pricing</a> · <a href="https://docs.fal.ai/">docs</a></li>
+        <li><a href="https://blackforestlabs.ai/">Black Forest Labs</a> — the Flux family</li>
+        <li><a href="https://aistudio.google.com">Google AI Studio</a> — Veo &amp; image generation UI</li>
+        <li><a href="https://ai.google.dev/gemini-api/docs/video">Veo / video generation docs</a></li>
+        <li><a href="https://ai.google.dev/gemini-api/docs/image-generation">Gemini image generation docs</a></li>
+        <li><a href="https://github.com/googleapis/python-genai">google-genai Python SDK</a></li>
+        <li><a href="https://ai.google.dev/gemini-api/docs/rate-limits">Rate limits &amp; quota</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Frameworks &amp; tooling</h4>
+      <ul>
+        <li><a href="https://github.com/comfyanonymous/ComfyUI">ComfyUI</a></li>
+        <li><a href="https://huggingface.co/docs/diffusers">diffusers docs</a></li>
+        <li><a href="https://huggingface.co/docs/transformers">transformers docs</a></li>
+        <li><a href="https://pytorch.org/get-started/locally/">PyTorch install selector (pick CUDA)</a></li>
+        <li><a href="https://ffmpeg.org/documentation.html">FFmpeg docs</a> · <a href="https://github.com/imageio/imageio-ffmpeg">imageio-ffmpeg</a></li>
+        <li><a href="https://zulko.github.io/moviepy/">MoviePy</a> · <a href="https://pillow.readthedocs.io">Pillow</a></li>
+        <li><a href="https://fountain.io/syntax">Fountain screenplay syntax</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout c-amber">
+    <span class="t">Two links worth checking before you rely on them</span>
+    <p>The <strong>ComfyUI-QwenTTS</strong> node repo URL is inferred from the module prefix <code>AILab_</code> (1038lab's convention) — confirm the org before cloning. <strong>FLUX.2-klein-4B</strong> is the exact model ID the scripts request; verify it still resolves on HuggingFace, as Black Forest Labs has reshuffled repo names before. Everything else in this section was taken directly from URLs hardcoded in the scripts or from stable canonical docs.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Circle the Square · Tools &amp; Scripts Technical Guide · environment verified 2026-08-10 · regenerate after any stack change
+</footer>
+
+<script type="module">
+  // Renders the flowcharts in §06. If offline or blocked, the raw mermaid
+  // source stays visible in the <pre> blocks and is still readable.
+  try {
+    const mermaid = (await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')).default;
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      flowchart: { curve: 'basis', padding: 14, nodeSpacing: 42, rankSpacing: 52, htmlLabels: true },
+      themeVariables: {
+        background: '#111116',
+        primaryColor: '#1c1c24',
+        primaryTextColor: '#E8E6F0',
+        primaryBorderColor: '#6E6B80',
+        lineColor: '#7E7A92',
+        textColor: '#E8E6F0',
+        fontFamily: "'Inter','Segoe UI',system-ui,sans-serif",
+        fontSize: '13px',
+        clusterBkg: '#0E0E13',
+        clusterBorder: '#B0381F',
+        edgeLabelBackground: '#111116',
+        tertiaryColor: '#18181F'
+      }
+    });
+    await mermaid.run({ querySelector: '.mermaid' });
+  } catch (e) {
+    console.warn('Mermaid unavailable — showing diagram source instead.', e);
+  }
+</script>
+
+</body>
+</html>

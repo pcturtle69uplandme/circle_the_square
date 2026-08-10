@@ -119,13 +119,13 @@ Yes! The generator explicitly combines your real office background photographs f
    - Office Shot 3 (Desk Rows): [`20250207_084330.jpg`](file:///C:/kontitemp/ai/circle_the_square/building-reference/use-images/20250207_084330.jpg)
    - Office Shot 4 (Group Photo Setup): [`IMG_20260804_131855397.jpg`](file:///C:/kontitemp/ai/circle_the_square/building-reference/use-images/IMG_20260804_131855397.jpg) (Faceted Orange Desk & Triangle Accent Wall)
 2. **Foreground Character Sheet References**:
-   - [`jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/jan_peach_identity_sheet.jpg)
+   - [`jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg)
    - 📄 **Interactive Asset Portal**: [`opening_sequence_preview.html`](file:///C:/kontitemp/ai/circle_the_square/opening_sequence_preview.html)
    - 📄 **6-Panel Director's Storyboard Board**: [`opening_sequence_storyboard.html`](file:///C:/kontitemp/ai/circle_the_square/opening_sequence_storyboard.html)
-   - [`christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/christina_dross_identity_sheet.jpg)
-   - [`sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/sharon_enfield_identity_sheet.jpg)
-   - [`chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/chris_identity_sheet.jpg)
-   - [`rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/rick_identity_sheet.jpg)
+   - [`christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg)
+   - [`sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg)
+   - [`chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_identity_sheet.jpg)
+   - [`rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_identity_sheet.jpg)
 
 3. **Multi-Image Compositing Method**:
    * **In Gemini / Veo 2**: Pass the office image as the `background_image_prompt` and character sheets as `character_identity_prompts`. The model composits the real office architecture (concrete columns, orange desk, triangle wall) as the environment while projecting the character faces and wardrobe directly into the frame.
@@ -136,11 +136,11 @@ Yes! The generator explicitly combines your real office background photographs f
 ## 📁 Locked Asset References
 
 * **Character Identity Sheets**: [`C:\kontitemp\ai\circle_the_square\character-refs\`](file:///C:/kontitemp/ai/circle_the_square/character-refs/)
-  * Jan Peach: [`jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/jan_peach_identity_sheet.jpg)
-  * Christina Dross: [`christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/christina_dross_identity_sheet.jpg)
-  * Sharon Enfield: [`sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/sharon_enfield_identity_sheet.jpg)
-  * Chris: [`chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/chris_identity_sheet.jpg)
-  * Rick: [`rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/rick_identity_sheet.jpg)
+  * Jan Peach: [`jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg)
+  * Christina Dross: [`christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg)
+  * Sharon Enfield: [`sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg)
+  * Chris: [`chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_identity_sheet.jpg)
+  * Rick: [`rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_identity_sheet.jpg)
 * **Location Identity Sheets**: [`C:\kontitemp\ai\circle_the_square\location-refs\`](file:///C:/kontitemp/ai/circle_the_square/location-refs/)
   * Forecourt: [`exterior_forecourt_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/exterior_forecourt_location_sheet.jpg)
   * Reception & Atrium: [`reception_atrium_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/reception_atrium_location_sheet.jpg)

@@ -26,11 +26,11 @@
 
 | Tag | File | Type |
 |---|---|---|
-| `@jan` | `character-refs/jan_peach_identity_sheet.jpg` | Character |
-| `@christina` | `character-refs/christina_dross_identity_sheet.jpg` | Character |
-| `@sharon` | `character-refs/sharon_enfield_identity_sheet.jpg` | Character |
-| `@chris` | `character-refs/chris_identity_sheet.jpg` | Character |
-| `@rick` | `character-refs/rick_identity_sheet.jpg` | Character |
+| `@jan` | `character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg` | Character |
+| `@christina` | `character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg` | Character |
+| `@sharon` | `character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg` | Character |
+| `@chris` | `character-refs/_photoreal-archive/chris_identity_sheet.jpg` | Character |
+| `@rick` | `character-refs/_photoreal-archive/rick_identity_sheet.jpg` | Character |
 | `@office` | `location-refs/jan_office_location_sheet.jpg` | Location (Scene 1) |
 | `@openplan` | `location-refs/open_plan_floor_location_sheet.jpg` | Location (Scene 2) |
 | `@canteen` | `location-refs/canteen_location_sheet.jpg` | Location (Scene 3) |

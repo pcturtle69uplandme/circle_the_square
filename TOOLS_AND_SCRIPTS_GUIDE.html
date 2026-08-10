@@ -157,7 +157,8 @@
 
   <div class="callout c-red">
     <span class="t">⚠ The local GPU stack is not present on this machine</span>
-    <p>Checked on 2026-08-10: <code>C:\ai</code> does not exist. That means <strong>ComfyUI, the MusicGen model caches, the SDXL/RealVisXL checkpoints, and the <code>C:\AI\AI\gen_image.py</code> helper are all missing</strong>. There is also no <code>torch</code> installed and no NVIDIA driver tooling (<code>nvidia-smi</code> not found).</p>
+    <p>Checked on 2026-08-10: <code>C:\ai</code> does not exist. That means <strong>ComfyUI, the MusicGen model caches, and the SDXL/RealVisXL checkpoints are all missing</strong>. There is also no <code>torch</code> installed and no NVIDIA driver tooling (<code>nvidia-smi</code> not found).</p>
+    <p><strong>Cloud stills still work.</strong> <code>gen_image.py</code> and <code>fal_key.py</code> are present at <code>C:\kontitemp\ai\</code>, one level above this repo — the scripts that call them just hardcode the dead <code>C:\ai\AI\</code> path (<a href="#gotchas">§11 · 9</a>). <code>generate_all_fal_storyboard_frames.py</code> bypasses that and runs today — it rendered all 64 frames in one session on 2026-08-10. Those frames were then scrapped for character drift (<a href="#gotchas">§11 · 12</a>), so the pipeline works but its output is not yet usable.</p>
     <p>Practical effect: every <em>neural generation</em> script in this repo (MusicGen, Qwen3-TTS, SDXL, FLUX, LTX, IP-Adapter) will fail here today. The <em>editorial</em> scripts (FFmpeg assembly, PIL title cards, numpy/scipy audio) still run. Either this guide is being read on a different machine than the one the pipeline was built on, or the <code>C:\ai</code> tree was moved/wiped — restore it, or re-point the scripts, before expecting generation to work.</p>
   </div>
 
@@ -172,6 +173,7 @@
         <tr><td class="s">Pillow (PIL)</td><td><span class="b b-ok">Present</span></td><td>Frame/title-card rendering</td><td><code>build_title_card_v3</code>, <code>render_storyboard_art</code></td></tr>
         <tr><td class="s">imageio-ffmpeg</td><td><span class="b b-ok">Present</span></td><td>Bundles the FFmpeg binary — no system install needed</td><td>All build/trim/analysis scripts</td></tr>
         <tr><td class="s">google-genai</td><td><span class="b b-ok">Present</span></td><td>Google AI SDK (<code>google.genai</code>)</td><td>Gemini image generation</td></tr>
+        <tr><td class="s">fal-client</td><td><span class="b b-ok">Present</span></td><td>fal.ai Python SDK. <strong>The only neural generator that works on this machine today</strong> — it runs in the cloud, so the missing GPU is irrelevant.</td><td><code>generate_all_fal_storyboard_frames.py</code></td></tr>
         <tr><td class="s">moviepy</td><td><span class="b b-no">Missing</span></td><td><code>pip install moviepy</code></td><td>Audio-level QA scripts</td></tr>
         <tr><td class="s">torch</td><td><span class="b b-no">Missing</span></td><td>CUDA build required — <code>pip install torch --index-url https://download.pytorch.org/whl/cu124</code></td><td>Every neural model</td></tr>
         <tr><td class="s">transformers</td><td><span class="b b-no">Missing</span></td><td><code>pip install transformers</code></td><td>MusicGen</td></tr>
@@ -260,7 +262,7 @@
     </div>
     <div class="card">
       <h4>🌐 fal.ai (Flux) <span class="b b-cloud">Cloud</span></h4>
-      <p>A pay-per-image hosting service for the Flux family of image models. Fast, no GPU needed, costs fractions of a penny per image. Called by the off-repo <code>gen_image.py</code>.</p>
+      <p>A pay-per-image hosting service for the Flux family of image models. Fast, no GPU needed, costs fractions of a penny per image. Reached either through the off-repo <code>gen_image.py</code> or directly via the <code>fal_client</code> SDK.</p>
       <p style="font-size:12.5px;color:var(--text-dim)">Use for: quick cinematic stills straight into <code>storyboard-frames/</code>.</p>
       <p style="margin-bottom:0"><a href="https://fal.ai/models">Model catalogue</a> · <a href="https://fal.ai/pricing">Pricing</a> · <a href="https://docs.fal.ai/">Docs</a> · <a href="https://blackforestlabs.ai/">Flux by Black Forest Labs</a></p>
     </div>
@@ -412,7 +414,7 @@
         </tr>
         <tr>
           <td class="s">FLUX · schnell / dev / pro</td>
-          <td><span class="b b-cloud">Cloud</span> hosted by fal.ai, called from <code>gen_image.py</code> (off-repo, <code>C:\AI\AI\</code>)</td>
+          <td><span class="b b-cloud">Cloud</span> hosted by fal.ai — via off-repo <code>gen_image.py</code> (<code>C:\kontitemp\ai\</code>), or the <code>fal_client</code> SDK in <code>generate_all_fal_storyboard_frames.py</code></td>
           <td>Pay-per-image cinematic 16:9 stills written straight to <code>storyboard-frames/</code>. Three tiers by speed/quality/price — see <a href="#cost">§05</a>. <span class="b b-ok">Key verified active</span></td>
           <td><a href="https://fal.ai/models">fal.ai catalogue</a> · <a href="https://blackforestlabs.ai/">Black Forest Labs</a></td>
         </tr>
@@ -506,7 +508,7 @@
   <div class="grid g2">
     <div class="card">
       <h4>1 · fal.ai Flux <span class="b b-cloud">Pay per image</span></h4>
-      <p>Called by <code>gen_image.py</code> (lives outside this repo, at <code>C:\AI\AI\</code>). Key verified active — the fingerprint is on file; it is deliberately not written into this document.</p>
+      <p>Two entry points. The older scripts shell out to <code>gen_image.py</code>, which lives outside this repo at <code>C:\kontitemp\ai\</code> — though they hardcode a stale <code>C:\ai\AI\</code> path and need fixing first (<a href="#gotchas">§11</a>). <code>generate_all_fal_storyboard_frames.py</code> skips it entirely and calls the <code>fal_client</code> Python SDK directly. Key verified active; the fingerprint is on file and deliberately not written into this document.</p>
       <p>Outputs clean 16:9 cinematic stills straight into <code>storyboard-frames/</code>.</p>
       <p style="margin-bottom:0"><a href="https://fal.ai/pricing">fal.ai pricing</a> · <a href="https://fal.ai/models">model catalogue</a></p>
     </div>
@@ -885,15 +887,16 @@ flowchart TD
   <p style="font-size:12.5px">All Qwen scripts bootstrap identically: push <code>C:\ai\ComfyUI\ComfyUI</code>, its <code>custom_nodes/ComfyUI-QwenTTS</code>, and that node's <code>qwen_tts</code> dir onto <code>sys.path</code>, then import <code>_load_qwen3_model</code> / <code>_ensure_qwen_package</code> from <code>AILab_QwenTTS</code>. They bypass the ComfyUI graph and call the loader directly.</p>
 
   <h3>🖼️ Stills — cloud (fal.ai Flux + Gemini)</h3>
-  <p style="font-size:12.5px">These all shell out to <code>C:\AI\AI\gen_image.py</code>, which lives <strong>outside this repo</strong> and routes to <strong>fal.ai Flux</strong> (schnell / dev / pro). It is the single choke point for cloud still generation — and it is not present on this machine. Costs per image: <a href="#cost">§05</a>.</p>
+  <p style="font-size:12.5px">Two routes to fal.ai. Most of these shell out to <code>gen_image.py</code>, which routes to <strong>fal.ai Flux</strong> (schnell / dev / pro) and lives <strong>outside this repo</strong> at <code>C:\kontitemp\ai\</code> — the file is present, but the scripts point at a stale <code>C:\ai\AI\</code> path and will fail until that's corrected (<a href="#gotchas">§11 · 9</a>). <code>generate_all_fal_storyboard_frames.py</code> is the working alternative: it imports <code>fal_client</code> directly and needs only <code>fal_key.py</code>. Costs per image: <a href="#cost">§05</a>.</p>
   <div class="tw">
     <table>
       <thead><tr><th>Script</th><th>What it does</th></tr></thead>
       <tbody>
         <tr><td class="s">run_location_sheets.py</td><td><span class="b b-ok">Start here</span> The auth wrapper. Refreshes the <code>agy</code> token, then runs the location-sheet generator with a clean env. Double-clickable.</td></tr>
-        <tr><td class="s">generate_location_sheets.py</td><td>Generates all 9 master location spec sheets → <code>location-refs/</code>. Shells out to <code>C:\AI\AI\gen_image.py</code> per image.</td></tr>
-        <tr><td class="s">generate_character_sheets.py</td><td>Character turnaround identity sheets → <code>character-refs/</code>. These are the reference images IP-Adapter later conditions on.</td></tr>
-        <tr><td class="s">generate_storyboard_sample.py</td><td>Small paced batch (F01–F05, the Scene 1 office-greeting beats) at 21:9, one at a time with pauses to stay under quota. Review in <code>storyboard_slideshow.html</code>, then widen <code>FRAMES</code> toward the 64 frames in the prompt doc.</td></tr>
+        <tr><td class="s">generate_location_sheets.py</td><td>Generates all 9 master location spec sheets → <code>location-refs/</code>. Shells out to <code>gen_image.py</code> per image. <span class="b b-warn">Stale path</span></td></tr>
+        <tr><td class="s">generate_character_sheets.py</td><td>Character turnaround identity sheets → <code>character-refs/</code>. These are the reference images IP-Adapter later conditions on. <span class="b b-warn">Stale path</span></td></tr>
+        <tr><td class="s">generate_storyboard_sample.py</td><td>Small paced batch (F01–F05, the Scene 1 office-greeting beats) at 21:9, one at a time with pauses to stay under quota. Use it to dial in a look cheaply. Review in <code>storyboard_slideshow.html</code>, then run the full batch below. <span class="b b-warn">Stale path</span></td></tr>
+        <tr><td class="s">generate_all_fal_storyboard_frames.py</td><td><span class="b b-ok">Full board</span> The complete <strong>64-frame</strong> storyboard batch (F01–F61, all three scenes) via <code>fal-ai/flux/schnell</code> at <code>landscape_16_9</code>, one image per frame → <code>storyboard-frames/</code>. Does <em>not</em> use <code>gen_image.py</code> — it imports <code>fal_client</code> and calls <code>fal_client.subscribe()</code> itself, keyed by <code>require_fal_key()</code> from <code>fal_key.py</code> one directory up. Prompts are assembled in-script from a shared <code>STYLE_ANCHOR</code> plus per-character and per-location constants re-pasted into every prompt — an attempt at consistency without IP-Adapter. Prints a running <code>[n/64]</code> counter and an OK/FAIL tally; failures are skipped, not retried. Full run ≈ <strong>£0.15</strong> (see <a href="#cost">§05</a>). <span class="b b-warn">Known limitation</span> Text-only conditioning — its 2026-08-10 board was scrapped for character drift, so don't expect a usable board from a plain re-run (<a href="#gotchas">§11 · 12</a>).</td></tr>
         <tr><td class="s">set_key_from_clipboard.py</td><td>Reads a Gemini key from the Windows clipboard into <code>.env</code>. <span class="b b-warn">Legacy</span> — the AQ. token flow superseded this; needs <code>pyperclip</code>.</td></tr>
       </tbody>
     </table>
@@ -1026,9 +1029,14 @@ python run_location_sheets.py     # all 9 location sheets -> location-refs/
 # Character identity sheets (needed before any IP-Adapter work)
 python generate_character_sheets.py   # -> character-refs/
 
-# Paced storyboard sample, quota-safe
+# Paced storyboard sample, quota-safe — dial in the look first
 python generate_storyboard_sample.py  # F01-F05 -> storyboard-frames/
-#   then review storyboard_slideshow.html before widening FRAMES</code></pre>
+#   then review storyboard_slideshow.html
+
+# Full board, all three scenes (64 images, ~£0.15, ~5 min)
+python generate_all_fal_storyboard_frames.py   # F01-F61 -> storyboard-frames/
+#   needs fal_key.py one dir up; edit STYLE_ANCHOR / CHAR_* / LOC_* to reroll a look
+#   failures are skipped, not retried — re-run after trimming FRAMES to just the gaps</code></pre>
 
   <h3>E · Local identity-locked frames</h3>
   <pre><code># ComfyUI must be running on 127.0.0.1:8188
@@ -1050,7 +1058,7 @@ python batch_render_ipadapter_scene1.py    # then batch the scene</code></pre>
         <tr><td class="s">audio-refs/</td><td>Score WAVs (<code>musicgen_mockumentary_score.wav</code>, <code>musicgen_large_neural_score.wav</code>, <code>musicgen_neural_score_master.wav</code>, <code>constant_unified_action_theme.wav</code>), the three MP3 song refs (<em>Small Stakes</em>, <em>The Paper Trail</em>, <em>Minor Details</em>), and human VO samples per character.</td></tr>
         <tr><td class="s">character-refs/</td><td>Character identity/turnaround sheets — the IP-Adapter conditioning inputs.</td></tr>
         <tr><td class="s">location-refs/</td><td>The 9 master location spec sheets.</td></tr>
-        <tr><td class="s">storyboard-frames/</td><td>Generated storyboard stills (F01…).</td></tr>
+        <tr><td class="s">storyboard-frames/</td><td><span class="b b-warn">Currently empty</span> Target folder for storyboard stills <code>F01</code>–<code>F61</code> (64 frames; F06/F26/F37 each split a/b) across all three scenes. A full board was rendered on 2026-08-10 by <code>generate_all_fal_storyboard_frames.py</code>, then <strong>deleted in <code>becdfc8</code> for poor character consistency</strong> — only <code>README.txt</code> (the naming contract) remains. <code>storyboard_slideshow.html</code> reads this folder directly and will show gaps until it is repopulated. See <a href="#gotchas">§11 · 12</a>.</td></tr>
         <tr><td class="s">images/</td><td>Title art, including <code>circle the square.jpeg</code> used by every build script.</td></tr>
         <tr><td class="s">building-reference/</td><td>Real-world building photo reference (<code>the-real-triangle/</code>, <code>use-images/</code>).</td></tr>
         <tr><td class="s">frames/</td><td>Scratch frame dumps from analysis scripts. Gitignored.</td></tr>
@@ -1145,8 +1153,33 @@ clips_dir = os.path.join(BASE_DIR, "clips")</code></pre>
   </div>
 
   <div class="callout c-red">
-    <span class="t">9 · gen_image.py is a single point of failure outside version control</span>
-    <p>Five scripts depend on <code>C:\AI\AI\gen_image.py</code> — it holds the fal.ai integration and the API key. It is <strong>not in this repo</strong>, not backed up by <code>backup-to-github</code>, and not on this machine. If that file is lost, all cloud still generation stops and has to be rewritten from scratch. Worth copying into the repo (with the key kept in <code>.env</code>, which is gitignored) the next time you have access to it.</p>
+    <span class="t">9 · The gen_image.py scripts point at the wrong path — the file itself is fine</span>
+    <p><code>generate_character_sheets.py</code>, <code>generate_location_sheets.py</code> and <code>generate_storyboard_sample.py</code> all set <code>AI_DIR = Path(r"C:\ai\AI")</code> and shell out to <code>gen_image.py</code> there. <strong>That directory does not exist.</strong> The real file is at <code>C:\kontitemp\ai\gen_image.py</code> — one level <em>above</em> this repo, next to <code>fal_key.py</code>, <code>gen_music.py</code> and <code>gen_video.py</code>.</p>
+    <p style="margin-top:8px">So this is a one-line fix per script, not a rewrite:</p>
+    <pre style="margin:8px 0 0"><code>AI_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))</code></pre>
+    <p style="margin-top:8px">It remains outside version control though — <code>gen_image.py</code> holds the fal.ai integration and the key, is not in this repo, and is not backed up by <code>backup-to-github</code>. Still worth vendoring in, with the key left in the gitignored <code>.env</code>.</p>
+  </div>
+
+  <div class="callout c-amber">
+    <span class="t">10 · generate_all_fal_storyboard_frames.py also reaches outside the repo</span>
+    <p>It does <code>sys.path.append(parent_dir)</code> then <code>from fal_key import require_fal_key</code> — so it depends on <code>C:\kontitemp\ai\fal_key.py</code>, which is present but, like <code>gen_image.py</code>, not in this repo and not backed up. Clone the repo anywhere else and the script dies on import. It uses the correct <code>__file__</code>-relative pattern for its <em>own</em> paths, so only the key module is the problem.</p>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">11 · The storyboard batch renders 16:9, but the style anchor asks for 2.39:1</span>
+    <p><code>STYLE_ANCHOR</code> ends with "2.39:1 cinematic widescreen still crop", while the API call passes <code>image_size: "landscape_16_9"</code>. The model gets the framing as a text hint only — output files are true 16:9. <code>generate_storyboard_sample.py</code> is the inconsistent sibling: it asks <code>gen_image.py</code> for <code>21:9</code>. Pick one before frames from both scripts end up in the same cut.</p>
+  </div>
+
+  <div class="callout c-red">
+    <span class="t">12 · The whole 64-frame board was scrapped for character drift — this is the open problem</span>
+    <p>The full batch rendered successfully on 2026-08-10 (<code>b458a59</code>) and was deleted the same day (<code>becdfc8</code>, "remove non-consistent storyboard frames"). Nothing was wrong with the plumbing — the images came out fine individually. The failure is <strong>identity</strong>: Jan, Christina, Sharon, Chris and Rick look like different people from frame to frame.</p>
+    <p style="margin-top:8px">The cause is structural. <code>generate_all_fal_storyboard_frames.py</code> conditions purely on <em>text</em> — the <code>CHAR_*</code> constants are re-pasted into every prompt, and <code>fal-ai/flux/schnell</code> gets no reference image, so each frame is an independent draw from the same description. Re-running it produces a different-but-equally-inconsistent board; there is no seed or prompt tweak that fixes this class of problem.</p>
+    <p style="margin-top:8px">The repo's actual answer to identity is IP-Adapter conditioned on <code>character-refs/</code> sheets (<a href="#runbooks">§09 · E</a>) — and that needs the local GPU stack, which is <a href="#status">absent</a>. So the two options are: restore the local stack, or move to a fal.ai endpoint that accepts reference images instead of the plain text-to-image one. Until one of those happens, the storyboard cannot be rebuilt to a usable standard.</p>
+  </div>
+
+  <div class="callout c-blue">
+    <span class="t">13 · Batch failures are skipped, never retried</span>
+    <p>The frame loop catches every exception, prints <code>[FAIL]</code>, increments a counter and moves on. A partial run leaves gaps with no error at the end beyond the <code>successful/total</code> tally — and a re-run regenerates <em>all</em> 64 frames, overwriting good ones. To fill gaps, trim <code>FRAMES</code> to just the missing IDs first.</p>
   </div>
 </section>
 

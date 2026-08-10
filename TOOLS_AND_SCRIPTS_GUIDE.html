@@ -756,27 +756,35 @@ flowchart LR
   </div>
 
   <h3>Which image engine should I use?</h3>
+
+  <div class="callout c-red">
+    <span class="t">Standing rule — CLI only, never the browser</span>
+    <p>Per <code>.agents/rules/cli_image_quota_rules.md</code> §0, <strong>all image generation goes through the CLI <code>generate_image</code> tool</strong>. No AI Studio, no web UI, no fal.ai batch. The CLI holds character consistency across frames within a session, and that is worth waiting out a quota window for. If quota is exhausted, <strong>wait</strong> — switching tools is not a fallback.</p>
+  </div>
+
   <div class="dwrap">
 <pre class="mermaid">
 flowchart TD
-    Q1{"Does a named character's<br/>face need to match<br/>other shots?"}
-    Q1 -->|Yes| R1["ComfyUI + IP-Adapter<br/>batch_render_ipadapter_scene1.py<br/><i>local · free · identity locked</i>"]
-    Q1 -->|No| Q2{"Is this a throwaway<br/>composition test?"}
-    Q2 -->|Yes| R2["fal.ai flux schnell<br/><i>0.24p · 3 sec</i>"]
-    Q2 -->|No| Q3{"Does the prompt need<br/>long description or<br/>multi-turn editing?"}
-    Q3 -->|Yes| R3["Gemini Flash Image<br/>AI Studio<br/><i>quota · best prompt following</i>"]
-    Q3 -->|No| Q4{"Is it a hero asset —<br/>poster, bible master?"}
-    Q4 -->|Yes| R4["fal.ai flux pro<br/><i>3.2p · highest fidelity</i>"]
-    Q4 -->|No| R5["fal.ai flux dev<br/><i>2p · the sensible middle</i>"]
+    Q1{"Generating an image?"}
+    Q1 -->|Always| R1["CLI generate_image<br/><i>Nano Banana / Gemini</i><br/>12 per rolling 4 hrs"]
+    R1 --> Q2{"429 RESOURCE_EXHAUSTED?"}
+    Q2 -->|No| R2["Save to<br/>storyboard-frames/Fxx.jpg"]
+    Q2 -->|Yes| R3["Report reset time<br/>and WAIT"]
+    R3 --> R1
 
-    classDef local fill:#2a1b33,stroke:#9B59B6,color:#efdcf7
-    classDef cloud fill:#16223d,stroke:#5B8DEF,color:#cfe0ff
+    X1["Browser / AI Studio"]
+    X2["fal.ai batch script"]
+    X3["Local ComfyUI + IP-Adapter"]
+
+    classDef ok    fill:#132a1c,stroke:#2ECC71,color:#c9f4d9
     classDef gate  fill:#3a2410,stroke:#F39C12,color:#ffdfae
-    class Q1,Q2,Q3,Q4 gate
-    class R1 local
-    class R2,R3,R4,R5 cloud
+    classDef dead  fill:#33161a,stroke:#E74C3C,color:#ffd2d2
+    class Q1,Q2 gate
+    class R1,R2,R3 ok
+    class X1,X2,X3 dead
 </pre>
   </div>
+  <p style="font-size:12.5px;color:var(--text-dim)">Shown in red: routes that are <strong>not</strong> to be used. Browser/AI Studio is excluded by standing rule; the fal.ai batch produced a board scrapped for character drift (<a href="#gotchas">§11 · 12</a>); local ComfyUI needs a GPU stack that is <a href="#status">not installed</a>.</p>
 </section>
 
 <!-- ══════════════ 7 · AUTH ══════════════ -->

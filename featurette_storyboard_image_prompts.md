@@ -1,7 +1,7 @@
 # 🎞️ CIRCLE THE SQUARE — FEATURETTE STORYBOARD / FLIPBOOK IMAGE PROMPTS
 > **"Project Inception" — Nano Banana Still-Frame Flipbook Workflow**
 > **Source of truth**: `CTS_Featurette_Episode.fountain` (the full screenplay)
-> **Generator**: Nano Banana (Gemini image model) via **Google AI Studio, Pro subscription quota** — not the metered API script, not Flow. Nano Banana has no persistent character memory like Flow's Ingredients, so every frame attaches its own reference images, tagged with `@name` so the model knows who's who.
+> **Generator**: Nano Banana (Gemini image model) via the **CLI `generate_image` tool ONLY — no browser, no AI Studio** (see `.agents/rules/cli_image_quota_rules.md` §0). Not the metered API script, not Flow, not fal.ai. Every frame passes its own reference images, tagged with `@name` so the model knows who's who.
 > **Viewer**: `storyboard_slideshow.html` (same folder) — scene-by-scene comic-style viewer with speech bubbles, since video rendering has been unreliable.
 > **Total Frames**: 64 (across 35 shots / 3 scenes)
 > **Status**: DRAFT v3 — Nano Banana `@tag` attachment format
@@ -10,9 +10,9 @@
 
 ## 🧭 HOW TO USE THIS DOC
 
-1. Pick the next frame, in order, **one at a time — no batching, to protect your AI Studio quota.**
-2. In Google AI Studio, open a Nano Banana image chat. Upload that frame's attachment images **in the order listed**, matching each to its `@tag`.
-3. Paste the **IMAGE STYLE ANCHOR** + that frame's **PROMPT** (already written using the `@tags`).
+1. Pick the next frame, in order, **one at a time — no batching. Quota is 12 images per rolling 4-hour window; on `429 RESOURCE_EXHAUSTED`, stop and wait for the reset rather than switching tools.**
+2. In one continuous CLI session, pass that frame's attachment images **in the order listed**, matching each to its `@tag`.
+3. Send the **IMAGE STYLE ANCHOR** + that frame's **PROMPT** (already written using the `@tags`).
 4. Generate, approve or reroll.
 5. Save the result as `storyboard-frames/<FRAME ID>.jpg` (e.g. `storyboard-frames/F01.jpg`) — the slideshow picks it up automatically on refresh.
 6. Tick the frame off in the tracker below.

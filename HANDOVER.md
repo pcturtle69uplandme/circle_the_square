@@ -49,31 +49,30 @@ So the 64 frames become keyframes for video rather than panels in a slideshow.
 | Full cast specs, style anchor, prompt template | `CARTOON_CAST_BIBLE.md` |
 | Character bible rebuilt around cartoon | `character-bible.html` |
 | Photoreal sheets retired but kept as spec | `character-refs/_photoreal-archive/` |
-| 7 of 11 characters saved in Google Flow | Flow project (see §4) — ⚠️ unverified, see below |
+| 7 of 11 characters saved in Google Flow | Flow project (see §4) — ✅ **verified in Flow 2026-08-11** |
 | 5 principals have voices attached in Flow | Flow project |
-| 1 cartoon location plate generated (L01) | Flow project only, not downloaded |
+| **26 cartoon plates downloaded** (11 of 12 L-numbers + 6 bonus) | `location-refs/cartoon-plates/` + `PLATES_MANIFEST.md` |
 | 12-plate shot list for drone moves | `LOCATION_PLATE_SHOT_LIST.md` |
 | 64 keyframe prompts, cartoon style anchor | `featurette_storyboard_image_prompts.md` |
 | **All docs repointed to the cartoon path** (2026-08-11) | see §8 |
 
 ### ⬜ Next steps, in priority order
 
-1. **Style-transfer the rest of the building photos to cartoon** — 11 plates still to go. This is the
-   live task and the bottleneck: the 64 keyframes need cartoon interiors to sit in. The method is
-   proven, see §5. Generate them in **one continuous session** so the style stays locked.
+1. **Generate the 64 keyframes** against the saved Flow characters and the downloaded cartoon plates.
+   This is now the live task — the plates that used to block it are done.
 2. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
-   Background roles, no voices exist for them.
-3. **Download the cartoon plates** into the repo. ✅ **The user granted download permission on
-   2026-08-11** — no need to ask again.
-4. **Then**: the 64 keyframes, generated against the locked Flow characters.
-5. **Then**: animate each keyframe as a Veo move, and recut the trailer over the existing
+   Background roles, no voices exist for them. All four already have cartoon sheets on disk.
+3. **L04 tower detail** is the one missing plate — brick tower and glazed timber lantern box against
+   a dusk sky. Everything else on the 12-plate list is done.
+4. **Then**: animate each keyframe as a Veo move, and recut the trailer over the existing
    `Small Stakes` / `Paper Trail` audio beds.
 
-### ⚠️ Unverified — check Flow before trusting
+### ✅ Flow inventory — verified 2026-08-11
 
-Three sources disagree on how many characters are saved as Flow entities: this file says 7 of 11, the
-project memory note says all six leads, and `CARTOON_CAST_BIBLE.md` used to claim none. **Only the live
-Flow project settles it.** Take inventory there before generating.
+Checked directly in the live project, settling the earlier disagreement. **7 characters saved**:
+Jan Peach, Christina Dross, Sharon Enfield, Chris, Rick, Maureen, Gemma Ashcroft. The project memory
+note claiming "all six leads" was wrong, and `CARTOON_CAST_BIBLE.md`'s "none saved" was badly stale.
+**37 generated images total**: 11 character sheets (all already on disk) + 26 plates (now downloaded).
 
 ### 🎞️ The existing clips are photoreal — all 17 of them
 
@@ -144,11 +143,28 @@ The real photos are already uploaded to Flow — see the **Uploads** tab in the 
 - **Pressing Return in the composer attaches the previous image** instead of sending, silently turning a
   fresh generation into an edit. Click the **Create** button instead.
 - **Image-to-image edits that insert a person get policy-blocked** even when the equivalent fresh
-  text-to-image generation succeeds. Regenerate rather than edit.
+  text-to-image generation succeeds. Regenerate rather than edit — **for people only.**
+- **Edits that change scenery work fine, and are better than regenerating.** Proven 2026-08-11:
+  `L10_jans_office` came back with The Shard in the window and an edit removed it while preserving
+  every piece of set dressing. Regenerating would have rerolled the whole room. Prompt in
+  `LOCATION_PLATE_SHOT_LIST.md` §⚠️.
 - The asset picker labels everything `Character model sheet…` with thumbnails too small to tell apart.
   **Always click an asset and check the preview before adding it** — a sheet was attached to the wrong
   character this way. Renaming assets in Flow would fix this permanently.
 - **Download is two steps**: the download icon, then "1K Original size" in the dropdown.
+- **⚠️ Chrome is set to "Ask where to save each file", which opens a native Windows save dialog.
+  Claude cannot control native dialogs** — it blocks the tab and the download never completes.
+  Either the user turns that setting off, or use the bypass below.
+- **Bulk download bypass that works** (used for all 26 plates on 2026-08-11, no dialogs):
+  1. In-page JS: `fetch('https://labs.google/fx/api/trpc/media.getMediaUrlRedirect?name=<mediaId>')`
+     → `arrayBuffer` → base64 → `navigator.clipboard.writeText(...)`. Batch ~5 per clipboard write.
+  2. PowerShell: `Get-Clipboard -Raw` → `[Convert]::FromBase64String` → `[IO.File]::WriteAllBytes`.
+  - **The page must have focus** or `clipboard.writeText` throws "Document is not focused" — click an
+    empty area of the page first.
+  - **Generated images are 1376×768**; uploaded reference photos are every other size. That is a
+    reliable way to separate Flow's own output from the source photography.
+  - The Images grid is **virtualised** — off-screen thumbnails unmount, so scroll in steps and
+    accumulate media IDs as they pass through rather than reading the DOM once.
 - Downloads land in **`C:\kontitemp\ai\circle_the_square\images\`** on the original machine, not `~/Downloads`.
 - Flow ignores multi-character composition instructions unless you say **"both must appear together in
   this one wide frame"** explicitly.

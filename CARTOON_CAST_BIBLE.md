@@ -138,9 +138,9 @@ Absolutely NO text, NO labels, NO captions, NO lettering anywhere in the image.
   Rick, Maureen, Gemma. Still to add: **Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik**
   (background roles, no voices needed). Saving the entity is what locks identity across frames.
   ⚠️ This count is unverified against the live project — check Flow before trusting it.
-- **Location plates**: 1 of 12 generated (L01). Jan's office, open-plan floor, canteen, reception
-  atrium and the rest of the Triangle exterior are pending — see `LOCATION_PLATE_SHOT_LIST.md`.
-  This is the live bottleneck: the 64 keyframes need cartoon interiors to sit in.
+- **Location plates**: ✅ **11 of 12 done and downloaded** to `location-refs/cartoon-plates/`.
+  Only **L04 (tower detail)** is missing. This is no longer the bottleneck — see
+  `LOCATION_PLATE_SHOT_LIST.md`.
 - **Trevor** (data analyst, exists as a photoreal Flow Character) has no cartoon sheet and
   appears in no storyboard frame. Add only if he earns a scene.
 - **Existing clips are photoreal.** All 17 files in `clips/`, including the three trailer masters,

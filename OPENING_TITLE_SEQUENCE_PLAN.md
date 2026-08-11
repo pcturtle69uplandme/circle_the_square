@@ -1,10 +1,19 @@
 # 🎬 CIRCLE THE SQUARE — OPENING TITLE SEQUENCE & MOCK PHOTO PLAN
 
+> 🎨 **VISUAL STYLE: CARTOON.** Stylised British sitcom comic art — **not photoreal.** Style anchor in
+> **`CARTOON_CAST_BIBLE.md`**. The sequence *structure* below is still locked and approved; only the
+> rendering style changed.
+>
+> ⚠️ **The existing rendered clips do not match this.** `clips/OPENING_S01`–`S09` and the three trailer
+> masters were rendered photoreal, and their establishing shots show a **glass skyscraper** — wrong on
+> style *and* wrong on continuity, since The Triangle is buff brick in low-rise Cambridge. They need
+> re-rendering in cartoon. The audio beds and the edit structure survive; the pictures do not.
+
 > **LOCKED PRODUCTION SPECIFICATION**  
 > **Project**: *Circle the Square* / *ALL UNDER ONE ROOF*  
 > **Sequence**: Opening Title Sequence (30-Second Drone Fly-Through to Group Photo Stinger)  
-> **Status**: LOCKED & APPROVED (Option A Sequence Engine)  
-> **Location**: Prism HQ — The Triangle Building, Cambridge UK  
+> **Status**: STRUCTURE LOCKED & APPROVED (Option A Sequence Engine) — awaiting cartoon re-render  
+> **Location**: PRISM HQ — The Triangle Building, **Cambridge UK — low-rise, not London**  
 > **Primary Accent Color**: Burnt Orange (`#B0381F`)  
 
 ---
@@ -118,32 +127,44 @@ Yes! The generator explicitly combines your real office background photographs f
    - Office Shot 2 (Atrium & Speed Gates): [`DL-EPA-CA-4821-online (1).jpg`](file:///C:/kontitemp/ai/circle_the_square/building-reference/use-images/DL-EPA-CA-4821-online%20(1).jpg)
    - Office Shot 3 (Desk Rows): [`20250207_084330.jpg`](file:///C:/kontitemp/ai/circle_the_square/building-reference/use-images/20250207_084330.jpg)
    - Office Shot 4 (Group Photo Setup): [`IMG_20260804_131855397.jpg`](file:///C:/kontitemp/ai/circle_the_square/building-reference/use-images/IMG_20260804_131855397.jpg) (Faceted Orange Desk & Triangle Accent Wall)
-2. **Foreground Character Sheet References**:
-   - [`jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg)
-   - 📄 **Interactive Asset Portal**: [`opening_sequence_preview.html`](file:///C:/kontitemp/ai/circle_the_square/opening_sequence_preview.html)
-   - 📄 **6-Panel Director's Storyboard Board**: [`opening_sequence_storyboard.html`](file:///C:/kontitemp/ai/circle_the_square/opening_sequence_storyboard.html)
-   - [`christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg)
-   - [`sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg)
-   - [`chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_identity_sheet.jpg)
-   - [`rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_identity_sheet.jpg)
+2. **Foreground Character Sheet References** — 🎨 cartoon sheets:
+   - [`jan_peach_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/jan_peach_cartoon_sheet.jpg)
+   - [`christina_dross_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/christina_dross_cartoon_sheet.jpg)
+   - [`sharon_enfield_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/sharon_enfield_cartoon_sheet.jpg)
+   - [`chris_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/chris_cartoon_sheet.jpg)
+   - [`rick_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/rick_cartoon_sheet.jpg)
+   - 📄 **Interactive Asset Portal**: [`opening_sequence_preview.html`](file:///C:/kontitemp/AI/circle_the_square/opening_sequence_preview.html)
+   - 📄 **6-Panel Director's Storyboard Board**: [`opening_sequence_storyboard.html`](file:///C:/kontitemp/AI/circle_the_square/opening_sequence_storyboard.html)
 
-3. **Multi-Image Compositing Method**:
-   * **In Gemini / Veo 2**: Pass the office image as the `background_image_prompt` and character sheets as `character_identity_prompts`. The model composits the real office architecture (concrete columns, orange desk, triangle wall) as the environment while projecting the character faces and wardrobe directly into the frame.
-   * **In Character Sheets**: The close-up / cinematic panels in the character sheets (e.g. `jan_peach_sheet.jpg`, `christina_dross_sheet.jpg`) use shallow depth-of-field blurred plates from `building-reference/use-images/` to maintain 100% environment continuity across the entire show.
+3. **Compositing Method — style-transfer, not photo-compositing**:
+   * **Build the plate first**: restyle the real building photo into cartoon (attach the photo, prompt
+     `"Only change the rendering style"`), then generate characters into that cartoon plate. Full prompt
+     in `LOCATION_PLATE_SHOT_LIST.md` §🎨. This preserves the real architecture, camera angle and
+     materials while changing only the rendering.
+   * **In Flow**: select the saved cartoon **Character entities** rather than attaching sheets — that is
+     what locks identity across shots. For multi-character frames state **"both must appear together in
+     this one wide frame"** explicitly, or Flow ignores the composition.
+   * ⛔ **Do not composite photoreal faces onto plates.** Flow blocks photoreal Jan Peach, and
+     image-to-image edits that insert a person get policy-blocked even when a fresh generation succeeds.
+     Regenerate rather than edit.
+   * ⚠️ **FLUX Kontext is not available on this machine** — no torch, no CUDA, no ComfyUI. The local
+     IP-Adapter route in the heading above is aspirational; Flow is the working path.
 
 ---
 
 ## 📁 Locked Asset References
 
-* **Character Identity Sheets**: [`C:\kontitemp\ai\circle_the_square\character-refs\`](file:///C:/kontitemp/ai/circle_the_square/character-refs/)
-  * Jan Peach: [`jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg)
-  * Christina Dross: [`christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg)
-  * Sharon Enfield: [`sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg)
-  * Chris: [`chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_identity_sheet.jpg)
-  * Rick: [`rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_identity_sheet.jpg)
-* **Location Identity Sheets**: [`C:\kontitemp\ai\circle_the_square\location-refs\`](file:///C:/kontitemp/ai/circle_the_square/location-refs/)
-  * Forecourt: [`exterior_forecourt_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/exterior_forecourt_location_sheet.jpg)
-  * Reception & Atrium: [`reception_atrium_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/reception_atrium_location_sheet.jpg)
+* 🎨 **Cartoon Character Sheets**: [`C:\kontitemp\AI\circle_the_square\character-refs\`](file:///C:/kontitemp/AI/circle_the_square/character-refs/) — all 11, specs in `CARTOON_CAST_BIBLE.md`
+  * Jan Peach: [`jan_peach_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/jan_peach_cartoon_sheet.jpg)
+  * Christina Dross: [`christina_dross_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/christina_dross_cartoon_sheet.jpg)
+  * Sharon Enfield: [`sharon_enfield_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/sharon_enfield_cartoon_sheet.jpg)
+  * Chris: [`chris_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/chris_cartoon_sheet.jpg)
+  * Rick: [`rick_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/rick_cartoon_sheet.jpg)
+  * Supporting: Maureen, Gemma Ashcroft, Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik
+  * ⛔ Retired: [`character-refs/_photoreal-archive/`](file:///C:/kontitemp/AI/circle_the_square/character-refs/_photoreal-archive/) — written spec only, **not** generation references
+* **Location Sheets** (photoreal era — cartoon plates pending, see `LOCATION_PLATE_SHOT_LIST.md`): [`C:\kontitemp\AI\circle_the_square\location-refs\`](file:///C:/kontitemp/AI/circle_the_square/location-refs/)
+  * Forecourt: [`exterior_forecourt_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/exterior_forecourt_location_sheet.jpg) → cartoon L01 ✅ / L05 ⬜
+  * Reception & Atrium: [`reception_atrium_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/reception_atrium_location_sheet.jpg) → cartoon L07, L08 ⬜
 * **Building Reference Plates**: [`C:\kontitemp\ai\circle_the_square\building-reference\use-images\`](file:///C:/kontitemp/ai/circle_the_square/building-reference/use-images/)
   * Hero Prow Dusk: `P01.jpg`
   * Entrance Plaza: `DL-EPA-CA-5008-online.jpg`

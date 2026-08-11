@@ -1,9 +1,21 @@
 # 🎬 CIRCLE THE SQUARE — STORYBOARD PROMPT ENGINE
+
+> ⛔ **SUPERSEDED — photoreal era.** The project switched to **cartoon** on 2026-08-10.
+> The **5-shot sequence structure and camera moves below are still good**; the photoreal style
+> language is not. Character references have been repointed to the cartoon sheets, but the prompt
+> bodies still read photoreal — **paste the cartoon style anchor from `CARTOON_CAST_BIBLE.md`** and
+> treat the shot descriptions as staging notes, not style specs.
+>
+> ⚠️ **FLUX Kontext is unavailable on this machine** — no torch, no CUDA, no ComfyUI. Use Google Flow.
+>
+> **Live docs**: `featurette_storyboard_image_prompts.md` (64 cartoon keyframes) ·
+> `LOCATION_PLATE_SHOT_LIST.md` (12 cartoon plates + camera moves) · `CARTOON_CAST_BIBLE.md`.
+
 > **Copy-Paste Ready AI Generation Prompts**  
 > **Sequence**: 30-Second Opening Title Sequence (Drone Fly-Through → Group Photo Stinger)  
-> **AI Targets**: Google Veo 2 · Google Gemini · FLUX Kontext  
+> **AI Target**: **Google Flow** (Nano Banana 2 for frames, Veo for moves)  
 > **Rule**: Strict 2–3 Hero Reference Images Per Shot (No Exceptions)  
-> **Status**: LOCKED ✅
+> **Status**: STRUCTURE LOCKED ✅ · style superseded by cartoon
 
 ---
 
@@ -130,8 +142,8 @@ A full sub-bass string swell rises under the acoustic guitar. A single brass acc
 | # | Filename | Role | Full Path |
 |---|----------|------|-----------|
 | 1 | `IMG_20260804_131855397.jpg` | **Environment Plate** — Faceted orange reception desk & black/white triangle accent wall | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` |
-| 2 | `jan_peach_identity_sheet.jpg` | **Character Ref A** — Jan Peach (CEO): 52yr old male, navy suit, soft overweight build, rage face | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
-| 3 | `christina_dross_identity_sheet.jpg` | **Character Ref B** — Christina Dross (Comms): 38yr old female, beige blazer, compact mirror | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` |
+| 2 | `jan_peach_cartoon_sheet.jpg` | **Character Ref A** — Jan Peach (CEO): 52yr old male, navy suit, soft overweight build, rage face | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` |
+| 3 | `christina_dross_cartoon_sheet.jpg` | **Character Ref B** — Christina Dross (Comms): 38yr old female, beige blazer, compact mirror | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_cartoon_sheet.jpg` |
 
 ### 🎬 VIDEO PROMPT (Veo 2 / Sora / Kling)
 ```
@@ -179,11 +191,11 @@ Complete cut to black with no music. End credits silence.
 
 | Character | Sheet File | Full Path |
 |-----------|-----------|-----------|
-| Jan Peach (CEO) | `jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` |
-| Christina Dross (Comms Lead) | `christina_dross_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` |
-| Sharon Enfield (Operations) | `sharon_enfield_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` |
-| Chris (Staff) | `chris_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg` |
-| Rick (Security) | `rick_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` |
+| Jan Peach (CEO) | `jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` |
+| Christina Dross (Comms Lead) | `christina_dross_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_cartoon_sheet.jpg` |
+| Sharon Enfield (Operations) | `sharon_enfield_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_cartoon_sheet.jpg` |
+| Chris (Staff) | `chris_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\chris_cartoon_sheet.jpg` |
+| Rick (Security) | `rick_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\character-refs\rick_cartoon_sheet.jpg` |
 
 ---
 

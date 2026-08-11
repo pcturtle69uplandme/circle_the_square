@@ -1,41 +1,82 @@
-# 🎞️ CIRCLE THE SQUARE — FEATURETTE STORYBOARD / FLIPBOOK IMAGE PROMPTS
-> **"Project Inception" — Nano Banana Still-Frame Flipbook Workflow**
+# 🎞️ CIRCLE THE SQUARE — CARTOON KEYFRAME PROMPTS
+> **Style**: 🎨 **CARTOON** — stylised British sitcom comic art. **NOT photoreal.** See `CARTOON_CAST_BIBLE.md`.
 > **Source of truth**: `CTS_Featurette_Episode.fountain` (the full screenplay)
-> **Generator**: Nano Banana via the **CLI `generate_image` tool first**; when CLI quota is spent, fall back to **Google Flow** in the browser (see `.agents/rules/cli_image_quota_rules.md` §0). Not the metered `gen_image.py` script — its prepay credits are depleted. Every frame passes its own reference images, tagged with `@name`; in Flow, use the saved Character entities instead.
-> **Viewer**: `storyboard_slideshow.html` (same folder) — scene-by-scene comic-style viewer with speech bubbles, since video rendering has been unreliable.
-> **Total Frames**: 64 (across 35 shots / 3 scenes)
-> **Status**: DRAFT v3 — Nano Banana `@tag` attachment format
+> **Deliverable**: these frames are **keyframes for an animated cartoon video**, not panels in a slideshow.
+> Each approved frame becomes the first frame of a Veo move in Flow — see `LOCATION_PLATE_SHOT_LIST.md` §🎥.
+> **Generator**: **Google Flow** (Nano Banana 2), using the saved cartoon **Character entities** for identity lock.
+> CLI `generate_image` remains first choice when its quota is available (see `.agents/rules/cli_image_quota_rules.md` §0);
+> attach the cartoon sheets below as `@tag` references there. Not `gen_image.py` — its prepay credits are depleted.
+> **Total Frames**: **64** — F01–F61 across 35 shots / 3 scenes. Three beats are split into pairs
+> (`F06a/F06b`, `F26a/F26b`, `F37a/F37b`) and there is no plain F06, F26 or F37, so the highest ID is
+> F61 while the true count is 64. Verified against the tracker: 64 IDs, 64 prompt blocks.
+> **Status**: v4 — cartoon style anchor, cartoon character sheets
+
+> ⛔ **Do not attempt photoreal characters.** Google Flow blocked photoreal Jan Peach on three separate
+> attempts — likeness protection on a real face, not content policy. The identical frame in cartoon style
+> generated first try. This is settled; see `HANDOVER.md` §2.
 
 ---
 
 ## 🧭 HOW TO USE THIS DOC
 
-1. Pick the next frame, in order, **one at a time — no batching. Quota is 12 images per rolling 4-hour window; on `429 RESOURCE_EXHAUSTED`, switch to Google Flow and keep going, then return to the CLI when the window clears.**
-2. In one continuous CLI session, pass that frame's attachment images **in the order listed**, matching each to its `@tag`.
+1. Pick the next frame, in order, **one at a time — no batching. CLI quota is 12 images per rolling 4-hour window; on `429 RESOURCE_EXHAUSTED`, switch to Google Flow and keep going, then return to the CLI when the window clears.**
+2. Attach that frame's references **in the order listed**, matching each to its `@tag`. In Flow, select the saved cartoon **Character entity** instead — that is what actually locks identity across frames.
 3. Send the **IMAGE STYLE ANCHOR** + that frame's **PROMPT** (already written using the `@tags`).
 4. Generate, approve or reroll.
-5. Save the result as `storyboard-frames/<FRAME ID>.jpg` (e.g. `storyboard-frames/F01.jpg`) — the slideshow picks it up automatically on refresh.
+5. Save the result as `storyboard-frames/<FRAME ID>.jpg` (e.g. `storyboard-frames/F01.jpg`).
 6. Tick the frame off in the tracker below.
+7. **Then animate it**: feed the approved frame into a Flow video generation as the first frame and describe **only the camera move**, not the content — so the model animates the frame rather than reinventing it. Keep moves slow and single-axis.
 
-**Action only, no re-description**: prompts don't restate appearance — that's what the attached reference images are for. Continuity state flags (shirt on/off, dishevelment) are kept since Nano Banana can't infer plot state from a static identity sheet.
+**Generate in as few continuous sessions as possible.** Art style drifts between sessions; this is how the
+11 character sheets were kept consistent.
+
+**Action only, no re-description**: prompts don't restate appearance — that's what the attached reference images are for. Continuity state flags (shirt on/off, dishevelment) are kept since the model can't infer plot state from a static character sheet.
+
+### ⚠️ Flow UI traps that will cost you frames
+- **Pressing Return in the composer attaches the previous image** instead of sending — silently turning a fresh generation into an edit. Click **Create**.
+- **Image-to-image edits that insert a person get policy-blocked** even when the equivalent fresh text-to-image succeeds. Regenerate rather than edit.
+- The asset picker labels everything `Character model sheet…` with thumbnails too small to distinguish. **Click an asset and check the preview before adding it** — a sheet was attached to the wrong character this way.
+- Multi-character frames need **"both must appear together in this one wide frame"** stated explicitly, or Flow ignores the composition.
+- **Download is two steps**: the download icon, then "1K Original size".
 
 ---
 
 ## 🏷️ @TAG ATTACHMENT LEGEND
 > Master list — every `@tag` used below maps to exactly one of these files.
 
+**Principals**
+
 | Tag | File | Type |
 |---|---|---|
-| `@jan` | `character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg` | Character |
-| `@christina` | `character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg` | Character |
-| `@sharon` | `character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg` | Character |
-| `@chris` | `character-refs/_photoreal-archive/chris_identity_sheet.jpg` | Character |
-| `@rick` | `character-refs/_photoreal-archive/rick_identity_sheet.jpg` | Character |
-| `@office` | `location-refs/jan_office_location_sheet.jpg` | Location (Scene 1) |
-| `@openplan` | `location-refs/open_plan_floor_location_sheet.jpg` | Location (Scene 2) |
-| `@canteen` | `location-refs/canteen_location_sheet.jpg` | Location (Scene 3) |
+| `@jan` | `character-refs/jan_peach_cartoon_sheet.jpg` | Character |
+| `@christina` | `character-refs/christina_dross_cartoon_sheet.jpg` | Character |
+| `@sharon` | `character-refs/sharon_enfield_cartoon_sheet.jpg` | Character |
+| `@chris` | `character-refs/chris_cartoon_sheet.jpg` | Character |
+| `@rick` | `character-refs/rick_cartoon_sheet.jpg` | Character |
 
-> **No reference sheet exists yet for the Canteen Worker** (walk-on role). For F47/F48/F51, don't attach a character image for them — just describe minimally in-prompt as "a canteen worker in a beige apron" and let Nano Banana invent it, or generate a quick identity sheet for them first if you want continuity across their 3 frames.
+**Supporting** — all six now have cartoon sheets; use them instead of describing in-prompt.
+
+| Tag | File | Type |
+|---|---|---|
+| `@maureen` | `character-refs/maureen_canteen_cartoon_sheet.jpg` | Character — canteen worker (F47, F48, F51) |
+| `@gemma` | `character-refs/gemma_ashcroft_cartoon_sheet.jpg` | Character — receptionist |
+| `@priya` | `character-refs/priya_raghavan_cartoon_sheet.jpg` | Character — office staff, background |
+| `@barbara` | `character-refs/barbara_whitlock_cartoon_sheet.jpg` | Character — senior admin, background |
+| `@dev` | `character-refs/dev_osei_cartoon_sheet.jpg` | Character — junior analyst, background |
+| `@tomasz` | `character-refs/tomasz_wojcik_cartoon_sheet.jpg` | Character — facilities, background |
+
+**Locations** — ⚠️ these are the **photoreal-era** sheets. Cartoon replacements are pending; see
+`LOCATION_PLATE_SHOT_LIST.md` (L07–L12 cover these interiors). Until those land, attach the sheet
+below **for architecture only** and let the cartoon style anchor override its rendering.
+
+| Tag | File | Type |
+|---|---|---|
+| `@office` | `location-refs/jan_office_location_sheet.jpg` | Location (Scene 1) → cartoon L10 pending |
+| `@openplan` | `location-refs/open_plan_floor_location_sheet.jpg` | Location (Scene 2) → cartoon L09 pending |
+| `@canteen` | `location-refs/canteen_location_sheet.jpg` | Location (Scene 3) → cartoon L11 pending |
+
+> ✅ **Maureen now has a sheet.** F47/F48/F51 previously told you to let the model invent a canteen
+> worker — don't. Attach `@maureen` so she stays consistent across her three frames.
 
 ---
 
@@ -43,8 +84,15 @@
 > Paste into EVERY still prompt.
 
 ```
-Photoreal single film-still frame, not video. Documentary British mockumentary photographic tone. Natural Northern European daylight. Shallow depth of field on close-ups, deep focus on wides. No visible real-world branding or crests. 2.39:1 cinematic widescreen still crop. Character appearance must exactly match the attached @-tagged reference images — do not invent or alter appearance, age, or wardrobe colour beyond what this prompt specifies as a state change (e.g. shirt off, dishevelled). Location architecture must match the attached location reference.
+Stylised British sitcom comic art, clean bold line art, flat muted colour palette, expressive caricature, cel-shaded. NOT photorealistic. Single still frame, not video. 2.39:1 widescreen crop. No visible real-world branding or crests. Character appearance must exactly match the attached @-tagged reference images — do not invent or alter appearance, age, or wardrobe colour beyond what this prompt specifies as a state change (e.g. shirt off, dishevelled). Location architecture must match the attached location reference. Absolutely NO text, NO speech bubbles, NO captions, NO labels, NO sound effects, NO lettering of any kind anywhere in the image.
 ```
+
+**Continuity rules that ride along with the anchor:**
+- **No lettering in panels** — the viewer draws its own speech bubbles.
+- **The company is PRISM** — every lanyard, nameplate, mug and sign reads PRISM, never Peach Corp.
+- **The building is low-rise Cambridge, not London.** No Shard, no Gherkin, no Tower Bridge, no skyline.
+- **House accent** burnt orange `#B0381F` on every PRISM lanyard.
+- Flow renders **16:9**, not 2.39:1. Crop after, or accept it.
 
 ---
 
@@ -584,7 +632,7 @@ Medium close-up on @jan, defiant, sweating, jabbing a finger for emphasis before
 ---
 
 ### S27 — Canteen Establishing
-**Attach:** `@canteen` *(no canteen-worker reference sheet — describe minimally, see legend note above)*
+**Attach:** `@maureen`, `@canteen`
 
 **F47**
 ```
@@ -608,7 +656,7 @@ Medium close-up/insert still. The tray is now empty, just crumbs — the last pa
 ---
 
 ### S29 — Jan Arrives, Asks for Pastries
-**Attach:** `@jan`, `@canteen` *(canteen worker: no reference sheet — describe minimally)*
+**Attach:** `@jan`, `@maureen`, `@canteen`
 
 **F49**
 ```
@@ -624,9 +672,9 @@ Handheld medium close-up. @jan reaches the counter, looking around for the pastr
 
 **F51**
 ```
-Medium close-up on a canteen worker in a beige apron behind the counter, apologetic. [PASTE IMAGE STYLE ANCHOR HERE]
+Medium close-up on @maureen behind the counter, apologetic. [PASTE IMAGE STYLE ANCHOR HERE]
 ```
-💬 **Canteen Worker:** "Sorry, all gone."
+💬 **Maureen:** "Sorry, all gone."
 
 **Continuity:** Full suit on, rage building from 0%.
 
@@ -740,8 +788,8 @@ F47→F48→F49→F50→F51→F52→F53→F54→F55→F56→F57→F58→F59→F6
     [SCENE 3 COMPLETE — FADE OUT]
 ```
 
-**Viewer**: open `storyboard_slideshow.html` in Chrome to browse scene-by-scene with speech bubbles. It looks for images at `storyboard-frames/<FRAME ID>.jpg` and shows a placeholder until each one exists.
+**Frame review**: `storyboard_slideshow.html` in Chrome browses the frames scene-by-scene with speech bubbles. It looks for images at `storyboard-frames/<FRAME ID>.jpg` and shows a placeholder until each one exists. Useful for **checking continuity across frames** — but it is no longer the deliverable. The deliverable is the animated cartoon video these frames feed.
 
-**Reference docs**: `character-bible.html`, `location-bible.html`, `CTS_Featurette_Episode.fountain`
-**Superseded**: `featurette_prompt_engine.md`, `featurette_shot_list.md` (Flow/video-prompt attempt)
+**Reference docs**: `CARTOON_CAST_BIBLE.md` (cast + style anchor), `LOCATION_PLATE_SHOT_LIST.md` (cartoon plates + camera moves), `character-bible.html`, `CTS_Featurette_Episode.fountain`
+**Superseded**: `featurette_prompt_engine.md`, `featurette_shot_list.md` (photoreal Flow/video-prompt attempt), `location-bible.html` (photoreal locations)
 **TTS voice files**: `qwen3_tts_voice_prompts.json`

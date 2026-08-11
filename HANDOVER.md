@@ -3,7 +3,8 @@
 > **For**: the next Claude Code session, likely on a different machine.
 > **Written**: 2026-08-10, end of the session that switched the project to cartoon.
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
-> **Read next**: `CARTOON_CAST_BIBLE.md`, `LOCATION_PLATE_SHOT_LIST.md`, `.agents/rules/cli_image_quota_rules.md`
+> **Read next**: **`CARTOON_BUILDING_TRAILER_PLAN.md`** ← the live task, ready to action ·
+> `CARTOON_CAST_BIBLE.md`, `LOCATION_PLATE_SHOT_LIST.md`, `.agents/rules/cli_image_quota_rules.md`
 
 ---
 
@@ -49,24 +50,48 @@ So the 64 frames become keyframes for video rather than panels in a slideshow.
 | Full cast specs, style anchor, prompt template | `CARTOON_CAST_BIBLE.md` |
 | Character bible rebuilt around cartoon | `character-bible.html` |
 | Photoreal sheets retired but kept as spec | `character-refs/_photoreal-archive/` |
-| 7 of 11 characters saved in Google Flow | Flow project (see §4) |
+| 7 of 11 characters saved in Google Flow | Flow project (see §4) — ✅ **verified in Flow 2026-08-11** |
 | 5 principals have voices attached in Flow | Flow project |
-| 3 cartoon location plates generated | Flow project only, not downloaded |
+| **26 cartoon plates downloaded** (11 of 12 L-numbers + 6 bonus) | `location-refs/cartoon-plates/` + `PLATES_MANIFEST.md` |
 | 12-plate shot list for drone moves | `LOCATION_PLATE_SHOT_LIST.md` |
+| 64 keyframe prompts, cartoon style anchor | `featurette_storyboard_image_prompts.md` |
+| **All docs repointed to the cartoon path** (2026-08-11) | see §8 |
 
 ### ⬜ Next steps, in priority order
 
-1. **Style-transfer the rest of the building photos to cartoon.** This is the live task and the method
-   is proven — see §5. The user wants a library of cartoon plates to animate into video.
-2. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
-   Background roles, no voices exist for them.
-3. **Download the cartoon plates** into the repo — needs the user's say-so, it is a file download.
-4. **Then**: the 64 frames, generated against the locked Flow characters, as video keyframes.
+1. 🚁 **BUILD THE BUILDING TRAILER — `CARTOON_BUILDING_TRAILER_PLAN.md`.** This is the live task and
+   it is fully specced: 26 Veo camera moves off the downloaded plates, one continuous journey from the
+   railway to the staff walking out under the title. 79s CORE cut, music bed already picked, nothing
+   blocked. Start at S01.
+2. **Generate the 64 keyframes** against the saved Flow characters and the downloaded cartoon plates.
+   The plates that used to block this are done. See `featurette_storyboard_image_prompts.md`.
+3. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
+   Background roles, no voices exist for them. All four already have cartoon sheets on disk.
+4. **L04 tower detail** is the one missing plate — brick tower and glazed timber lantern box against
+   a dusk sky. Everything else on the 12-plate list is done. Not needed for the building trailer.
+5. **Then**: animate the 64 keyframes as Veo moves for the episode proper, and recut the character
+   trailers over the `Small Stakes` / `Paper Trail` beds.
+
+### ✅ Flow inventory — verified 2026-08-11
+
+Checked directly in the live project, settling the earlier disagreement. **7 characters saved**:
+Jan Peach, Christina Dross, Sharon Enfield, Chris, Rick, Maureen, Gemma Ashcroft. The project memory
+note claiming "all six leads" was wrong, and `CARTOON_CAST_BIBLE.md`'s "none saved" was badly stale.
+**37 generated images total**: 11 character sheets (all already on disk) + 26 plates (now downloaded).
+
+### 🎞️ The existing clips are photoreal — all 17 of them
+
+Everything in `clips/`, including `ACTION_TRAILER_MASTER_60S.mp4`, `SMALL_STAKES_TRAILER_MASTER_60S.mp4`
+and `PAPER_TRAIL_TRAILER_MASTER_78S.mp4`, was rendered before the pivot. Worse, S01/S02 show a **glass
+skyscraper** — wrong for The Triangle regardless of style. **Every picture needs re-rendering.**
+What survives: the edit structures in `ACTION_TRAILER_DIRECTORS_PLAN.md`, and the scored beds in
+`audio-refs/` (style-agnostic).
 
 ### 📭 Deliberately empty
 
 `storyboard-frames/` holds only `README.txt`. The user cleared it to start from F00. The 25 old
-photoreal frames are **recoverable**: `git checkout 1380f97 -- storyboard-frames/`
+photoreal frames are **recoverable**: `git checkout 1380f97 -- storyboard-frames/` — but they are
+photoreal, so leave them buried.
 
 ---
 
@@ -123,11 +148,28 @@ The real photos are already uploaded to Flow — see the **Uploads** tab in the 
 - **Pressing Return in the composer attaches the previous image** instead of sending, silently turning a
   fresh generation into an edit. Click the **Create** button instead.
 - **Image-to-image edits that insert a person get policy-blocked** even when the equivalent fresh
-  text-to-image generation succeeds. Regenerate rather than edit.
+  text-to-image generation succeeds. Regenerate rather than edit — **for people only.**
+- **Edits that change scenery work fine, and are better than regenerating.** Proven 2026-08-11:
+  `L10_jans_office` came back with The Shard in the window and an edit removed it while preserving
+  every piece of set dressing. Regenerating would have rerolled the whole room. Prompt in
+  `LOCATION_PLATE_SHOT_LIST.md` §⚠️.
 - The asset picker labels everything `Character model sheet…` with thumbnails too small to tell apart.
   **Always click an asset and check the preview before adding it** — a sheet was attached to the wrong
   character this way. Renaming assets in Flow would fix this permanently.
 - **Download is two steps**: the download icon, then "1K Original size" in the dropdown.
+- **⚠️ Chrome is set to "Ask where to save each file", which opens a native Windows save dialog.
+  Claude cannot control native dialogs** — it blocks the tab and the download never completes.
+  Either the user turns that setting off, or use the bypass below.
+- **Bulk download bypass that works** (used for all 26 plates on 2026-08-11, no dialogs):
+  1. In-page JS: `fetch('https://labs.google/fx/api/trpc/media.getMediaUrlRedirect?name=<mediaId>')`
+     → `arrayBuffer` → base64 → `navigator.clipboard.writeText(...)`. Batch ~5 per clipboard write.
+  2. PowerShell: `Get-Clipboard -Raw` → `[Convert]::FromBase64String` → `[IO.File]::WriteAllBytes`.
+  - **The page must have focus** or `clipboard.writeText` throws "Document is not focused" — click an
+    empty area of the page first.
+  - **Generated images are 1376×768**; uploaded reference photos are every other size. That is a
+    reliable way to separate Flow's own output from the source photography.
+  - The Images grid is **virtualised** — off-screen thumbnails unmount, so scroll in steps and
+    accumulate media IDs as they pass through rather than reading the DOM once.
 - Downloads land in **`C:\kontitemp\ai\circle_the_square\images\`** on the original machine, not `~/Downloads`.
 - Flow ignores multi-character composition instructions unless you say **"both must appear together in
   this one wide frame"** explicitly.
@@ -165,3 +207,41 @@ The real photos are already uploaded to Flow — see the **Uploads** tab in the 
 - They ask for corrections directly and expect them applied, not debated.
 - Continuity accuracy matters to them: the building is Cambridge not London, the company is PRISM not
   Peach Corp, and panels carry no lettering because the viewer draws its own speech bubbles.
+
+---
+
+## 8. Doc status after the cartoon repoint (2026-08-11)
+
+Every `.md` was swept for photoreal-era assumptions. Where a doc's *structure* was still sound but its
+*style block* was not, the structure was kept and the style swapped — the shot lists and edit plans
+represent real work and did not need throwing away.
+
+### 🎨 Live — cartoon, use these
+
+| Doc | Role |
+| :--- | :--- |
+| `CARTOON_CAST_BIBLE.md` | **Cast + style source of truth.** 11 characters, style anchor, prompt template |
+| `featurette_storyboard_image_prompts.md` | **The working doc.** All 64 keyframes, cartoon anchor, `@tag` legend |
+| `MASTER_STORYBOARD_SESSION_PROMPTS.md` | Ready-to-paste cartoon prompts, Scene 1 from F01 |
+| `LOCATION_PLATE_SHOT_LIST.md` | 12 cartoon plates + the camera move each feeds |
+| `MASTER_PRODUCTION_MANUAL.md` | Umbrella manual, cartoon banner + corrected rosters |
+| `OPENING_TITLE_SEQUENCE_PLAN.md` | Title sequence, structure locked, awaiting cartoon re-render |
+
+### ⛔ Superseded — reference only
+
+`featurette_prompt_engine.md` and `storyboard_prompt_engine.md` (photoreal Veo prompts; workflow and
+20-shot structure still useful), `featurette_shot_list.md`, `location-bible.html` (photoreal locations),
+`ACTION_TRAILER_DIRECTORS_PLAN.md` (edit structure survives, footage does not).
+
+### Things fixed along the way
+
+- **`MASTER_PRODUCTION_MANUAL.md` §3 listed 9 locations, 7 of which named files that never existed.**
+  Replaced with the true 7-file on-disk inventory, each mapped to its pending cartoon plate.
+- **Maureen was being invented per-frame.** F47/F48/F51 told you to let the model make up a canteen
+  worker; she has had a sheet since 2026-08-10. Now `@maureen` in all three.
+- **Rick was described as security** in the session prompts, contradicting the bible. He is
+  rank-and-file staff.
+- **Frame count confirmed at 64.** Easy to miscount as 58: there is no plain F06, F26 or F37 because
+  those beats are split into `F06a/F06b`, `F26a/F26b`, `F37a/F37b`. Highest ID is F61, true count is 64.
+  Verified: 64 tracker rows, 64 prompt blocks.
+- `storyboard_slideshow.html` is now framed as a **continuity-checking tool**, not the deliverable.

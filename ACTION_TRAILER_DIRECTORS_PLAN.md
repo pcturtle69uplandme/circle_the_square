@@ -1,4 +1,18 @@
 # 🎬 ACTION TRAILER — DIRECTOR'S CUT & EDIT PLAN
+
+> ⚠️ **The source footage below is photoreal and needs re-rendering in cartoon.**
+> The project switched to cartoon on 2026-08-10 (see `HANDOVER.md` §2). The clip descriptions in the
+> inventory are accurate about **what is currently in those files** — they are not a spec to reproduce.
+>
+> Two problems with the existing footage:
+> 1. **Wrong style** — photoreal, not cartoon.
+> 2. **Wrong building** — S01/S02 show a *glass skyscraper* and *reflective glass facade*. PRISM HQ is
+>    The Triangle, Cambridge: pale buff brick, tall narrow windows, low-rise. Not a glass tower, not London.
+>
+> ✅ **What survives**: the **edit structure, beat timings, and sound design plan** below are all still
+> good, and the scored audio beds in `audio-refs/` are style-agnostic and reusable.
+> ⬜ **What needs redoing**: every picture. Re-render each shot from cartoon keyframes
+> (`featurette_storyboard_image_prompts.md`) driven by cartoon plates (`LOCATION_PLATE_SHOT_LIST.md`).
 > **Project**: *Circle the Square* (PRISM Workplace Action Featurette Trailer)  
 > **Style**: **High-Stakes Hollywood Action Blockbuster Parody** (in the style of *Mission: Impossible* meets *The Office*)  
 > **Aspect Ratio**: 16:9 Widescreen (Letterboxed 2.39:1 Anamorphic Action Crop)  

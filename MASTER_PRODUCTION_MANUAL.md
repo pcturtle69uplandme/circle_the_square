@@ -1,11 +1,18 @@
 # 🎬 CIRCLE THE SQUARE — MASTER PRODUCTION & PRE-VISUALIZATION MANUAL
 
+> 🎨 **VISUAL STYLE: CARTOON.** Stylised British sitcom comic art — **not photoreal.**
+> Style anchor and full cast specs in **`CARTOON_CAST_BIBLE.md`**.
+> **Deliverable: an animated cartoon video**, not a comic-strip slideshow.
+> Photoreal was abandoned on 2026-08-10 after Google Flow blocked photoreal Jan Peach three times
+> (likeness protection on a real face). Do not go back — see `HANDOVER.md` §2.
+
 > **LOCKED PRODUCTION SPECIFICATION**  
 > **Project**: *Circle the Square*  
 > **Episode**: "Project Inception" (Featurette Episode)  
-> **Production Company**: Prism HQ  
+> **Company in-fiction**: **PRISM** — every lanyard, nameplate, mug and sign reads PRISM, never Peach Corp  
 > **Primary Accent Color**: Burnt Orange (`#B0381F`)  
 > **Genre & Tone**: Contemporary British Workplace Mockumentary / Corporate Satire  
+> **Location**: The Triangle, **Cambridge** — low-rise, **not London**  
 
 ---
 
@@ -25,53 +32,76 @@ All AI agents, scripts, and future sessions are locked to the following permanen
 
 ---
 
-## 2. 🎭 MASTER CHARACTER IDENTITY SHEET ROSTER
+## 2. 🎭 MASTER CARTOON CHARACTER SHEET ROSTER
+
+> 🎨 **CARTOON.** Full specs for every character in **`CARTOON_CAST_BIBLE.md`** — that is the cast source of truth.
+> One sheet per character (four-view turnaround: front, three-quarter, side, back).
 
 All character reference assets are stored in:  
-📁 **[`C:\kontitemp\ai\circle_the_square\character-refs\`](file:///C:/kontitemp/ai/circle_the_square/character-refs/)**
+📁 **[`C:\kontitemp\AI\circle_the_square\character-refs\`](file:///C:/kontitemp/AI/circle_the_square/character-refs/)**
 
-| Character | Role | Master Identity Sheet Filename & Path | Turnaround Sheet Filename & Path |
+### Principals — voices attached in Flow
+
+| Character | Role | Cartoon Sheet | Voice |
 | :--- | :--- | :--- | :--- |
-| **Jan Peach** | CEO | `jan_peach_identity_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_identity_sheet.jpg) | `jan_peach_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/jan_peach_sheet.jpg) |
-| **Christina Dross** | Comms Lead | `christina_dross_identity_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_identity_sheet.jpg) | `christina_dross_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/christina_dross_sheet.jpg) |
-| **Sharon Enfield** | Staff | `sharon_enfield_identity_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_identity_sheet.jpg) | `sharon_enfield_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/sharon_enfield_sheet.jpg) |
-| **Chris** | Staff | `chris_identity_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_identity_sheet.jpg) | `chris_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/chris_sheet.jpg) |
-| **Rick** | Staff | `rick_identity_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_identity_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_identity_sheet.jpg) | `rick_sheet.jpg`<br>[`file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/character-refs/_photoreal-archive/rick_sheet.jpg) |
+| **Jan Peach** | CEO | [`jan_peach_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/jan_peach_cartoon_sheet.jpg) | ✅ British RP, "boardroom" |
+| **Christina Dross** | Comms Lead | [`christina_dross_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/christina_dross_cartoon_sheet.jpg) | ✅ Clear British London RP |
+| **Sharon Enfield** | Staff | [`sharon_enfield_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/sharon_enfield_cartoon_sheet.jpg) | ✅ Welsh, subtle lilt |
+| **Chris** | Staff | [`chris_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/chris_cartoon_sheet.jpg) | ✅ Dry South London Estuary |
+| **Rick** | Staff | [`rick_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/rick_cartoon_sheet.jpg) | ✅ Flat Midlands / East Anglian |
+
+> The five voices **already existed in Flow** and match the bible exactly. **Do not create new ones** — select the existing ones.
+
+### Supporting
+
+| Character | Role | Cartoon Sheet | Appears |
+| :--- | :--- | :--- | :--- |
+| **Maureen** | Canteen worker | [`maureen_canteen_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/maureen_canteen_cartoon_sheet.jpg) | F47, F48, F51 |
+| **Gemma Ashcroft** | Receptionist | [`gemma_ashcroft_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/gemma_ashcroft_cartoon_sheet.jpg) | Reception atrium |
+| **Priya Raghavan** | Office staff | [`priya_raghavan_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/priya_raghavan_cartoon_sheet.jpg) | Background |
+| **Barbara Whitlock** | Senior administrator | [`barbara_whitlock_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/barbara_whitlock_cartoon_sheet.jpg) | Background |
+| **Dev Osei** | Junior data analyst | [`dev_osei_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/dev_osei_cartoon_sheet.jpg) | Background |
+| **Tomasz Wojcik** | Facilities & maintenance | [`tomasz_wojcik_cartoon_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/character-refs/tomasz_wojcik_cartoon_sheet.jpg) | Background |
+
+### ⛔ Retired — photoreal archive
+
+The 10 photoreal sheets in [`character-refs/_photoreal-archive/`](file:///C:/kontitemp/AI/circle_the_square/character-refs/_photoreal-archive/)
+are kept **as written spec only**. Google Flow blocked photoreal Jan Peach on three separate attempts —
+likeness protection on a real face, not content policy. **Do not use them as generation references.**
+See `HANDOVER.md` §2.
 
 ---
 
 ## 3. 🏛️ MASTER LOCATION SPEC SHEET ROSTER
 
-All location reference assets are stored in:  
-📁 **[`C:\kontitemp\ai\circle_the_square\location-refs\`](file:///C:/kontitemp/ai/circle_the_square/location-refs/)**
+> ⚠️ **These are photoreal-era sheets.** Cartoon replacements are the live task — the plan and prompts
+> live in **`LOCATION_PLATE_SHOT_LIST.md`** (12 plates, L01–L12). Until those land, attach the sheets
+> below **for architecture only** and let the cartoon style anchor override their rendering.
+>
+> The earlier version of this roster listed nine locations, seven of which named files that were never
+> created. Below is the **actual on-disk inventory**.
 
-1. **Location 01: Exterior Forecourt & Main Entrance**  
-   * **Filename**: `exterior_forecourt_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/exterior_forecourt_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/exterior_forecourt_location_sheet.jpg)
-2. **Location 02: Reception & Double-Height Atrium**  
-   * **Filename**: `reception_atrium_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/reception_atrium_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/reception_atrium_location_sheet.jpg)
-3. **Location 03: Staff Restaurant / Canteen** *(Batch 1 at 5:21 PM)*  
-   * **Filename**: `03_canteen_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/03_canteen_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/03_canteen_location_sheet.jpg)
-4. **Location 04: Open-Plan Office Floor** *(Batch 1 at 5:21 PM)*  
-   * **Filename**: `04_open_plan_office_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/04_open_plan_office_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/04_open_plan_office_location_sheet.jpg)
-5. **Location 05: Glass Meeting Room ("Jan's Office")** *(Batch 1 at 5:21 PM)*  
-   * **Filename**: `05_glass_meeting_room_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/05_glass_meeting_room_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/05_glass_meeting_room_location_sheet.jpg)
-6. **Location 06: Breakout & Kitchenette Nooks** *(Batch 2 at 5:23 PM)*  
-   * **Filename**: `06_breakout_nooks_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/06_breakout_nooks_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/06_breakout_nooks_location_sheet.jpg)
-7. **Location 07: Landscaped Podium Courtyard** *(Batch 2 at 5:23 PM)*  
-   * **Filename**: `07_podium_courtyard_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/07_podium_courtyard_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/07_podium_courtyard_location_sheet.jpg)
-8. **Location 08: Corridors, Locker Bays & Washrooms** *(Batch 3 at 5:25 PM)*  
-   * **Filename**: `08_corridors_lockers_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/08_corridors_lockers_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/08_corridors_lockers_location_sheet.jpg)
-9. **Location 09: Rear / Staff-Only Entrance** *(Batch 3 at 5:25 PM)*  
-   * **Filename**: `09_rear_staff_entrance_location_sheet.jpg`  
-   * **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/location-refs/09_rear_staff_entrance_location_sheet.jpg`](file:///C:/kontitemp/ai/circle_the_square/location-refs/09_rear_staff_entrance_location_sheet.jpg)
+**The real building**: The Triangle, Cambridge (Eric Parry Architects) — photos in
+[`building-reference/use-images/`](file:///C:/kontitemp/AI/circle_the_square/building-reference/use-images/).
+Pale buff brick, tall narrow windows, 39m brick tower with a glazed timber lantern box.
+**Low-rise Cambridge — NOT London.** No Shard, no Gherkin, no Tower Bridge, no skyline.
+
+All location reference assets are stored in:  
+📁 **[`C:\kontitemp\AI\circle_the_square\location-refs\`](file:///C:/kontitemp/AI/circle_the_square/location-refs/)**
+
+| Location | File | Used as | Cartoon plate |
+| :--- | :--- | :--- | :--- |
+| Exterior Forecourt & Main Entrance | [`exterior_forecourt_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/exterior_forecourt_location_sheet.jpg) | — | L01 ✅ / L05 ⬜ |
+| Reception & Double-Height Atrium | [`reception_atrium_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/reception_atrium_location_sheet.jpg) | — | L07, L08 ⬜ |
+| Jan's Office (glass meeting room) | [`jan_office_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/jan_office_location_sheet.jpg) | `@office` — Scene 1 | L10 ⬜ |
+| Open-Plan Office Floor | [`open_plan_floor_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/open_plan_floor_location_sheet.jpg) | `@openplan` — Scene 2 | L09 ⬜ |
+| Staff Restaurant / Canteen | [`canteen_location_sheet.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/canteen_location_sheet.jpg) | `@canteen` — Scene 3 | L11 ⬜ |
+| Scene 2 master reference | [`scene2_master_reference.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/scene2_master_reference.jpg) | Continuity | — |
+| Scene 3 master reference | [`scene3_master_reference.jpg`](file:///C:/kontitemp/AI/circle_the_square/location-refs/scene3_master_reference.jpg) | Continuity | — |
+
+**Style-transfer method that works** for building cartoon plates — attach a real photo and restyle it,
+rather than describing the building from scratch. `"Only change the rendering style"` is doing the heavy
+lifting; without it the model reinvents the building. Full prompt in `LOCATION_PLATE_SHOT_LIST.md`.
 
 ---
 
@@ -146,9 +176,15 @@ Dialogue audio files: [`C:\kontitemp\ai\circle_the_square\audio-refs\`](file:///
 
 ## 9. 🖼️ PANEL-BY-PANEL STORYBOARD PROMPT ENGINE
 
-The 5-shot opening sequence copy-paste-ready Veo 2 / Gemini prompt engine is locked at:  
-📄 **Filename**: `storyboard_prompt_engine.md`  
-📄 **Full Path**: [`file:///C:/kontitemp/ai/circle_the_square/storyboard_prompt_engine.md`](file:///C:/kontitemp/ai/circle_the_square/storyboard_prompt_engine.md)
+> 🎨 **Live cartoon docs — use these:**
+> - **[`featurette_storyboard_image_prompts.md`](file:///C:/kontitemp/AI/circle_the_square/featurette_storyboard_image_prompts.md)** — all 64 keyframes (F01–F61), cartoon style anchor, `@tag` legend. **The working doc.**
+> - **[`MASTER_STORYBOARD_SESSION_PROMPTS.md`](file:///C:/kontitemp/AI/circle_the_square/MASTER_STORYBOARD_SESSION_PROMPTS.md)** — ready-to-paste cartoon prompts, Scene 1 from F01.
+> - **[`LOCATION_PLATE_SHOT_LIST.md`](file:///C:/kontitemp/AI/circle_the_square/LOCATION_PLATE_SHOT_LIST.md)** — 12 cartoon plates and the camera move each one feeds.
+
+⛔ **Superseded (photoreal era, kept for reference only):** the 5-shot opening sequence Veo 2 / Gemini
+prompt engine at [`storyboard_prompt_engine.md`](file:///C:/kontitemp/AI/circle_the_square/storyboard_prompt_engine.md),
+plus `featurette_prompt_engine.md` and `featurette_shot_list.md`. Its shot *structure* is still sound;
+its photoreal style blocks and glass-tower imagery are not.
 
 Contents:
 - ✅ Shot 01 Prompt (High Aerial & Prow Swoop) + 2 image refs

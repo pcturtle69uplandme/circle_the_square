@@ -1,5 +1,13 @@
 # 🖼️ IMAGE GENERATION — ROUTES, QUOTA & FILTER RULES
 
+## 🎨 STYLE IS CARTOON — applies to every route below
+Every character and location image for this project renders as **stylised British sitcom comic art**,
+never photoreal. Paste the style anchor from `CARTOON_CAST_BIBLE.md` into every prompt.
+
+**This is not a preference, it is the workaround.** Google Flow blocked photoreal Jan Peach on three
+separate attempts — likeness protection on a real human face, not content policy. The identical frame
+in cartoon style generated first try. **Do not attempt photoreal characters on any route.**
+
 ## 0. Route selection — CLI first, browser ONLY on quota exhaustion
 **Default to the CLI. Use the browser only when quota blocks the CLI and work cannot continue.**
 

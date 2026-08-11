@@ -3,7 +3,8 @@
 > **For**: the next Claude Code session, likely on a different machine.
 > **Written**: 2026-08-10, end of the session that switched the project to cartoon.
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
-> **Read next**: `CARTOON_CAST_BIBLE.md`, `LOCATION_PLATE_SHOT_LIST.md`, `.agents/rules/cli_image_quota_rules.md`
+> **Read next**: **`CARTOON_BUILDING_TRAILER_PLAN.md`** ← the live task, ready to action ·
+> `CARTOON_CAST_BIBLE.md`, `LOCATION_PLATE_SHOT_LIST.md`, `.agents/rules/cli_image_quota_rules.md`
 
 ---
 
@@ -58,14 +59,18 @@ So the 64 frames become keyframes for video rather than panels in a slideshow.
 
 ### ⬜ Next steps, in priority order
 
-1. **Generate the 64 keyframes** against the saved Flow characters and the downloaded cartoon plates.
-   This is now the live task — the plates that used to block it are done.
-2. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
+1. 🚁 **BUILD THE BUILDING TRAILER — `CARTOON_BUILDING_TRAILER_PLAN.md`.** This is the live task and
+   it is fully specced: 26 Veo camera moves off the downloaded plates, one continuous journey from the
+   railway to the staff walking out under the title. 79s CORE cut, music bed already picked, nothing
+   blocked. Start at S01.
+2. **Generate the 64 keyframes** against the saved Flow characters and the downloaded cartoon plates.
+   The plates that used to block this are done. See `featurette_storyboard_image_prompts.md`.
+3. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
    Background roles, no voices exist for them. All four already have cartoon sheets on disk.
-3. **L04 tower detail** is the one missing plate — brick tower and glazed timber lantern box against
-   a dusk sky. Everything else on the 12-plate list is done.
-4. **Then**: animate each keyframe as a Veo move, and recut the trailer over the existing
-   `Small Stakes` / `Paper Trail` audio beds.
+4. **L04 tower detail** is the one missing plate — brick tower and glazed timber lantern box against
+   a dusk sky. Everything else on the 12-plate list is done. Not needed for the building trailer.
+5. **Then**: animate the 64 keyframes as Veo moves for the episode proper, and recut the character
+   trailers over the `Small Stakes` / `Paper Trail` beds.
 
 ### ✅ Flow inventory — verified 2026-08-11
 

@@ -33,10 +33,14 @@ This is the correct subscription-based route. No API key required.
 
 ## 🛠️ METHOD 2 — Antigravity CLI Image Generation (For Stills / Style Frames)
 
-When quota for video is exhausted, I can generate **photorealistic still frames** directly here in the CLI using your subscription — these work as:
+When quota for video is exhausted, I can generate **cartoon still frames** directly here in the CLI using your subscription — these work as:
 - **Style reference frames** to check character + location looks before committing to video
+- **Keyframes** — each approved frame becomes the first frame of a Veo camera move
 - **Storyboard panels** for director approval
 - **Thumbnail / poster assets**
+
+> 🎨 Always paste the cartoon **style anchor** from `CARTOON_CAST_BIBLE.md`. Do not request photoreal
+> characters — Flow blocks photoreal Jan Peach (likeness protection). See `HANDOVER.md` §2.
 
 Just say: *"generate S01 as a still frame"* and I'll use the `generate_image` tool directly.
 

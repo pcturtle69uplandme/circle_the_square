@@ -1,6 +1,6 @@
 # 🎨 CIRCLE THE SQUARE — CARTOON CAST BIBLE
 
-> **Status**: 11 cartoon character model sheets generated in Google Flow on 2026-08-10.
+> **Status**: 11 cartoon character model sheets generated in Google Flow on 2026-08-10, downloaded and committed to `character-refs/`.
 > **Style**: stylised British sitcom comic art (see anchor below).
 > **Why cartoon**: photoreal renders of Jan Peach were blocked repeatedly by Google Flow's
 > likeness protection. The identical frame in comic style generated first try. See
@@ -124,14 +124,25 @@ clean bold line art, flat muted colour palette, expressive caricature, cel-shade
 Absolutely NO text, NO labels, NO captions, NO lettering anywhere in the image.
 ```
 
+## ✅ DONE
+
+- **All 11 sheets are downloaded and committed** to `character-refs/*_cartoon_sheet.jpg`.
+- **Cartoon entities do not re-trigger the filter** that blocked photoreal Jan — confirmed by the
+  sheets generating successfully. A cartoon is not a real likeness, as theorised.
+- **5 principals have voices** attached in Flow (Jan, Christina, Sharon, Chris, Rick). These
+  **already existed** and match this bible exactly — select them, do not create new ones.
+
 ## ⚠️ OPEN ITEMS
 
-- **Sheets live only in Google Flow.** Not yet downloaded to `character-refs/` — that needs
-  explicit permission since it is a file download.
-- **Not yet saved as Flow Character entities.** Saving them is what locks identity across
-  frames. Untested whether a cartoon entity re-triggers the filter that blocked photoreal Jan;
-  the working theory is it will not, because a cartoon is not a real likeness.
+- **Flow Character entities: 7 of 11 saved** per `HANDOVER.md` §4 — Jan, Christina, Sharon, Chris,
+  Rick, Maureen, Gemma. Still to add: **Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik**
+  (background roles, no voices needed). Saving the entity is what locks identity across frames.
+  ⚠️ This count is unverified against the live project — check Flow before trusting it.
+- **Location plates**: 1 of 12 generated (L01). Jan's office, open-plan floor, canteen, reception
+  atrium and the rest of the Triangle exterior are pending — see `LOCATION_PLATE_SHOT_LIST.md`.
+  This is the live bottleneck: the 64 keyframes need cartoon interiors to sit in.
 - **Trevor** (data analyst, exists as a photoreal Flow Character) has no cartoon sheet and
   appears in no storyboard frame. Add only if he earns a scene.
-- **Location sheets** not yet rebuilt in cartoon: Jan's office, open-plan floor, canteen,
-  reception atrium, and the Triangle exterior.
+- **Existing clips are photoreal.** All 17 files in `clips/`, including the three trailer masters,
+  need re-rendering in cartoon. Their establishing shots also show a glass skyscraper, which is
+  wrong for The Triangle regardless of style. Audio beds and edit structure survive.

@@ -49,24 +49,45 @@ So the 64 frames become keyframes for video rather than panels in a slideshow.
 | Full cast specs, style anchor, prompt template | `CARTOON_CAST_BIBLE.md` |
 | Character bible rebuilt around cartoon | `character-bible.html` |
 | Photoreal sheets retired but kept as spec | `character-refs/_photoreal-archive/` |
-| 7 of 11 characters saved in Google Flow | Flow project (see §4) |
+| 7 of 11 characters saved in Google Flow | Flow project (see §4) — ⚠️ unverified, see below |
 | 5 principals have voices attached in Flow | Flow project |
-| 3 cartoon location plates generated | Flow project only, not downloaded |
+| 1 cartoon location plate generated (L01) | Flow project only, not downloaded |
 | 12-plate shot list for drone moves | `LOCATION_PLATE_SHOT_LIST.md` |
+| 64 keyframe prompts, cartoon style anchor | `featurette_storyboard_image_prompts.md` |
+| **All docs repointed to the cartoon path** (2026-08-11) | see §8 |
 
 ### ⬜ Next steps, in priority order
 
-1. **Style-transfer the rest of the building photos to cartoon.** This is the live task and the method
-   is proven — see §5. The user wants a library of cartoon plates to animate into video.
+1. **Style-transfer the rest of the building photos to cartoon** — 11 plates still to go. This is the
+   live task and the bottleneck: the 64 keyframes need cartoon interiors to sit in. The method is
+   proven, see §5. Generate them in **one continuous session** so the style stays locked.
 2. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
    Background roles, no voices exist for them.
-3. **Download the cartoon plates** into the repo — needs the user's say-so, it is a file download.
-4. **Then**: the 64 frames, generated against the locked Flow characters, as video keyframes.
+3. **Download the cartoon plates** into the repo. ✅ **The user granted download permission on
+   2026-08-11** — no need to ask again.
+4. **Then**: the 64 keyframes, generated against the locked Flow characters.
+5. **Then**: animate each keyframe as a Veo move, and recut the trailer over the existing
+   `Small Stakes` / `Paper Trail` audio beds.
+
+### ⚠️ Unverified — check Flow before trusting
+
+Three sources disagree on how many characters are saved as Flow entities: this file says 7 of 11, the
+project memory note says all six leads, and `CARTOON_CAST_BIBLE.md` used to claim none. **Only the live
+Flow project settles it.** Take inventory there before generating.
+
+### 🎞️ The existing clips are photoreal — all 17 of them
+
+Everything in `clips/`, including `ACTION_TRAILER_MASTER_60S.mp4`, `SMALL_STAKES_TRAILER_MASTER_60S.mp4`
+and `PAPER_TRAIL_TRAILER_MASTER_78S.mp4`, was rendered before the pivot. Worse, S01/S02 show a **glass
+skyscraper** — wrong for The Triangle regardless of style. **Every picture needs re-rendering.**
+What survives: the edit structures in `ACTION_TRAILER_DIRECTORS_PLAN.md`, and the scored beds in
+`audio-refs/` (style-agnostic).
 
 ### 📭 Deliberately empty
 
 `storyboard-frames/` holds only `README.txt`. The user cleared it to start from F00. The 25 old
-photoreal frames are **recoverable**: `git checkout 1380f97 -- storyboard-frames/`
+photoreal frames are **recoverable**: `git checkout 1380f97 -- storyboard-frames/` — but they are
+photoreal, so leave them buried.
 
 ---
 
@@ -165,3 +186,41 @@ The real photos are already uploaded to Flow — see the **Uploads** tab in the 
 - They ask for corrections directly and expect them applied, not debated.
 - Continuity accuracy matters to them: the building is Cambridge not London, the company is PRISM not
   Peach Corp, and panels carry no lettering because the viewer draws its own speech bubbles.
+
+---
+
+## 8. Doc status after the cartoon repoint (2026-08-11)
+
+Every `.md` was swept for photoreal-era assumptions. Where a doc's *structure* was still sound but its
+*style block* was not, the structure was kept and the style swapped — the shot lists and edit plans
+represent real work and did not need throwing away.
+
+### 🎨 Live — cartoon, use these
+
+| Doc | Role |
+| :--- | :--- |
+| `CARTOON_CAST_BIBLE.md` | **Cast + style source of truth.** 11 characters, style anchor, prompt template |
+| `featurette_storyboard_image_prompts.md` | **The working doc.** All 64 keyframes, cartoon anchor, `@tag` legend |
+| `MASTER_STORYBOARD_SESSION_PROMPTS.md` | Ready-to-paste cartoon prompts, Scene 1 from F01 |
+| `LOCATION_PLATE_SHOT_LIST.md` | 12 cartoon plates + the camera move each feeds |
+| `MASTER_PRODUCTION_MANUAL.md` | Umbrella manual, cartoon banner + corrected rosters |
+| `OPENING_TITLE_SEQUENCE_PLAN.md` | Title sequence, structure locked, awaiting cartoon re-render |
+
+### ⛔ Superseded — reference only
+
+`featurette_prompt_engine.md` and `storyboard_prompt_engine.md` (photoreal Veo prompts; workflow and
+20-shot structure still useful), `featurette_shot_list.md`, `location-bible.html` (photoreal locations),
+`ACTION_TRAILER_DIRECTORS_PLAN.md` (edit structure survives, footage does not).
+
+### Things fixed along the way
+
+- **`MASTER_PRODUCTION_MANUAL.md` §3 listed 9 locations, 7 of which named files that never existed.**
+  Replaced with the true 7-file on-disk inventory, each mapped to its pending cartoon plate.
+- **Maureen was being invented per-frame.** F47/F48/F51 told you to let the model make up a canteen
+  worker; she has had a sheet since 2026-08-10. Now `@maureen` in all three.
+- **Rick was described as security** in the session prompts, contradicting the bible. He is
+  rank-and-file staff.
+- **Frame count confirmed at 64.** Easy to miscount as 58: there is no plain F06, F26 or F37 because
+  those beats are split into `F06a/F06b`, `F26a/F26b`, `F37a/F37b`. Highest ID is F61, true count is 64.
+  Verified: 64 tracker rows, 64 prompt blocks.
+- `storyboard_slideshow.html` is now framed as a **continuity-checking tool**, not the deliverable.

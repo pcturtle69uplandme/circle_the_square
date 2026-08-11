@@ -1,5 +1,9 @@
 # 🎬 CIRCLE THE SQUARE — TITLE SEQUENCE, THEME SONG & END CREDITS PLAN
 
+> 🎨 **Any imagery in this plan renders CARTOON** — see `CARTOON_CAST_BIBLE.md`. The **music, theme
+> concept, branding palette and credit structure are style-agnostic and fully valid as written**; the
+> scored beds in `audio-refs/` are reusable as-is. Only rendered visuals need the cartoon treatment.
+
 **Project:** *Circle the Square* / *ALL UNDER ONE ROOF*  
 **Format:** Opening Title Sequence (30s) & End Credits Outro (25s)  
 **Tone:** Modern British Corporate Satire / Mockumentary  

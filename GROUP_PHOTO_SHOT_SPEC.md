@@ -1,5 +1,13 @@
 # 📸 CORPORATE GROUP PHOTO GONE WRONG — SHOT & PROMPT SPECIFICATION
 
+> 🎨 **Render this in CARTOON** — stylised British sitcom comic art, not photoreal. Paste the style
+> anchor from `CARTOON_CAST_BIBLE.md` into the prompt and use the cartoon character sheets in
+> `character-refs/*_cartoon_sheet.jpg`. The staging, blocking and gag below are unchanged.
+>
+> ⚠️ This shot needs **many characters in one frame**, which is where Flow is weakest. State
+> **"all must appear together in this one wide frame"** explicitly or it will ignore the composition,
+> and check the asset preview before attaching each sheet — the picker's thumbnails are unreadable.
+
 **Project:** *Circle the Square* / *ALL UNDER ONE ROOF*  
 **Shot ID:** `S58.5` (Post-Credits Corporate Website Stinger)  
 **Setting:** Grand Atrium Lobby (`IMG_20260804_131855397`) — Faceted orange-ochre reception desk & black-and-white triangle wall  

@@ -1,4 +1,10 @@
 # Circle the Square: Featurette Episode 'Project Inception'
+
+> 🎨 **Style is now CARTOON** — stylised British sitcom comic art, not photoreal. See
+> `CARTOON_CAST_BIBLE.md`. **The shot list below is still valid**: shot order, coverage and staging
+> are unaffected by the style change. Character sheet references have been repointed to the cartoon
+> sheets. For per-frame prompts use `featurette_storyboard_image_prompts.md` (64 keyframes).
+
 **Document:** Complete Shot List  
 **Runtime Estimate:** ~5 minutes  
 **Scene Count:** 3  
@@ -12,14 +18,14 @@
 
 | Shot | Type | Camera/Framing | Action/Beat | Character Refs | Env Refs | Continuity |
 |---|---|---|---|---|---|---|
-| S01 | WIDE | Locked off wide shot establishing Jan's office, showing desk and window | Jan and Christina discussing breakfast meetings. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt buttoned. Christina: Charcoal blazer. |
-| S02 | MCU | Slight push in on Jan | Jan explaining his ideas, gets frustrated. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt buttoned. |
-| S03 | OTS | Over Jan's shoulder to Christina | Christina deadpan responding. | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | |
-| S04 | CU | Close up on Jan | Jan begins unbuttoning shirt due to stress. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt transitioning to unbuttoned. Red face. |
-| S05 | WIDE | Wider angle as Jan screams | Jan screams in frustration, shirt now off. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt OFF (manscaped arrow visible). |
-| S06 | MCU | Focus on the door | Sharon walks in, composed. | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Sharon: State A (composed). |
-| S07 | REACTION | Quick pan/cut to Sharon | Sharon reacts to shirtless Jan. | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | |
-| S08 | MCU | Focus on Jan | Jan rushes to lock the blinds. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt OFF. |
+| S01 | WIDE | Locked off wide shot establishing Jan's office, showing desk and window | Jan and Christina discussing breakfast meetings. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt buttoned. Christina: Charcoal blazer. |
+| S02 | MCU | Slight push in on Jan | Jan explaining his ideas, gets frustrated. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt buttoned. |
+| S03 | OTS | Over Jan's shoulder to Christina | Christina deadpan responding. | `C:\kontitemp\ai\circle_the_square\character-refs\christina_dross_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | |
+| S04 | CU | Close up on Jan | Jan begins unbuttoning shirt due to stress. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt transitioning to unbuttoned. Red face. |
+| S05 | WIDE | Wider angle as Jan screams | Jan screams in frustration, shirt now off. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt OFF (manscaped arrow visible). |
+| S06 | MCU | Focus on the door | Sharon walks in, composed. | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Sharon: State A (composed). |
+| S07 | REACTION | Quick pan/cut to Sharon | Sharon reacts to shirtless Jan. | `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | |
+| S08 | MCU | Focus on Jan | Jan rushes to lock the blinds. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\IMG_20260804_131855397.jpg` | Jan: Shirt OFF. |
 
 ---
 
@@ -30,10 +36,10 @@
 
 | Shot | Type | Camera/Framing | Action/Beat | Character Refs | Env Refs | Continuity |
 |---|---|---|---|---|---|---|
-| S09 | WIDE | Tracking shot down the corridor/aisle | Chris and Rick watching Sharon leave. | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P20.jpg` | Sharon: State B (dishevelled). Chris: Light blue shirt. Rick: Grey polo. |
-| S10 | MCU | 2-Shot of Chris and Rick | Chris smirking, Rick observing. | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | |
-| S11 | WIDE | High angle tracking Jan entering the open plan area | Jan announces Project Inception. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | Jan: Shirt buttoned (redressed hastily). |
-| S12 | MCU | Pushing in on Jan | Jan names himself lead and demands a £50k raise. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | Jan: Sweaty, neck veins popping. |
+| S09 | WIDE | Tracking shot down the corridor/aisle | Chris and Rick watching Sharon leave. | `C:\kontitemp\ai\circle_the_square\character-refs\chris_cartoon_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\rick_cartoon_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\sharon_enfield_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P20.jpg` | Sharon: State B (dishevelled). Chris: Light blue shirt. Rick: Grey polo. |
+| S10 | MCU | 2-Shot of Chris and Rick | Chris smirking, Rick observing. | `C:\kontitemp\ai\circle_the_square\character-refs\chris_cartoon_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\rick_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | |
+| S11 | WIDE | High angle tracking Jan entering the open plan area | Jan announces Project Inception. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | Jan: Shirt buttoned (redressed hastily). |
+| S12 | MCU | Pushing in on Jan | Jan names himself lead and demands a £50k raise. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | Jan: Sweaty, neck veins popping. |
 | S13 | REACTION | Assorted cuts | Office workers reacting to Jan's outburst. | | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\P12.jpg` | |
 
 ---
@@ -45,13 +51,13 @@
 
 | Shot | Type | Camera/Framing | Action/Beat | Character Refs | Env Refs | Continuity |
 |---|---|---|---|---|---|---|
-| S14 | WIDE | Establishing canteen | Jan discovers pastry shortage. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Jan: Suit, highly stressed state. |
-| S15 | MCU | Handheld, shaky | Jan begins meltdown over pastries. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Jan: Extreme sweat, red face. |
-| S16 | WIDE | Static | Jan smashes plates, hurls a chair through a window. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | |
-| S17 | MCU | Low angle on Rick | Rick steps up with the taser and fires. | `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Rick: Grey polo, holding taser prop. |
+| S14 | WIDE | Establishing canteen | Jan discovers pastry shortage. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Jan: Suit, highly stressed state. |
+| S15 | MCU | Handheld, shaky | Jan begins meltdown over pastries. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Jan: Extreme sweat, red face. |
+| S16 | WIDE | Static | Jan smashes plates, hurls a chair through a window. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | |
+| S17 | MCU | Low angle on Rick | Rick steps up with the taser and fires. | `C:\kontitemp\ai\circle_the_square\character-refs\rick_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Rick: Grey polo, holding taser prop. |
 | S18 | INSERT | CU on Taser | Taser hitting Jan / sparking. | | | |
-| S19 | WIDE | Wide shot of the aftermath | Jan falls to the ground. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | |
-| S20 | 2-SHOT | MCU of Chris and Rick | Chris asks: "Have you killed him?" | `C:\kontitemp\ai\circle_the_square\character-refs\chris_identity_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\rick_identity_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Chris: Smirking but concerned. |
+| S19 | WIDE | Wide shot of the aftermath | Jan falls to the ground. | `C:\kontitemp\ai\circle_the_square\character-refs\jan_peach_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | |
+| S20 | 2-SHOT | MCU of Chris and Rick | Chris asks: "Have you killed him?" | `C:\kontitemp\ai\circle_the_square\character-refs\chris_cartoon_sheet.jpg`, `C:\kontitemp\ai\circle_the_square\character-refs\rick_cartoon_sheet.jpg` | `C:\kontitemp\ai\circle_the_square\building-reference\use-images\ep_tri_372-c-raftery-lowe-resized.jpg` | Chris: Smirking but concerned. |
 
 ---
 

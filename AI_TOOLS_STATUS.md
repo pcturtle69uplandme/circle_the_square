@@ -25,7 +25,7 @@
 
 | Capability | Detail |
 | :--- | :--- |
-| **What it generates** | Photorealistic still images, concept art, storyboard frames, character sheets, location sheets |
+| **What it generates** | Still images, concept art, storyboard frames, character sheets, location sheets. 🎨 **This project renders cartoon** — paste the style anchor from `CARTOON_CAST_BIBLE.md`. Photoreal characters are blocked (likeness protection); cartoon is not. |
 | **Resolution** | 0.5K / **1K default** / 2K / 4K |
 | **Aspect ratios** | 1:1 · 16:9 · 9:16 · 3:2 · 2:3 · 3:4 · 4:3 · and wide extremes (1:4, 4:1) |
 | **Multi-turn editing** | ✅ Yes — can edit specific elements of a generated image in follow-up prompts |

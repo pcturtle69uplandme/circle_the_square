@@ -1,6 +1,15 @@
 # 🎬 CIRCLE THE SQUARE — GOOGLE FLOW VIDEO GENERATION BREAKDOWN
+
+> 🎨 **Style is CARTOON** — stylised British sitcom comic art, not photoreal. Paste the anchor from
+> `CARTOON_CAST_BIBLE.md` into every prompt below. The **clip breakdown, beats and audio directions
+> are still valid**; only the rendering style changed.
+>
+> **Use the saved cartoon Character entities** in Flow rather than the `@Name` text tags — the entity
+> is what actually locks identity across clips. ⛔ Do not request photoreal characters: Flow blocks
+> photoreal Jan Peach (likeness protection). See `HANDOVER.md` §2.
+
 > **Title**: Circle the Square — Featurette Episode: Project Inception  
-> **Target AI**: Google Flow (Veo Video Generator)  
+> **Target AI**: Google Flow (Veo Video Generator) · Nano Banana 2 for frames  
 > **Rule**: Max 8 Seconds Per Clip · Character Tagging `@Name` syntax enabled for consistency  
 > **Format**: Ready-to-copy Prompts & Audio Directions  
 

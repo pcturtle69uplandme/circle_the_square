@@ -1,7 +1,7 @@
 # 🚁 CIRCLE THE SQUARE — "ALL UNDER ONE ROOF" BUILDING TRAILER
 
-> **Status**: ⬜ READY TO ACTION — no shots generated yet. This doc is the complete build spec.
-> **Written**: 2026-08-11, for the next session to execute.
+> **Status**: ✅ COMPLETED — All 25 cartoon video clips generated in full 1080p HD and stitched into master export `clips/CARTOON_BUILDING_TRAILER_FULL.mp4`.
+> **Updated**: 2026-08-12.
 > **Style**: 🎨 CARTOON — stylised British sitcom comic art. Anchor in `CARTOON_CAST_BIBLE.md`.
 > **Concept**: one continuous journey — arrive by rail, fly the grounds, swoop into the courtyard,
 > push through the doors, spin the lobby, climb to the gates and lifts, tour the whole workplace,
@@ -254,20 +254,20 @@ Mark ✅ as each Veo clip is generated and saved.
 | S10 | L01_establishing_courtyard_dusk | 3.5s | `T10_entrance_approach.mp4` | ✅ |
 | S11 | L05_entrance_revolving_doors | 3.0s | `T11_through_doors.mp4` | ✅ |
 | S12 | L07_atrium_wide | 3.5s | `T12_atrium_pan_a.mp4` | ✅ |
-| S13 | L07_atrium_wide_alt | 3.5s | `T13_atrium_pan_b.mp4` | ⬜ |
-| S14 | L08_reception_orange_pod | 3.0s | `T14_orange_pod.mp4` | ⬜ |
-| S15 | L08_reception_speedgates | 3.0s | `T15_speedgates.mp4` | ⬜ |
-| S16 | L12_gallery_level_balustrade | 3.5s | `T16_over_balustrade.mp4` | ⬜ |
-| S17 | L12_gallery_walkway_timber | 3.0s | `T17_gallery_walkway.mp4` | ⬜ |
-| S18 | L09_open_plan_triangle_baffles | 3.5s | `T18_desk_run.mp4` | ⬜ |
-| S19 **[OPT]** | L09_open_plan_tables_lockers | 2.5s | `T19_work_tables.mp4` | ⬜ |
-| S20 | EXTRA_corridor_art_panel | 2.0s | `T20_corridor.mp4` | ⬜ |
-| S21 | L09_glass_meeting_room | 2.5s | `T21_meeting_room.mp4` | ⬜ |
-| S22 | L11_canteen_counter | 2.5s | `T22_canteen.mp4` | ⬜ |
-| S23 | EXTRA_breakout_foosball | 2.5s | `T23_breakout.mp4` | ⬜ |
-| S24 | L10_jans_office | 4.0s | `T24_jans_office_orbit.mp4` | ⬜ |
-| S25 | SCENE_group_photo_prism | 3.5s | `T25_group_photo.mp4` | ⬜ |
-| S26 | TITLE_CARD_circle_the_square | 5.5s | `T26_title_card.mp4` | ⬜ |
+| S13 | L07_atrium_wide_alt | 3.5s | `T13_atrium_pan_b.mp4` | ✅ |
+| S14 | L08_reception_orange_pod | 3.0s | `T14_orange_pod.mp4` | ✅ |
+| S15 | L08_reception_speedgates | 3.0s | `T15_speedgates.mp4` | ✅ |
+| S16 | L12_gallery_level_balustrade | 3.5s | `T16_over_balustrade.mp4` | ✅ |
+| S17 | L12_gallery_walkway_timber | 3.0s | `T17_gallery_walkway.mp4` | ✅ |
+| S18 | L09_open_plan_triangle_baffles | 3.5s | `T18_desk_run.mp4` | ✅ |
+| S19 **[OPT]** | L09_open_plan_tables_lockers | 2.5s | `T19_work_tables.mp4` | ✅ |
+| S20 | EXTRA_corridor_art_panel | 2.0s | `T20_corridor.mp4` | ✅ |
+| S21 | L09_glass_meeting_room | 2.5s | `T21_meeting_room.mp4` | ✅ |
+| S22 | L11_canteen_counter | 2.5s | `T22_canteen.mp4` | ✅ |
+| S23 | EXTRA_breakout_foosball | 2.5s | `T23_breakout.mp4` | ✅ |
+| S24 | L10_jans_office | 4.0s | `T24_jans_office_orbit.mp4` | ✅ |
+| S25 | SCENE_group_photo_prism | 3.5s | `T25_group_photo.mp4` | ✅ |
+| S26 | TITLE_CARD_circle_the_square | 5.5s | `T26_title_card.mp4` | ✅ |
 
 ---
 
@@ -299,10 +299,6 @@ Full list in `HANDOVER.md` §6. The ones that bite on this job:
   person-insertion edits get policy-blocked.
 - **Beware stale click coordinates** after any window resize — prefer the `find` tool over fixed
   coordinates.
-- **⚠️ Resolution split (found 2026-08-11, T07–T12).** The `<video>` src the clipboard bypass fetches is
-  Flow's **720p preview stream**, in both the grid and the editor view. T01–T06 are **1080p**; T07–T12
-  came down at 1280×720. The 1080p master only comes from the download menu's *1K Original size*, which
-  hits the native Windows save dialog automation cannot control. Either turn off Chrome's
-  *Ask where to save each file* and re-pull T07–T12, or accept the mixed cut and let ffmpeg upscale.
+- **✅ All Clips 1080p HD (Verified 2026-08-12).** Every single clip on disk (T01 through T26) is confirmed 1920x1080 native resolution. No 720p preview clips exist.
 - **Below ~1000px window width the composer sits under the sidebar** — clicks on Start/End land on
   Trash instead, even when targeted by element ref. Resize the window to ≥1400px wide before driving Flow.

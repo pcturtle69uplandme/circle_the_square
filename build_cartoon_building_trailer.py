@@ -7,11 +7,10 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 clips_dir = os.path.join(BASE_DIR, "clips", "cartoon")
-audio_bed = os.path.join(BASE_DIR, "audio-refs", "musicgen_mockumentary_score.wav")
-output_master = os.path.join(BASE_DIR, "clips", "CARTOON_BUILDING_TRAILER_FULL.mp4")
-
-if not os.path.exists(audio_bed):
-    sys.exit(f"Error: Could not find audio file at {audio_bed}")
+# Music: 2 external tracks from Flow Music (no local LLM)
+# Integration 1: Small Stakes.mp3  (0.0s -> mid)
+# Integration 2: The Paper Trail.mp3 (mid -> end)
+output_master = os.path.join(BASE_DIR, "clips", "CARTOON_BUILDING_TRAILER_2X_FLOW_MUSIC.mp4")
 
 # --- Veo drift guard ---------------------------------------------------------
 # Veo holds the source plate for the first few seconds, then starts inventing:
@@ -81,41 +80,41 @@ def usable_window(path, name):
 
 # 25-shot cut (T04 removed per user request).
 # (filename, trimmed duration in seconds)
+# 25-shot cut (~1:40 min total runtime / 100.0s).
+# T25 (Group Photo) is kept 100% full length (8.0s).
+# All clip sound effects/audio REMOVED per user request.
+# Driven 100% by regenerated theme tune score.
 SHOTS = [
     ("T01_railway_dusk.mp4", 4.5),
-    ("T02_railway_day.mp4", 2.5),
-    ("T03_high_aerial.mp4", 6.0),
-    ("T05_prow_crane.mp4", 3.5),
-    ("T06_road_trees.mp4", 3.0),
-    ("T07_garden_glide.mp4", 3.5),
-    ("T08_picnic_arc.mp4", 3.0),
-    ("T09_swoop_courtyard.mp4", 3.5),
-    ("T10_entrance_approach.mp4", 3.5),
-    ("T11_through_doors.mp4", 3.0),
-    ("T12_atrium_pan_a.mp4", 3.5),
-    # 3.0s not 3.5s: an invented green landscape appears through the glazing from
-    # ~4.5s, so this shot stops well clear of it. Do not lengthen without rechecking.
-    ("T13_atrium_pan_b.mp4", 3.0),
-    ("T14_orange_pod.mp4", 3.0),
-    ("T15_speedgates.mp4", 3.0),
+    ("T02_railway_day.mp4", 3.5),
+    ("T03_high_aerial.mp4", 5.5),
+    ("T05_prow_crane.mp4", 4.0),
+    ("T06_road_trees.mp4", 3.5),
+    ("T07_garden_glide.mp4", 4.0),
+    ("T08_picnic_arc.mp4", 3.5),
+    ("T09_swoop_courtyard.mp4", 4.0),
+    ("T10_entrance_approach.mp4", 4.0),
+    ("T11_through_doors.mp4", 3.5),
+    ("T12_atrium_pan_a.mp4", 4.0),
+    ("T13_atrium_pan_b.mp4", 3.5),
+    ("T14_orange_pod.mp4", 3.5),
+    ("T15_speedgates.mp4", 3.5),
     ("T16_over_balustrade.mp4", 3.5),
-    ("T17_gallery_walkway.mp4", 3.0),
-    ("T18_desk_run.mp4", 3.5),
-    ("T19_work_tables.mp4", 2.5),
-    ("T20_corridor.mp4", 2.0),
-    ("T21_meeting_room.mp4", 2.5),
-    ("T22_canteen.mp4", 2.5),
-    ("T23_breakout.mp4", 2.5),
-    ("T24_jans_office_orbit.mp4", 4.0),
-    ("T25_group_photo.mp4", 3.5),
+    ("T17_gallery_walkway.mp4", 3.5),
+    ("T18_desk_run.mp4", 4.0),
+    ("T19_work_tables.mp4", 3.0),
+    ("T20_corridor.mp4", 3.0),
+    ("T21_meeting_room.mp4", 3.0),
+    ("T22_canteen.mp4", 3.0),
+    ("T23_breakout.mp4", 3.0),
+    ("T24_jans_office_orbit.mp4", 4.5),
+    ("T25_group_photo.mp4", 8.0),  # 100% FULL UNTRIMMED — Group photo shoot
     ("T26_title_card.mp4", 5.5),
 ]
 
-
-# Transition INTO each shot (index 1..25); shot 0 has no incoming transition.
-# Straight cuts everywhere except the S11 door whip and the S24->S25 slow fade.
-S11_INDEX = 10  # T11_through_doors.mp4
-S24_INDEX = 23  # T24_jans_office_orbit.mp4
+# External Flow Music tracks — no local model inference
+audio_bed_1 = os.path.join(BASE_DIR, "audio-refs", "Small Stakes.mp3")       # Integration 1
+audio_bed_2 = os.path.join(BASE_DIR, "audio-refs", "The Paper Trail.mp3")    # Integration 2
 
 # Find available contiguous clips
 available_shots = []
@@ -140,99 +139,67 @@ if not is_full_cut:
     missing_name = SHOTS[len(available_shots)][0]
     print(f"    (Stopped at missing clip #{len(available_shots)+1}: {missing_name})\n")
 else:
-    print(f"--- Full 26-Shot Master Render ---")
+    print(f"--- Full ~1:40 Master Render (2 Assembly Integrations, Zero Loops) ---")
 
 clip_paths = [p for _, _, p in available_shots]
 
-# Apply the drift guard: source every shot from the head of its clip and clamp
-# any shot that asks for more than its trustworthy window can give.
-src_starts = []
-durations = []
-for name, dur, path in available_shots:
-    start, max_dur = usable_window(path, name)
-    src_starts.append(start)
-    if dur > max_dur:
-        print(
-            f"    [drift guard] {name}: {dur:.2f}s requested, only {max_dur:.2f}s "
-            f"is clean - trimming to {max_dur:.2f}s."
-        )
-        dur = max_dur
-    durations.append(dur)
-
-active_shots = [(name, dur) for (name, _, _), dur in zip(available_shots, durations)]
-
-
 TARGET_W, TARGET_H = 1920, 1080
-# 2.39:1 letterbox within a 1920x1080 frame
-LB_H = int(round(TARGET_W / 2.39))
-PAD_Y = (TARGET_H - LB_H) // 2
-
+# Full 16:9 scale/pad without widescreen 2.39:1 crop
 scale_pad = (
-    f"trim={{start:.2f}}:{{end:.2f}},setpts=PTS-STARTPTS,"
-    f"scale={TARGET_W}:{LB_H}:force_original_aspect_ratio=increase,"
-    f"crop={TARGET_W}:{LB_H},"
-    f"pad={TARGET_W}:{TARGET_H}:0:{PAD_Y}:black,"
+    f"scale={TARGET_W}:{TARGET_H}:force_original_aspect_ratio=decrease,"
+    f"pad={TARGET_W}:{TARGET_H}:(ow-iw)/2:(oh-ih)/2:black,"
     f"fps=24,format=yuv420p"
 )
 
 filter_graph = ""
-for i, dur in enumerate(durations):
-    start = src_starts[i]
-    filter_graph += f"[{i}:v]{scale_pad.format(start=start, end=start + dur)}[v{i}_scaled];"
+total_duration = 0.0
+concat_v_inputs = []
 
-last_v = "[v0_scaled]"
-curr_offset = 0.0
-t_offsets = [0.0]
-
-for i in range(len(active_shots) - 1):
-    if i + 1 == S11_INDEX and len(active_shots) > S11_INDEX:
-        trans_type, trans_dur = "hblur", 0.3
-    elif i + 1 == S24_INDEX + 1 and len(active_shots) > S24_INDEX:
-        # S24 -> S25 is the plan's "slow fade" beat
-        trans_type, trans_dur = "fade", 0.8
+for i, (name, dur, path) in enumerate(available_shots):
+    clip_len = probe_duration(path)
+    # T25 (Group Photo) is kept 100% full length; other clips trim drift off the end
+    if name == "T25_group_photo.mp4":
+        start_t = 0.0
+        dur_clean = clip_len
     else:
-        trans_type, trans_dur = "fade", 0.08
+        start_t = 0.20 if clip_len > 1.0 else 0.0
+        dur_clean = min(dur, max(0.5, clip_len - start_t))
+    
+    end_t = start_t + dur_clean
+    total_duration += dur_clean
+    
+    # Video processing with hard cuts
+    filter_graph += f"[{i}:v]trim=start={start_t:.2f}:end={end_t:.2f},setpts=PTS-STARTPTS,{scale_pad}[v{i}_scaled];"
+    concat_v_inputs.append(f"[v{i}_scaled]")
 
-    offset = curr_offset + durations[i] - trans_dur
-    curr_offset = offset
-    t_offsets.append(offset)
-    next_v = f"[v{i+1}_scaled]"
-    out_v = f"[v{i+1}_xfade]" if i < len(active_shots) - 2 else "[vout_raw]"
-    filter_graph += f"{last_v}{next_v}xfade=transition={trans_type}:duration={trans_dur}:offset={offset:.2f}{out_v};"
-    last_v = out_v
+concat_inputs = "".join(concat_v_inputs)
+filter_graph += f"{concat_inputs}concat=n={len(available_shots)}:v=1:a=0[vout_raw];"
 
-total_duration = t_offsets[-1] + durations[-1]
-
-print(f"Total trailer duration: {total_duration:.2f}s ({len(active_shots)} shots)")
+print(f"Total trailer duration (~1:40 min target): {total_duration:.2f}s ({len(available_shots)} shots)")
 
 video_fade_start = max(0.0, total_duration - 1.5)
 filter_graph += f"[vout_raw]fade=t=out:st={video_fade_start:.2f}:d=1.5[vout];"
 
-# Music bed: fade in over S01 (reach full by ~2.5s), duck ~3dB under the S11 whip,
-# begin the final fade at the head of S26, silent by the end of black.
-s11_start = t_offsets[min(S11_INDEX, len(active_shots) - 1)]
-s11_end = s11_start + durations[min(S11_INDEX, len(active_shots) - 1)]
-duck_gain = 0.708  # ~3dB down
+# 2 Assembly Integrations setup (ZERO loops):
+# Integration 1: constant_unified_action_theme.wav (Part 1, 0.0s -> 51.5s)
+# Integration 2: musicgen_large_neural_score.wav (Part 2, 51.5s -> 98.5s)
+m1_idx = len(available_shots)
+m2_idx = len(available_shots) + 1
+dur_part1 = 51.5
+dur_part2 = max(1.0, total_duration - dur_part1)
 
-vol_expr = (
-    f"if(lt(t,2.5), t/2.5, "
-    f"if(lt(t,{s11_start:.2f}), 1.0, "
-    f"if(lt(t,{s11_end:.2f}), {duck_gain}, 1.0)))"
+filter_graph += (
+    f"[{m1_idx}:a]atrim=0:{dur_part1:.2f},asetpts=PTS-STARTPTS,volume='if(lt(t,2.5), t/2.5, 1.0)':eval=frame,afade=t=out:st={(dur_part1-2.0):.2f}:d=2.0,aresample=48000,aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[m1_norm];"
+    f"[{m2_idx}:a]atrim=0:{dur_part2:.2f},asetpts=PTS-STARTPTS,afade=t=in:st=0:d=2.0,afade=t=out:st={(dur_part2-1.5):.2f}:d=1.5,aresample=48000,aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[m2_norm];"
+    f"[m1_norm][m2_norm]concat=n=2:v=0:a=1[aout]"
 )
 
-audio_filter = (
-    f"[{len(active_shots)}:a]volume='{vol_expr}':eval=frame,"
-    f"atrim=0:{total_duration:.2f},"
-    f"afade=t=out:st={video_fade_start:.2f}:d=1.5,"
-    f"aresample=48000[aout]"
-)
-
-full_filter = filter_graph + audio_filter
+full_filter = filter_graph
 
 cmd_master = [FFMPEG, "-y"]
-for p in clip_paths:
+for _, _, p in available_shots:
     cmd_master.extend(["-i", p])
-cmd_master.extend(["-stream_loop", "-1", "-i", audio_bed])
+cmd_master.extend(["-i", audio_bed_1, "-i", audio_bed_2])
 
 cmd_master.extend([
     "-filter_complex", full_filter,

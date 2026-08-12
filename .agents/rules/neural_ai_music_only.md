@@ -1,17 +1,18 @@
-# 🎵 PERMANENT RULE: META MUSICGEN LARGE STEREO (3.3B PARAMETERS) DEFAULT
+# 🎵 PERMANENT RULE: EXTERNAL MUSIC SERVICES ONLY — NO LOCAL MUSIC LLM
 
-> **USER DIRECTIVE**: ALWAYS use Meta MusicGen Large (3.3 Billion Parameters) as the MANDATORY DEFAULT MODEL for all music, score, and soundtrack generation. NEVER use synthetic/algorithmic loops. Upgraded 2026-08-09 to the **stereo** checkpoint (`facebook/musicgen-stereo-large`) for richer spatial sound — same 3.3B family, not a downgrade.
+> **USER DIRECTIVE** (updated 2026-08-12): NEVER run any local music generation model (e.g. MusicGen, AudioCraft, Jukebox, or any GPU-local music inference). All music and soundtrack audio MUST come from external cloud music generation services such as **Google Flow Music** (https://www.flowmusic.app/) or equivalent. Drop pre-generated external audio files into `audio-refs/` and reference them in the build script.
 
 ---
 
 ## 🚫 STRICT PROHIBITIONS
-1. **NO Synthetic / Algorithmic Audio Loops**: Do not synthesize pitch-step loops, repeating sine/saw wave ostinatos, or mathematical audio loops.
-2. **NO Downgrade to Smaller Models**: Always use a MusicGen **Large** (3.3B) checkpoint — mono or stereo — as the primary default music generator. Never fall back to `-medium`, `-small`, or other smaller checkpoints.
+1. **NO Local Music LLM**: Do NOT run `facebook/musicgen-stereo-large`, `facebook/musicgen-large`, `facebook/musicgen-medium`, or any other local AudioCraft / MusicGen model checkpoint on the user's machine.
+2. **NO GPU Music Inference**: Do NOT use `torch`, `transformers`, `MusicgenForConditionalGeneration`, or any local model inference pipeline for music generation.
+3. **NO Synthetic / Algorithmic Audio Loops**: Do not synthesize pitch-step loops, repeating sine/saw wave ostinatos, or mathematical audio patterns using `-stream_loop` in FFmpeg or any code-generated audio.
 
 ---
 
 ## ✅ MANDATORY MUSIC WORKFLOW
-1. **Mandatory Default Model**: **`facebook/musicgen-stereo-large`** (3.3 Billion Parameters, stereo) cached at `C:\ai\models\musicgen-stereo-large\`. The prior mono checkpoint `facebook/musicgen-large` (stored at `C:\ai\models\musicgen-large\`) remains available as a fallback only, not the default.
-2. **Audio Properties**: Generate 32kHz neural stereo audio directly from natural language prompts describing organic instruments (cellos, French horns, taiko drums, natural room acoustics).
-3. **Outro Continuation**: Always generate full-duration neural audio blocks (`max_new_tokens`) stitched with crossfades to ensure 100% continuous soundtrack coverage through the closing title card and final fade-out.
-4. **GPU Execution**: Run generation on the local RTX 4080 (`device="cuda"`, fp16) — do not fall back to CPU, which is prohibitively slow for the 3.3B model.
+1. **External Service Only**: Instruct the user to generate music tracks via **Google Flow Music** (https://www.flowmusic.app/) or another cloud music generation service.
+2. **Drop Files to `audio-refs/`**: Place the externally generated audio files (MP3 or WAV) into `C:\kontitemp\ai\circle_the_square\audio-refs\`.
+3. **Reference in Build Script**: Update `build_cartoon_building_trailer.py` to point `audio_bed_1` and `audio_bed_2` to the external audio files — no local generation code.
+4. **2 Assembly Integrations**: Always assemble exactly 2 distinct external tracks sequentially with smooth crossfades (no loops, no repeats) for the full trailer duration.

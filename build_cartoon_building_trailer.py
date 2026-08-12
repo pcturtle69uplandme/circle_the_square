@@ -48,6 +48,19 @@ NAT_BOOST = {
     "T08_picnic_arc.mp4": 2.5,
 }
 
+# --- MIX / RENDER SETTINGS (locked 2026-08-12, user-reviewed) -------------------
+# The dials the mix was tuned with. Change here, re-run, nothing else to edit.
+MUSIC_MIX_WEIGHT = 0.6   # score level in the final mix (1.0 = full; user asked down twice)
+NAT_BASE_LEVEL   = 0.55  # base level of the native-audio SFX/ambience layer
+NAT_LOWPASS_HZ   = 6000  # dulls the SFX layer slightly so it sits under the score
+T25_BOOST        = 1.5   # extra native-audio gain during the group photo hold
+T25_MUSIC_DIP    = 0.25  # extra score duck depth across T25 (fraction of full scale)
+DUCK_DEPTH       = 0.4   # score duck depth under the S09 swoop / S11 door moments
+DUCK_WIDTH_S     = 1.2   # half-width of those duck dips, seconds
+MUSIC_JOIN_SHOT  = "T12_atrium_pan_a.mp4"  # track1->track2 crossfade lands on this shot's start (0:40 door flip)
+VIDEO_CRF        = "18"
+VIDEO_PRESET     = "medium"
+
 # Shots that sit inside the building or push in close. These get the 3s drop.
 TIGHT_SHOTS = {
     "T11_through_doors.mp4",
@@ -214,15 +227,16 @@ concat_inputs = "".join(concat_v_inputs)
 filter_graph += f"{concat_inputs}concat=n={len(available_shots)}:v=1:a=0[vout_raw];"
 concat_a = "".join(concat_a_inputs)
 # SFX/ambience layer: native audio bed, mixed up close under the score.
-# Base level 0.55, boosted a further ~1.5x during T25 (group photo) so the crowd
-# murmur and shutter sounds carry that shot; gentle fades at head and tail.
+# Base level NAT_BASE_LEVEL, boosted a further T25_BOOST during the group photo
+# hold so the crowd murmur and shutter sounds carry that shot; gentle fades at
+# head and tail.
 nat_fade_out_start = max(0.0, total_duration - 2.0)
 t25_start = shot_starts.get("T25_group_photo.mp4", 85.0)
 t25_end = t25_start + 8.0
-nat_vol_expr = f"0.55*if(between(t,{t25_start:.2f},{t25_end:.2f}),1.5,1)"
+nat_vol_expr = f"{NAT_BASE_LEVEL}*if(between(t,{t25_start:.2f},{t25_end:.2f}),{T25_BOOST},1)"
 filter_graph += (
     f"{concat_a}concat=n={len(available_shots)}:v=0:a=1[nat_raw];"
-    f"[nat_raw]volume='{nat_vol_expr}':eval=frame,lowpass=f=6000,afade=t=in:st=0:d=0.5,afade=t=out:st={nat_fade_out_start:.2f}:d=2.0[nat];"
+    f"[nat_raw]volume='{nat_vol_expr}':eval=frame,lowpass=f={NAT_LOWPASS_HZ},afade=t=in:st=0:d=0.5,afade=t=out:st={nat_fade_out_start:.2f}:d=2.0[nat];"
 )
 
 print(f"Total trailer duration (~1:40 min target): {total_duration:.2f}s ({len(available_shots)} shots)")
@@ -238,19 +252,19 @@ filter_graph += f"[vout_raw]fade=t=out:st={video_fade_start:.2f}:d=1.5[vout];"
 # moods, one door - the listener must hear the transition.
 m1_idx = len(available_shots)
 m2_idx = len(available_shots) + 1
-dur_part1 = shot_starts.get("T12_atrium_pan_a.mp4", 40.0)
+dur_part1 = shot_starts.get(MUSIC_JOIN_SHOT, 40.0)
 dur_part2 = max(1.0, total_duration - dur_part1)
 
-# Duck the score ~4dB under the two moments whose native audio must read:
+# Duck the score under the two moments whose native audio must read:
 # the S09 courtyard swoop and the S11 revolving-door transition. Plus a gentle
-# ~2.5dB dip across the whole T25 group-photo hold so the crowd sits on top.
+# dip across the whole T25 group-photo hold so the crowd sits on top.
 duck_c1 = shot_starts.get("T09_swoop_courtyard.mp4", 0.0) + 2.0
 duck_c2 = shot_starts.get("T11_through_doors.mp4", 0.0) + 1.5
 duck_c3 = t25_start + 4.0
 duck_expr = (
-    f"1 - 0.4*pow(max(0,1-abs(t-{duck_c1:.2f})/1.2),2)"
-    f" - 0.4*pow(max(0,1-abs(t-{duck_c2:.2f})/1.2),2)"
-    f" - 0.25*pow(max(0,1-abs(t-{duck_c3:.2f})/4.0),2)"
+    f"1 - {DUCK_DEPTH}*pow(max(0,1-abs(t-{duck_c1:.2f})/{DUCK_WIDTH_S}),2)"
+    f" - {DUCK_DEPTH}*pow(max(0,1-abs(t-{duck_c2:.2f})/{DUCK_WIDTH_S}),2)"
+    f" - {T25_MUSIC_DIP}*pow(max(0,1-abs(t-{duck_c3:.2f})/4.0),2)"
 )
 
 filter_graph += (
@@ -258,7 +272,7 @@ filter_graph += (
     f"[{m2_idx}:a]atrim=0:{dur_part2:.2f},asetpts=PTS-STARTPTS,afade=t=in:st=0:d=2.0,afade=t=out:st={(dur_part2-1.5):.2f}:d=1.5,aresample=48000,aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[m2_norm];"
     f"[m1_norm][m2_norm]concat=n=2:v=0:a=1[mus_raw];"
     f"[mus_raw]volume='{duck_expr}':eval=frame[mus];"
-    f"[mus][nat]amix=inputs=2:duration=first:normalize=0:weights='0.6 1',alimiter=limit=0.95:level=disabled,aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[aout]"
+    f"[mus][nat]amix=inputs=2:duration=first:normalize=0:weights='{MUSIC_MIX_WEIGHT} 1',alimiter=limit=0.95:level=disabled,aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[aout]"
 )
 
 full_filter = filter_graph
@@ -276,8 +290,8 @@ cmd_master.extend([
     "-profile:v", "main",
     "-level", "4.1",
     "-pix_fmt", "yuv420p",
-    "-preset", "medium",
-    "-crf", "18",
+    "-preset", VIDEO_PRESET,
+    "-crf", VIDEO_CRF,
     "-c:a", "aac",
     "-ar", "48000",
     "-ac", "2",

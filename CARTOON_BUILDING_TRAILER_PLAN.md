@@ -57,15 +57,15 @@ frame. `Move` is what to ask Veo for. `Dur` is the trimmed length in the final c
 > **Open cold.** No music for the first ~1.5s — just distant rail ambience, then the bed fades in as
 > S01 settles. This is the only place in the cut with silence.
 
-### MOVEMENT 2 — THE GROUNDS (0:13–0:29) · *the drone explores*
+### MOVEMENT 2 — THE GROUNDS (0:13–0:25) · *the drone explores*
 
 | # | Plate | Move | Dur | Out |
 | :-- | :--- | :--- | :-- | :--- |
-| S04 | `L01_establishing_curved_corner_day.jpg` | Slow push-in on the curved corner, very slight rise. | 3.5s | cut |
 | S05 | `L03_prow_low_angle.jpg` | Rising crane up the prow, brick banding receding overhead. | 3.5s | cut |
 | S06 **[OPT]** | `L01_exterior_wide_road_trees.jpg` | Lateral drift right past the street trees. | 3.0s | cut |
 | S07 | `EXTRA_podium_courtyard_garden.jpg` | Low slow glide forward across the planting. | 3.5s | cut |
 | S08 | `EXTRA_courtyard_picnic_tables.jpg` | Gentle arc right around the picnic benches. | 3.0s | cut |
+
 
 ### MOVEMENT 3 — THE APPROACH (0:29–0:39) · *swoop in and commit*
 
@@ -78,16 +78,21 @@ frame. `Move` is what to ask Veo for. `Dur` is the trimmed length in the final c
 > The only transition in the cut that is not a straight edit. Sell the move through the doors with a
 > short blurred whip so inside and outside read as one continuous take.
 
-### MOVEMENT 4 — THE LOBBY (0:39–0:49) · *the 360*
+### MOVEMENT 4 — THE LOBBY (0:39–0:49) · *three looks, full energy*
 
 | # | Plate | Move | Dur | Out |
 | :-- | :--- | :--- | :--- | :--- |
-| S12 | `L07_atrium_wide.jpg` | Slow pan right across the double-height atrium. | 3.5s | cut |
-| S13 | `L07_atrium_wide_alt.jpg` | Continue the same pan direction from the new angle — **this pair is what reads as a 360**. | 3.5s | cut |
-| S14 | `L08_reception_orange_pod.jpg` | Complete the spin, settling on the burnt-orange reception pod. | 3.0s | cut |
+| S12 | `L07_atrium_wide.jpg` | Deep zoom fly-in through the double-height atrium. | 3.5s | cut |
+| S13 | `L07_atrium_wide_alt.jpg` | Fly-in from the new angle, drifting left. | 3.0s | cut |
+| S14 | `L08_reception_orange_pod.jpg` | Move in on the burnt-orange reception pod. | 3.0s | cut |
 
-> **Keep all three panning the same way** (right). Direction continuity is what makes three plates
-> feel like one continuous rotation. If any clip comes back panning left, reroll it.
+> **The 360 is off — decided 2026-08-11.** These three were originally specced to pan the same way so
+> the plates would read as one continuous rotation. Matched pans were generated and rejected: the flat
+> rotation had no energy. The keepers are the **deep zoom fly-ins**, and the lobby now plays as three
+> distinct looks rather than one move. **Do not "fix" these back to matching pans.**
+>
+> S13 is held to **3.0s**: its take invents a green landscape beyond the glazing from ~4.5s, so the
+> shot has to be off screen well before that. Do not lengthen it without rechecking that edge.
 
 ### MOVEMENT 5 — THE ASCENT (0:49–0:59) · *up to the gates and lifts*
 
@@ -164,7 +169,8 @@ add text, signage or lettering. One continuous camera move, no cuts, no speed ch
 - **One continuous session** if possible, so motion character stays consistent.
 - **No people added.** Several plates have figures already; that is fine. Asking Veo to *add* people
   risks the person-insertion policy block — see `HANDOVER.md` §6.
-- **Reroll anything that pans the wrong way** in Movement 4. Direction continuity carries the 360.
+- **Movement 4 wants energy, not direction continuity.** Fly-ins and pushes beat flat pans here; the
+  360 idea was tried and dropped (see §3, Movement 4).
 
 ---
 
@@ -207,6 +213,13 @@ only the clip list and durations need changing.
 
 **Suggested new script**: `build_cartoon_building_trailer.py`
 
+⚠️ **Cut from the head, never the tail.** Veo holds the plate for the first few seconds then starts
+inventing — new rooms beyond doorways, desks and furniture the building does not have, walls that move.
+`build_cartoon_building_trailer.py` enforces this: every shot is sourced from `HEAD_SKIP` (0.2s) and the
+last **2s of exteriors / 3s of interiors** are unusable. A shot asking for more than its clean window
+gets clamped with a `[drift guard]` warning. Clips whose endings have been *watched* and found still
+on-model go in `KEEP_TAIL` and keep their full length — `T15_speedgates` is the first of those.
+
 ```
 1. Trim each clip to its Dur, easing in/out where the table says fade
 2. Scale/pad all to 1920x1080, letterbox to 2.39:1
@@ -229,18 +242,18 @@ Mark ✅ as each Veo clip is generated and saved.
 
 | # | Plate | Dur | Clip | Done |
 | :-- | :--- | :-- | :--- | :-: |
-| S01 | L06_railway_side_dusk | 4.5s | `T01_railway_dusk.mp4` | ⬜ |
-| S02 **[OPT]** | L06_railway_side_day | 3.0s | `T02_railway_day.mp4` | ⬜ |
-| S03 | L02_high_aerial_complex | 5.5s | `T03_high_aerial.mp4` | ⬜ |
-| S04 | L01_establishing_curved_corner_day | 3.5s | `T04_curved_corner.mp4` | ⬜ |
-| S05 | L03_prow_low_angle | 3.5s | `T05_prow_crane.mp4` | ⬜ |
-| S06 **[OPT]** | L01_exterior_wide_road_trees | 3.0s | `T06_road_trees.mp4` | ⬜ |
-| S07 | EXTRA_podium_courtyard_garden | 3.5s | `T07_garden_glide.mp4` | ⬜ |
-| S08 | EXTRA_courtyard_picnic_tables | 3.0s | `T08_picnic_arc.mp4` | ⬜ |
-| S09 | L05_forecourt_plaza_tower | 3.5s | `T09_swoop_courtyard.mp4` | ⬜ |
-| S10 | L01_establishing_courtyard_dusk | 3.5s | `T10_entrance_approach.mp4` | ⬜ |
-| S11 | L05_entrance_revolving_doors | 3.0s | `T11_through_doors.mp4` | ⬜ |
-| S12 | L07_atrium_wide | 3.5s | `T12_atrium_pan_a.mp4` | ⬜ |
+| S01 | L06_railway_side_dusk | 4.5s | `T01_railway_dusk.mp4` | ✅ |
+| S02 **[OPT]** | L06_railway_side_day | 3.0s | `T02_railway_day.mp4` | ✅ |
+| S03 | L02_high_aerial_complex | 5.5s | `T03_high_aerial.mp4` | ✅ |
+| S04 | L01_establishing_curved_corner_day | 3.5s | `T04_curved_corner.mp4` | ➖ cut from shot list |
+| S05 | L03_prow_low_angle | 3.5s | `T05_prow_crane.mp4` | ✅ |
+| S06 **[OPT]** | L01_exterior_wide_road_trees | 3.0s | `T06_road_trees.mp4` | ✅ |
+| S07 | EXTRA_podium_courtyard_garden | 3.5s | `T07_garden_glide.mp4` | ✅ |
+| S08 | EXTRA_courtyard_picnic_tables | 3.0s | `T08_picnic_arc.mp4` | ✅ |
+| S09 | L05_forecourt_plaza_tower | 3.5s | `T09_swoop_courtyard.mp4` | ✅ |
+| S10 | L01_establishing_courtyard_dusk | 3.5s | `T10_entrance_approach.mp4` | ✅ |
+| S11 | L05_entrance_revolving_doors | 3.0s | `T11_through_doors.mp4` | ✅ |
+| S12 | L07_atrium_wide | 3.5s | `T12_atrium_pan_a.mp4` | ✅ |
 | S13 | L07_atrium_wide_alt | 3.5s | `T13_atrium_pan_b.mp4` | ⬜ |
 | S14 | L08_reception_orange_pod | 3.0s | `T14_orange_pod.mp4` | ⬜ |
 | S15 | L08_reception_speedgates | 3.0s | `T15_speedgates.mp4` | ⬜ |
@@ -264,7 +277,7 @@ Mark ✅ as each Veo clip is generated and saved.
       `L10` was already caught and fixed once — check any window Veo may have re-imagined.
 - [ ] **No lettering** anywhere except S26's title card.
 - [ ] **The building never changes shape** between shots — same buff brick, same window grid.
-- [ ] **Movement 4 panning is all one direction.**
+- [ ] **Movement 4 keeps its energy** - fly-ins, not flat pans. No 360 matching required.
 - [ ] **The S11 door transition** genuinely reads as going inside.
 - [ ] **No morphing or warping** at clip heads/tails — trim past it.
 - [ ] Every clip is the cartoon style, none drifted photoreal.
@@ -286,3 +299,10 @@ Full list in `HANDOVER.md` §6. The ones that bite on this job:
   person-insertion edits get policy-blocked.
 - **Beware stale click coordinates** after any window resize — prefer the `find` tool over fixed
   coordinates.
+- **⚠️ Resolution split (found 2026-08-11, T07–T12).** The `<video>` src the clipboard bypass fetches is
+  Flow's **720p preview stream**, in both the grid and the editor view. T01–T06 are **1080p**; T07–T12
+  came down at 1280×720. The 1080p master only comes from the download menu's *1K Original size*, which
+  hits the native Windows save dialog automation cannot control. Either turn off Chrome's
+  *Ask where to save each file* and re-pull T07–T12, or accept the mixed cut and let ffmpeg upscale.
+- **Below ~1000px window width the composer sits under the sidebar** — clicks on Start/End land on
+  Trash instead, even when targeted by element ref. Resize the window to ≥1400px wide before driving Flow.

@@ -34,3 +34,37 @@ visual best-read, not authoritative - confirm before relying on it for a specifi
 | `L12_gallery_walkway_timber.jpg` | `34978fb0` | Upper gallery walkway, timber cladding |
 | `SCENE_group_photo_prism.jpg` | `8461c65a` | Corporate group photo gag with cast and PRISM banner |
 | `TITLE_CARD_circle_the_square.jpg` | `45d75a0c` | TITLE CARD - courtyard dusk with CIRCLE THE SQUARE lettering |
+
+
+## Second batch - Flow project f2f0d2c9, downloaded 2026-08-12
+
+Same cartoon style, 1376x768. FLOW2_ prefix to distinguish from the first batch.
+
+| File | What it is |
+|---|---|
+| `FLOW2_courtyard_dusk_clean.jpg` | Entrance courtyard at dusk, lit glazing, glowing tower - clean plate, no people |
+| `FLOW2_plaza_day_tower.jpg` | Wide plaza day view, brick blocks, tower behind, overcast |
+| `FLOW2_courtyard_garden_day.jpg` | Landscaped courtyard garden, hedges, picnic tables, day |
+| `FLOW2_garden_pines_fin_facade.jpg` | Garden courtyard with pines and planted mound, colourful fin facade |
+| `FLOW2_corner_street_keepclear.jpg` | Street-level corner view of brick block, KEEP CLEAR road marking, day |
+| `FLOW2_corner_low_angle_day.jpg` | Low-angle worm's-eye corner shot of brick building against sky, day |
+| `FLOW2_curved_building_day.jpg` | Curved brick building from street, trees, CCTV pole, day |
+| `FLOW2_aerial_complex_day.jpg` | Aerial top-down of whole complex, yellow tower, railway tracks, day |
+| `FLOW2_billboard_railway_winter.jpg` | Curved building behind blue crest billboard, tram tracks, bare winter trees, overcast |
+| `FLOW2_railway_dusk_tower.jpg` | Street view at dusk, tram tracks foreground, lit tower, pink cloud |
+| `FLOW2_int_jans_office_day.jpg` | Executive office, geometric triangle feature wall, railway + houses through window, day |
+| `FLOW2_int_breakout_foosball_mezz.jpg` | Games/breakout mezzanine, foosball + arcade machine, atrium behind |
+| `FLOW2_int_corridor_phone_bar.jpg` | Open office corridor with phone bar, stools, wall display |
+| `FLOW2_int_meeting_room_glass.jpg` | Glass-walled meeting room with dotted manifestation, empty |
+| `FLOW2_int_corridor_lockers.jpg` | Corridor with lockers and plants, distant figure |
+| `FLOW2_int_open_plan_day.jpg` | Open-plan office floor, bench tables, lockers, windows, day |
+| `FLOW2_int_open_plan_triangle_wall.jpg` | Open-plan office, long desks with lamps, red/black triangle acoustic wall |
+| `FLOW2_int_atrium_revolving_doors.jpg` | Atrium/reception with revolving doors, turnstiles, brick columns, day |
+| `FLOW2_int_atrium_stair_canteen.jpg` | Atrium staircase from above, canteen left, two figures descending |
+| `FLOW2_int_turnstiles_lift_lobby.jpg` | Security turnstiles by lift lobby, empty |
+| `FLOW2_int_reception_orange_desk.jpg` | Reception atrium, orange faceted desk, receptionists, staircase behind |
+| `FLOW2_int_atrium_cafe.jpg` | Atrium with turnstiles and cafe, revolving door right |
+| `FLOW2_int_atrium_mirrored_ceiling.jpg` | Atrium looking up, mirrored ceiling, revolving doors, day |
+| `FLOW2_int_lobby_revolving_doors_dusk.jpg` | Entrance lobby revolving doors from inside, figure walking through, dusk |
+| `FLOW2_TITLE_CARD_lineup.jpg` | TITLE CARD - CIRCLE THE SQUARE over 6-character lineup in courtyard, dusk |
+| `FLOW2_TITLE_CARD_courtyard.jpg` | TITLE CARD - CIRCLE THE SQUARE over courtyard dusk exterior, staff silhouettes |

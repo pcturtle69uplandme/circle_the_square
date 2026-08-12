@@ -109,20 +109,74 @@ brown work boots, orange lanyard.
 
 ---
 
+## 📏 HEIGHT TABLE — the shared scale
+
+Every sheet must be drawn against this one scale. These are small differences and they must
+*look* small: the tallest principal is only 18cm above the shortest.
+
+| Character | Height | | Character | Height |
+| :--- | :-- | :-- | :--- | :-- |
+| Tomasz Wojcik | 186cm | | Gemma Ashcroft | 170cm |
+| **Rick** | **183cm** | | **Christina Dross** | **168cm** |
+| **Chris** | **180cm** | | **Sharon Enfield** | **165cm** |
+| Dev Osei | 178cm | | Priya Raghavan | 164cm |
+| **Jan Peach** | **178cm** | | Maureen | 162cm |
+| | | | Barbara Whitlock | 160cm |
+
+> **Rick is only 5cm taller than Jan.** If a group shot shows him towering, it is wrong.
+
+---
+
 ## 📐 MODEL SHEET PROMPT TEMPLATE
+
+> ### ⚠️ Why this template changed — 2026-08-12
+>
+> The original 11 sheets each drew their character **filling the frame**, alone on plain grey.
+> Rick at 183cm and Christina at 168cm therefore occupy identical pixel heights. **The sheets
+> encode no shared scale**, so when several are used as ingredients in one image the model has
+> nothing to compare against and sizes each from its build words alone — Rick's "sturdy broad
+> muscular build" renders him roughly **1.5× everyone else**, towering and standing forward of
+> the line. This was hit on the title sequence and could not be fixed by any img2img edit; three
+> increasingly explicit rewrites all came back unchanged.
+>
+> **The fix is the measuring wall below.** It puts an identical ruler behind every character, so
+> relative height is carried *visually* in the ingredient rather than hoped for in the prompt.
+> Regenerate every sheet with it, and use it for all future characters.
 
 Reusable for rerolls or new characters:
 
 ```
 Generate ONE image: a CHARACTER MODEL SHEET in stylised comic illustration style,
-NOT photorealistic. Subject: <NAME>, <ROLE> at PRISM. <AGE, ETHNICITY, HEIGHT, BUILD,
-HAIR, DEFAULT EXPRESSION>. Wardrobe: <ITEMS>, burnt-orange PRISM lanyard with ID badge.
-LAYOUT: one sheet on a plain neutral grey studio background showing the SAME <man/woman>
-four times in a row at identical scale - front view, three-quarter view, side view,
-back view - full body, standing straight. Style: stylised British sitcom comic art,
-clean bold line art, flat muted colour palette, expressive caricature, cel-shaded.
-Absolutely NO text, NO labels, NO captions, NO lettering anywhere in the image.
+NOT photorealistic.
+
+Subject: <NAME>, <ROLE> at PRISM. <AGE, ETHNICITY, BUILD, HAIR, DEFAULT EXPRESSION>.
+HEIGHT: <HEIGHT>cm.
+Wardrobe: <ITEMS>, burnt-orange PRISM lanyard with ID badge.
+
+LAYOUT: one sheet showing the SAME <man/woman> four times in a row at identical scale -
+front view, three-quarter view, side view, back view - full body, standing straight,
+all four with their feet flat on one shared ground line across the bottom of the image.
+
+MEASURING WALL - draw this exactly the same on every sheet:
+Behind the figures, a plain neutral grey studio wall marked with thin horizontal rules
+every 10cm, labelled up the left-hand edge in small plain grey numerals: 150, 160, 170,
+180, 190, 200. The 200cm rule sits just below the top edge of the image and the ground
+line is at the very bottom, so the whole 0-200cm range fills the frame height.
+Draw the figure so that THE TOP OF THE HEAD TOUCHES THE <HEIGHT>cm RULE EXACTLY,
+leaving clear empty wall above the head up to the 200cm rule.
+The wall, the rule spacing and the numerals must be identical and at the same scale on
+every character's sheet, so that two sheets can be compared side by side.
+
+Style: stylised British sitcom comic art, clean bold line art, flat muted colour palette,
+expressive caricature, cel-shaded.
+NO text, NO labels, NO captions anywhere EXCEPT the small height numerals on the wall.
 ```
+
+**The one rule that matters**: the head touches its own height rule and there is *empty wall
+above it*. A character who fills the frame has failed the sheet, however good the face is.
+
+> **Lettering exception.** The standing "no lettering" rule is for **story panels and location
+> plates**. Model sheets are reference art and may carry the measuring-wall numerals. Nothing else.
 
 ## ✅ DONE
 

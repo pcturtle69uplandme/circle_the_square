@@ -4,3 +4,9 @@ __pycache__/
 *.log
 clips/temp_*.mp4
 frames/
+
+# photoreal (pre-pivot) videos - kept locally, not in the repo
+clips/OPENING_*.mp4
+clips/ACTION_TRAILER_MASTER_60S.mp4
+clips/PAPER_TRAIL_TRAILER_MASTER_78S.mp4
+clips/SMALL_STAKES_TRAILER_MASTER_60S.mp4

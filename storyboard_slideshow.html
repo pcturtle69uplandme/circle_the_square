@@ -86,9 +86,12 @@
   }
 
   .bubble-layer {
-    position: absolute; left: 0; right: 0; bottom: 0; padding: 16px;
-    display: flex; justify-content: center; pointer-events: none;
+    position: absolute; inset: 0; padding: 16px;
+    display: flex; align-items: flex-start; justify-content: center; pointer-events: none;
   }
+  .bubble-layer.pos-left { justify-content: flex-start; }
+  .bubble-layer.pos-right { justify-content: flex-end; }
+  .bubble-layer.pos-bottom { align-items: flex-end; }
   .bubble {
     max-width: 82%; background: #fdfaf3; color: #1a1a1a; border-radius: 18px;
     padding: 12px 18px; font-size: 0.95rem; line-height: 1.4; position: relative;
@@ -133,6 +136,17 @@
   .counter b { color: var(--text); }
 
   .shot-info { text-align: center; font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; }
+
+  .bubble-pos {
+    display: flex; justify-content: center; gap: 6px; margin-top: 10px;
+  }
+  .pos-btn {
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text-muted);
+    padding: 5px 12px; border-radius: 999px; font-size: 0.72rem; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pos-btn:hover { color: var(--text); border-color: var(--gold); }
+  .pos-btn.active { background: var(--orange); color: #fff; border-color: var(--orange-light); }
 
   .thumbs {
     display: flex; gap: 6px; overflow-x: auto; padding: 14px 2px 4px; margin-top: 8px;
@@ -184,6 +198,16 @@
         <div class="path" id="placeholderPath">storyboard-frames/F01.jpg</div>
       </div>
       <div class="bubble-layer" id="bubbleLayer"></div>
+    </div>
+
+    <div class="bubble-pos" id="bubblePosH">
+      <button class="pos-btn" data-axis="h" data-pos="left">&#9664; Left</button>
+      <button class="pos-btn" data-axis="h" data-pos="center">Center</button>
+      <button class="pos-btn" data-axis="h" data-pos="right">Right &#9654;</button>
+    </div>
+    <div class="bubble-pos" id="bubblePosV">
+      <button class="pos-btn" data-axis="v" data-pos="top">&#9650; Above head</button>
+      <button class="pos-btn" data-axis="v" data-pos="bottom">Lower &#9660;</button>
     </div>
 
     <div class="controls">
@@ -372,11 +396,44 @@ function renderFrame() {
   }
   bubbleLayer.appendChild(bubble);
 
+  const pos = getBubblePos(f.id);
+  let cls = "bubble-layer";
+  if (pos.h !== "center") cls += " pos-" + pos.h;
+  if (pos.v !== "top") cls += " pos-" + pos.v;
+  bubbleLayer.className = cls;
+  document.querySelectorAll("#bubblePosH .pos-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.pos === pos.h);
+  });
+  document.querySelectorAll("#bubblePosV .pos-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.pos === pos.v);
+  });
+
   document.getElementById("prevBtn").disabled = idx === 0;
   document.getElementById("nextBtn").disabled = idx === frames.length - 1;
 
   renderThumbs();
 }
+
+function getBubblePos(frameId) {
+  const raw = localStorage.getItem("bubblePos_" + frameId);
+  if (!raw) return { h: "center", v: "top" };
+  try { return JSON.parse(raw); } catch (e) { return { h: "center", v: "top" }; }
+}
+function setBubblePos(frameId, axis, value) {
+  const pos = getBubblePos(frameId);
+  pos[axis] = value;
+  localStorage.setItem("bubblePos_" + frameId, JSON.stringify(pos));
+}
+
+document.querySelectorAll(".pos-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const frames = visibleFrames();
+    const f = frames[idx];
+    if (!f) return;
+    setBubblePos(f.id, btn.dataset.axis, btn.dataset.pos);
+    renderFrame();
+  });
+});
 
 function renderAll() {
   renderTabs();

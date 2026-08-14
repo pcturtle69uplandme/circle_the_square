@@ -161,7 +161,36 @@ crossfade failure mode; describe the physical motion between them, don't just as
 - **Download hits a native Windows save dialog** automation can't drive — use the clipboard bypass
   or grab the media URL directly (see `flow_download_images.py` for the URL pattern).
 
-## 5. Sources
+## 5. Reference-image & credit limits (web research, verified 2026-08-14)
+
+- **Ingredients panel = 3 upload slots** (Subject / Scene / Style) — this is the real ceiling for
+  Flow's consumer Ingredients-to-Video feature. Third-party claims of "4 reference images" refer
+  to Vertex AI's separate API-only reference-image feature, not Flow's UI — don't confuse them.
+- **The Character/audio rule holds up against fresh research.** A saved Flow Character bundles
+  visuals *and* an assigned voice profile (Google's own Character-creation docs confirm the
+  pairing). Veo supports exactly one audio ingredient per generation, so **only one saved
+  Character entity can go into a single Veo Ingredients-mode take** if you want it to speak —
+  matches our 2026-08-12 in-app finding above. The other 1–2 ingredient slots can still hold
+  non-Character images (a location plate, a style ref, a plain uncast photo) without triggering
+  the audio conflict — Google's own prompting guide shows a two-person dialogue take built this
+  way (raw reference images, not saved Characters).
+- **Credits are monthly, not daily** — supersedes the "daily reset" note in
+  `VIDEO_GENERATION_WORKFLOW.md`, which was written for the older Veo 2 free tier.
+  **Google AI Pro** (this project's subscription, no API key/billing) = **1,000 Flow
+  credits/month**. AI Ultra ($100/mo) = 10,000/month at roughly half the per-video cost below.
+- **Per-generation cost, 4–8s clip:**
+
+  | Tier | Credits (AI Pro) | Credits (AI Ultra) |
+  | :--- | :--- | :--- |
+  | Veo 3.1 Lite | ~10 | ~5 |
+  | Veo 3.1 Fast (project default) | ~20 | ~10 |
+  | Veo 3.1 Quality | ~100 | — |
+
+  At Fast/x1 (this project's locked setting — see §4), 1,000 credits/month ≈ **~50 Veo 3.1 Fast
+  8-second clips**. The 19-shot queue in `VIDEO_GENERATION_WORKFLOW.md` costs ~380 credits at one
+  take per shot, leaving headroom for rerolls without exhausting the monthly allowance.
+
+## 6. Sources
 
 - [Veo 3.1 Prompting Guide — Pixel Dojo](https://pixeldojo.ai/guides/veo-3-1-prompting-guide)
   (mode playbook: i2v, references, first/last frame; name each reference's role)
@@ -173,3 +202,13 @@ crossfade failure mode; describe the physical motion between them, don't just as
   (3-part prompt: restate anchors, define transition path, constrain style/timing/audio)
 - Our own: `TITLE_SEQUENCE_PLAN.md` §1 (Frames vs Ingredients tradeoff, 1-audio-ingredient rule),
   `HANDOVER.md` §6, `CARTOON_BUILDING_TRAILER_PLAN.md` §10.
+- [Manage your Google Flow credits — Google Flow Help](https://support.google.com/flow/answer/16526234?hl=en)
+  (monthly credit allowance by plan, per-generation costs by Veo 3.1 tier)
+- [Bringing new Veo 3.1 updates into Flow — Google Blog](https://blog.google/innovation-and-ai/products/veo-updates-flow/)
+- [Ultimate prompting guide for Veo 3.1 — Google Cloud Blog](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1)
+  (multi-character dialogue via raw reference images, not saved Characters)
+- [Veo 3.1 Ingredients to Video guide 2026 — veo3ai.io](https://www.veo3ai.io/blog/veo-3-1-ingredients-to-video-guide-2026)
+  (3-slot Subject/Scene/Style panel)
+- [Mastering Google Flow: Character & Avatar Creation — Kartaca](https://kartaca.com/en/mastering-google-flow-the-ultimate-guide-to-character-avatar-creation/)
+  (Character entities bundle visuals + an assigned voice profile)
+- [Google Veo 3.1 Ingredients to Video Update — CineD](https://www.cined.com/google-veo-3-1-ingredients-to-video-update-adds-native-vertical-format-4k-upscaling-and-enhanced-character-consistency/)

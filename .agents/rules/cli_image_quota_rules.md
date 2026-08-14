@@ -1,5 +1,9 @@
 # 🖼️ IMAGE GENERATION — ROUTES, QUOTA & FILTER RULES
 
+> This file covers **images only**. For video: **Google Flow / Veo 3.1 (cloud) only** — local video
+> generation (WAN 2.2 via ComfyUI) was tried 2026-08-13 and rejected as too slow. Do not re-suggest a
+> local video route. Full detail in `HANDOVER.md` §6 "Video generation route — settled 2026-08-13".
+
 ## 🎨 STYLE IS CARTOON — applies to every route below
 Every character and location image for this project renders as **stylised British sitcom comic art**,
 never photoreal. Paste the style anchor from `CARTOON_CAST_BIBLE.md` into every prompt.

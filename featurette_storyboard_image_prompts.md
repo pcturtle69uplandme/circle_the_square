@@ -65,15 +65,17 @@
 | `@dev` | `character-refs/dev_osei_cartoon_sheet.jpg` | Character — junior analyst, background |
 | `@tomasz` | `character-refs/tomasz_wojcik_cartoon_sheet.jpg` | Character — facilities, background |
 
-**Locations** — ⚠️ these are the **photoreal-era** sheets. Cartoon replacements are pending; see
-`LOCATION_PLATE_SHOT_LIST.md` (L07–L12 cover these interiors). Until those land, attach the sheet
-below **for architecture only** and let the cartoon style anchor override its rendering.
+**Locations** — ✅ **cartoon plates are done** (2026-08-14 correction — this table previously pointed
+at stale photoreal-era sheets and called the cartoon versions "pending"; they've been done since
+2026-08-11/12, see `LOCATION_PLATE_SHOT_LIST.md` L07–L12 and `PLATES_MANIFEST.md`). Attach the
+**locked plate** below to every frame in that scene — same background in every generation — rather
+than re-describing the room from scratch, or the architecture will drift frame to frame.
 
 | Tag | File | Type |
 |---|---|---|
-| `@office` | `location-refs/jan_office_location_sheet.jpg` | Location (Scene 1) → cartoon L10 pending |
-| `@openplan` | `location-refs/open_plan_floor_location_sheet.jpg` | Location (Scene 2) → cartoon L09 pending |
-| `@canteen` | `location-refs/canteen_location_sheet.jpg` | Location (Scene 3) → cartoon L11 pending |
+| `@office` | `location-refs/cartoon-plates/L10_jans_office.jpg` | Location (Scene 1) — triangle wall, walnut desk, orange cushion, glazed partition; skyline bug fixed 2026-08-11 (low-rise Cambridge through the window, not London) |
+| `@openplan` | `location-refs/cartoon-plates/L09_open_plan_triangle_baffles.jpg` | Location (Scene 2) — desk rows, red/white triangle acoustic baffles |
+| `@canteen` | `location-refs/cartoon-plates/L11_canteen_counter.jpg` | Location (Scene 3) — stainless servery, pastry trays, timber-fronted counter |
 
 > ✅ **Maureen now has a sheet.** F47/F48/F51 previously told you to let the model invent a canteen
 > worker — don't. Attach `@maureen` so she stays consistent across her three frames.
@@ -84,7 +86,7 @@ below **for architecture only** and let the cartoon style anchor override its re
 > Paste into EVERY still prompt.
 
 ```
-Stylised British sitcom comic art, clean bold line art, flat muted colour palette, expressive caricature, cel-shaded. NOT photorealistic. Single still frame, not video. 2.39:1 widescreen crop. No visible real-world branding or crests. Character appearance must exactly match the attached @-tagged reference images — do not invent or alter appearance, age, or wardrobe colour beyond what this prompt specifies as a state change (e.g. shirt off, dishevelled). Location architecture must match the attached location reference. Absolutely NO text, NO speech bubbles, NO captions, NO labels, NO sound effects, NO lettering of any kind anywhere in the image.
+Stylised British sitcom comic art, clean bold line art, flat muted colour palette, expressive caricature, cel-shaded. NOT photorealistic. Single still frame, not video. 2.39:1 widescreen crop. No visible real-world branding or crests. Character appearance must exactly match the attached @-tagged reference images — do not invent or alter appearance, age, or wardrobe colour beyond what this prompt specifies as a state change (e.g. shirt off, dishevelled). The desk, chairs, shelving, wall pattern and every piece of furniture must exactly match the attached location reference image in design, colour and position — do not redesign, resize, recolour or reposition any furniture, and do not add people or objects that are not in the reference. Location architecture must match the attached location reference. Absolutely NO text, NO speech bubbles, NO captions, NO labels, NO sound effects, NO lettering of any kind anywhere in the image.
 ```
 
 **Continuity rules that ride along with the anchor:**
@@ -93,6 +95,11 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 - **The building is low-rise Cambridge, not London.** No Shard, no Gherkin, no Tower Bridge, no skyline.
 - **House accent** burnt orange `#B0381F` on every PRISM lanyard.
 - Flow renders **16:9**, not 2.39:1. Crop after, or accept it.
+- **Furniture drifts when a shot moves closer on one character** (found 2026-08-14, F02): a wide shot and a closer shot of the *same room* can render a completely different desk, chair, or layout even with the same location reference attached, because the model reinvents background it can no longer see as clearly. Always name the specific furniture pieces in the prompt (not just "the office") and state their attached-reference position explicitly, not just "must match." Check furniture position against the previous approved frame in the same scene before approving, not just the character.
+- **Rare total-miss failure mode** (found 2026-08-14, F02 retry): occasionally a generation ignores every attached reference entirely — wrong character, wrong room, wrong style — despite chips showing attached in the composer. Not a prompt problem; just reroll. Trash the failed take in Flow (thumbnail → trash icon) so it doesn't clutter the asset picker.
+- **Consistency check before approving any frame** (found 2026-08-14, F02 v2): after generating, before downloading, compare the new frame against the most recently approved frame *in the same location* for every shared background detail visible in both — not just the obvious anchors (desk, wall, character). This includes small hardware like door/partition handles, window mullions, shelf contents. F02's second take dropped the glazed partition and its door handle entirely because the prompt said "do not show the glazed partition" to keep the shot tight — excluding an element entirely is not the same as rendering it consistently small at the frame edge. If a previous approved frame shows an element anywhere in frame, a tighter crop should still show whatever sliver of it falls inside the new frame boundary, matching its design exactly, rather than omitting it outright. Reroll if a comparison turns up a mismatch, however small.
+- **Text alone doesn't lock exact crop/zoom between two "tight on the same character" shots** (found 2026-08-14, F04): F02 and F04 used near-identical wording ("tight medium close-up on Jan... desk and wall only") but rendered different zoom levels — F04 pulled back enough to reveal the bookcase and a plant that F02 didn't show. When a shot needs to match a *specific* previous frame's crop, not just "the same room," attach that previous approved frame itself as an extra image reference (alongside the Character and location plate) and say so explicitly in the prompt — e.g. "match the exact framing and zoom level of the attached previous frame." Wording describes content; only an image reference locks composition.
+- **Wide vs. tight framing must be consistent with who's actually in the scene** (found 2026-08-14, F02): if the shot still shows the *whole room* (both side walls, window, glass partition edge to edge), every character present in the scene at that point must be visible in it — a wide shot missing a character who's still in the room reads as a continuity error, not a stylistic choice. Excluding a present character is only correct in a shot that's genuinely tight (desk + back wall + the one character, not the full room). When a prompt says "closer" or "MCU" on one character, say explicitly what the frame should and shouldn't show (e.g. "tight on Jan, his desk and the back wall only — do not show the sofa, window or glass partition") rather than trusting "closer" alone, which the model tends to render as only a mild push-in on the same wide framing.
 
 ---
 
@@ -100,9 +107,9 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 
 | Frame | Shot | Scene | Beat | Status |
 |---|---|---|---|---|
-| F01 | S01 | 1 | Wide establishing — Christina enters, greets Jan | ⬜ |
-| F02 | S01 | 1 | Jan sighs — "Barely..." | ⬜ |
-| F03 | S02 | 1 | Christina pitches — "I have an idea..." | ⬜ |
+| F01 | S01 | 1 | Wide establishing — Christina enters, greets Jan | ✅ |
+| F02 | S01 | 1 | Jan sighs — "Barely..." | ✅ |
+| F03 | S02 | 1 | Christina pitches — "I have an idea..." | ✅ |
 | F04 | S02 | 1 | Jan — "I'm listening." | ⬜ |
 | F05 | S02 | 1 | Christina explains breakfast-meeting concept | ⬜ |
 | F06a | S03 | 1 | Jan enthused, steepled fingers | ⬜ |

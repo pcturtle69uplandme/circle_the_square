@@ -185,6 +185,16 @@ The real photos are already uploaded to Flow — see the **Uploads** tab in the 
 - **`gen_image.py` on Gemini is blocked** — prepay credits depleted. Do not waste time on it.
 - Do not suggest buying another hosted engine to escape content filters. Most carry comparable policy.
 
+**Video generation route — settled 2026-08-13**
+- **Local video generation (WAN 2.2, run through ComfyUI) was tried and abandoned — too slow to be
+  usable.** Test case: `T25_group_photo` regenerated locally as `T25_group_photo_wan22_seed20260813_49f.mp4`
+  plus QC frames in `preview_frames/wan22/`; deleted 2026-08-14 once the user confirmed the render time
+  wasn't worth it. **Do not suggest local WAN 2.2 (or another local video model) as a route — it's been
+  tested and rejected on speed, not quality.** Video generation stays on **Google Flow / Veo 3.1** (cloud,
+  subscription-based, no API key) — see `FLOW_CONSISTENCY_PROMPTING_GUIDE.md` and §0 above for credits/limits.
+  Local generation is still fine for **images** (CLI `generate_image`, per the quota rules below) and for
+  audio (MusicGen, Qwen3-TTS) — the rejection is video-specific.
+
 **Machine-specific — will differ on a new machine**
 - `gen_image.py` and `fal_key.py` live at **`C:\kontitemp\ai\`**, one level *above* the repo, and are
   **not in version control**. They will not exist after a fresh clone.

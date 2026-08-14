@@ -55,6 +55,18 @@
 
 ---
 
+## ❌ TOOL 2b — Local Video Generation (WAN 2.2 via ComfyUI) — TRIED, REJECTED
+**Tried**: 2026-08-13, test case `T25_group_photo` (group-photo shot re-rendered locally)
+
+| Capability | Detail |
+| :--- | :--- |
+| **Result** | Ran, but render time was too slow to be usable for a 64-shot episode |
+| **Verdict** | ❌ **Do not use for video.** Deleted the test render and QC frames 2026-08-14. |
+| **Still fine for** | Local generation remains the default for **audio** (MusicGen, Qwen3-TTS below) — the rejection is video-specific, not "avoid local tools" generally |
+| **Video stays on** | Google Flow / Veo 3.1 (Tool 2 above) — cloud, subscription-based, no per-generation wait |
+
+---
+
 ## 🎙️ TOOL 3 — Qwen3-TTS (Local GPU — Always Available)
 **Access via**: ComfyUI at `C:\ai\ComfyUI\`
 
@@ -83,8 +95,13 @@
 | Tool | State | Resets |
 | :--- | :--- | :--- |
 | 🟢 **Meta MusicGen Large (3.3B)** | **PERMANENT DEFAULT** | No quota |
-| 🟢 Gemini Flash Image | AVAILABLE | Daily reset |
-| 🟢 Veo 3.1 Video | AVAILABLE | Daily reset |
+| 🟢 Gemini Flash Image (CLI `generate_image`) | AVAILABLE | **12 images per rolling 4hrs** (corrected — not daily; see `.agents/rules/cli_image_quota_rules.md`) |
+| 🟢 Veo 3.1 Video (Flow) | AVAILABLE | **1,000 Flow credits/month** on AI Pro, not daily (corrected — see `FLOW_CONSISTENCY_PROMPTING_GUIDE.md` §5) |
+| ❌ Local Video (WAN 2.2) | **REJECTED 2026-08-13** — too slow | N/A |
 | 🟢 Qwen3-TTS (Local) | AVAILABLE | No quota |
 | 🟢 Gemini Text / CLI | AVAILABLE | No quota |
 | 🟢 Git / GitHub | AVAILABLE | No limit |
+
+> ⚠️ This file was last fully verified 2026-08-09; the two "corrected" rows above were fixed
+> 2026-08-14 after fresh research. Cross-check against `FLOW_CONSISTENCY_PROMPTING_GUIDE.md` and
+> `HANDOVER.md` before trusting anything else here — this doc has drifted before.

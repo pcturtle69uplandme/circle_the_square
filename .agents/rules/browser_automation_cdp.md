@@ -43,6 +43,46 @@ scripts — Flow's UI selectors drift and you need to see state to recover.
 | `cdp_save_canvas.js <out.png> [idx]` | Extract the editor's `<canvas>` pixel buffer directly, bypassing Chrome's download manager (see below) |
 | `cdp_downloads_check2.js` | List Chrome's download-manager entries (name/state) via `chrome://downloads` shadow DOM |
 | `cdp_downloads_retry.js` | Click Retry on any deleted download entries (not reliable — see below) |
+| `cdp_key.js <key> ` | Press a single key (e.g. `Escape`) in the page |
+| `cdp_clear_composer.js [out.png]` | Click the composer, Ctrl+A, Backspace |
+| `cdp_append.js "<text>" [out.png]` | Click composer, Ctrl+End, type — use to continue text after a partial/interrupted type instead of retyping from scratch |
+| `cdp_hover.js x y [out.png]` | Move the mouse to CSS-pixel coords without clicking, then screenshot — use to reveal hover-only UI (e.g. a tile's favorite/menu icons) |
+
+## Composer coordinates are CSS pixels, not screenshot pixels (found 2026-08-15, F19)
+Every `cdp_click_coord.js`/`cdp_zoom.js` coordinate is in **CSS pixels** (`getBoundingClientRect()`
+space), but a screenshot PNG is `devicePixelRatio` times bigger (1.25x observed at a 1603×986 viewport,
+i.e. a 2004×1233 PNG). Estimating a click point by eye off the PNG and passing it straight through is
+the single most common cause of "click landed on the wrong element" in this whole workflow — it looks
+like it should work, silently hits a neighboring element instead, and doesn't error. Two ways to avoid
+it: (1) divide your on-image pixel estimate by the DPR (`cdp_eval.js "({vw: window.innerWidth, vh:
+window.innerHeight, dpr: window.devicePixelRatio})"` to get the exact factor for the current window),
+or (2) skip estimation entirely and pull the real coordinates from the DOM, e.g.
+`cdp_eval.js "(() => { const r = document.querySelector('SELECTOR').getBoundingClientRect(); return {x: Math.round(r.x+r.width/2), y: Math.round(r.y+r.height/2)} })()"`
+— option 2 is more reliable whenever the target has a stable selector (composer input, a named button).
+
+## The asset-attach modal has its own internal tab bar — don't text-match "Characters" (found 2026-08-15, F19)
+The "+" attach modal has its own left-hand tab list (All/Images/Videos/Voices/Characters/Uploads)
+that **visually overlaps** the app's persistent left nav, which has the same labels. `cdp_click.js
+"Characters"` matches the outer nav link first and navigates the whole page away from the composer,
+silently dropping any chips already attached (though re-opening "+" afterwards does still show them,
+so nothing is lost — just extra round trips). Use coordinates (or a selector scoped to the modal)
+for the modal's internal tabs instead of text-matching a label that also exists outside the modal.
+Likewise, clicking a character's name inside the modal's Characters list can hit the **background
+library tile** instead of the modal row (same name, same text) and navigate into that character's
+full edit page — happened twice in a row here. Verify with a screenshot that you're still in the modal
+(not navigated to `.../character/<id>`) before clicking "Add to Prompt".
+
+## Typing a literal "@" in the composer hijacks the rest of your keystrokes (found 2026-08-15, F19)
+Flow's composer treats `@` as the start of an inline mention — as soon as it's typed, an autocomplete/
+search overlay opens and **steals subsequent keystrokes into its own search box**, not the composer.
+A long `cdp_typeraw.js` call containing `@jan` typed the first ~80% of the prompt fine, then silently
+diverted the rest into the mention picker's search field (which showed "No results found" for the
+diverted tail). The prompt in the composer ends up truncated with no error. Since Character identity is
+already locked by attaching the Character entity via the "+" picker (see above), there's no need to
+also type `@name` in the prose — write "Jan" / "he" instead and avoid literal `@` in typed text
+entirely. If you do need the real mention feature, press `Escape` (`cdp_key.js Escape`) to dismiss the
+popup immediately after the `@`, then continue typing plain text — do not try to type through it in one
+long `keyboard.type()` call.
 
 All scripts pick `ctx.pages().find(p => p.url().includes('labs.google'))`, so it's safe to have other
 tabs open in the same profile.

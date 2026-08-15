@@ -39,6 +39,10 @@ scripts — Flow's UI selectors drift and you need to see state to recover.
 | `cdp_click_coord.js <x> <y> [out.png]` | Click at pixel coords — use for icon-only buttons (download, trash, asset thumbnails) that have no matchable text |
 | `cdp_type.js "<text>" [out.png]` | Clear and type into the composer box (tries contenteditable/.ProseMirror/textarea selectors) |
 | `cdp_eval.js "<js expr>"` | Run arbitrary JS in the page, prints JSON — use to list `<img>` srcs, check for error banners, etc. |
+| `cdp_zoom.js x y w h [out.png]` | Screenshot a cropped region (CSS-pixel coords, not the raw PNG's device-scaled pixels — divide your on-image estimate by the page's device scale factor, e.g. 1.25 for a 1600-wide viewport rendering at 2000px) — use to inspect small details (badges, papers) for stray lettering |
+| `cdp_save_canvas.js <out.png> [idx]` | Extract the editor's `<canvas>` pixel buffer directly, bypassing Chrome's download manager (see below) |
+| `cdp_downloads_check2.js` | List Chrome's download-manager entries (name/state) via `chrome://downloads` shadow DOM |
+| `cdp_downloads_retry.js` | Click Retry on any deleted download entries (not reliable — see below) |
 
 All scripts pick `ctx.pages().find(p => p.url().includes('labs.google'))`, so it's safe to have other
 tabs open in the same profile.
@@ -65,6 +69,29 @@ launches (cookies persist in `C:\ai\.chrome_playwright_profile`).
    at 1K Original size (`cdp_click_coord.js` on the download icon → "1K Original size").
 8. Move/rename the downloaded file into `storyboard-frames/<ID>.jpg`, tick the tracker in
    `featurette_storyboard_image_prompts.md`.
+
+## Download-manager auto-deletion (found 2026-08-15, F18)
+Clicking Flow's download-size menu (`cdp_click_coord.js` on the "1K Original size" / "2K Upscaled" row)
+can silently fail: Chrome's download manager scans the blob download for malware and **deletes it**
+before it reaches `Downloads\`, with no error surfaced to the page. Check `chrome://downloads` after any
+download click, not just the Downloads folder — a "Deleted" state there confirms this happened.
+`cdp_downloads_check2.js` reads the shadow-DOM download list (name/state); `cdp_downloads_retry.js`
+clicks Retry on any deleted entries, but retry does not reliably work either.
+
+**Don't fight the scanner** (it's a legitimate Chrome security feature, not a bug to bypass) — instead
+avoid the download manager path entirely:
+- If a download **did** land in `Downloads\` (check `chrome://downloads` for a non-"Deleted" state, or
+  just look for a new file), just use it — no need to re-derive resolution: F01–F17 in this project are
+  all **2752×1536**, and both "1K Original size" and "2K Upscaled" have produced exactly that resolution
+  in practice, so don't assume a "2K" filename means a mismatched/wrong-tier asset — verify by comparing
+  pixel dimensions (`python -c "from PIL import Image; print(Image.open('x.jpg').size)"`) against an
+  already-approved frame instead of trusting the label.
+- If nothing survives the scan, fall back to `cdp_save_canvas.js <out.png> [canvas_index]` — the Flow
+  editor renders the main image on a `<canvas>` element (this is also *why* the claude-in-chrome
+  extension hangs on this page, see top of this file), so `canvas.toDataURL()` extracts it directly with
+  no Chrome download path involved at all. Caveat: this grabs the on-screen **display buffer**, which
+  came out at 1325×739 in one test — lower-res than the real asset — so prefer a real download and only
+  use this as a last resort, then upscale/regenerate rather than shipping a soft frame.
 
 ## Cross-agent handoff
 This complements [`cli_image_quota_rules.md`](cli_image_quota_rules.md) §0b: `agy` runs the CLI

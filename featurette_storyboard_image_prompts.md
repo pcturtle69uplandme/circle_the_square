@@ -39,6 +39,41 @@
 - Multi-character frames need **"both must appear together in this one wide frame"** stated explicitly, or Flow ignores the composition.
 - **Download is two steps**: the download icon, then "1K Original size".
 
+### 🧪 TAKE QA PROCESS — picking the keeper from an x2 pair (added 2026-08-14)
+> Flow image generations run **x2**, so every frame produces two candidate takes. Never pick by
+> first impression — score both against this checklist, in this order, and keep the higher scorer.
+> A take that fails any **HARD** check is dead regardless of anything else. Reroll if both fail.
+
+**HARD checks (instant reject):**
+1. **Script beat** — does the take actually show the frame's action/expression from the prompt block?
+   (Learned 2026-08-14: an F02 roll framed "only Jan" when the script says "same framing" as the
+   F01 two-shot — Christina must stay in frame. Check WHO is in frame against the script, not just the lead's pose.)
+2. **Identity** — each character matches their saved Character sheet (face, hair, build, wardrobe, no
+   invented accessories).
+3. **No lettering** — no text, captions, signage, speech bubbles anywhere (badge squiggles are fine).
+4. **Style** — same line weight, palette and shading as the scene's master frame (F01 for Scene 1).
+
+**SOFT checks (score each 0–2: 0 = wrong, 1 = close, 2 = exact):**
+5. **Furniture & hardware vs master frame** — desk (walnut top, dark modesty panel, copper A-leg,
+   left pedestal), bookcase + plant, sofa + orange cushion, partition with **short horizontal dark
+   lever handle** (not tall paired pulls — drift caught 2026-08-14), window view (low-rise Cambridge,
+   no skyline).
+6. **Framing vs prompt** — the crop/zoom the prompt asked for, and any explicitly excluded elements
+   actually excluded (or edge-slivers rendered consistently, per the F02 rule below).
+7. **Props & wardrobe state** — items carried forward from the previous frame (e.g. Christina's
+   tablet) or the state change explicitly intended (found 2026-08-14: F05 dropped the tablet).
+8. **Performance** — expression/gesture reads the dialogue beat at a glance.
+
+**Procedure:** before generating, print the frame's **script spec card** (shot ID, beat, framing,
+dialogue line, continuity state, who must be in frame, props carried forward) and get it confirmed —
+this is the checklist the takes are then scored against (user rule, 2026-08-14: confirm the details
+against the script BEFORE generating, not just the image after). Then open both takes full size,
+score SOFT checks for each, keep the higher total; on a tie prefer the better HARD-check margin,
+then the stronger performance. Trash the loser in Flow immediately so it can't pollute later asset
+picks. **Rename the keeper in Flow to its frame ID** (edit page → title field at top-left; works on
+generated images, NOT on uploads — uploads keep their filename, so upload masters with the right
+name, e.g. `F01.jpg`). Only then download the keeper at **1K Original size** to `storyboard-frames/<ID>.jpg` and tick the tracker.
+
 ---
 
 ## 🏷️ @TAG ATTACHMENT LEGEND
@@ -77,6 +112,15 @@ than re-describing the room from scratch, or the architecture will drift frame t
 | `@openplan` | `location-refs/cartoon-plates/L09_open_plan_triangle_baffles.jpg` | Location (Scene 2) — desk rows, red/white triangle acoustic baffles |
 | `@canteen` | `location-refs/cartoon-plates/L11_canteen_counter.jpg` | Location (Scene 3) — stainless servery, pastry trays, timber-fronted counter |
 
+> 🔒 **MASTER FRAME RULE (user rule, 2026-08-14): `storyboard-frames/F01.jpg` is the Scene 1 master
+> and is kept permanently in the Flow project** (Uploads, `F01.jpg` — never trash it). Attach it to
+> EVERY Scene 1 generation alongside the Character entities: it locks furniture design (walnut desk
+> with dark modesty panel, copper A-leg, left pedestal), the black-and-white triangle wall, the dark
+> three-shelf bookcase + plant, the sofa with orange cushion, and the glazed partition whose door
+> handle is a **short horizontal dark lever** (not tall paired pulls — that drift killed the first
+> F03/F05 takes). Scenes 2 and 3 get the same treatment once their first frames are approved:
+> that approved frame becomes the scene master and stays in Flow.
+
 > ✅ **Maureen now has a sheet.** F47/F48/F51 previously told you to let the model invent a canteen
 > worker — don't. Attach `@maureen` so she stays consistent across her three frames.
 
@@ -100,6 +144,10 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 - **Consistency check before approving any frame** (found 2026-08-14, F02 v2): after generating, before downloading, compare the new frame against the most recently approved frame *in the same location* for every shared background detail visible in both — not just the obvious anchors (desk, wall, character). This includes small hardware like door/partition handles, window mullions, shelf contents. F02's second take dropped the glazed partition and its door handle entirely because the prompt said "do not show the glazed partition" to keep the shot tight — excluding an element entirely is not the same as rendering it consistently small at the frame edge. If a previous approved frame shows an element anywhere in frame, a tighter crop should still show whatever sliver of it falls inside the new frame boundary, matching its design exactly, rather than omitting it outright. Reroll if a comparison turns up a mismatch, however small.
 - **Text alone doesn't lock exact crop/zoom between two "tight on the same character" shots** (found 2026-08-14, F04): F02 and F04 used near-identical wording ("tight medium close-up on Jan... desk and wall only") but rendered different zoom levels — F04 pulled back enough to reveal the bookcase and a plant that F02 didn't show. When a shot needs to match a *specific* previous frame's crop, not just "the same room," attach that previous approved frame itself as an extra image reference (alongside the Character and location plate) and say so explicitly in the prompt — e.g. "match the exact framing and zoom level of the attached previous frame." Wording describes content; only an image reference locks composition.
 - **Wide vs. tight framing must be consistent with who's actually in the scene** (found 2026-08-14, F02): if the shot still shows the *whole room* (both side walls, window, glass partition edge to edge), every character present in the scene at that point must be visible in it — a wide shot missing a character who's still in the room reads as a continuity error, not a stylistic choice. Excluding a present character is only correct in a shot that's genuinely tight (desk + back wall + the one character, not the full room). When a prompt says "closer" or "MCU" on one character, say explicitly what the frame should and shouldn't show (e.g. "tight on Jan, his desk and the back wall only — do not show the sofa, window or glass partition") rather than trusting "closer" alone, which the model tends to render as only a mild push-in on the same wide framing.
+- **No cup on Jan's desk** (found 2026-08-14, F02): F01's desk is bare and Jan's hands are empty — the model invented a white cup in F02 and it had to be edited out. Never let a prompt imply a prop that isn't in the master frame ("still holding the cup" did exactly this).
+- **Screen-direction continuity (eyeline match)** (user rule, 2026-08-14, F03): a character keeps the same screen direction across consecutive shots in a dialogue exchange. If they stand frame-right facing frame-LEFT toward the person they're addressing in the two-shot, their close-up must ALSO face frame-left — a close-up facing the other way flips the eyeline and breaks the cut. Check gaze/body direction against the previous approved frame before approving; score it under HARD check 1 (script beat includes staging).
+- **Camera Staging Inside Jan's Office for Reverse Shots — No Glass in Foreground** (user rule, 2026-08-15, F03): When shooting medium close-ups on Christina (F03, F05, F07, F09, F11, F13, F15, F21, F23, F25), the camera is firmly **inside the office**. The glass partition is strictly in the background **behind** her. Never allow vertical glass partition mullions, window reflections, or glass panes in the foreground between the camera and the character inside the room, as this falsely stages the character outside in the hallway. Foreground must be open and unobstructed.
+- **Reverse-Angle Spatial Geometry & No Duplicate Furniture** (user rule, 2026-08-15, F03): When shooting reverse angles looking toward the glass partition wall where Christina stands, the camera points away from Jan's desk. The background behind Christina is strictly the glazed partition and hallway beyond. NEVER allow the model to duplicate Jan's desk, chair, or the triangle acoustic wall behind Christina. There is exactly ONE desk in the entire office, positioned on Jan's side. Reverse angles must explicitly forbid duplicate furniture.
 
 ---
 
@@ -110,22 +158,22 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 | F01 | S01 | 1 | Wide establishing — Christina enters, greets Jan | ✅ |
 | F02 | S01 | 1 | Jan sighs — "Barely..." | ✅ |
 | F03 | S02 | 1 | Christina pitches — "I have an idea..." | ✅ |
-| F04 | S02 | 1 | Jan — "I'm listening." | ⬜ |
-| F05 | S02 | 1 | Christina explains breakfast-meeting concept | ⬜ |
-| F06a | S03 | 1 | Jan enthused, steepled fingers | ⬜ |
-| F06b | S03 | 1 | Jan gesturing, MBA name-drop | ⬜ |
-| F07 | S04 | 1 | Christina deadpan — "Diminishing returns..." | ⬜ |
-| F08 | S05 | 1 | Jan — "Great. Make it so." | ⬜ |
-| F09 | S05 | 1 | Christina confused — "I am sorry, what?" | ⬜ |
-| F10 | S05 | 1 | Jan — Star Trek reference | ⬜ |
-| F11 | S05 | 1 | Christina — "Shockingly no." | ⬜ |
-| F12 | S06 | 1 | Jan dismisses — "Fine, just make it happen..." | ⬜ |
-| F13 | S06 | 1 | Christina — "poorly rehearsed presentations?" | ⬜ |
-| F14 | S07 | 1 | Jan offended — "MBA from the University of --" | ⬜ |
-| F15 | S07 | 1 | Christina cuts in — "Made Up Place?" | ⬜ |
-| F16 | S07 | 1 | Jan screams — "GET OUT NOW YOU STUPID COW!" | ⬜ |
-| F17 | S08 | 1 | Christina exits calmly, door shuts | ⬜ |
-| F18 | S09 | 1 | Jan unbuttons shirt, flustered/sweating | ⬜ |
+| F04 | S02 | 1 | Jan — "I'm listening." | ✅ |
+| F05 | S02 | 1 | Christina explains breakfast-meeting concept | ✅ |
+| F06a | S03 | 1 | Jan enthused, steepled fingers | ✅ |
+| F06b | S03 | 1 | Jan gesturing, MBA name-drop | ✅ |
+| F07 | S04 | 1 | Christina deadpan — "Diminishing returns..." | ✅ |
+| F08 | S05 | 1 | Jan — "Great. Make it so." | ✅ |
+| F09 | S05 | 1 | Christina confused — "I am sorry, what?" | ✅ |
+| F10 | S05 | 1 | Jan — Star Trek reference | ✅ |
+| F11 | S05 | 1 | Christina — "Shockingly no." | ✅ |
+| F12 | S06 | 1 | Jan dismisses — "Fine, just make it happen..." | ✅ |
+| F13 | S06 | 1 | Christina — "poorly rehearsed presentations?" | ✅ |
+| F14 | S07 | 1 | Jan offended — "MBA from the University of --" | ✅ |
+| F15 | S07 | 1 | Christina cuts in — "Made Up Place?" | ✅ |
+| F16 | S07 | 1 | Jan screams — "GET OUT NOW YOU STUPID COW!" | ✅ |
+| F17 | S08 | 1 | Christina exits calmly, door shuts | ✅ |
+| F18 | S09 | 1 | Jan unbuttons shirt, flustered/sweating | ✅ |
 | F19 | S09 | 1 | Jan removes shirt, arrow revealed | ⬜ |
 | F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ⬜ |
 | F21 | S11 | 1 | Sharon glances at the arrow | ⬜ |

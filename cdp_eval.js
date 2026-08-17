@@ -9,7 +9,7 @@ async function main() {
 
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9222');
   const ctx = browser.contexts()[0];
-  const page = ctx.pages().find(p => p.url().includes('labs.google')) || ctx.pages()[0];
+  const page = ctx.pages().find(p => p.url().includes(process.env.FLOW_TAB || 'labs.google')) || ctx.pages()[0];
 
   const result = await page.evaluate(new Function(`return (${expr})`));
   console.log(JSON.stringify(result, null, 2));

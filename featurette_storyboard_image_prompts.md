@@ -174,7 +174,7 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 | F16 | S07 | 1 | Jan screams — "GET OUT NOW YOU STUPID COW!" | ✅ |
 | F17 | S08 | 1 | Christina exits calmly, door shuts | ✅ |
 | F18 | S09 | 1 | Jan unbuttons shirt, flustered/sweating | ✅ |
-| F19 | S09 | 1 | Jan removes shirt, arrow revealed | ⬜ |
+| F19 | S09 | 1 | Jan removes shirt, arrow revealed | ✅ |
 | F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ⬜ |
 | F21 | S11 | 1 | Sharon glances at the arrow | ⬜ |
 | F22 | S11 | 1 | Jan frozen, mortified | ⬜ |
@@ -395,11 +395,16 @@ Medium close-up. @jan, alone now, flustered and sweating profusely, begins unbut
 
 **F19**
 ```
-Wide still. @jan has pulled the shirt fully off, chest bared, mid-motion dropping it. [PASTE IMAGE STYLE ANCHOR HERE]
+Wide still. @jan has pulled the shirt fully off, chest bared, mid-motion dropping it. His chest and stomach hair is shaved and groomed into one large downward-pointing ARROW — wide V head across the upper chest, shaft running down the centre of the belly toward the waistband. The arrow must read instantly; it is the joke of the shot. [PASTE IMAGE STYLE ANCHOR HERE]
 ```
 🔇 *(no dialogue — silent visual gag beat)*
 
-**Continuity:** Shirt fully OFF. Comedy peak — needs to land visually.
+**Continuity:** Shirt fully OFF, and nothing left on his torso — tie and lanyard come off with the shirt
+(user rule, 2026-08-15). Comedy peak — needs to land visually.
+⚠️ **The manscaped arrow is the payoff and MUST be visible here.** It was missing from this prompt block
+until 2026-08-15 even though the tracker row says "arrow revealed" and F21 ("Sharon glances at the arrow")
+depends on it — a take with a plain bare chest fails HARD check 1. Full description in
+`featurette_prompt_engine.md` §S05.
 
 ---
 

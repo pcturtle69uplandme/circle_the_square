@@ -12,7 +12,7 @@ async function main() {
 
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9222');
   const ctx = browser.contexts()[0];
-  const page = ctx.pages().find(p => p.url().includes('labs.google') && !p.url().includes('chrome://')) || ctx.pages()[0];
+  const page = ctx.pages().find(p => p.url().includes(process.env.FLOW_TAB || 'labs.google') && !p.url().includes('chrome://')) || ctx.pages()[0];
   console.log('Using page:', page.url());
 
   const dataUrl = await page.evaluate((i) => {

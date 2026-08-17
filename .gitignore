@@ -22,3 +22,14 @@ node_modules/
 flow_*.png
 cdp_*.png
 .playwright-mcp/
+
+# Browser-automation working files - hundreds of MB of debug frames and intermediate
+# encodes, pure session noise (matches the outrun repo's rule)
+scratch/
+
+# Over GitHub's hard 100 MB per-file limit at ~207 MB each - committing them makes the
+# push fail outright, so they stay local. Both are ffmpeg assemblies of the T01-T26
+# cartoon shots in clips/cartoon/ (which ARE committed) plus the audio beds, so they can
+# be rebuilt. Putting them in the repo would require Git LFS.
+clips/CARTOON_BUILDING_TRAILER_PETTY_CASH.mp4
+clips/CARTOON_BUILDING_TRAILER_PETTY_CASH_WITH_SFX.mp4

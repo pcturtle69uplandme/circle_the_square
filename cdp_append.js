@@ -5,7 +5,7 @@ async function main() {
   const outFile = process.argv[3] || 'cdp_append.png';
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9222');
   const ctx = browser.contexts()[0];
-  const page = ctx.pages().find(p => p.url().includes('labs.google')) || ctx.pages()[0];
+  const page = ctx.pages().find(p => p.url().includes(process.env.FLOW_TAB || 'labs.google')) || ctx.pages()[0];
   const rect = await page.evaluate(() => {
     const el = document.querySelector('[contenteditable="true"]');
     const r = el.getBoundingClientRect();
@@ -16,7 +16,7 @@ async function main() {
   await page.waitForTimeout(200);
   await page.keyboard.type(text, { delay: 25 });
   await page.waitForTimeout(300);
-  await page.screenshot({ path: path.join('C:/AI/Circle the Square', outFile) });
+  await page.screenshot({ path: path.resolve(__dirname, outFile) });
   console.log('Appended, saved to', outFile);
   await browser.close();
 }

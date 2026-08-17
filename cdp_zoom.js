@@ -7,8 +7,8 @@ async function main() {
   const outFile = process.argv[6] || 'cdp_zoom.png';
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9222');
   const ctx = browser.contexts()[0];
-  const page = ctx.pages().find(p => p.url().includes('labs.google')) || ctx.pages()[0];
-  await page.screenshot({ path: path.join('C:\\AI\\Circle the Square', outFile), clip: { x, y, width: w, height: h } });
+  const page = ctx.pages().find(p => p.url().includes(process.env.FLOW_TAB || 'labs.google')) || ctx.pages()[0];
+  await page.screenshot({ path: path.resolve(__dirname, outFile), clip: { x, y, width: w, height: h } });
   console.log('Saved zoomed screenshot to', outFile);
   await browser.close();
 }

@@ -1,7 +1,10 @@
 const { chromium } = require('playwright');
 
 const USER_DATA_DIR = 'C:\\ai\\.chrome_playwright_profile';
-const FLOW_URL = 'https://labs.google/fx/tools/flow/project/f2f0d2c9-ec16-420d-98af-b495197dad08/edit/581aaf73-456f-4089-bf86-51e7b9368d44';
+// Default is the Circle the Square project; pass a URL as argv[2] for a different one, e.g.
+//   node persistent_launch.js https://labs.google/fx/tools/flow/project/<uuid>
+const FLOW_URL = process.argv[2]
+  || 'https://labs.google/fx/tools/flow/project/f2f0d2c9-ec16-420d-98af-b495197dad08/edit/581aaf73-456f-4089-bf86-51e7b9368d44';
 
 async function main() {
   console.log(`Launching persistent Chrome context at ${USER_DATA_DIR} with CDP on 9222...`);

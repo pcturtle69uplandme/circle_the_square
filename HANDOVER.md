@@ -57,6 +57,7 @@ So the 64 frames become keyframes for video rather than panels in a slideshow.
 | 64 keyframe prompts, cartoon style anchor | `featurette_storyboard_image_prompts.md` |
 | **All docs repointed to the cartoon path** (2026-08-11) | see §8 |
 | **Building Trailer Master Complete** (25 shots, 1080p) | `clips/CARTOON_BUILDING_TRAILER_FULL.mp4` |
+| **F01–F19 keyframes approved** (F19 done 2026-08-15) | `storyboard-frames/F01.jpg` … `F19.jpg` |
 
 ### ⬜ Next steps, in priority order
 
@@ -196,6 +197,14 @@ The real photos are already uploaded to Flow — see the **Uploads** tab in the 
   audio (MusicGen, Qwen3-TTS) — the rejection is video-specific.
 
 **Machine-specific — will differ on a new machine**
+- **Repo path on the current machine is `C:\kontitemp\ai\circle_the_square`**, NOT `C:\AI\Circle the Square`.
+  That stale path was hardcoded in five CDP scripts and broke every screenshot with ENOENT; fixed
+  2026-08-15 to `path.resolve(__dirname, outFile)`, which also lets you pass absolute output paths.
+  Check for the same stale path if you add new scripts.
+- **`devicePixelRatio` is 1 here**, not the 1.25 recorded in `browser_automation_cdp.md`. At a 1920×889
+  viewport the screenshot PNG is also 1920×889, so screenshot pixels and CSS pixels map 1:1 and
+  coordinates can be read straight off the image. **Re-measure after any window resize** rather than
+  trusting either number — signing in maximised the window and changed the viewport mid-session.
 - `gen_image.py` and `fal_key.py` live at **`C:\kontitemp\ai\`**, one level *above* the repo, and are
   **not in version control**. They will not exist after a fresh clone.
 - Three scripts hardcode `AI_DIR = Path(r"C:\ai\AI")`, a path that does not exist. One-line fix each.

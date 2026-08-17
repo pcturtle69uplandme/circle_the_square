@@ -84,8 +84,22 @@ entirely. If you do need the real mention feature, press `Escape` (`cdp_key.js E
 popup immediately after the `@`, then continue typing plain text — do not try to type through it in one
 long `keyboard.type()` call.
 
-All scripts pick `ctx.pages().find(p => p.url().includes('labs.google'))`, so it's safe to have other
-tabs open in the same profile.
+## Multiple Flow projects open at once — set `FLOW_TAB` (added 2026-08-15)
+All scripts pick `ctx.pages().find(p => p.url().includes(process.env.FLOW_TAB || 'labs.google'))`, so
+it's safe to have other tabs open in the same profile. With **two or more** labs.google tabs, though,
+the default match grabs whichever was opened **first** — so a second project silently gets driven
+against the wrong tab. Set `FLOW_TAB` to any substring unique to the target tab's URL (the project UUID
+is the obvious choice) for the whole session:
+
+```powershell
+$env:FLOW_TAB = '2f37a1bd-506c-4e95-8f94-ae1ca5e3b755'
+node cdp_shot.js scratch\shot.png   # now targets that project, not the first tab
+```
+
+`cdp_newtab.js [url] [out.png]` opens an extra tab in the already-running Chrome (default: the Flow
+project list at `https://labs.google/fx/tools/flow`) without touching the existing tab's state — use it
+to start a second project instead of relaunching `persistent_launch.js`, which would also drop whatever
+the first tab was mid-way through.
 
 ### 3. Auth is manual, always
 The persistent profile may not be logged into Google. **No agent may enter a Google password** —
@@ -105,6 +119,12 @@ launches (cookies persist in `C:\ai\.chrome_playwright_profile`).
 5. Poll with `cdp_shot.js` every ~10–15s until both takes render.
 6. Score takes against the QA checklist in `featurette_storyboard_image_prompts.md` (HARD checks
    then SOFT checks) — this judgment call is the agent's, not scriptable.
+   **⚠️ Read the frame's TRACKER ROW as well as its prompt block before generating (learned 2026-08-15,
+   F19).** The prompt blocks are not always complete: F19's block said only "chest bared", but the
+   tracker row said "arrow revealed" and F21 depends on Jan's manscaped chest arrow being visible.
+   Three otherwise-excellent takes were generated with a plain bare chest and all failed HARD check 1.
+   Cross-check the tracker row, the scene's continuity note, and `featurette_prompt_engine.md` for the
+   equivalent shot before writing a prompt — the prompt block alone is not the whole spec.
 7. Trash the loser (`cdp_click_coord.js` on its trash icon), rename keeper to the frame ID, download
    at 1K Original size (`cdp_click_coord.js` on the download icon → "1K Original size").
 8. Move/rename the downloaded file into `storyboard-frames/<ID>.jpg`, tick the tracker in
@@ -126,6 +146,20 @@ avoid the download manager path entirely:
   in practice, so don't assume a "2K" filename means a mismatched/wrong-tier asset — verify by comparing
   pixel dimensions (`python -c "from PIL import Image; print(Image.open('x.jpg').size)"`) against an
   already-approved frame instead of trusting the label.
+- **Best fix, found 2026-08-15 (F19): `cdp_fetch_media.js <mediaId> <out.jpg>`.** It runs `fetch()` inside
+  the page's own authenticated session against
+  `https://labs.google/fx/api/trpc/media.getMediaUrlRedirect?name=<mediaId>`, base64s the bytes back over
+  CDP and writes them with Node — so it never touches Chrome's download manager, needs no clipboard, and
+  returns the **real full-resolution asset** (unlike the canvas fallback). This is now the default way to
+  get a frame out of Flow; the download button is only worth trying first if you want Flow's own naming.
+  Get the mediaId from the open edit page with:
+  `cdp_eval.js "(() => Array.from(document.querySelectorAll('img')).filter(i=>i.src.includes('getMediaUrlRedirect')).map(i=>({id:i.src.match(/name=([^&]+)/)[1], w:Math.round(i.getBoundingClientRect().width)})).sort((a,b)=>b.w-a.w).slice(0,3))()"`
+  — the widest thumbnail is the currently-selected take. **The big picture on screen is a `<canvas>`, not
+  an `<img>`,** so don't look for the main image in the `<img>` list; the `<img>`s are all filmstrip
+  thumbnails.
+- Native generation size is **1376×768** (F01 and F19 are both this). The claim elsewhere that "F01–F17
+  are all 2752×1536" is wrong — F18 is 2752×1536 because it was upscaled, F01 is not. Check with
+  `[System.Drawing.Image]::FromFile(...)` rather than assuming.
 - If nothing survives the scan, fall back to `cdp_save_canvas.js <out.png> [canvas_index]` — the Flow
   editor renders the main image on a `<canvas>` element (this is also *why* the claude-in-chrome
   extension hangs on this page, see top of this file), so `canvas.toDataURL()` extracts it directly with

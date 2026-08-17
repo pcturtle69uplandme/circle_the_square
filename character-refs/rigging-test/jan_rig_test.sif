@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<canvas version="1.0" width="678" height="1385" xres="2834.645752" yres="2834.645752" view-box="-5.650000 11.541667 5.650000 -11.541667" antialias="1" fps="24.000" begin-time="0f" end-time="1s" bgcolor="0.000000 0.000000 0.000000 0.000000">
+  <name>Jan Peach - Front Cutout Test</name>
+  <desc>Synfig rigging pipeline test - isolated front-view cutout from jan_peach_cartoon_sheet.jpg</desc>
+  <layer type="import" active="true" exclude_from_rendering="false" version="0.1" desc="jan_front">
+    <param name="z_depth"><real value="0.0000000000"/></param>
+    <param name="amount"><real value="1.0000000000"/></param>
+    <param name="blend_method"><integer value="0"/></param>
+    <param name="tl"><vector><x>-5.650000</x><y>11.541667</y></vector></param>
+    <param name="br"><vector><x>5.650000</x><y>-11.541667</y></vector></param>
+    <param name="c"><integer value="2"/></param>
+    <param name="gamma_adjust"><real value="1.000000"/></param>
+    <param name="filename"><string>jan_front_cutout.png</string></param>
+    <param name="time_offset"><time value="0s"/></param>
+  </layer>
+</canvas>

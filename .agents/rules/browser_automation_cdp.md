@@ -1,4 +1,4 @@
-# Browser automation for Google Flow — persistent Playwright + CDP
+# Browser automation for Google Flow (and other canvas-rendered web apps) — persistent Playwright + CDP
 
 ## The problem this solves
 Claude Code's `claude-in-chrome` MCP extension (its `computer`/`screenshot`, `get_page_text`, `find`
@@ -47,6 +47,11 @@ scripts — Flow's UI selectors drift and you need to see state to recover.
 | `cdp_clear_composer.js [out.png]` | Click the composer, Ctrl+A, Backspace |
 | `cdp_append.js "<text>" [out.png]` | Click composer, Ctrl+End, type — use to continue text after a partial/interrupted type instead of retyping from scratch |
 | `cdp_hover.js x y [out.png]` | Move the mouse to CSS-pixel coords without clicking, then screenshot — use to reveal hover-only UI (e.g. a tile's favorite/menu icons) |
+| `cdp_click_type.js <x> <y> "<text>" [out.png]` | Click a CSS-pixel coord, Ctrl+A, type text, press Tab — generic for canvas-rendered form fields (no matchable DOM selector) on any site, not just Flow's composer |
+| `cdp_click_slow.js <x> <y> [out.png]` | Deliberate move→pause→down→pause→up→pause click instead of Playwright's instant `click()` — some canvas UIs (found on Rive's editor) don't register a click that fast |
+| `cdp_drag.js <x1> <y1> <x2> <y2> [out.png]` | Drag from one CSS-pixel point to another with interpolated intermediate moves — works for canvas-rendered drag targets (e.g. dragging an asset onto a Rive stage) since it's pointer-event based, not native HTML5 DnD |
+| `cdp_upload.js <x> <y> <filePath> [out.png]` | Click a coord while catching the native file-chooser event it triggers, and feed it `filePath` directly — the only way to upload a file into a canvas-rendered "Upload" control, since a real file input's native picker dialog can't be seen or clicked |
+| `cdp_set_viewport.js` | Force the page's viewport back to a fixed 1600×1000 CSS size and print the resulting `{vw, vh, dpr}` — use this if coordinates that used to work suddenly stop landing (see viewport-drift gotcha below) |
 
 ## Composer coordinates are CSS pixels, not screenshot pixels (found 2026-08-15, F19)
 Every `cdp_click_coord.js`/`cdp_zoom.js` coordinate is in **CSS pixels** (`getBoundingClientRect()`
@@ -132,6 +137,46 @@ avoid the download manager path entirely:
   no Chrome download path involved at all. Caveat: this grabs the on-screen **display buffer**, which
   came out at 1325×739 in one test — lower-res than the real asset — so prefer a real download and only
   use this as a last resort, then upscale/regenerate rather than shipping a soft frame.
+
+## This method now also drives non-Flow sites (found 2026-08-17, Rive pivot)
+The whole persistent-Chrome-plus-CDP-scripts approach is not Flow-specific — it was reused as-is to
+drive `editor.rive.app` for the cutout-rigging pivot (see `RIVE_RIGGING_PIVOT.md`). Two things differ
+per-site and need re-checking whenever you point this toolkit at something new:
+- `persistent_launch.js` takes a URL as `argv[2]` (default is the Flow project). Pass a different URL
+  for a different site: `node persistent_launch.js https://editor.rive.app/`.
+- Every `cdp_*.js` script filters tabs with `p.url().includes(process.env.FLOW_TAB || '<default>')`.
+  The newer scripts (`cdp_drag.js`, `cdp_upload.js`, `cdp_click_type.js`, `cdp_click_slow.js`,
+  `cdp_set_viewport.js`) default to `'rive.app'`; the older ones default to `'labs.google'`. With more
+  than one relevant tab open, set `FLOW_TAB` explicitly rather than trusting the per-script default.
+
+Rive's editor turned out to be **entirely canvas-rendered**, like Flow's own canvas — `cdp_eval.js`
+DOM queries (`querySelectorAll('button')`, text search on leaf elements) reliably return `[]` even for
+clearly-visible buttons like "New File". Don't waste time trying the DOM-lookup shortcut on this site;
+go straight to coordinate-based clicking.
+
+## Viewport can silently drift out from under you — always confirm scale before trusting screenshot coordinates (found 2026-08-17, Rive pivot)
+`persistent_launch.js` sets an explicit `viewport: {width:1600, height:1000}`, and on a 125%-scaled
+Windows display that should mean every screenshot is a stable 2000×1250 PNG (DPR 1.25, divide your
+on-image pixel estimate by 1.25 to get real click coordinates — same rule as the Flow composer gotcha
+above). But this is **not guaranteed to stay true for the life of the session**: anything that sends
+real OS-level input to the actual screen coordinates where this Chrome window sits — e.g. a fallback
+attempt to control a *different* window (a native desktop app) via raw `user32.dll`
+`SetCursorPos`/`mouse_event` calls, which was tried and abandoned earlier in this same session for
+Synfig Studio — can drag or resize the real Chrome window without Playwright knowing. `window.innerWidth`
+was observed to drift from 1600 to 1535×1538 mid-session with no code change in between, which silently
+invalidated every previously-measured coordinate.
+
+**Symptom**: a click that used to land (confirmed by a visible hover/selection state) stops doing
+anything at all, with no error — because the coordinate math is now based on a screenshot geometry that
+no longer matches the real page.
+
+**Fix**: before resuming coordinate-based clicking after any gap (especially after any attempt to
+control a different window on the same screen), run `cdp_set_viewport.js` to force the size back and
+print the actual current `{vw, vh, dpr}` — don't trust a value measured earlier in the session. Then
+re-derive click coordinates from a **fresh** screenshot, not a cached mental model of "the button is
+around (x, y)". Pixel-measuring the real button bounds from that fresh screenshot (crop the region,
+upscale with `Image.resize(..., Image.NEAREST)`, read pixel coordinates off the crop) is more reliable
+than eyeballing a full screenshot.
 
 ## Cross-agent handoff
 This complements [`cli_image_quota_rules.md`](cli_image_quota_rules.md) §0b: `agy` runs the CLI

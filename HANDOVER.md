@@ -6,6 +6,11 @@
 > **Read next**: **`featurette_storyboard_image_prompts.md`** ← 64 episode keyframes ·
 > `CARTOON_BUILDING_TRAILER_PLAN.md` (✅ completed master trailer cut), `CARTOON_CAST_BIBLE.md`
 
+> ⚠️ **On branch `rive-cutout-rigging-pivot`?** Read **`RIVE_RIGGING_PIVOT.md`** first — it's a
+> branch-scoped experiment (not yet adopted project-wide) replacing the Flow/Veo *character animation*
+> step with a Rive cutout/bone rig, while keeping Flow for backgrounds and keyframes unchanged. §6 below
+> ("Video generation route") still describes the settled `main`-branch approach.
+
 ---
 
 ## 1. What this project is
@@ -55,14 +60,22 @@ So the 64 frames become keyframes for video rather than panels in a slideshow.
 | **26 cartoon plates downloaded** (11 of 12 L-numbers + 6 bonus) | `location-refs/cartoon-plates/` + `PLATES_MANIFEST.md` |
 | 12-plate shot list for drone moves | `LOCATION_PLATE_SHOT_LIST.md` |
 | 64 keyframe prompts, cartoon style anchor | `featurette_storyboard_image_prompts.md` |
-| **All docs repointed to the cartoon path** (2026-08-11) | see §8 |
+| **Scene 1 Storyboard Frames Approved (F01–F17)** | `storyboard-frames/F01.jpg` through `F17.jpg` (all verified & committed) |
 | **Building Trailer Master Complete** (25 shots, 1080p) | `clips/CARTOON_BUILDING_TRAILER_FULL.mp4` |
 
-### ⬜ Next steps, in priority order
+### ⬜ Next steps, in priority order (Session 2026-08-15 Handover)
 
-1. **Generate the 64 keyframes** against the saved Flow characters and the downloaded cartoon plates.
-   The plates that used to block this are done. See `featurette_storyboard_image_prompts.md`.
-2. **Add the last 4 Flow characters**: Priya Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik.
+1. **Continue generating Scene 1 frames in Google Flow starting at Frame F18**:
+   - **F18**: Jan alone, sweating profusely, panting, unbuttoning shirt to cool down.
+   - **F19**: Jan removes shirt, baring chest, visual gag with manscaped arrow pattern.
+   - **F20**: Sharon walks in unannounced, Jan reacts in alarm.
+   - **F21–F26b**: The arrow reveal, Sharon conversation, Jan shutting venetian blinds and locking the door.
+   - Prompts, continuity flags, and attach legends are in `featurette_storyboard_image_prompts.md`.
+2. **Engines / Directives**:
+   - **Google Flow ONLY** (User directive: do not use local FLUX.2 or CLI for this run; use Google Flow via browser).
+   - Character entities: `@jan`, `@christina`, `@sharon` saved in Flow.
+   - Attach the previous approved frame (e.g. `F14.jpg`/`F16.jpg` for F18) to preserve desk/furniture/geometry.
+   - Output destination: save/download keepers at 1K Original Size to `storyboard-frames/<FRAME_ID>.jpg` and tick the tracker.
    Background roles, no voices exist for them. All four already have cartoon sheets on disk.
 4. **L04 tower detail** is the one missing plate — brick tower and glazed timber lantern box against
    a dusk sky. Everything else on the 12-plate list is done. Not needed for the building trailer.

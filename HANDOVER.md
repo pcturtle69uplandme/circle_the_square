@@ -6,10 +6,10 @@
 > **Read next**: **`featurette_storyboard_image_prompts.md`** ← 64 episode keyframes ·
 > `CARTOON_BUILDING_TRAILER_PLAN.md` (✅ completed master trailer cut), `CARTOON_CAST_BIBLE.md`
 
-> ⚠️ **On branch `rive-cutout-rigging-pivot`?** Read **`RIVE_RIGGING_PIVOT.md`** first — it's a
-> branch-scoped experiment (not yet adopted project-wide) replacing the Flow/Veo *character animation*
-> step with a Rive cutout/bone rig, while keeping Flow for backgrounds and keyframes unchanged. §6 below
-> ("Video generation route") still describes the settled `main`-branch approach.
+> 🎬 **MASTER WORKFLOW (Adopted 2026-08-17)**: Google Flow generates isolated character stencils (clean background),
+> composited with locked cartoon plates (`location-refs/cartoon-plates/`) and foreground furniture occlusion layers
+> in Rive / layered canvas (`render_multiplane_frame.py`). Eliminates background drift, furniture amnesia, and scale hallucinations.
+> All frames follow the strict HARD/SOFT Take QA checklist.
 
 ---
 

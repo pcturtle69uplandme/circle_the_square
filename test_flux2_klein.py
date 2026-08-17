@@ -20,14 +20,21 @@ try:
     pipe.to("cuda")
     print(f"Pipeline class loaded: {pipe.__class__.__name__}")
 
-    prompt_str = (
-        "Cinematic photoreal film still frame from British workplace mockumentary. "
-        "40s male corporate executive sitting alone at his wooden desk in a modern executive office, "
-        "flustered and sweating, loosening his dark navy necktie and unbuttoning his top shirt collar. "
-        "Geometric orange triangle wall pattern in background, natural daylight, 16:9 widescreen crop."
+    STYLE_ANCHOR = (
+        "Stylised British sitcom comic art, clean bold line art, flat muted colour palette, "
+        "expressive caricature, cel-shaded, 16:9 widescreen crop. NOT photorealistic. "
+        "Absolutely NO text, NO speech bubbles, NO captions, NO labels, NO sound effects, "
+        "NO lettering of any kind anywhere in the image."
     )
 
-    print("Generating 1024x576 frame with FLUX.2 Klein...")
+    prompt_str = (
+        f"Wide shot still. Modern executive office with geometric triangle acoustic wall and walnut desk. "
+        f"Christina Dross, 38yo slim British woman with sharp dark bob fringe in charcoal trouser suit and orange lanyard, "
+        f"enters and stands opposite desk greeting her boss. Jan Peach, 52yo overweight British CEO with thinning comb-over "
+        f"in navy suit, looks up from his desk toward her. {STYLE_ANCHOR}"
+    )
+
+    print("Generating Frame F01 (1024x576) with FLUX.2 Klein 4B...")
     with torch.inference_mode():
         image = pipe(
             prompt=prompt_str,
@@ -35,12 +42,12 @@ try:
             height=576,
             num_inference_steps=4,
             guidance_scale=1.0,
-            generator=torch.Generator("cuda").manual_seed(118)
+            generator=torch.Generator("cuda").manual_seed(101)
         ).images[0]
 
-    out_path = r"C:\ai\Circle the Square\storyboard-frames\F18.jpg"
+    out_path = r"C:\ai\Circle the Square\storyboard-frames\F01.jpg"
     image.save(out_path, quality=95)
-    print(f"-> Successfully saved photorealistic FLUX.2 frame to: {out_path}")
+    print(f"-> Successfully saved cartoon FLUX.2 frame to: {out_path}")
 
 except Exception as e:
     print("FLUX.2 execution error:", e)

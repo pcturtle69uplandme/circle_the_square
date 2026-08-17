@@ -4,10 +4,30 @@ import time
 import urllib.request
 import shutil
 
+STYLE_ANCHOR = (
+    "Stylised British sitcom comic art, clean bold line art, flat muted colour palette, "
+    "expressive caricature, cel-shaded, 16:9 widescreen crop. NOT photorealistic. "
+    "Absolutely NO text, NO speech bubbles, NO captions, NO labels, NO sound effects, "
+    "NO lettering of any kind anywhere in the image."
+)
+
+NEGATIVE_PROMPT = (
+    "photorealistic, 3d render, realistic photograph, photo, realistic skin texture, "
+    "blurry, lowres, distorted face, extra limbs, bad anatomy, text, watermark, signature, "
+    "speech bubbles, captions, lettering"
+)
+
+# Ensure reference image is in ComfyUI input directory if directory exists
+comfy_input_dir = r"C:\ai\ComfyUI\ComfyUI\input"
+ref_src = r"C:\ai\Circle the Square\character-refs\jan_peach_cartoon_sheet.jpg"
+ref_name = "jan_peach_cartoon_sheet.jpg"
+if os.path.exists(comfy_input_dir) and os.path.exists(ref_src):
+    shutil.copy(ref_src, os.path.join(comfy_input_dir, ref_name))
+
 workflow = {
     "1": {
         "inputs": {
-            "image": "jan_peach_identity_sheet.jpg"
+            "image": ref_name
         },
         "class_type": "LoadImage"
     },
@@ -48,19 +68,14 @@ workflow = {
     },
     "6": {
         "inputs": {
-            "text": (
-                "Cinematic photoreal film still frame from British workplace mockumentary. "
-                "40s male corporate executive sitting alone at his wooden desk in a modern executive office, "
-                "flustered and sweating, loosening his dark navy necktie and unbuttoning his top shirt collar. "
-                "Geometric orange triangle wall pattern in background, natural daylight, 16:9 widescreen crop."
-            ),
+            "text": f"Medium close-up. Jan Peach, CEO of PRISM, alone at his wooden desk in modern executive office, flustered and sweating profusely, begins unbuttoning his shirt. {STYLE_ANCHOR}",
             "clip": ["4", 1]
         },
         "class_type": "CLIPTextEncode"
     },
     "7": {
         "inputs": {
-            "text": "anime, 3d render, cartoon, illustration, blurry, lowres, distorted face, extra limbs, bad anatomy, watermark",
+            "text": NEGATIVE_PROMPT,
             "clip": ["4", 1]
         },
         "class_type": "CLIPTextEncode"
@@ -89,7 +104,7 @@ workflow = {
     },
     "10": {
         "inputs": {
-            "filename_prefix": "F18_IPAdapter_Jan",
+            "filename_prefix": "F18_Cartoon_IPAdapter_Jan_Lightning",
             "images": ["9", 0]
         },
         "class_type": "SaveImage"
@@ -100,7 +115,7 @@ p = {"prompt": workflow}
 data = json.dumps(p).encode('utf-8')
 req = urllib.request.Request("http://127.0.0.1:8188/prompt", data=data, headers={'Content-Type': 'application/json'})
 
-print("Submitting character-locked IP-Adapter F18 render job to ComfyUI...")
+print("Submitting cartoon character-locked IP-Adapter F18 Lightning render job to ComfyUI...")
 start_time = time.time()
 response = urllib.request.urlopen(req)
 res_data = json.loads(response.read().decode())
@@ -112,7 +127,7 @@ while True:
     history_req = urllib.request.urlopen(f"http://127.0.0.1:8188/history/{prompt_id}")
     history = json.loads(history_req.read().decode())
     if prompt_id in history:
-        print(f"Character-locked render completed in {time.time() - start_time:.2f} seconds!")
+        print(f"Cartoon character-locked render completed in {time.time() - start_time:.2f} seconds!")
         outputs = history[prompt_id]["outputs"]
         if "10" in outputs and "images" in outputs["10"]:
             for img in outputs["10"]["images"]:
@@ -122,7 +137,7 @@ while True:
                 dst_path = r"C:\ai\Circle the Square\storyboard-frames\F18.jpg"
                 if os.path.exists(src_path):
                     shutil.copy(src_path, dst_path)
-                    print(f"🎉 Successfully saved character-locked frame F18 to: {dst_path}")
+                    print(f"[SUCCESS] Saved cartoon character-locked frame F18 to: {dst_path}")
         else:
             print("Execution output check:", outputs)
         break

@@ -17,15 +17,20 @@
 
 ---
 
-## 🧭 HOW TO USE THIS DOC
+## 🧭 HOW TO USE THIS DOC (Multiplane Stencil + Compositor Workflow)
 
-1. Pick the next frame, in order, **one at a time — no batching. CLI quota is 12 images per rolling 4-hour window; on `429 RESOURCE_EXHAUSTED`, switch to Google Flow and keep going, then return to the CLI when the window clears.**
-2. Attach that frame's references **in the order listed**, matching each to its `@tag`. In Flow, select the saved cartoon **Character entity** instead — that is what actually locks identity across frames.
-3. Send the **IMAGE STYLE ANCHOR** + that frame's **PROMPT** (already written using the `@tags`).
-4. Generate, approve or reroll.
-5. Save the result as `storyboard-frames/<FRAME ID>.jpg` (e.g. `storyboard-frames/F01.jpg`).
+1. Pick the next frame, in order, **one at a time — no batching.**
+2. **Generate Character Stencils in Google Flow**: Prompt the character(s) on a plain/neutral background in cel-shaded cartoon style (e.g. `@jan` full-body seated in office chair with trousers and shoes, `@christina` standing with tablet).
+3. **Multiplane Layer Assembly**: Run `python render_multiplane_frame.py <FRAME_ID>` or composite in Rive:
+   - **Layer 1**: Locked Background Cartoon Plate (e.g. `L10_jans_office.jpg`)
+   - **Layer 2**: Chair back / rear environment
+   - **Layer 3**: Full Seated Character Stencil (feet/legs showing under desk opening)
+   - **Layer 4**: Foreground Furniture Layer (walnut desktop + modesty panel + copper A-legs)
+   - **Layer 5**: Standing Characters (calibrated to ~0.8× door leaf height)
+4. **Take QA Evaluation**: Score against the HARD and SOFT checklist.
+5. Save the approved frame as `storyboard-frames/<FRAME ID>.jpg` (e.g. `storyboard-frames/F01.jpg`).
 6. Tick the frame off in the tracker below.
-7. **Then animate it**: feed the approved frame into a Flow video generation as the first frame and describe **only the camera move**, not the content — so the model animates the frame rather than reinventing it. Keep moves slow and single-axis.
+7. **Animation / Posing**: In Rive, articulate character bones / deformation meshes directly over the locked background plate for zero-drift performance.
 
 **Generate in as few continuous sessions as possible.** Art style drifts between sessions; this is how the
 11 character sheets were kept consistent.
@@ -52,6 +57,8 @@
    invented accessories).
 3. **No lettering** — no text, captions, signage, speech bubbles anywhere (badge squiggles are fine).
 4. **Style** — same line weight, palette and shading as the scene's master frame (F01 for Scene 1).
+5. **Resolution (Minimum 2K)** — output MUST be at least 2K resolution (`2752x1536`). 1K (`1376x768`) is an instant reject.
+6. **Spatial Layering & Occlusion** — characters seated behind furniture must be properly occluded by the foreground furniture layer (e.g. Jan strictly behind walnut desk, no lap/chair pixels overlaying the desktop). Eyelines must point at conversational partner.
 
 **SOFT checks (score each 0–2: 0 = wrong, 1 = close, 2 = exact):**
 5. **Furniture & hardware vs master frame** — desk (walnut top, dark modesty panel, copper A-leg,

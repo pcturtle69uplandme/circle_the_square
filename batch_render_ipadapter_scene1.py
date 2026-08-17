@@ -4,61 +4,98 @@ import time
 import urllib.request
 import shutil
 
+STYLE_ANCHOR = (
+    "Stylised British sitcom comic art, clean bold line art, flat muted colour palette, "
+    "expressive caricature, cel-shaded, 16:9 widescreen crop. NOT photorealistic. "
+    "Absolutely NO text, NO speech bubbles, NO captions, NO labels, NO sound effects, "
+    "NO lettering of any kind anywhere in the image."
+)
+
+NEGATIVE_PROMPT = (
+    "photorealistic, 3d render, realistic photograph, photo, realistic skin texture, "
+    "blurry, lowres, distorted face, extra limbs, bad anatomy, text, watermark, signature, "
+    "speech bubbles, captions, lettering"
+)
+
+# Reference files mapping and sync to ComfyUI input directory
+comfy_input_dir = r"C:\ai\ComfyUI\ComfyUI\input"
+char_refs_dir = r"C:\ai\Circle the Square\character-refs"
+
 pending_frames = [
     {
+        "id": "F18",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up. Jan Peach, CEO of PRISM, alone at his wooden desk in modern executive office, flustered and sweating profusely, begins unbuttoning his shirt. {STYLE_ANCHOR}",
+        "seed": 118
+    },
+    {
         "id": "F19",
-        "char_img": "jan_peach_identity_sheet.jpg",
-        "prompt": "Cinematic photoreal film still frame from British workplace mockumentary. Jan Peach sitting shirtless at his wooden executive desk, white shirt on desk, red flushed skin, comedic visual gag beat, 16:9 widescreen crop.",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Wide still. Jan Peach has pulled his shirt fully off, chest bared, mid-motion dropping it on his wooden executive desk in modern executive office, red flushed skin, comedic visual gag beat. {STYLE_ANCHOR}",
         "seed": 119
     },
     {
+        "id": "F20",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Wide still. Modern glass office door has just opened — Sharon Enfield walks in without knocking. Jan Peach, shirtless at his desk, spins toward her in alarm. {STYLE_ANCHOR}",
+        "seed": 120
+    },
+    {
         "id": "F21",
-        "char_img": "sharon_enfield_identity_sheet.jpg",
-        "prompt": "Medium close-up on Sharon Enfield in emerald green blouse, her eyes flicking neutral glance down at her boss, completely unbothered expression, 16:9 widescreen crop.",
+        "char_img": "sharon_enfield_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up on Sharon Enfield in emerald green blouse, her eyes flicking briefly down toward Jan's chest, expression staying completely neutral. {STYLE_ANCHOR}",
         "seed": 121
     },
     {
         "id": "F22",
-        "char_img": "jan_peach_identity_sheet.jpg",
-        "prompt": "Medium close-up of Jan Peach shirtless, mortified embarrassed posture, self-conscious face, 16:9 widescreen crop.",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up on Jan Peach shirtless in executive office, frozen in mortified realisation and embarrassed posture. {STYLE_ANCHOR}",
         "seed": 122
     },
     {
         "id": "F23",
-        "char_img": "sharon_enfield_identity_sheet.jpg",
-        "prompt": "Medium close-up on composed Sharon Enfield in emerald green blouse speaking calmly in modern executive office, 16:9 widescreen crop.",
+        "char_img": "sharon_enfield_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up on Sharon Enfield in emerald green blouse, flat and transactional, speaking calmly in modern executive office. {STYLE_ANCHOR}",
         "seed": 123
     },
     {
         "id": "F24",
-        "char_img": "jan_peach_identity_sheet.jpg",
-        "prompt": "Medium close-up on flustered Jan Peach half-undressed waving hand defensively at female colleague, 16:9 widescreen crop.",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up on flustered Jan Peach half-undressed waving hand defensively at female colleague in modern executive office. {STYLE_ANCHOR}",
         "seed": 124
     },
     {
         "id": "F25",
-        "char_img": "sharon_enfield_identity_sheet.jpg",
-        "prompt": "Medium close-up on Sharon Enfield in emerald green blouse with arms crossed, calm composed posture, 16:9 widescreen crop.",
+        "char_img": "sharon_enfield_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up on Sharon Enfield in emerald green blouse with arms crossed, calm composed posture, flat and matter-of-fact. {STYLE_ANCHOR}",
         "seed": 125
     },
     {
         "id": "F26a",
-        "char_img": "jan_peach_identity_sheet.jpg",
-        "prompt": "Medium close-up of Jan Peach yanking venetian window blinds closed with both hands in modern glass office, 16:9 widescreen crop.",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Medium close-up of Jan Peach yanking venetian window blinds closed with both hands in modern glass executive office. {STYLE_ANCHOR}",
         "seed": 126
     },
     {
         "id": "F26b",
-        "char_img": "jan_peach_identity_sheet.jpg",
-        "prompt": "Close-up of hand turning door lock knob on modern office glass door, 16:9 widescreen crop.",
+        "char_img": "jan_peach_cartoon_sheet.jpg",
+        "prompt": f"Close-up of hand turning door lock knob on modern office glass door. {STYLE_ANCHOR}",
         "seed": 127
     }
 ]
 
+# Ensure input sheets exist in ComfyUI input folder if available
+if os.path.exists(comfy_input_dir):
+    for item in pending_frames:
+        src = os.path.join(char_refs_dir, item["char_img"])
+        dst = os.path.join(comfy_input_dir, item["char_img"])
+        if os.path.exists(src) and not os.path.exists(dst):
+            shutil.copy(src, dst)
+
 out_dir = r"C:\ai\Circle the Square\storyboard-frames"
 os.makedirs(out_dir, exist_ok=True)
 
-print(f"Starting batch IP-Adapter character-locked rendering for {len(pending_frames)} frames...")
+print(f"Starting batch cartoon IP-Adapter character-locked rendering for {len(pending_frames)} frames...")
 
 for item in pending_frames:
     workflow = {
@@ -112,7 +149,7 @@ for item in pending_frames:
         },
         "7": {
             "inputs": {
-                "text": "anime, 3d render, cartoon, illustration, blurry, lowres, distorted face, extra limbs, bad anatomy, watermark",
+                "text": NEGATIVE_PROMPT,
                 "clip": ["4", 1]
             },
             "class_type": "CLIPTextEncode"
@@ -141,7 +178,7 @@ for item in pending_frames:
         },
         "10": {
             "inputs": {
-                "filename_prefix": f"IPAdapter_{item['id']}",
+                "filename_prefix": f"Cartoon_IPAdapter_{item['id']}",
                 "images": ["9", 0]
             },
             "class_type": "SaveImage"
@@ -173,9 +210,9 @@ for item in pending_frames:
                     dst_path = os.path.join(out_dir, f"{item['id']}.jpg")
                     if os.path.exists(src_path):
                         shutil.copy(src_path, dst_path)
-                        print(f"[SUCCESS] Saved character-locked {item['id']} ({duration:.1f}s) -> {dst_path}")
+                        print(f"[SUCCESS] Saved cartoon character-locked {item['id']} ({duration:.1f}s) -> {dst_path}")
             else:
                 print(f"[ERROR] Output error for {item['id']}:", outputs)
             break
 
-print("\n[COMPLETE] All remaining Scene 1 character-locked frames rendered successfully!")
+print("\n[COMPLETE] All Scene 1 cartoon character-locked frames rendered successfully!")

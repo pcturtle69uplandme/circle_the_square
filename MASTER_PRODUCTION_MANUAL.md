@@ -170,7 +170,7 @@ Dialogue audio files: [`C:\kontitemp\ai\circle_the_square\audio-refs\`](file:///
 | **Chris** | Coffee cup, Project Inception stress ball | Present Scenes 2 & 3 |
 | **Rick** | Concealed prop taser (must read fake/non-functional) | Taser drawn only in Scene 3 finale |
 | **Canteen Worker** | Apron, empty pastry tray, serving tongs | Walk-on, one line only |
-| **SET DRESSING** | 1,000 Project Inception stress balls/pens/t-shirts (background), pain au chocolat pastries (Scene 3), broken china (post-smash), shattered window prop | Continuity: pastry tray must be visibly empty when Jan arrives |
+| **SET DRESSING** | 1,000 Project Inception stress balls/pens/t-shirts (background), pain au chocolat pastries (Scene 3), broken china (post-smash), shattered window prop, **venetian blinds on Jan's office windows (raised/open)** | Continuity: pastry tray must be visibly empty when Jan arrives. Blinds must be visible and open from Scene 1's first shot — F26a pays them off by having Jan yank them shut, so they cannot be introduced only at that point. Found missing from `jan_office_location_sheet.jpg` on 2026-08-25; fixed reference is `jan_office_location_sheet_fixed.png` — still needs the blinds added on top of that skyline fix (not yet done as of this note). |
 
 ---
 

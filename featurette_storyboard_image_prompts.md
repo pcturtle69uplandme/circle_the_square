@@ -181,8 +181,8 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 | F16 | S07 | 1 | Jan screams — "GET OUT NOW YOU STUPID COW!" | ✅ |
 | F17 | S08 | 1 | Christina exits calmly, door shuts | ✅ |
 | F18 | S09 | 1 | Jan unbuttons shirt, flustered/sweating | ✅ |
-| F19 | S09 | 1 | Jan removes shirt, arrow revealed | ⬜ |
-| F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ⬜ |
+| F19 | S09 | 1 | Jan removes shirt, arrow revealed | ✅ |
+| F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ✅ |
 | F21 | S11 | 1 | Sharon glances at the arrow | ⬜ |
 | F22 | S11 | 1 | Jan frozen, mortified | ⬜ |
 | F23 | S12 | 1 | Sharon — "breakfast meetings now." | ⬜ |

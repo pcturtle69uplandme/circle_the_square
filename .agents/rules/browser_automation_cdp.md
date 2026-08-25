@@ -52,6 +52,8 @@ scripts — Flow's UI selectors drift and you need to see state to recover.
 | `cdp_drag.js <x1> <y1> <x2> <y2> [out.png]` | Drag from one CSS-pixel point to another with interpolated intermediate moves — works for canvas-rendered drag targets (e.g. dragging an asset onto a Rive stage) since it's pointer-event based, not native HTML5 DnD |
 | `cdp_upload.js <x> <y> <filePath> [out.png]` | Click a coord while catching the native file-chooser event it triggers, and feed it `filePath` directly — the only way to upload a file into a canvas-rendered "Upload" control, since a real file input's native picker dialog can't be seen or clicked |
 | `cdp_set_viewport.js` | Force the page's viewport back to a fixed 1600×1000 CSS size and print the resulting `{vw, vh, dpr}` — use this if coordinates that used to work suddenly stop landing (see viewport-drift gotcha below) |
+| `cdp_goto.js <url> [out.png]` | Navigate the active tab to a URL and screenshot the result — use to recover when a stale deep-link (e.g. an old `/edit/<id>` sub-URL) 404s or errors; go to the project's bare root URL instead and click into the asset from there |
+| `cdp_download_intercept.js <dlIconX> <dlIconY> <optX> <optY> <outPath>` | Clicks the download icon, then a size-option coordinate (e.g. "2K Upscaled"), and saves the file via Playwright's own `download` event/`saveAs()` — bypasses Chrome's download-manager UI entirely, so it survives the malware-scanner auto-deletion described below instead of just detecting it after the fact |
 
 ## Composer coordinates are CSS pixels, not screenshot pixels (found 2026-08-15, F19)
 Every `cdp_click_coord.js`/`cdp_zoom.js` coordinate is in **CSS pixels** (`getBoundingClientRect()`
@@ -124,7 +126,11 @@ download click, not just the Downloads folder — a "Deleted" state there confir
 clicks Retry on any deleted entries, but retry does not reliably work either.
 
 **Don't fight the scanner** (it's a legitimate Chrome security feature, not a bug to bypass) — instead
-avoid the download manager path entirely:
+avoid the download manager path entirely. **Best fix (found 2026-08-22, F19 reroll): `cdp_download_intercept.js`.**
+Playwright's `page.waitForEvent('download')` + `download.saveAs()` captures the file at the CDP level,
+before Chrome's own downloads UI (and its scanner-triggered deletion) ever gets involved — confirmed
+reliable for a real 2752×1536 2K asset that the plain `cdp_click_coord.js`-on-the-menu approach lost to
+the scanner twice in a row. Prefer this over the alternatives below.
 - If a download **did** land in `Downloads\` (check `chrome://downloads` for a non-"Deleted" state, or
   just look for a new file), just use it — no need to re-derive resolution: F01–F17 in this project are
   all **2752×1536**, and both "1K Original size" and "2K Upscaled" have produced exactly that resolution

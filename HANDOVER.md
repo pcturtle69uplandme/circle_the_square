@@ -11,6 +11,11 @@
 > in Rive / layered canvas (`render_multiplane_frame.py`). Eliminates background drift, furniture amnesia, and scale hallucinations.
 > All frames follow the strict HARD/SOFT Take QA checklist.
 
+> 🧪 **PILOT IN PROGRESS (2026-08-25)**: Local video generation via **MiniMax-H3** is being
+> trialled as a possible route for Scene 1, in parallel with the master workflow above — not
+> yet adopted project-wide. **Read `minimax-h3-pipeline/README.md` and
+> `SCENE1_MINIMAX_TRACKER.md` before touching this** — full details in §9 below.
+
 ---
 
 ## 1. What this project is
@@ -265,3 +270,63 @@ represent real work and did not need throwing away.
   those beats are split into `F06a/F06b`, `F26a/F26b`, `F37a/F37b`. Highest ID is F61, true count is 64.
   Verified: 64 tracker rows, 64 prompt blocks.
 - `storyboard_slideshow.html` is now framed as a **continuity-checking tool**, not the deliverable.
+
+---
+
+## 9. Session 2026-08-25 — photoreal stills route, MiniMax-H3 pilot, Scene 1 QA gap
+
+### What changed
+
+1. **Full 11-character photoreal cast completed.** 5 principals (Jan, Christina, Sharon,
+   Chris, Rick) already had photoreal turnaround sheets in `character-refs/_photoreal-archive/`
+   from before the cartoon pivot. The 6 supporting cast (Maureen, Gemma Ashcroft, Priya
+   Raghavan, Barbara Whitlock, Dev Osei, Tomasz Wojcik) were generated this session, locally,
+   via **FLUX krea-dev through ComfyUI** — no cloud calls. This is a separate, photoreal track
+   alongside the cartoon assets, not a replacement for them.
+2. **`gen_image.py` (Google Gemini cloud stills) is confirmed dead** — hit "prepayment
+   credits depleted" on the very first supporting-cast attempt. Matches the prior finding in
+   `.agents/rules/cli_image_quota_rules.md`. Local FLUX (krea-dev for fresh generations,
+   Kontext-dev for reference-conditioned edits) is now the only working stills route.
+3. **Location references confirmed already complete and photoreal** — all 5 script locations
+   (`location-refs/*_location_sheet.jpg`) predate the cartoon pivot and didn't need
+   regenerating. One bug found and fixed: `jan_office_location_sheet.jpg` had The Shard /
+   London skyline through the window (the exact bug `HANDOVER.md` §6 already flagged for the
+   cartoon plates, but this photoreal sheet had its own uncorrected instance). Fixed via
+   FLUX Kontext-dev edit → `location-refs/jan_office_location_sheet_fixed.png`. **Use the
+   `_fixed` version, not the original, for anything referencing Jan's office going forward.**
+4. **MiniMax-H3 piloted as a local video route** — see `minimax-h3-pipeline/README.md` for
+   full technical detail (hardware constraints, gotchas, exact CLI usage). Short version: it
+   works, produces identity-consistent photoreal *and* cartoon video with synced audio in
+   ~4-5 min/clip on the RTX 4080, and is a genuinely different finding from the WAN 2.2
+   rejection in §6 — not being proposed as a full replacement for Flow/Veo yet, but validated
+   enough to attempt a real scene with.
+5. **Scene 1 (28 keyframes, F01-F26b) shot-planned for MiniMax-H3 generation** — see
+   `SCENE1_MINIMAX_TRACKER.md`. Only F01 and F02 (2 clips) were actually generated before
+   pausing; **both are provisional and will be redone**, not carried forward. Two real
+   problems surfaced during that first attempt, now written up as standing QA rules in that
+   tracker:
+   - The office reference was missing venetian blinds needed later in the same scene (F26a,
+     "Jan yanks the blinds shut") — nothing had scanned the *full* script for fixtures
+     introduced late in a location that still need to exist in its reference image from frame
+     one. `MASTER_PRODUCTION_MANUAL.md` §8 (prop/continuity table) exists and is the right
+     place to track this, but doesn't mention blinds — needs updating once the reference fix
+     lands.
+   - Dialogue was rushed — a 14-word line doesn't fit naturally in a 2.33s clip at
+     conversational pace (~2.2-2.5 words/sec ⇒ ~5-6 words/clip, not the ~11 assumed). The
+     original 39-clip estimate for Scene 1 under-counts how many clips long lines actually
+     need; expect the real count to be meaningfully higher once re-planned.
+
+### Next steps, in priority order
+
+1. Before regenerating anything: fix the blinds gap (edit prompt drafted, not yet run — see
+   `SCENE1_MINIMAX_TRACKER.md` restart plan), re-audit `MASTER_PRODUCTION_MANUAL.md` §8
+   against the whole script (not just Scene 1) for similar late-introduced-fixture gaps in
+   the other 4 locations, and re-plan Scene 1's clip count against the corrected dialogue-pace
+   assumption.
+2. Regenerate F01, then F02 (both clips), then continue forward through the shot list —
+   `SCENE1_MINIMAX_TRACKER.md` has the full 28-keyframe breakdown and per-clip status.
+3. Once Scene 1 is validated end-to-end (identity, location, pacing, no drift between clips
+   sharing a reference), decide whether MiniMax-H3 becomes the adopted route for Scenes 2-3
+   too, or whether Flow/Veo stays primary with MiniMax-H3 as a supplementary tool. Not yet
+   decided — this session only validated the pipeline works, not that it should replace the
+   master workflow.

@@ -88,9 +88,18 @@ python gen_clip.py --out F01_c1 --seed 101001 \
     Verified at the correct 4 steps: clean face, quality on par with the standard model.
   - Measured: sampling time 162.6s (standard, 20 steps) → 95.5s (standard + EasyCache) →
     **40.0s (turbo, 4 steps)**. Total clip time ~5.3-5.5min → ~3.4min.
-  - `gen_clip.py`/`chain_clips.py` default to turbo now; pass `--standard` to fall back to the
-    non-turbo denoiser (20 steps, guidance 3.5) if turbo ever produces a bad result on a
-    specific shot.
+  - **UPDATE 2026-08-26, later same day: turbo's audio is broken.** Verified with Whisper
+    transcription (`pip install openai-whisper`, `model.transcribe(...)`): the standard model's
+    audio transcribes perfectly ("Barely another day dealing with these morons" — exact match
+    to the prompt's dialogue). Turbo's audio does not: F01 turbo transcribed as unrelated
+    nonsense, and all 3 chunks of a turbo F02 chain transcribed as **empty** (no detectable
+    speech at all) despite non-zero, non-clipping waveforms (no NaN/Inf, not silence — the
+    *content* is just unintelligible). Video quality was fine in both cases — this is
+    specifically a 4-step audio distillation failure, not a general turbo problem.
+  - **Defaults flipped back**: `gen_clip.py`/`chain_clips.py` now default to the **standard**
+    denoiser (20 steps, guidance 3.5) + EasyCache (~4.1min/clip, audio verified correct). Pass
+    `--turbo` only for shots with **no dialogue** (pure B-roll/establishing shots with no
+    speech) where the 4-step speed win is worth it and there's no audio to break.
 
 ## Hardware constraints — read before changing settings
 
@@ -175,3 +184,27 @@ comfortably inside a 30min-per-10s budget.
 - Use `chain_clips.py --out NAME --seed N --refs a.jpg b.jpg --prompts "p1" "p2" ...` — one
   prompt per chunk, first chunk's `--refs` are the normal character/location refs, every
   later chunk auto-uses the previous chunk's extracted last frame.
+- **Zoom-drift mitigation that worked (2026-08-26):** adding explicit "keep the exact same
+  medium close-up framing and static camera position, do not move or zoom the camera" to
+  every continuation prompt visibly fixed the drift on a real F02 3-chunk chain — checked
+  frames at every splice point, no framing jump across the whole 11.25s chain. Not proven
+  bulletproof on every shot type, but promising; keep using this language in continuation
+  prompts going forward.
+- **Concat was corrupting audio at every splice — fixed.** The original `concat_clips()`
+  used `-c copy` (raw stream copy). Independently-AAC-encoded chunks have their own encoder
+  priming samples; naive stream-copy concat leaves audio glitches/discontinuities at each
+  join (user-reported as "hard cuts" on playback). Fixed by re-encoding on concat
+  (`-c:v libx264 -c:a aac`) instead of stream-copying — re-encode is slower but the splices
+  are clean. Already applied in `chain_clips.py`.
+
+## Workflow split decided 2026-08-26: MiniMax-H3 vs Google Flow by shot type
+
+Wide/establishing shots (e.g. F01) have a real, separate problem from the audio one above:
+faces read small/unclear at wide framing, and Christina-facing-away-from-camera came up as a
+directing complaint on the F01 regen. Decision: **wide/establishing shots go to Google Flow
+as 2K stills (no animation/audio, cut in as a static frame in the edit)**, generated off the
+same character sheets already used for MiniMax-H3 refs (see `character-refs/`). **MiniMax-H3
+stays for close-up/dialogue-bearing shots** (like F02), where it's now proven to work well
+(clean identity, clean audio with the standard model). Not yet implemented as a formal
+per-shot routing rule in `SCENE1_MINIMAX_TRACKER.md` — do that before resuming the full
+28-shot pass, so it's clear up front which tool each frame ID goes to.

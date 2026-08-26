@@ -349,3 +349,33 @@ Not a Scene 1 shot session — pure pipeline speed/duration work, prompted by pe
   within each chunk's own generation, not yet mitigated — read the README section before
   using this on a real shot with more than 2-3 chunks.
 - Re-estimate any Scene 1 clip-count/timing plan against the new ~3.4min figure.
+- **Follow-up same day: regenerated F01/F02 for real, found two more problems, pivoted to a
+  second local model.** Full detail in `minimax-h3-pipeline/README.md` and
+  `wan22-pipeline/README.md`; summary:
+  - Turbo's audio is broken (not just a risk — verified with Whisper transcription: standard
+    model transcribes dialogue exactly right, turbo transcribes as empty/wrong on every
+    chunk tested despite fine-looking video). Defaults flipped back to standard+EasyCache;
+    `--turbo` is now opt-in for no-dialogue shots only.
+  - The chain-concat "hard cuts" turned out to be a real bug (naive `-c copy` stream-copy
+    concat corrupts audio at AAC splice boundaries) — fixed by re-encoding on concat.
+  - **F01-type wide shots are a dead end on MiniMax-H3**: faces resolve to a genuinely
+    featureless blob at 864x480 in a full-room wide framing (checked at native pixel crop) —
+    a pixel-count problem, not a quantization one. Checked the next-tier quantizations
+    (Q5_0/Q6_K/Q8_0 — 13.9-21.4GB) and none fit this 16GB card without offloading the
+    diffusion model itself, which is exactly the failure mode that made WAN 2.2 (14B) and
+    FLUX.2 klein "unusably slow" in earlier sessions (see §6) — did not pursue.
+  - Google Flow was considered as the wide-shot replacement but is blocked by Flow's
+    likeness/content filters on photoreal human generation/action prompts.
+  - **Pivoted to Wan 2.2 TI2V-5B** (the dense 5B model, not the 14B MoE variant already
+    rejected) as a second local pipeline specifically for wide/establishing/silent shots —
+    see `wan22-pipeline/README.md`. Validated: single-pass 10-second clips (no chaining, no
+    drift) in ~9 minutes, sharper output than MiniMax-H3, fits in 16GB VRAM without the
+    RAM-offload trap (critical: needs `--vae-tiling`, or VAE decode alone takes 13+ minutes).
+    Trade-offs: single-reference-image only (no true multi-ref like Ref2VA — needs
+    bootstrapping the reference from an existing well-framed frame, e.g. a MiniMax-H3
+    output), and no audio at all (fine, since this pipeline is only for shots that don't
+    need dialogue — those stay on MiniMax-H3).
+  - **Net result**: two local pipelines now, split by shot type — MiniMax-H3
+    (`minimax-h3-pipeline/`) for close-up dialogue shots, Wan 2.2 TI2V-5B
+    (`wan22-pipeline/`) for wide/establishing/silent shots. Neither Flow nor a single unified
+    pipeline covers both needs on this hardware.

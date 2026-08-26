@@ -27,11 +27,11 @@ REFS_DIR = BASE / "refs"
 OUT_DIR = BASE / "output"
 
 
-def run_clip(out_name, seed, prompt, ref_filenames, frames, width, height, standard=False):
-    if standard:
-        diffusion_model, steps, guidance = "minimax_h3_ref2va_pruned-Q4_K.gguf", "20", "3.5"
-    else:
+def run_clip(out_name, seed, prompt, ref_filenames, frames, width, height, turbo=False):
+    if turbo:
         diffusion_model, steps, guidance = "minimax_h3_ref2va_turbo_Q4_K_M.gguf", "4", "1.0"
+    else:
+        diffusion_model, steps, guidance = "minimax_h3_ref2va_pruned-Q4_K.gguf", "20", "3.5"
     cmd = [
         str(BIN), "-M", "vid_gen",
         "--diffusion-model", str(MODELS / diffusion_model),
@@ -85,12 +85,16 @@ def extract_last_frame(mp4_path, out_ref_filename):
 
 
 def concat_clips(mp4_paths, final_out):
+    # Re-encode, don't stream-copy: each chunk is an independently-encoded AAC stream with its
+    # own encoder priming samples, and naive -c copy concat leaves audio glitches/discontinuities
+    # at every splice (verified 2026-08-26 — this was the root cause of "hard cuts" on playback).
     list_file = OUT_DIR / "_chain_concat_list.txt"
     with open(list_file, "w") as f:
         for p in mp4_paths:
             f.write(f"file '{p.resolve().as_posix()}'\n")
     subprocess.run(
-        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(list_file), "-c", "copy", str(final_out)],
+        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(list_file),
+         "-c:v", "libx264", "-c:a", "aac", "-movflags", "+faststart", str(final_out)],
         capture_output=True,
     )
     list_file.unlink()
@@ -104,14 +108,14 @@ parser.add_argument("--prompts", nargs="+", required=True, help="one prompt per 
 parser.add_argument("--frames", type=int, default=56)
 parser.add_argument("--width", type=int, default=864)
 parser.add_argument("--height", type=int, default=480)
-parser.add_argument("--standard", action="store_true", help="see gen_clip.py --standard")
+parser.add_argument("--turbo", action="store_true", help="see gen_clip.py --turbo (audio warning applies)")
 args = parser.parse_args()
 
 chunk_mp4s = []
 current_refs = args.refs
 for i, prompt in enumerate(args.prompts):
     name = f"{args.out}_c{i + 1}"
-    mp4 = run_clip(name, args.seed + i, prompt, current_refs, args.frames, args.width, args.height, args.standard)
+    mp4 = run_clip(name, args.seed + i, prompt, current_refs, args.frames, args.width, args.height, args.turbo)
     chunk_mp4s.append(mp4)
     last_frame_ref = extract_last_frame(mp4, f"_{name}_lastframe.png")
     current_refs = [last_frame_ref]

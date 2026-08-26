@@ -21,18 +21,22 @@ parser.add_argument("--frames", type=int, default=56)
 parser.add_argument("--width", type=int, default=864)
 parser.add_argument("--height", type=int, default=480)
 parser.add_argument("--vae-tiling", action="store_true")  # default off: ~20% slower, doesn't fix face clarity
-parser.add_argument("--standard", action="store_true",
-                     help="use the non-turbo denoiser (20 steps, guidance 3.5) instead of the "
-                          "turbo checkpoint (4 steps, guidance 1.0) — fallback if turbo model "
-                          "file is missing or produces a bad result on a given shot")
+parser.add_argument("--turbo", action="store_true",
+                     help="use the turbo checkpoint (4 steps, guidance 1.0) instead of the "
+                          "standard denoiser (20 steps, guidance 3.5). WARNING: verified "
+                          "2026-08-26 that turbo's 4-step audio is unintelligible garbage "
+                          "(Whisper transcription: empty/wrong) even though video quality is "
+                          "fine — only use --turbo for shots with NO dialogue (B-roll, "
+                          "establishing shots with no speech). Standard model + EasyCache is "
+                          "the safe default and still ~4.1min/clip vs ~5.3-5.5min baseline.")
 args = parser.parse_args()
 
-if args.standard:
-    diffusion_model = "minimax_h3_ref2va_pruned-Q4_K.gguf"
-    steps, guidance = "20", "3.5"
-else:
+if args.turbo:
     diffusion_model = "minimax_h3_ref2va_turbo_Q4_K_M.gguf"
     steps, guidance = "4", "1.0"
+else:
+    diffusion_model = "minimax_h3_ref2va_pruned-Q4_K.gguf"
+    steps, guidance = "20", "3.5"
 
 cmd = [
     str(BIN), "-M", "vid_gen",

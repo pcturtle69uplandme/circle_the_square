@@ -74,11 +74,25 @@ the restart plan below. Nothing after F02 has been attempted yet.
    conversational pace is ~2.2-2.5 words/sec, so a 2.33s clip comfortably holds only ~5-6
    words. Every clip's line length must be checked against this before generating, and split
    further if needed rather than accepting sped-up delivery.
-2. **Extending clip length beyond 56 frames without exceeding VRAM is an open problem** —
-   96 frames pushed VRAM to ~15.8/16.4GB and thrashed. Worth revisiting later (e.g. testing
-   intermediate lengths like 73 frames, or `--max-vram`/`--stream-layers` flags) but not being
-   solved now — for the current pass, prefer more (shorter, correctly-paced) clips over fewer
-   rushed ones.
+2. **Extending clip length beyond 56 frames in a single pass is VRAM-limited and not worth
+   fighting directly** — 96 frames pushed VRAM to ~15.8/16.4GB and thrashed. Tested
+   2026-08-26: `--max-vram`/`--stream-layers` to force the text encoder onto GPU does NOT
+   help reach longer single-pass clips (it's slower and still OOMs later — see
+   `minimax-h3-pipeline/README.md` hardware constraints section for the full finding). For
+   the current pass, prefer more (shorter, correctly-paced) 56-frame clips over fewer rushed
+   ones. **User's acceptance boundary (2026-08-26): a 10-second clip taking up to 30 minutes
+   is fine** — so the real path to longer output is chunked generation: multiple 56-frame
+   Ref2VA segments, each seeded from the last frame of the previous segment as a reference
+   image for continuity, concatenated afterward. Built and validated 2026-08-26 as
+   `minimax-h3-pipeline/chain_clips.py` — 5-chunk pipeline test (generic scene, not a real
+   shot) produced 280 frames / 11.7s in ~19-20min, well inside the 30min budget. Cut points
+   are seamless, but there's a real compounding framing/zoom-in drift within each chunk's own
+   generation — see the README's "Chained/chunked generation" section for the full finding
+   and mitigation ideas before using this on a real shot with more than 2-3 chunks.
+   Also added: EasyCache + a turbo checkpoint (both in the README's hardware-constraints
+   section) cut per-clip time from ~5.3-5.5min to ~3.4min — both now the default in
+   `gen_clip.py`/`chain_clips.py`, so re-estimate clip counts/timing against the new ~3.4min
+   figure, not the original ~5min one.
 3. **Location references must be scanned against the FULL script, not just the current
    scene's earliest beat**, before locking them in. The office reference was missing venetian
    blinds needed for F26a ("Jan yanks the blinds shut") because nothing scanned forward for

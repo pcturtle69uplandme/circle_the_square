@@ -330,3 +330,22 @@ represent real work and did not need throwing away.
    too, or whether Flow/Veo stays primary with MiniMax-H3 as a supplementary tool. Not yet
    decided — this session only validated the pipeline works, not that it should replace the
    master workflow.
+
+### Addendum — Session 2026-08-26: MiniMax-H3 speed work
+
+Not a Scene 1 shot session — pure pipeline speed/duration work, prompted by per-clip time
+(~5.3min for 2.3s) feeling slow. Full detail in `minimax-h3-pipeline/README.md` and
+`SCENE1_MINIMAX_TRACKER.md` QA Rule 2; summary:
+
+- Ruled out forcing the 32B text encoder onto GPU (`--stream-layers`) — tested, it's 13x
+  *slower* (20.7min vs 96s) and still OOMs afterward. Don't retry this.
+- Added EasyCache + a turbo denoiser checkpoint (`minimax_h3_ref2va_turbo_Q4_K_M.gguf`,
+  downloaded this session) — both now default in `gen_clip.py`/`chain_clips.py`. Per-clip
+  time down from ~5.3-5.5min to ~3.4min, quality checked and holding up (must use
+  `--steps 4 --guidance 1.0` with this specific turbo file, not 8 — see README).
+- Added `chain_clips.py` for chunked/chained generation past the ~56-frame single-pass VRAM
+  ceiling (last frame of chunk N seeds chunk N+1). Validated on a generic test scene: 11.7s
+  in ~19-20min. Cut points are seamless; there's a real compounding framing/zoom-in drift
+  within each chunk's own generation, not yet mitigated — read the README section before
+  using this on a real shot with more than 2-3 chunks.
+- Re-estimate any Scene 1 clip-count/timing plan against the new ~3.4min figure.

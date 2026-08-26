@@ -21,16 +21,29 @@ parser.add_argument("--frames", type=int, default=56)
 parser.add_argument("--width", type=int, default=864)
 parser.add_argument("--height", type=int, default=480)
 parser.add_argument("--vae-tiling", action="store_true")  # default off: ~20% slower, doesn't fix face clarity
+parser.add_argument("--standard", action="store_true",
+                     help="use the non-turbo denoiser (20 steps, guidance 3.5) instead of the "
+                          "turbo checkpoint (4 steps, guidance 1.0) — fallback if turbo model "
+                          "file is missing or produces a bad result on a given shot")
 args = parser.parse_args()
+
+if args.standard:
+    diffusion_model = "minimax_h3_ref2va_pruned-Q4_K.gguf"
+    steps, guidance = "20", "3.5"
+else:
+    diffusion_model = "minimax_h3_ref2va_turbo_Q4_K_M.gguf"
+    steps, guidance = "4", "1.0"
 
 cmd = [
     str(BIN), "-M", "vid_gen",
-    "--diffusion-model", str(MODELS / "minimax_h3_ref2va_pruned-Q4_K.gguf"),
+    "--diffusion-model", str(MODELS / diffusion_model),
     "--llm", str(MODELS / "qwen3vl_32b_minimax_h3-Q4_K_M.gguf"),
     "--vae", str(MODELS / "vae" / "minimax_h3_video_vae_fp16.safetensors"),
     "--audio-vae", str(MODELS / "vae" / "minimax_h3_audio_vae_fp32.safetensors"),
     "--auto-fit",
     "--diffusion-fa",
+    "--cache-mode", "easycache",
+    "--cache-option", "threshold=0.25",
 ]
 if args.vae_tiling:
     cmd.append("--vae-tiling")
@@ -39,11 +52,11 @@ for ref in args.refs:
 cmd += [
     "-p", args.prompt,
     "--cfg-scale", "1.0",
-    "--guidance", "3.5",
+    "--guidance", guidance,
     "-W", str(args.width), "-H", str(args.height),
     "--fps", "24",
     "--video-frames", str(args.frames),
-    "--steps", "20",
+    "--steps", steps,
     "--seed", str(args.seed),
     "-v",
     "-o", str(OUT_DIR / f"{args.out}.mp4"),

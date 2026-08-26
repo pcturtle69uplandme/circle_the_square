@@ -64,8 +64,33 @@ python gen_clip.py --out F01_c1 --seed 101001 \
 - Output auto-converts to `.mp4` and deletes the raw `.avi` (see gotcha below) — a 56-frame
   clip is ~300-400KB as `.mp4` vs ~3-6MB raw.
 - Defaults: 864×480, 56 frames, 24fps, 20 steps, `--auto-fit` backend placement,
-  `--diffusion-fa`. These are the proven-safe settings — see constraints below before
-  changing any of them.
+  `--diffusion-fa`, `--cache-mode easycache --cache-option threshold=0.25`. These are the
+  proven-safe settings — see constraints below before changing any of them.
+- **EasyCache (added 2026-08-26): real, free speedup, no download.** On the standard 56-frame
+  clip it skipped 9/20 diffusion steps, cutting sampling from 162.6s to 95.5s and total clip
+  time from ~5.3-5.5min to ~4.1min. Output frames checked (first + mid) — no visible quality
+  loss at `threshold=0.25`. Now the default in `gen_clip.py` (also applies with the turbo
+  checkpoint below, though at 4 steps there's usually nothing left to skip).
+- **Turbo checkpoint (added 2026-08-26): the biggest win, now the default.**
+  `models/minimax_h3_ref2va_turbo_Q4_K_M.gguf` (11.4GB, downloaded from
+  `ChrisColeTech/minimax-h3-turbo-GGUF` on HuggingFace — the *actual* path is
+  `split/diffusion_models/minimax_h3_ref2va_turbo_Q4_K_M.gguf`, not the repo root; the repo's
+  own README text has a placeholder root-level filename that 404s) is a LightX2V-distilled
+  Ref2VA denoiser with the turbo LoRA **already fused in** — same file format, drop-in
+  `--diffusion-model` swap, same 32B text encoder (no changes needed there; the smaller
+  4B/8B encoder + ClipProj pairing this repo also ships is ComfyUI-only and NOT supported by
+  `sd-cli` per the official `stable-diffusion.cpp` docs — don't try to switch encoders).
+  - **This exact file needs `--steps 4 --guidance 1.0`, not 8.** The repo's own README
+    explicitly says this Ref2VA bake uses "LightX2V Turbo **4-step** v1.0" (the 8-step number
+    on that page is for the *FL2VA* variant, a different file). Running it at 8 steps
+    produces a badly garbled face (location/wardrobe/composition stay fine, only identity
+    breaks) — classic step-distilled-model failure from exceeding its trained schedule.
+    Verified at the correct 4 steps: clean face, quality on par with the standard model.
+  - Measured: sampling time 162.6s (standard, 20 steps) → 95.5s (standard + EasyCache) →
+    **40.0s (turbo, 4 steps)**. Total clip time ~5.3-5.5min → ~3.4min.
+  - `gen_clip.py`/`chain_clips.py` default to turbo now; pass `--standard` to fall back to the
+    non-turbo denoiser (20 steps, guidance 3.5) if turbo ever produces a bad result on a
+    specific shot.
 
 ## Hardware constraints — read before changing settings
 
@@ -89,6 +114,23 @@ python gen_clip.py --out F01_c1 --seed 101001 \
 - **ComfyUI and `sd-cli` cannot run at the same time** — always check `nvidia-smi` and kill
   any leftover ComfyUI python.exe process before starting a MiniMax-H3 generation, and vice
   versa. Both have been left running accidentally this session and caused OOM/RAM failures.
+  **Two overlapping `sd-cli.exe` runs cause the same problem** — before starting a run, check
+  `tasklist | grep sd-cli` and kill any stray process; two instances loading the same 17GB
+  text-encoder file concurrently will stall disk I/O to near-zero (observed 2026-08-26,
+  looked like a hang, was actually contention).
+- **Do not force the 32B text encoder onto GPU via `--backend te=cuda0 --max-vram -1
+  --stream-layers` — tested 2026-08-26 and it is a dead end, not an optimization.** The
+  premise ("keep everything in VRAM instead of RAM to avoid the slowdown") is backwards for
+  this component: `--auto-fit`'s CPU placement for the conditioner is a genuine one-time
+  96s CPU forward pass, which is *faster* than GPU graph-cut streaming, because streaming
+  reloads multi-GB weight segments from disk repeatedly (once per sub-prompt/image-reference
+  chunk) rather than computing once. Measured result: conditioner phase went from 96s (CPU)
+  to **1244s / ~20.7 minutes** (GPU streamed), and the run still OOM'd afterward when the
+  diffusion model needed its VRAM back for sampling. Leave `--auto-fit` alone for text
+  encoding; it already makes the right call. The actual per-clip time breakdown (56 frames,
+  20 steps) is model loads ~45s, VAE encode ~6s, conditioner ~77-96s (CPU, one-time),
+  diffusion sampling ~95-163s (GPU, scales with steps × frames — see EasyCache above),
+  VAE decode ~23s.
 
 ## Known gotchas
 
@@ -102,3 +144,34 @@ python gen_clip.py --out F01_c1 --seed 101001 \
   turnaround sheet is a *worse* reference than a single cropped clean pose (confuses which
   pose to animate) — always crop to one clean pose before using a `character-refs/*_sheet.*`
   file as a `-r` reference.
+
+## Chained/chunked generation for clips longer than ~56 frames (`chain_clips.py`)
+
+Added 2026-08-26. Single-pass frame count is VRAM-capped (see above), not time-capped, so
+the way to reach a longer continuous shot when the per-clip time budget allows it is to chain
+multiple 56-frame chunks: generate chunk 1 normally, extract its last frame, use *only that
+frame* as the sole reference for chunk 2's prompt/continuation, and repeat. Concatenate with
+ffmpeg (`-c copy`, same codec/resolution/fps throughout, no re-encode needed).
+
+**Validated 2026-08-26** with a 5-chunk pipeline test (generic office scene, not a real script
+shot — see `pipeline_test_chain_*` in `output/`, not tied to any `SCENE1_MINIMAX_TRACKER.md`
+row): 280 frames / 11.7s produced in ~19-20 minutes total (5 chunks × ~3-4min with EasyCache),
+comfortably inside a 30min-per-10s budget.
+
+**Findings:**
+- **The cut point itself is seamless.** Chunk N+1's first frame matches chunk N's last frame
+  almost exactly (checked directly) — no visible jump at the splice.
+- **But there is a real, compounding framing/zoom drift *within* each chunk.** The model
+  tends to creep the virtual camera closer to the subject over a chunk's own 56 frames. Since
+  the *last* (most-drifted) frame is what seeds the next chunk, this drift compounds: our test
+  went from a wide establishing shot (chunk 1) to an extreme close-up (chunk 5) over 5 chunks.
+  Identity/wardrobe stayed recognizable throughout, but framing continuity did not.
+- **Mitigation not yet tested, ideas for next attempt:** (a) explicitly state the intended
+  shot framing in every continuation prompt ("wide shot", "camera does not move closer"),
+  (b) pass both the last frame *and* the original wide character/location reference together
+  (2 refs) so the model has a wide-shot anchor, not just the drifted frame, (c) accept the
+  drift and cap chains at 2-3 chunks (~7s) before cutting to a genuinely new angle, which is
+  normal coverage anyway rather than one unbroken 10s take.
+- Use `chain_clips.py --out NAME --seed N --refs a.jpg b.jpg --prompts "p1" "p2" ...` — one
+  prompt per chunk, first chunk's `--refs` are the normal character/location refs, every
+  later chunk auto-uses the previous chunk's extracted last frame.

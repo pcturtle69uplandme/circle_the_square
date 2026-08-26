@@ -178,7 +178,7 @@ It carries every hard-won fix from `wan22-pipeline/comfyui-tools/README.md` —
 | `minimax_h3_ref2va_turbo_Q4_K_M.gguf` | 11.4 | `ChrisColeTech/minimax-h3-turbo-GGUF` (under `split/`, **not** repo root) |
 | `qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors` | 15.7 | `Comfy-Org/MiniMax-H3` |
 | `wan2.2_ti2v_5B_fp16.safetensors` + VAE + `umt5-xxl-encoder-Q8_0.gguf` | 17.4 | Comfy-Org / `city96` |
-| `face_yolov8m.pt`, venv, ComfyUI | ~5 | |
+| `face_yolov8m.pt`, venv, ComfyUI, custom nodes | **10–20** | see the block-amplification note in §7 |
 
 **This is why the volume is 200GB, not the 100GB the console suggests.** Volumes can
 be grown later but **never shrunk**.
@@ -211,6 +211,26 @@ python runpod/comfy.py run prompt.json -o outputs/
 - **`/workspace` is network storage (MooseFS), not local disk.** Thousands of small
   files — venv creation, pip installs, git clones — are noticeably slow. Large
   sequential weight downloads are fine. Don't mistake a slow pip step for a hang.
+- **`df` cannot see your volume quota.** `df -h /workspace` reports the *shared
+  cluster* — 873T total, 248T free — and says the same thing whether you're using
+  1GB or 190GB. It is useless here. Use `du`:
+
+  ```bash
+  df -h /                          # container disk - accurate
+  du -sh /workspace                # network volume - the real number
+  du -sh /workspace/* | sort -rh   # where it went
+  ```
+
+- **Small files cost ~14× their size on MooseFS.** Measured on this volume with the
+  venv half-built: 7.8MB of actual file content occupied **107MB** on disk across 692
+  files. That's block-size rounding plus replication, and it punishes small files
+  specifically. Consequences:
+  - The toolchain (venv, ComfyUI, custom nodes — tens of thousands of small files)
+    lands at **10–20GB**, not the ~5GB its nominal size suggests.
+  - The ~99GB of weights are barely affected; they're a few dozen multi-GB files
+    where rounding is noise.
+  - Watch `du -sh /workspace`, not the sum of what you think you downloaded.
+  - This is another argument against the 100GB volume the console defaults to.
 - **SSH keys are injected at pod creation only** (§5).
 - **HTTP ports are fixed at pod creation only** (§5).
 - **The Cloudflare 100-second cap** on the HTTPS proxy (§5).

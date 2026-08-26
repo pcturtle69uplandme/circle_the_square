@@ -1,15 +1,18 @@
 # Scene 1 — MiniMax-H3 Generation Tracker
 
-Photoreal Ref2VA pipeline (Q4_K denoiser, auto-fit backend, 56 frames / 24fps / 864x480).
+Photoreal Ref2VA pipeline (turbo Q4_K denoiser + EasyCache as of 2026-08-26, auto-fit backend,
+24fps / 864x480, frame count now sized per clip to fit its dialogue at natural pace — see
+`minimax-h3-pipeline/README.md` and QA Rules 1-2 below — not fixed at 56).
 References used per clip noted; QA checked against: (1) face/identity match to character
 sheet, (2) wardrobe match, (3) location/set match, (4) no artifacts/garbling, (5) action
-matches script beat.
+matches script beat, (6) dialogue pace sounds natural, not rushed (needs a human listen).
 
 | # | Frame | Clip | Refs | Status | Notes |
 |---|-------|------|------|--------|-------|
-| 1 | F01 | 1/1 | Jan, Christina, Office | ✅ pass (wide) | office skyline fixed (Shard removed); faces small — normal for a wide establishing shot |
-| 2 | F02 | 1/2 | Jan, Office | ⚠️ revisit | identity/location/face all good, but see QA Rule 1 — likely also rushed once compared to c2 |
-| 3 | F02 | 2/2 | Jan, Office | ⚠️ revisit | dialogue sounds rushed (14 words in 2.33s) — QA Rule 1; also background drift vs c1 — QA Rule 4 |
+| 1 | F01 | 1/1 (v2) | Jan, Christina, Office | 🔶 pending user review | regenerated 2026-08-26, turbo+EasyCache, `_fixed` office ref, seed 201001 → `F01_v2.mp4`. Beat/identity/location look right; Christina's back is to camera through the whole clip (not clearly "greeting" — flag for a possible reroll, not re-verified for dialogue pacing since 5 words already fit 56 frames naturally |
+| 2 | F02 | 1/3 (v2) | Jan, Office | 🔶 pending user review | **replanned as 3 clips, not 2** — original 22-word line was split 7/15 words, the 15-word half was rushed (6.4 wps); replit at natural clause breaks: "Barely. Another day dealing with these morons," / "who cannot understand the discipline and brilliance" / "it takes to run a place like this." — each ~7-8 words at 90 frames (3.75s), natural pace. Chained via `chain_clips.py`, turbo+EasyCache, seed 202001 → `F02_v2_c1/c2/c3.mp4` + `F02_v2_full.mp4` (11.25s). Splice points checked (frames) — no visible framing jump, explicit "do not move/zoom the camera" language in continuation prompts appears to have fixed the drift seen in the earlier generic pipeline test. **Not yet confirmed by ear** — needs the user to actually listen to the dialogue pacing/audio quality across the 3 splices. |
+| 3 | F02 | 2/3 (v2) | Jan, Office | 🔶 pending user review | see row above — this is clip 2 of the replanned 3-clip F02 |
+| 3b | F02 | 3/3 (v2) | Jan, Office | 🔶 pending user review | see row above — this is clip 3 of the replanned 3-clip F02 |
 | 4 | F03 | 1/2 | Christina, Office | ⬜ pending | |
 | 5 | F03 | 2/2 | Christina, Office | ⬜ pending | |
 | 6 | F04 | 1/1 | Jan, Office | ⬜ pending | |

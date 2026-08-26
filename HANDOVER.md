@@ -379,3 +379,32 @@ Not a Scene 1 shot session — pure pipeline speed/duration work, prompted by pe
     (`minimax-h3-pipeline/`) for close-up dialogue shots, Wan 2.2 TI2V-5B
     (`wan22-pipeline/`) for wide/establishing/silent shots. Neither Flow nor a single unified
     pipeline covers both needs on this hardware.
+
+### Addendum — Session 2026-08-26, continued: F01's wide-shot-with-dialogue conflict solved
+
+F01 needed both a wide shot (Wan's strength) and a real dialogue line (only MiniMax had
+working audio) — this was left unresolved above. Explored two ComfyUI-based fixes in the
+same session, in parallel, for comparison:
+
+- **H3-FaceRefine** (crop the face, re-render through MiniMax-H3 itself at high
+  magnification, keep native audio): got the whole thing running after a genuinely large
+  environment-fixing effort (see `wan22-pipeline/comfyui-tools/README.md` for the full,
+  ugly chain — VS Build Tools, a full CUDA Toolkit install, a source-patched `mmcv`, a real
+  dtype bug fixed in ComfyUI's own core MiniMax code). Even working correctly (~11x face
+  magnification, confirmed via the tool's own diagnostic logging), **it did not actually
+  sharpen Jan's face** on the real F01 test case — still an unresolved blob at default
+  tuning. Not adopted; not worth further parameter-hunting given the alternative below
+  already works.
+- **Wan (silent) + Qwen3-TTS (voice clone) + MuseTalk (lip-sync)**: also required a large
+  environment-fixing chain (same doc), but **this one actually works** — validated
+  end-to-end with a real test: cloned Jan's voice from an already-verified-correct
+  MiniMax-H3 audio sample, generated new dialogue with Qwen3-TTS, lip-synced it onto a
+  silent Wan clip with MuseTalk. Whisper transcription of the final muxed video exactly
+  matched the target text; frame-by-frame inspection showed real, varying mouth shapes in
+  sync with speech, no visible seam.
+
+**This is now the answer for any wide/establishing shot that needs dialogue.** Full setup
+and usage documented in `wan22-pipeline/comfyui-tools/README.md` (a `graph_to_prompt.py`
+tool is included there too, for driving ComfyUI headlessly via its `/prompt` API when the
+Chrome browser extension isn't available). Not yet applied to F01 itself — see
+`SCENE1_MINIMAX_TRACKER.md` row 1 for the concrete next step.

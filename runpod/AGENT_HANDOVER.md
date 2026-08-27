@@ -157,28 +157,69 @@ Use `jan_office_location_sheet_fixed.png`, **not** the non-`_fixed` version.
 
 ---
 
-## 5. ✅ RESULT: 720p fixes the wide-shot blob. 124 frames breaks it.
+## 5. ✅ THE RECIPE — settled 2026-08-27
 
-Tested 2026-08-27 on an A40 48GB. Clips are in `C:\kontitemp\AI\cloud-clips\`.
+**Render at 960×544 and upscale to 720p. Do not render at 1280×736.**
+
+```bash
+python3 gen_clip.py --out <NAME> --quant Q8_0 --no-easycache --steps 30 \
+  --width 960 --height 544 --frames <UP TO 226> --seed <N> \
+  --refs <character sheets> <location plate> --prompt "..."
+# then: ffmpeg -i out.mp4 -vf scale=1280:736:flags=lanczos -crf 16 -c:a aac out_720.mp4
+```
+
+Measured, all on A100 80GB. Clips in `C:\kontitemp\AI\cloud-clips\`.
 
 | Config | Result | Time |
 | :--- | :--- | ---: |
-| 864×480, 56f, close-up | ✅ baseline, good | 179 s |
-| **1280×736, 56f, wide** | ✅ **face resolves — the blob is fixed** | 408 s |
-| 1280×736, 124f, wide | ❌ **degrades progressively** | 964 s |
+| 1280×736, 56f wide | face resolves, but soft | 408 s |
+| 1280×736, 124f wide | ❌ **decays badly through the clip** | 964 s |
+| 960×544, 90f close-up | ✅ clean | 563 s |
+| **960×544, 226f close-up** | ✅ **clean to the last frame — 9.4s** | 2065 s |
 
-**The wide-shot face problem is solved by resolution.** `HANDOVER.md` called it "a
-pixel-count problem, not a quantization one" and that was correct. At 1280×736 Jan's face
-has eyes, glasses and a readable expression at native pixel crop.
+### 🔴 The 56-frame "ceiling" was never about frame count
 
-**Doubling the length does not work, and it is NOT a VRAM limit.** 124 frames fit fine
-(41.7/46GB) and rendered — but the picture decays *through* the clip: frame 8 intact,
-frame 60 smeared, frame 115 badly distorted with colour fringing and mangled hands.
+`minimax-h3-pipeline/README.md` says *"56 frames is the longest clip length confirmed
+safe"* and blames the 96-frame failure on VRAM thrashing. **Both framings are wrong.**
 
-⚠️ This corrects an assumption in `minimax-h3-pipeline/README.md`, which attributes the
-96-frame failure to VRAM thrashing. **There is a separate quality ceiling that more VRAM
-does not lift.** Chaining short segments is therefore *better* than one long pass, not
-worse — drift between chunks is milder than decay within one.
+The real constraint is a **total latent budget — width × height × frames.** Spend it on
+resolution and you get very few frames; spend it on frames and you get a lot. At 960×544,
+**226 frames (9.4s) renders with no decay at all** — four times the supposed ceiling, and
+sharper than anything produced at 1280×736. Frame 220 of 226 has skin texture, individual
+hair strands and correct hands.
+
+Corollary: **stop chaining.** `chain_clips.py` and its compounding zoom drift exist to work
+around a limit that only appears at high resolution. A whole 22-word line now fits in one
+continuous take — no splice, no drift, no AAC concat corruption.
+
+### Why 1280×736 is worse despite more pixels
+
+Tested directly: rendering above MiniMax-H3's native training resolution (960×544)
+produces *softer* output than rendering at native and upscaling with lanczos. The user
+judged native+upscale better on the video; a single-frame crop misleadingly favours 1280.
+
+### Wide shots are still the weak spot
+
+720p fixed the *blob* (faces resolve at native pixel crop) but wides remain the compromise:
+a face at ~90px in a full-room frame will never match a close-up at ~200px. Scene 1 is
+mostly close-ups and two-shots, so this affects few shots. **If a wide looks bad, reframe
+it** — that is a cheaper fix than any model or setting.
+
+### ❌ Still unsolved: the London skyline
+
+The Shard reappears through the office windows in wides, **despite** the `_fixed` office
+plate, **despite** an explicit negative ("LOW-RISE CAMBRIDGE… NO The Shard"), and at both
+Q4_K and Q8_0. Three attempts, three failures. Negative prompting is not the lever — the
+model reads the office reference as a London high-rise interior. Fix the reference image or
+block the shot so the glass isn't behind the actors.
+
+### Things tested and rejected
+
+- **Realism LoRA** (`fal/MiniMax-H3-Realism-People-LoRA`, 208/208 tensors applied cleanly,
+  strength 0.8) — made the face *softer*, not sharper. A close-up realism LoRA has nothing
+  to work with at ~90px face height. Not adopted.
+- **Native 960×544 without upscale** — fewer pixels on the face; the upscale is what makes
+  the recipe work.
 
 ### ❌ Still unsolved: the London skyline
 
@@ -230,23 +271,27 @@ Explicit placement (drop `--auto-fit`):
 
 ---
 
-## 7. 🔴 The most important untried experiment
+## 7. ✅ Quality settings — resolved
 
-**Every setting used so far is a speed compromise inherited from a 16GB card, and none has
-been revisited on rented hardware:**
+The old defaults (`Q4_K`, 20 steps, EasyCache skipping ~9 of 20) were speed compromises
+inherited from a 16GB card. **All three have been revisited and all three were worth
+changing.** `Q8_0` + 30 real steps + no EasyCache is now the recipe in §5.
 
-- `Q4_K` denoiser — because `Q8_0` (21.4GB) didn't fit 16GB.
-- 20 steps **with EasyCache skipping roughly half of them**.
+⚠️ **`Q8_0` is 21.4GB and does NOT fit a 16GB card.** This recipe requires >16GB. On the
+user's own RTX 4080 you would be capped at `Q4_K`/`Q6_K` and ~90 frames.
 
-The user judged output quality "not good enough" — but has only ever seen **preview
-settings**. Before renting anything bigger or switching models, run:
+### Still untried, and probably the highest-value thing left
 
-```
---quant Q8_0, EasyCache off, ~30 steps, 1280×736, on the F01 wide
-```
+**A character LoRA trained on Jan.** Reference-image conditioning is the weak way to lock
+identity; a LoRA is the standard technique for a recurring character across many shots, and
+it is **hardware-independent** — it would work on the 4080 too. `sd-cli` supports LoRAs
+(`--lora-model-dir`, and `gen_clip.py --lora NAME:STRENGTH`), and a stock realism LoRA was
+verified to load and apply 208/208 tensors, so the mechanism works.
 
-directly comparable to `F01_720p.mp4` which he has already watched. This is the single
-cheapest experiment with the highest chance of changing the answer.
+Also untried: **post-processing** (`runpod/postprocess.sh`, written but never run) —
+CodeFormer face restoration plus optional upscale, with the original audio remuxed
+untouched. Every clip judged so far has been raw single-model output; people producing
+"movie quality" open-model video run generate → face-restore → upscale → interpolate.
 
 ---
 
@@ -304,14 +349,33 @@ Weights download **before** the build, deliberately — a compiler problem must 
 
 ## 10. Where this was left
 
-Pod is an A100 80GB, rebuilding after a GPU switch. Immediate queue:
+**The pipeline works.** F02's full 22-word line was delivered two ways on 2026-08-27:
+as three 90-frame clips concatenated (`F02_FULL.mp4`, 11.4s) and as **one continuous
+226-frame take** (`F02_ONESHOT_up720.mp4`, 9.4s) — the one-shot is better and simpler.
 
-1. **MiniMax at real quality settings** (§7) — the experiment that may make the model
-   question moot.
-2. **LTX-2.3 at 1280×736 on 80GB** (§6) — the VAE tile that OOM'd on 48GB should now fit.
-3. Fix the **London skyline** in wides (§5).
-4. Re-plan Scene 1's clip count against the corrected dialogue pace
-   (`SCENE1_MINIMAX_TRACKER.md` QA Rule 2) — unaffected by hardware.
+Roughly **34 min and ~90p per 9.4-second take** on an A100 80GB.
+
+### Next, in order
+
+1. **Update `SCENE1_MINIMAX_TRACKER.md`** — the per-clip splits it prescribes are now
+   mostly unnecessary. Most lines fit in one take at 960×544. Re-plan the shot list around
+   whole lines rather than clause fragments.
+2. **A character LoRA for Jan** (§7) — the real fix for cross-shot identity.
+3. **Post-processing** (`runpod/postprocess.sh`, never run).
+4. Fix the **London skyline** in wides (§5) — reference image or shot blocking.
+5. **Log prompts per clip.** Still not recorded anywhere; the tracker logs outcomes only,
+   so `F01_v3`/`F02_v3` cannot be reproduced exactly.
+
+### Models: the search is over
+
+Checked exhaustively on 2026-08-27. Every open-weight video model with **native synced
+speech** is MiniMax-H3 or LTX-2.x. HunyuanVideo 1.5, Wan 2.1/2.2, Stable Video Diffusion
+and LTX 0.9.5 are all silent; Seedance, Sora 2, Veo 3 and Kling are hosted-only and carry
+the likeness filters that already blocked Google Flow. **Do not go looking for a fourth
+option.**
+
+HunyuanVideo 1.5 was downloaded and run: sd-cli accepts it (1.5, not just 1.0), but it is
+**71 s/it against MiniMax's 27** — 2.6× slower while silent. Deleted from the volume.
 
 **Not yet recorded anywhere: the exact prompt strings used per clip.** The tracker logs
 outcomes, not prompts, so `F01_v3`/`F02_v3` cannot be reproduced exactly. Log prompts per

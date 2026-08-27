@@ -55,6 +55,21 @@ parser.add_argument("--quant", default="Q4_K", choices=["Q3_K", "Q4_K", "Q5_0", 
                          "blob face is a pixel-count problem, NOT a quantisation one - raise "
                          "--width/--height for that. A bigger quant is for general fidelity, "
                          "and costs speed via memory bandwidth. Ignored with --turbo.")
+parser.add_argument("--lora", action="append", default=[], metavar="NAME:STRENGTH",
+                    help="apply a LoRA from loras/, e.g. "
+                         "h3-realism-people-t2v-i2v-r2v:0.8 . Repeatable. "
+                         "stable-diffusion.cpp applies LoRAs via <lora:name:strength> in the "
+                         "prompt, which this builds for you. NOTE: our weights are the "
+                         "_pruned_ GGUFs; a LoRA expecting standard H3 attention projection "
+                         "keys may silently fail to apply - check the log for lora warnings.")
+parser.add_argument("--steps", type=int, default=None,
+                    help="sampling steps. Default 20 (standard) / 4 (turbo). The 20 was a "
+                         "speed choice made on a 16GB card, never revisited - 30-40 is worth "
+                         "testing now that VRAM is not the constraint.")
+parser.add_argument("--no-easycache", action="store_true",
+                    help="disable EasyCache. It skips ~9 of 20 diffusion steps (sampling "
+                         "162.6s -> 95.5s) and is ON by default - a speed/quality trade "
+                         "inherited from the 16GB card. Turn it off for final-quality renders.")
 parser.add_argument("--turbo", action="store_true",
                      help="use the turbo checkpoint (4 steps, guidance 1.0) instead of the "
                           "standard denoiser (20 steps, guidance 3.5). WARNING: verified "
@@ -85,15 +100,27 @@ cmd = [
     "--audio-vae", str(MODELS / "vae" / "minimax_h3_audio_vae_fp32.safetensors"),
     "--auto-fit",
     "--diffusion-fa",
-    "--cache-mode", "easycache",
-    "--cache-option", "threshold=0.25",
 ]
+if not args.no_easycache:
+    cmd += ["--cache-mode", "easycache", "--cache-option", "threshold=0.25"]
+if args.steps is not None:
+    steps = str(args.steps)
 if args.vae_tiling:
     cmd.append("--vae-tiling")
 for ref in args.refs:
     cmd += ["-r", str(REFS_DIR / ref)]
+prompt = args.prompt
+if args.lora:
+    cmd += ["--lora-model-dir", str(BASE / "loras")]
+    tags = []
+    for spec in args.lora:
+        name, _, strength = spec.partition(":")
+        tags.append(f"<lora:{name}:{strength or '1.0'}>")
+    prompt = " ".join(tags) + " " + prompt
+    print(f"    LoRA: {' '.join(tags)}")
+
 cmd += [
-    "-p", args.prompt,
+    "-p", prompt,
     "--cfg-scale", "1.0",
     "--guidance", guidance,
     "-W", str(args.width), "-H", str(args.height),

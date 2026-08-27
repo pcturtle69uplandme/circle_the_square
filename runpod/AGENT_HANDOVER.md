@@ -42,18 +42,50 @@ If picture quality forces the issue, the acceptable levers are, in order:
 The pod is Linux (Ubuntu 24.04). The user's main PC is Windows. **Nothing binary transfers
 between them** — don't copy `.exe` files or Windows paths across.
 
+### 2.1 Where the connection details live
+
+**There is no permanent address.** RunPod assigns a fresh IP and TCP port every time a pod
+is created, so anything written down goes stale. Get them fresh, in this order:
+
+1. **`runpod/pod.env` in this repo** — last known values, with the date they were captured.
+   Source it: `set -a; . runpod/pod.env; set +a`. **Verify before trusting it**; if
+   `ssh` gives `Connection refused` or `container not found`, it's stale — go to 2 or 3.
+2. **RunPod MCP server**, if the session has it — it can list pods and their status
+   directly. Install: `/plugin marketplace add runpod/runpod-plugins-official` then
+   `/plugin install runpod@runpod`. Choose **Hosted** mode at the prompt (OAuth, no API key
+   written to disk).
+3. **The console**, by hand: [console.runpod.io](https://console.runpod.io) → the pod →
+   **Connect** → **"SSH over exposed TCP"**. Ask the user to paste that line.
+
+Use the **direct TCP** endpoint (`root@<ip> -p <port>`). The `ssh.runpod.io` proxy endpoint
+also exists but has **no SCP/SFTP**, so you cannot upload refs or scripts through it.
+
+After connecting to a new pod, **update `runpod/pod.env` and commit it** so the next agent
+starts from a working address. The pod is private infrastructure in a private repo; the IP
+is ephemeral and not a secret. **Never commit the private key.**
+
+### 2.2 You need an SSH key registered on the account
+
+Connecting needs a private key whose public half RunPod knows about. If you are on a new
+machine, you have neither.
+
 ```bash
-ssh root@<POD_IP> -p <TCP_PORT> -i ~/.ssh/id_ed25519
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+cat ~/.ssh/id_ed25519.pub          # give this to the user
 ```
 
-Get `<POD_IP>` and `<TCP_PORT>` from the RunPod console → your pod → **Connect** → **"SSH
-over exposed TCP"**. **They change on every redeploy**; the `ssh.runpod.io` proxy endpoint
-also exists but has **no SCP/SFTP**, so use the direct TCP one for file transfer.
+The user adds it at **console.runpod.io → Settings → SSH Public Keys**. Strip the trailing
+email comment first — it isn't needed and needn't be on a rented box.
 
-`Permission denied (publickey)` means the pod was created *before* the key was registered —
-RunPod injects account keys at creation only. Fix: enable the pod's **web terminal** and
-append the public key to `~/.ssh/authorized_keys` by hand, or register the key in Account
-Settings and restart the pod.
+⚠️ **Registering a key does not fix an already-running pod.** RunPod injects account keys
+at pod **creation** only, so an existing pod has never seen the new key and gives
+`Permission denied (publickey)`. Two fixes: have the user enable the pod's **web terminal**
+and append the key by hand, or restart the pod so it re-injects.
+
+```bash
+mkdir -p ~/.ssh && echo '<public key>' >> ~/.ssh/authorized_keys \
+  && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys
+```
 
 ### Layout on the pod
 

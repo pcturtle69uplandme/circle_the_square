@@ -147,12 +147,22 @@ Register it in Account Settings too, or every future pod repeats the same dance.
 ```bash
 # on the pod, once per volume
 bash setup_pod.sh
-bash /workspace/start_comfy.sh
+bash /workspace/start_comfy.sh        # detaches itself - see below
 
 # on the laptop, in a second terminal: open the tunnel (see above), then
 set COMFY_SERVER=http://127.0.0.1:8188
 python runpod/comfy.py ping
 python runpod/comfy.py run prompt.json -o outputs/
+```
+
+**Anything long-running on the pod must be detached.** Started from a plain SSH
+session, ComfyUI dies the moment that session drops — close the laptop mid-render and
+the job is gone while the pod keeps billing. `start_comfy.sh` detaches itself by
+default (`--fg` forces foreground for debugging), and won't start a second copy if one
+is already up. For anything else you launch by hand:
+
+```bash
+setsid nohup <command> > /workspace/<name>.log 2>&1 < /dev/null & disown
 ```
 
 `prompt.json` is API-format — build it from a saved workflow with

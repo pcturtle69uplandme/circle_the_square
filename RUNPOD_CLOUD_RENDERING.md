@@ -153,6 +153,46 @@ own. The tunnel has no cap and carries SCP. Use the **direct TCP** endpoint, not
 `comfy.py` still supports the proxy path via `COMFY_POD` if 8188 is ever exposed
 properly — it submits and polls precisely so no single request goes long.
 
+### Your laptop is a remote control, not the machine
+
+The pod runs in Kansas. Closing the browser, shutting the laptop or losing wifi does
+**nothing** to it — which also means it does nothing to the billing.
+
+| Action | Pod | Container disk (`/opt`) | Volume (`/workspace`) | Billing |
+| :--- | :--- | :--- | :--- | :--- |
+| Close laptop / browser | runs on | intact | intact | **keeps charging** |
+| SSH drops | runs on | intact | intact | keeps charging |
+| **Stop** the pod | halted | **erased** | intact | GPU stops, volume continues |
+| **Terminate** the pod | gone | erased | intact | GPU stops, volume continues |
+| Delete the volume | — | — | **gone forever** | stops |
+
+Only an explicit Stop or Terminate wipes the container disk — which is why
+`setup_pod.sh` is idempotent and keeps nothing irreplaceable there.
+
+A stopped pod does **not** reserve its GPU. If US-KS-2 is out of A6000s when you
+restart, you wait. The volume is safe regardless; only the compute isn't guaranteed.
+
+### ⚠️ Always start ComfyUI detached
+
+Started from a plain SSH session, ComfyUI **dies when that session drops** — close
+the laptop mid-render and the job is gone while the pod keeps billing. Same for any
+long-running job: `setup_pod.sh` is launched with `setsid nohup … & disown` for
+exactly this reason.
+
+`start_comfy.sh` now **detaches itself by default**, so the safe form is the one you
+get for free:
+
+```bash
+bash /workspace/start_comfy.sh        # detached; survives SSH drop and laptop close
+bash /workspace/start_comfy.sh --fg   # foreground, debugging only
+tail -f /workspace/comfy.log          # watch it
+pkill -f 'main.py --listen'           # stop it
+```
+
+It also refuses to start a second copy if one is already running. Once ComfyUI is
+detached, the SSH tunnel is the only thing needing your laptop awake — and losing it
+just means reconnecting; the server and any queued render carry on.
+
 ---
 
 ## 6. Setup — what runs on the pod

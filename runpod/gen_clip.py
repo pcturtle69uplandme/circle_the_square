@@ -48,6 +48,13 @@ parser.add_argument("--frames", type=int, default=56)
 parser.add_argument("--width", type=int, default=864)
 parser.add_argument("--height", type=int, default=480)
 parser.add_argument("--vae-tiling", action="store_true")  # default off: ~20% slower, doesn't fix face clarity
+parser.add_argument("--quant", default="Q4_K", choices=["Q3_K", "Q4_K", "Q5_0", "Q6_K", "Q8_0"],
+                    help="ref2va denoiser quantisation. Q4_K (11.4GB) is what the 16GB card "
+                         "was limited to; Q5_0/Q6_K/Q8_0 (up to ~21.4GB) only became reachable "
+                         "on a 48GB card. NOTE: HANDOVER.md is explicit that the wide-shot "
+                         "blob face is a pixel-count problem, NOT a quantisation one - raise "
+                         "--width/--height for that. A bigger quant is for general fidelity, "
+                         "and costs speed via memory bandwidth. Ignored with --turbo.")
 parser.add_argument("--turbo", action="store_true",
                      help="use the turbo checkpoint (4 steps, guidance 1.0) instead of the "
                           "standard denoiser (20 steps, guidance 3.5). WARNING: verified "
@@ -62,8 +69,13 @@ if args.turbo:
     diffusion_model = "minimax_h3_ref2va_turbo_Q4_K_M.gguf"
     steps, guidance = "4", "1.0"
 else:
-    diffusion_model = "minimax_h3_ref2va_pruned-Q4_K.gguf"
+    diffusion_model = f"minimax_h3_ref2va_pruned-{args.quant}.gguf"
     steps, guidance = "20", "3.5"
+
+if not (MODELS / diffusion_model).exists():
+    sys.exit(f"error: {diffusion_model} is not on this machine.\n"
+             f"  present: {', '.join(sorted(p.name for p in MODELS.glob('*ref2va*.gguf'))) or 'none'}\n"
+             f"  fetch it:  hf download unsloth/MiniMax-H3-GGUF {diffusion_model} --local-dir {MODELS}")
 
 cmd = [
     str(BIN), "-M", "vid_gen",

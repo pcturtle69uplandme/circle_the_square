@@ -11,6 +11,32 @@ re-running those experiments wastes money and tells you nothing new.
 
 ---
 
+## 0. ⛔ STATUS: cloud rendering was a TRIAL. It is not adopted.
+
+**Decision, 2026-08-27: work continues on the local RTX 4080 16GB.**
+
+The user rented cloud GPUs for one day to answer a single question — *would more VRAM fix
+the quality?* — and tested up to an **A100 80GB**, five times the local card. The answer was
+**no**. Output at 80GB with the best available settings still did not meet his bar.
+
+**That is a genuinely valuable negative result.** It cost about **£5** and it ruled out
+spending thousands on a new rig. VRAM was never the binding constraint; do not let anyone
+re-open that question by proposing bigger hardware.
+
+**What this means for you:**
+- Everything below still describes how to run a pod, and it all works. Use it only if a
+  specific task genuinely needs >16GB.
+- **The findings in §5 mostly transfer to the 4080** — read the 16GB caveats there.
+- The remaining open problems (§7, §10) are **hardware-independent**. Character consistency,
+  spatial/staging control, post-processing and the London skyline are model and workflow
+  problems, not memory problems. That is where effort should go.
+
+**Deliverables from the trial** — three complete tracker rows, each a single continuous take
+with synced dialogue, in `C:\kontitemp\AI\cloud-clips\`:
+`F01_ONESHOT_up720.mp4` (5.9s), `F02_ONESHOT_up720.mp4` (9.4s), `F03_ONESHOT_up720.mp4` (10.8s).
+
+---
+
 ## 1. What the job is
 
 *Circle the Square* is a British mockumentary comedy. 64 storyboard keyframes across 3
@@ -199,6 +225,27 @@ and correct hands.
 
 **Rule: always render at 960×544 and upscale. Including wides.**
 
+### 🖥️ Porting this recipe to the RTX 4080 16GB
+
+The **resolution finding transfers completely and is the most valuable thing here** — it
+costs nothing and needs no VRAM. Render at 960×544 and upscale with lanczos; **never render
+above native**, which was making output softer *and* capping clip length. That alone should
+improve local results over the old 864×480 default.
+
+What does **not** transfer:
+
+| Setting | A100 80GB | RTX 4080 16GB |
+| :--- | :--- | :--- |
+| Quant | `Q8_0` (21.4GB) | ❌ won't fit — use `Q4_K` (11.4GB) or try `Q5_0` |
+| Frames | 260 (10.8s) single-shot | ❌ ~56–72; 96 already caused thrashing at a *smaller* res |
+| Text encoder | on GPU | on CPU RAM (auto-fit already does this) |
+| Steps 30, EasyCache off | ✅ | ✅ **transfers — do this**, it is compute not memory |
+
+⚠️ **Be honest about the consequence:** the long single-take win does **not** transfer.
+On 16GB you are back to ~2.3–3s clips, so lines still need splitting and `chain_clips.py`
+still matters. The user's own diagnosis — that consistency across short clips is the real
+problem — remains true locally. Fixing it needs a character LoRA (§7), not more memory.
+
 Corollary: **stop chaining.** `chain_clips.py` and its compounding zoom drift exist to work
 around a limit that only appears at high resolution. A whole 22-word line now fits in one
 continuous take — no splice, no drift, no AAC concat corruption.
@@ -366,16 +413,30 @@ as three 90-frame clips concatenated (`F02_FULL.mp4`, 11.4s) and as **one contin
 
 Roughly **34 min and ~90p per 9.4-second take** on an A100 80GB.
 
-### Next, in order
+### Next, in order — all of this is LOCAL work on the 4080
 
-1. **Update `SCENE1_MINIMAX_TRACKER.md`** — the per-clip splits it prescribes are now
-   mostly unnecessary. Most lines fit in one take at 960×544. Re-plan the shot list around
-   whole lines rather than clause fragments.
-2. **A character LoRA for Jan** (§7) — the real fix for cross-shot identity.
-3. **Post-processing** (`runpod/postprocess.sh`, never run).
-4. Fix the **London skyline** in wides (§5) — reference image or shot blocking.
-5. **Log prompts per clip.** Still not recorded anywhere; the tracker logs outcomes only,
-   so `F01_v3`/`F02_v3` cannot be reproduced exactly.
+1. **Apply the 960×544 + upscale recipe locally**, with `Q4_K`, 30 steps, EasyCache off.
+   Free quality win over the old 864×480 default; needs no new hardware.
+2. **A character LoRA for Jan** (§7) — the real fix for cross-shot identity, and the direct
+   answer to the user's own diagnosis. Hardware-independent, trains and runs on a 4080.
+3. **Spatial control.** Four of five prompts failed on *staging* instructions — eyeline
+   direction, foreground clearance, skyline exclusion — while *content* instructions (who is
+   in shot, what they say, what they hold) worked every time. **MiniMax-H3 does not take
+   camera-geometry direction from text.** `alibaba-pai/MiniMax-H3-Fun-Controlnet-Union` is
+   the obvious candidate and would likely fix eyeline and skyline together. Untested.
+4. **Post-processing** (`runpod/postprocess.sh`, written, never run).
+5. Fix the **London skyline** — five prompt attempts failed, including explicit negatives at
+   both Q4_K and Q8_0. It is a property of the office *reference image*, not the prompt.
+   Fix the reference or block shots so the glass is not behind the actors.
+6. **Log prompts per clip.** Still not recorded anywhere.
+
+### Known bad, from the trial
+
+- **F03's eyeline is wrong** — Christina addresses the lens instead of off-camera Jan,
+  breaking the axis against F01. A re-roll with much stronger wording was queued as F04's
+  test; see whether it worked before trusting text for staging.
+- **A mullion intrudes at frame-left in F03**, borderline against the no-foreground-glass
+  rule.
 
 ### Models: the search is over
 

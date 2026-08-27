@@ -182,11 +182,22 @@ Measured, all on A100 80GB. Clips in `C:\kontitemp\AI\cloud-clips\`.
 `minimax-h3-pipeline/README.md` says *"56 frames is the longest clip length confirmed
 safe"* and blames the 96-frame failure on VRAM thrashing. **Both framings are wrong.**
 
-The real constraint is a **total latent budget — width × height × frames.** Spend it on
-resolution and you get very few frames; spend it on frames and you get a lot. At 960×544,
-**226 frames (9.4s) renders with no decay at all** — four times the supposed ceiling, and
-sharper than anything produced at 1280×736. Frame 220 of 226 has skin texture, individual
-hair strands and correct hands.
+The real constraint is **rendering above the model's native training resolution**, not the
+number of frames and not a memory budget. Compare the two runs — the pixel-frame totals are
+nearly identical and the outcomes are opposite:
+
+```
+ 960×544 × 226 frames = 118M pixel-frames  →  clean to the last frame
+1280×736 × 124 frames = 117M pixel-frames  →  decayed badly by frame 60
+```
+
+So it is **not** a budget you can spend on either axis. **At native 960×544, length is
+close to free**; above native, quality degrades as the clip runs. At 960×544, **226 frames
+(9.4s) renders with no decay at all** — four times the supposed ceiling, and sharper than
+anything produced at 1280×736. Frame 220 of 226 has skin texture, individual hair strands
+and correct hands.
+
+**Rule: always render at 960×544 and upscale. Including wides.**
 
 Corollary: **stop chaining.** `chain_clips.py` and its compounding zoom drift exist to work
 around a limit that only appears at high resolution. A whole 22-word line now fits in one

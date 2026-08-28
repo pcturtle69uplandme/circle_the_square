@@ -584,6 +584,29 @@ const CHAR_INFO = {
 };
 
 // ══════════════════════════════════════════════════════════════
+// EXPLICIT AUDIO MAP — frame.id → audio filename
+// This avoids relying on array index order.
+// ══════════════════════════════════════════════════════════════
+const AUDIO_MAP = {
+  // Jan Peach
+  F02: "jan_01.mp3", F04: "jan_02.mp3", F06a: "jan_03.mp3",
+  F06b: "jan_04.mp3", F08: "jan_05.mp3", F10: "jan_06.mp3",
+  F12: "jan_07.mp3", F14: "jan_08.mp3", F16: "jan_09.mp3",
+  F20: "jan_10.mp3",
+  // Christina Dross
+  F01: "christina_01.mp3", F03: "christina_02.mp3", F05: "christina_03.mp3",
+  F07: "christina_04.mp3", F09: "christina_05.mp3", F11: "christina_06.mp3",
+  F13: "christina_07.mp3", F15: "christina_08.mp3",
+  // Sharon Enfield
+  F23: "sharon_01.mp3", F24: "sharon_02.mp3", F25: "sharon_03.mp3",
+  // Chris
+  F28: "chris_01.mp3", F31: "chris_02.mp3", F32: "chris_03.mp3",
+  F38: "chris_04.mp3",
+  // Rick
+  F29: "rick_01.mp3", F36: "rick_02.mp3", F60: "rick_03.mp3",
+};
+
+// ══════════════════════════════════════════════════════════════
 // FRAMES DATA (64 frames, F01-F61 + F63-F64)
 // ══════════════════════════════════════════════════════════════
 const SCENES = [
@@ -693,12 +716,15 @@ function getCharKey(speaker) {
 }
 
 function getAudioPath(frame) {
+  if (!frame.speaker) return null;
+  const filename = AUDIO_MAP[frame.id];
+  if (filename) return `audio-refs/${filename}`;
+  // Fallback: derive from character key (may be wrong for reordered frames)
   const charKey = getCharKey(frame.speaker);
   if (!charKey) return null;
-  // Try the pre-generated MP3 (jan_01.mp3, christina_01.mp3 etc.)
-  // We need to map frame index to audio index
   const charFrames = FRAMES.filter(f => getCharKey(f.speaker) === charKey);
   const lineIdx = charFrames.findIndex(f => f.id === frame.id) + 1;
+  if (lineIdx === 0) return null;
   const idxStr = String(lineIdx).padStart(2, "0");
   return `audio-refs/${charKey}_${idxStr}.mp3`;
 }

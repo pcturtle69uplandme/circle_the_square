@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CTS Bubble Studio — F01</title>
+<style>
+  :root {
+    --orange: #B0381F;
+    --orange-light: #E04B28;
+    --gold: #F2A34D;
+    --bg: #0A0A0C;
+    --bg2: #111116;
+    --bg3: #18181F;
+    --bg4: #1E1E28;
+    --border: rgba(255,255,255,0.08);
+    --text: #E8E6F0;
+    --text-muted: #8A87A0;
+    --text-dim: #4E4B60;
+    --green: #2ECC71;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── Layout ───────────────────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 20px 60px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  /* ── Stage ────────────────────────────────────────────── */
+  .stage {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .stage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .badge {
+    background: var(--bg4);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold);
+  }
+
+  .frame-container {
+    position: relative;
+    aspect-ratio: 2.39 / 1;
+    background: var(--bg4);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: crosshair;
+    user-select: none;
+  }
+
+  .frame-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  .frame-container.drag-bubble { cursor: grabbing; }
+  .frame-container.drag-pointer { cursor: crosshair; }
+
+  /* ── Speech Bubble ─────────────────────────────────────── */
+  .bubble {
+    position: absolute;
+    background: #fdfaf3;
+    color: #1a1a1a;
+    border-radius: 18px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    max-width: 50%;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    border: 2px solid #1a1a1a;
+    cursor: grab;
+    z-index: 10;
+  }
+  .bubble:active { cursor: grabbing; }
+  .bubble .speaker {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    margin-bottom: 2px;
+    display: block;
+  }
+  .bubble.sfx {
+    background: var(--bg3);
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    font-style: italic;
+    font-size: 0.82rem;
+  }
+  .bubble.sfx::after,
+  .bubble.sfx::before { display: none; }
+
+  /* ── Bubble Tail / Pointer ─────────────────────────────── */
+  .bubble-tail {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    cursor: move;
+    z-index: 11;
+  }
+  .bubble-tail::before,  /* black triangle */
+  .bubble-tail::after {  /* white inner */
+    content: '';
+    position: absolute;
+  }
+  .bubble-tail::before {
+    border: 11px solid transparent;
+    border-top-color: #1a1a1a;
+    left: 0; bottom: 0;
+    transform-origin: top left;
+  }
+  .bubble-tail::after {
+    border: 9px solid transparent;
+    border-top-color: #fdfaf3;
+    left: 2px; bottom: 2px;
+    transform-origin: top left;
+  }
+
+  /* Tail positioning: we use CSS transforms applied to the ::before/::after */
+  .tail-pointing-left::before,
+  .tail-pointing-left::after { transform: rotate(-90deg); }
+  .tail-pointing-right::before,
+  .tail-pointing-right::after { transform: rotate(90deg); }
+
+  /* ── Drag handle / resize handle on bubble ─────────────── */
+  .bubble-handle {
+    position: absolute;
+    top: -10px; right: -10px;
+    width: 22px; height: 22px;
+    background: var(--orange);
+    border: 2px solid #1a1a1a;
+    border-radius: 50%;
+    cursor: nwse-resize;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #fff; font-weight: 900;
+    z-index: 12;
+    opacity: 0.7;
+    transition: opacity .15s;
+  }
+  .bubble:hover .bubble-handle { opacity: 1; }
+  .bubble-handle:hover { background: var(--orange-light); }
+
+  /* ── Controls Panel ─────────────────────────────────────── */
+  .panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .panel h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+
+  .panel-section h3 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* Sliders */
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .slider-row label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    min-width: 80px;
+  }
+  .slider-row input[type=range] {
+    flex: 1;
+    accent-color: var(--orange);
+    cursor: pointer;
+  }
+  .slider-row .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    flex: 1;
+    text-align: center;
+  }
+  .btn:hover { border-color: var(--gold); color: var(--text); }
+  .btn.active { background: var(--orange); border-color: var(--orange-light); }
+  .btn.play-btn {
+    background: var(--bg4);
+    border-color: var(--green);
+    color: var(--green);
+    flex: 2;
+  }
+  .btn.play-btn:hover { background: var(--green); color: var(--bg); border-color: var(--green); }
+  .btn.play-btn.playing {
+    background: var(--orange); border-color: var(--orange-light); color: #fff;
+  }
+  .btn:disabled { opacity: .35; cursor: default; }
+
+  /* Status */
+  .status {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    background: var(--bg3);
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .status.ok { color: var(--green); }
+  .status.err { color: #E74C3C; }
+
+  /* TTS Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Scene nav */
+  .scene-nav { display: flex; gap: 6px; align-items: center; }
+  .scene-nav label { font-size: 0.75rem; color: var(--text-muted); }
+  .scene-nav select {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    flex: 1;
+  }
+
+  /* Frame grid */
+  .frame-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 6px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 4px;
+  }
+  .frame-thumb {
+    aspect-ratio: 2.39 / 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all .12s;
+  }
+  .frame-thumb:hover { border-color: var(--gold); color: var(--text); }
+  .frame-thumb.current { background: var(--orange); border-color: var(--orange-light); color: #fff; }
+  .frame-thumb.done { position: relative; }
+  .frame-thumb.done::after {
+    content: '●';
+    position: absolute;
+    top: 2px; right: 3px;
+    font-size: 0.45rem;
+    color: var(--green);
+  }
+
+  .hint {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── LEFT: Stage ───────────────────────────────────────── -->
+  <div>
+    <div class="stage">
+      <div class="stage-header">
+        <span class="badge" id="frameBadge">F01</span>
+        <span id="sceneLabel">Scene 1 — Jan's Office</span>
+        <span class="badge" id="shotBadge">S01</span>
+      </div>
+      <div class="frame-container" id="frameContainer">
+        <img id="frameImg" alt="" />
+        <div class="bubble" id="bubble">
+          <span class="speaker" id="bubbleSpeaker"></span>
+          <span id="bubbleLine"></span>
+        </div>
+        <div class="bubble-tail" id="bubbleTail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT: Controls Panel ───────────────────────────────── -->
+  <div class="panel">
+
+    <!-- Frame nav -->
+    <div>
+      <div class="panel-section">
+        <h3>Frame</h3>
+        <div class="scene-nav">
+          <label for="sceneFilter">Scene</label>
+          <select id="sceneFilter">
+            <option value="all">All Scenes</option>
+            <option value="1" selected>Scene 1</option>
+            <option value="2">Scene 2</option>
+            <option value="3">Scene 3</option>
+          </select>
+        </div>
+        <div class="frame-grid" id="frameGrid"></div>
+      </div>
+    </div>
+
+    <!-- Bubble position -->
+    <div>
+      <div class="panel-section">
+        <h3>Bubble Position</h3>
+        <div class="btn-row" style="margin-bottom:8px">
+          <button class="btn" id="btnPresetTL" title="Top-Left">TL</button>
+          <button class="btn" id="btnPresetTC" title="Top-Center">TC</button>
+          <button class="btn" id="btnPresetTR" title="Top-Right">TR</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="btnPresetBL" title="Bottom-Left">BL</button>
+          <button class="btn" id="btnPresetBC" title="Bottom-Center">BC</button>
+          <button class="btn" id="btnPresetBR" title="Bottom-Right">BR</button>
+        </div>
+        <p class="hint">Or drag the bubble freely anywhere on the image.</p>
+      </div>
+    </div>
+
+    <!-- Pointer position -->
+    <div>
+      <div class="panel-section">
+        <h3>Pointer / Tail</h3>
+        <div class="btn-row">
+          <button class="btn" id="btnTailLeft">Point Left</button>
+          <button class="btn" id="btnTailRight">Point Right</button>
+        </div>
+        <div class="slider-row">
+          <label>Tail X</label>
+          <input type="range" id="tailX" min="0" max="100" value="20" />
+          <span class="val" id="tailXVal">20px</span>
+        </div>
+        <div class="slider-row">
+          <label>Tail Y</label>
+          <input type="range" id="tailY" min="-40" max="40" value="0" />
+          <span class="val" id="tailYVal">0px</span>
+        </div>
+        <p class="hint">Drag the orange handle on the bubble corner to resize. Drag the tail freely to reposition.</p>
+      </div>
+    </div>
+
+    <!-- Bubble style -->
+    <div>
+      <div class="panel-section">
+        <h3>Style</h3>
+        <div class="slider-row">
+          <label>Opacity</label>
+          <input type="range" id="opacitySlider" min="10" max="100" value="100" />
+          <span class="val" id="opacityVal">100%</span>
+        </div>
+        <div class="slider-row">
+          <label>X Offset</label>
+          <input type="range" id="xOffset" min="-300" max="300" value="0" />
+          <span class="val" id="xOffsetVal">0px</span>
+        </div>
+        <div class="slider-row">
+          <label>Y Offset</label>
+          <input type="range" id="yOffset" min="-200" max="200" value="0" />
+          <span class="val" id="yOffsetVal">0px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TTS -->
+    <div>
+      <div class="panel-section">
+        <h3>Voice (Qwen3-TTS)</h3>
+        <div class="btn-row">
+          <button class="btn play-btn" id="playBtn" title="Play pre-generated voice line">
+            ▶ Play Voice
+          </button>
+          <button class="btn" id="synthBtn" title="Re-synthesize via ComfyUI TTS API">
+            🔄 Synthesize
+          </button>
+        </div>
+        <div class="status" id="ttsStatus">
+          Ready. Click Play Voice to hear the character read the dialogue line.
+        </div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div>
+      <div class="panel-section">
+        <h3>Character Info</h3>
+        <div class="status" id="charInfo">
+          Christina Dross — Comms Lead, 38, slim, sharp dark brown bob. Charcoal-navy trouser suit, cream blouse. Voice: Serene, measured, dry.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CHARACTER VOICE INFO (from CARTOON_CAST_BIBLE.md)
+// ══════════════════════════════════════════════════════════════
+const CHAR_INFO = {
+  jan: {
+    name: "Jan Peach",
+    role: "CEO",
+    age: 52,
+    desc: "Soft overweight, thinning grey-brown comb-over, ruddy, smug half-smile. Navy suit, pale shirt, silver-grey tie.",
+    voice: "High sharp strained tenor. Fast, erratic, anxious. Pompous, hysterical, angry. British RP.",
+    color: "#2E86AB",
+    speaker: "Ryan",
+  },
+  christina: {
+    name: "Christina Dross",
+    role: "Comms Lead",
+    age: 38,
+    desc: "Slim upright, sharp dark brown chin-length bob with blunt fringe. Charcoal-navy trouser suit, cream blouse.",
+    voice: "Low-to-mid, crisp, level alto. Measured, unhurried, steady. Cold, deadpan, calm. British London RP.",
+    color: "#A23B72",
+    speaker: "Serena",
+  },
+  sharon: {
+    name: "Sharon Enfield",
+    role: "Staff",
+    age: 34,
+    desc: "Curvy, shoulder-length wavy auburn hair. Emerald green blouse, black pencil skirt.",
+    voice: "Warm, confident, grounded adult female. Casual, relaxed. Unbothered, amused. Scottish.",
+    color: "#27AE60",
+    speaker: "Vivian",
+  },
+  chris: {
+    name: "Chris",
+    role: "Staff",
+    age: 32,
+    desc: "Lean, short dark brown hair swept up, light stubble. Light blue button-down, sleeves rolled.",
+    voice: "Bright, conversational baritone. Quick-witted, rising punchlines. Sarcastic, amused. South London/Estuary.",
+    color: "#E67E22",
+    speaker: "Dylan",
+  },
+  rick: {
+    name: "Rick",
+    role: "Staff",
+    age: 40,
+    desc: "Sturdy broad muscular, short salt-and-pepper hair. Grey polo, navy work trousers.",
+    voice: "Deep, gravelly bass-baritone. Slow, deliberate monotone. Flat, unhurried. Flat Midlands/East Anglian.",
+    color: "#7F8C8D",
+    speaker: "Uncle_Fu",
+  },
+  maureen: {
+    name: "Maureen",
+    role: "Canteen",
+    age: 58,
+    desc: "Shorter, round, warm face. White catering uniform, hair in net.",
+    voice: "Medium warm husky. Steady, unhurried. Kind, maternal, no-nonsense. East Anglian.",
+    color: "#8E44AD",
+    speaker: null,
+    instruct: "pitch: Medium, warm, slightly husky.\nspeed: Steady, unhurried.\nemotion: Kind, maternal, no-nonsense.\npersonality: Reliable, good-humoured caretaker.\naccent: East Anglian (Norfolk/Cambridge region).",
+  },
+  gemma: {
+    name: "Gemma Ashcroft",
+    role: "Reception",
+    age: 30,
+    desc: "Tall, elegant, professional. Dark blazer, neat hair.",
+    voice: "Clear, mid-range, pleasant. Moderate, efficient. Polite, attentive. Standard Southern English.",
+    color: "#16A085",
+    speaker: null,
+    instruct: "pitch: Clear, mid-range, pleasant.\nspeed: Moderate, efficient.\nemotion: Polite, attentive.\npersonality: Organised, welcoming.\naccent: Standard Southern English.",
+  },
+  priya: {
+    name: "Priya Raghavan",
+    role: "Staff",
+    age: 29,
+    desc: "Slim, shoulder-length dark hair, alert expression. Smart casual office wear.",
+    voice: "Warm, melodic, mid-range. Measured, thoughtful. Calm, observant. Southern British with subtle Indian influence.",
+    color: "#D35400",
+    speaker: null,
+    instruct: "pitch: Warm, melodic, mid-range.\nspeed: Measured, thoughtful.\nemotion: Calm, observant.\npersonality: Quietly confident, analytical.\naccent: Received Southern British with subtle Indian influence.",
+  },
+  barbara: {
+    name: "Barbara Whitlock",
+    role: "Staff",
+    age: 56,
+    desc: "Shorter, silver hair in bun, wire-rimmed glasses. Cardigan and slacks.",
+    voice: "Low, measured, dignified. Slow, deliberate. Dry wit, unflappable. RP with faint Midlands undertone.",
+    color: "#2C3E50",
+    speaker: null,
+    instruct: "pitch: Low, measured, dignified.\nspeed: Slow, deliberate.\nemotion: Dry wit, unflappable.\npersonality: Experienced, sardonic observer.\naccent: RP with faint Midlands undertone.",
+  },
+  dev: {
+    name: "Dev Osei",
+    role: "Staff",
+    age: 35,
+    desc: "Tall, lean, dark skin, short natural hair. Light button-down, dark trousers.",
+    voice: "Deep, resonant, confident baritone. Even, deliberate. Composed, direct. British West African / RP blend.",
+    color: "#1ABC9C",
+    speaker: null,
+    instruct: "pitch: Deep, resonant, confident baritone.\nspeed: Even, deliberate.\nemotion: Composed, direct.\npersonality: Steady, reliable.\naccent: British West African / RP blend.",
+  },
+  tomasz: {
+    name: "Tomasz Wojcik",
+    role: "Staff",
+    age: 38,
+    desc: "Tallest (186cm), broad, sturdy. Short light-brown hair, practical work clothes.",
+    voice: "Mid-range, slightly gruff. Slow to measured. Practical, no fuss. Polish-influenced English.",
+    color: "#34495E",
+    speaker: null,
+    instruct: "pitch: Mid-range, slightly gruff.\nspeed: Slow to measured.\nemotion: Practical, no fuss.\npersonality: Straightforward, physically imposing.\naccent: East European English (Polish influence).",
+  },
+};
+
+// ══════════════════════════════════════════════════════════════
+// FRAMES DATA (64 frames, F01-F61 + F63-F64)
+// ══════════════════════════════════════════════════════════════
+const SCENES = [
+  { id: 1, label: "Scene 1 — Jan's Office" },
+  { id: 2, label: "Scene 2 — Corridor / Open-Plan" },
+  { id: 3, label: "Scene 3 — Canteen" },
+];
+
+const FRAMES = [
+  { id:"F01",  shot:"S01", scene:1, speaker:"Christina",     line:"Morning Jan. Survive the weekend?" },
+  { id:"F02",  shot:"S01", scene:1, speaker:"Jan (sighing)",  line:"Barely. Another day dealing with these morons at the office." },
+  { id:"F03",  shot:"S02", scene:1, speaker:"Christina",     line:"I see. Well, I might be able to help with that." },
+  { id:"F04",  shot:"S02", scene:1, speaker:"Jan",           line:"I'm listening." },
+  { id:"F05",  shot:"S02", scene:1, speaker:"Christina",     line:"Well, every two weeks on a Friday we do a breakfast meeting." },
+  { id:"F06a", shot:"S03", scene:1, speaker:"Jan (enthused)", line:"I am liking the idea of this so far." },
+  { id:"F06b", shot:"S03", scene:1, speaker:"Jan",           line:"This is exactly the kind of strategic thinking." },
+  { id:"F07",  shot:"S04", scene:1, speaker:"Christina",     line:"Thought you would like it." },
+  { id:"F08",  shot:"S05", scene:1, speaker:"Jan",           line:"Great. Make it so." },
+  { id:"F09",  shot:"S05", scene:1, speaker:"Christina",     line:"I am sorry, what?" },
+  { id:"F10",  shot:"S05", scene:1, speaker:"Jan",           line:"You never seen Star Trek Next Generation?" },
+  { id:"F11",  shot:"S05", scene:1, speaker:"Christina",     line:"Shockingly no." },
+  { id:"F12",  shot:"S06", scene:1, speaker:"Jan",           line:"Fine, just make it happen." },
+  { id:"F13",  shot:"S06", scene:1, speaker:"Christina",     line:"Is this another one of your poorly rehearsed presentations?" },
+  { id:"F14",  shot:"S07", scene:1, speaker:"Jan",           line:"Jesus! Everyone thinks they know better than me!" },
+  { id:"F15",  shot:"S07", scene:1, speaker:"Christina",    line:"Made Up Place?" },
+  { id:"F16",  shot:"S07", scene:1, speaker:"Jan (screaming)", line:"GET OUT NOW YOU STUPID COW! JUST GET THAT DAMN MEETING ORGANISED!" },
+  { id:"F17",  shot:"S08", scene:1, speaker:null,            line:"Door clicks shut — calm exit." },
+  { id:"F18",  shot:"S09", scene:1, speaker:null,            line:"Jan unbuttons his shirt, flustered." },
+  { id:"F19",  shot:"S09", scene:1, speaker:null,            line:"Shirt fully off — the arrow revealed." },
+  { id:"F20",  shot:"S10", scene:1, speaker:"Jan",           line:"BLOODY HELL SHARON. KNOCK ON THE DOOR WILL YOU!" },
+  { id:"F21",  shot:"S11", scene:1, speaker:null,            line:"Sharon's eyes flick down toward the arrow." },
+  { id:"F22",  shot:"S11", scene:1, speaker:null,            line:"Jan frozen, mortified." },
+  { id:"F23",  shot:"S12", scene:1, speaker:"Sharon (unbothered)", line:"I hear Christina is doing breakfast meetings now." },
+  { id:"F24",  shot:"S13", scene:1, speaker:"Jan",           line:"I really don't have time for this now Sharon." },
+  { id:"F25",  shot:"S13", scene:1, speaker:"Sharon",        line:"Well I have needs too Jan that must be met." },
+  { id:"F26a", shot:"S14", scene:1, speaker:null,            line:"Blinds slam down." },
+  { id:"F26b", shot:"S14", scene:1, speaker:null,            line:"Door locks." },
+  { id:"F27",  shot:"S15", scene:2, speaker:null,            line:"Chris & Rick, establishing 2-shot." },
+  { id:"F28",  shot:"S16", scene:2, speaker:"Chris",         line:"Christ! They don't even try to hide it any more." },
+  { id:"F29",  shot:"S16", scene:2, speaker:"Rick",          line:"Never have. Give it another five minutes." },
+  { id:"F30",  shot:"S17", scene:2, speaker:null,            line:"Sharon walks past, dishevelled, dripping sweat." },
+  { id:"F31",  shot:"S18", scene:2, speaker:"Jan",           line:"Right guys, as you know --" },
+  { id:"F32",  shot:"S19", scene:2, speaker:"Chris",        line:"Does Sharon get a pass on attending this?" },
+  { id:"F33",  shot:"S19", scene:2, speaker:"Jan",           line:"Err... yes she does." },
+  { id:"F34",  shot:"S19", scene:2, speaker:null,            line:"Quiet sniggering ripples through the crowd." },
+  { id:"F35",  shot:"S20", scene:2, speaker:"Jan (flushed)", line:"SHUT UP!" },
+  { id:"F36",  shot:"S21", scene:2, speaker:"Rick",          line:"What happened to the last project?" },
+  { id:"F37a", shot:"S22", scene:2, speaker:"Jan",           line:"Everything has been a great success." },
+  { id:"F37b", shot:"S22", scene:2, speaker:"Jan",           line:"We need a new project. So I have decided to call it Inception." },
+  { id:"F38",  shot:"S23", scene:2, speaker:"Chris",        line:"You're dreaming Jan!" },
+  { id:"F39",  shot:"S23", scene:2, speaker:"Jan",          line:"What?!" },
+  { id:"F40",  shot:"S23", scene:2, speaker:"Chris",        line:"Inception is the name of a film about dreams Jan." },
+  { id:"F41",  shot:"S24", scene:2, speaker:"Jan (flustered)", line:"Oh, well it is also the name of this project." },
+  { id:"F42",  shot:"S24", scene:2, speaker:null,            line:"INSERT — PROJECT INCEPTION stress balls, pens & t-shirts." },
+  { id:"F43",  shot:"S25", scene:2, speaker:"Chris",        line:"Will there be a lead for this?" },
+  { id:"F44",  shot:"S25", scene:2, speaker:"Jan",           line:"Yes there will. However, the position has already been filled... by me." },
+  { id:"F45",  shot:"S26", scene:2, speaker:null,            line:"Groans echo from the crowd." },
+  { id:"F46",  shot:"S26", scene:2, speaker:"Jan",           line:"GET BACK TO WORK!" },
+  { id:"F47",  shot:"S27", scene:3, speaker:null,            line:"Canteen establishing — pastries prepped, high demand." },
+  { id:"F48",  shot:"S28", scene:3, speaker:null,            line:"Last pastry claimed — tray empty, just crumbs." },
+  { id:"F49",  shot:"S29", scene:3, speaker:"Jan",           line:"Is there any more pain au chocolat?" },
+  { id:"F50",  shot:"S29", scene:3, speaker:"Canteen Worker", line:"Sorry, all gone." },
+  { id:"F51",  shot:"S30", scene:3, speaker:"Jan (veins bulging)", line:"OH THAT IS IT!" },
+  { id:"F52",  shot:"S31", scene:3, speaker:null,            line:"Plates swept off the counter — CRASH." },
+  { id:"F53",  shot:"S31", scene:3, speaker:null,            line:"China shattered, crowd frozen." },
+  { id:"F54",  shot:"S32", scene:3, speaker:"Jan (screaming)", line:"I HAVE HAD IT WITH THIS PLACE!" },
+  { id:"F55",  shot:"S33", scene:3, speaker:null,            line:"Chair hurled through the window — GLASS SHATTERS." },
+  { id:"F56",  shot:"S34", scene:3, speaker:null,            line:"Jan reaches for a second chair; Rick steps forward, raising the taser." },
+  { id:"F57",  shot:"S34", scene:3, speaker:null,            line:"POP-CRACKLE — taser electric arc flash." },
+  { id:"F58",  shot:"S34", scene:3, speaker:null,            line:"Jan freezes, drops the chair, slumps face-first." },
+  { id:"F59",  shot:"S35", scene:3, speaker:"Chris",         line:"Have you killed him?" },
+  { id:"F60",  shot:"S35", scene:3, speaker:"Rick",          line:"No relax, he will be out for a while." },
+  { id:"F61",  shot:"S35", scene:3, speaker:"Rick",          line:"I think we need the police here." },
+];
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let sceneFilter = "all";
+let idx = 0;
+let currentAudio = null;
+
+// Drag state
+let dragging = null;  // 'bubble' | 'tail' | 'resize'
+let dragStart = { x: 0, y: 0 };
+let bubbleStart = { x: 0, y: 0, w: 0, h: 0 };
+
+function visibleFrames() {
+  return sceneFilter === "all" ? FRAMES : FRAMES.filter(f => f.scene === Number(sceneFilter));
+}
+
+function getCharKey(speaker) {
+  if (!speaker) return null;
+  const s = speaker.toLowerCase();
+  if (s.includes("jan")) return "jan";
+  if (s.includes("christina")) return "christina";
+  if (s.includes("sharon")) return "sharon";
+  if (s.includes("chris")) return "chris";
+  if (s.includes("rick")) return "rick";
+  if (s.includes("maureen")) return "maureen";
+  if (s.includes("gemma")) return "gemma";
+  if (s.includes("priya")) return "priya";
+  if (s.includes("barbara")) return "barbara";
+  if (s.includes("dev")) return "dev";
+  if (s.includes("tomasz")) return "tomasz";
+  return null;
+}
+
+function getAudioPath(frame) {
+  const charKey = getCharKey(frame.speaker);
+  if (!charKey) return null;
+  // Try the pre-generated MP3 (jan_01.mp3, christina_01.mp3 etc.)
+  // We need to map frame index to audio index
+  const charFrames = FRAMES.filter(f => getCharKey(f.speaker) === charKey);
+  const lineIdx = charFrames.findIndex(f => f.id === frame.id) + 1;
+  const idxStr = String(lineIdx).padStart(2, "0");
+  return `audio-refs/${charKey}_${idxStr}.mp3`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// PERSISTENCE
+// ══════════════════════════════════════════════════════════════
+const STORAGE_KEY = "ctsBubbleStudio_v2";
+
+function loadState(frameId) {
+  const raw = localStorage.getItem(STORAGE_KEY + "_" + frameId);
+  if (!raw) return defaultState(frameId);
+  try {
+    const s = JSON.parse(raw);
+    // migrate missing fields
+    return {
+      bx: s.bx ?? 50, by: s.by ?? 5,
+      tx: s.tx ?? 20, ty: s.ty ?? 0,
+      tw: s.tw ?? 60, th: s.th ?? 40,
+      opacity: s.opacity ?? 100,
+      xOff: s.xOff ?? 0, yOff: s.yOff ?? 0,
+      tailSide: s.tailSide ?? "left",
+    };
+  } catch { return defaultState(frameId); }
+}
+
+function defaultState(frameId) {
+  // Sensible defaults: bubble center-top for most frames
+  return { bx: 50, by: 5, tx: 20, ty: 0, tw: 60, th: 40,
+           opacity: 100, xOff: 0, yOff: 0, tailSide: "left" };
+}
+
+function saveState(frameId, state) {
+  localStorage.setItem(STORAGE_KEY + "_" + frameId, JSON.stringify(state));
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════════
+function renderFrame() {
+  const frames = visibleFrames();
+  if (idx < 0) idx = 0;
+  if (idx >= frames.length) idx = frames.length - 1;
+  const f = frames[idx];
+  if (!f) return;
+
+  // Stop audio
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  setPlayBtn(false);
+
+  // Update header
+  document.getElementById("frameBadge").textContent = f.id;
+  document.getElementById("shotBadge").textContent = f.shot;
+  const scene = SCENES.find(s => s.id === f.scene);
+  document.getElementById("sceneLabel").textContent = scene ? scene.label : "—";
+  document.getElementById("ttsStatus").textContent = "Ready. Click Play Voice to hear the dialogue line.";
+  document.getElementById("ttsStatus").className = "status";
+
+  // Load image
+  const img = document.getElementById("frameImg");
+  const container = document.getElementById("frameContainer");
+  img.style.display = "none";
+  img.onload = () => { img.style.display = "block"; };
+  img.onerror = () => { img.style.display = "none"; };
+  img.src = `storyboard-frames/${f.id}.jpg`;
+
+  // Bubble content
+  const speakerEl = document.getElementById("bubbleSpeaker");
+  const lineEl = document.getElementById("bubbleLine");
+  const bubble = document.getElementById("bubble");
+  const tail = document.getElementById("bubbleTail");
+
+  if (f.speaker) {
+    bubble.className = "bubble";
+    speakerEl.textContent = f.speaker;
+    lineEl.textContent = f.line;
+  } else {
+    bubble.className = "bubble sfx";
+    speakerEl.textContent = "";
+    lineEl.textContent = "🔇 " + f.line;
+  }
+
+  // Character info
+  const charKey = getCharKey(f.speaker);
+  const charDiv = document.getElementById("charInfo");
+  if (charKey && CHAR_INFO[charKey]) {
+    const c = CHAR_INFO[charKey];
+    charDiv.innerHTML = `<b>${c.name}</b> — ${c.role}<br>${c.voice}`;
+    charDiv.style.borderLeft = `3px solid ${c.color}`;
+  } else {
+    charDiv.textContent = "No character info for this speaker.";
+    charDiv.style.borderLeft = "";
+  }
+
+  // Apply state
+  const state = loadState(f.id);
+  applyState(state);
+
+  // Sync sliders
+  document.getElementById("opacitySlider").value = state.opacity;
+  document.getElementById("opacityVal").textContent = state.opacity + "%";
+  document.getElementById("xOffset").value = state.xOff;
+  document.getElementById("xOffsetVal").textContent = state.xOff + "px";
+  document.getElementById("yOffset").value = state.yOff;
+  document.getElementById("yOffsetVal").textContent = state.yOff + "px";
+  document.getElementById("tailX").value = state.tx;
+  document.getElementById("tailXVal").textContent = state.tx + "px";
+  document.getElementById("tailY").value = state.ty;
+  document.getElementById("tailYVal").textContent = state.ty + "px";
+
+  updatePresetButtons(state);
+  renderFrameGrid();
+}
+
+function applyState(s) {
+  const bubble = document.getElementById("bubble");
+  const tail = document.getElementById("bubbleTail");
+
+  // Bubble position: bx/by are percentage of container
+  // xOff/yOff are pixel fine adjustments
+  const container = document.getElementById("frameContainer");
+  const cw = container.offsetWidth;
+  const ch = container.offsetHeight;
+
+  // bx, by: position of the bubble's TOP-LEFT corner as % of container
+  // The bubble has max-width:50%, so we add half of that for centering presets
+  const bx = (s.bx / 100) * cw + s.xOff;
+  const by = (s.by / 100) * ch + s.yOff;
+
+  bubble.style.left = bx + "px";
+  bubble.style.top = by + "px";
+  bubble.style.opacity = s.opacity / 100;
+
+  // Tail position: absolute within frameContainer, draggable
+  // tx = px from left of frame (not bubble), so the tail can be placed anywhere
+  // ty = vertical offset (positive = down)
+  // tw/th = tail size
+  tail.style.left = s.tx + "px";
+  tail.style.top = s.ty + "px";
+  tail.style.width = s.tw + "px";
+  tail.style.height = s.th + "px";
+
+  // Tail direction
+  tail.className = "bubble-tail";
+  if (s.tailSide === "right") tail.classList.add("tail-pointing-right");
+  else if (s.tailSide === "left") tail.classList.add("tail-pointing-left");
+}
+
+function updatePresetButtons(s) {
+  // Determine which preset matches current state
+  const h = s.bx < 33 ? "left" : s.bx > 66 ? "right" : "center";
+  const v = s.by < 50 ? "top" : "bottom";
+  document.querySelectorAll(".btn[id^='btnPreset']").forEach(b => {
+    b.classList.remove("active");
+  });
+  const id = `btnPreset${v[0].toUpperCase()}${h[0].toUpperCase()}`;
+  const btn = document.getElementById(id);
+  if (btn) btn.classList.add("active");
+}
+
+function renderFrameGrid() {
+  const el = document.getElementById("frameGrid");
+  el.innerHTML = "";
+  const frames = visibleFrames();
+  frames.forEach((f, i) => {
+    const div = document.createElement("div");
+    div.className = "frame-thumb" + (i === idx ? " current" : "");
+    div.textContent = f.id;
+    div.onclick = () => { idx = i; renderFrame(); };
+    // Check if image exists
+    const img = new Image();
+    img.onload = () => div.classList.add("done");
+    img.src = `storyboard-frames/${f.id}.jpg`;
+    el.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// DRAG — BUBBLE
+// ══════════════════════════════════════════════════════════════
+const container = document.getElementById("frameContainer");
+const bubble = document.getElementById("bubble");
+
+container.addEventListener("mousedown", onMouseDown);
+container.addEventListener("touchstart", onTouchStart, { passive: false });
+document.addEventListener("mousemove", onMouseMove);
+document.addEventListener("touchmove", onTouchMove, { passive: false });
+document.addEventListener("mouseup", onMouseUp);
+document.addEventListener("touchend", onMouseUp);
+
+function getPos(e) {
+  const rect = container.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+function onMouseDown(e) {
+  const f = visibleFrames()[idx];
+  if (!f) return;
+
+  const target = e.target;
+  const rect = container.getBoundingClientRect();
+
+  // Check if clicking on bubble resize handle
+  if (target.classList.contains("bubble-handle")) {
+    dragging = "resize";
+    const br = bubble.getBoundingClientRect();
+    bubbleStart = { x: e.clientX, y: e.clientY, w: br.width, h: br.height };
+    e.preventDefault();
+    return;
+  }
+
+  // Check if clicking on tail
+  if (target === document.getElementById("bubbleTail") ||
+      target.id === "bubbleTail" || target.closest("#bubbleTail")) {
+    dragging = "tail";
+    dragStart = getPos(e);
+    const state = loadState(f.id);
+    bubbleStart = { tx: state.tx, ty: state.ty, tw: state.tw, th: state.th };
+    e.preventDefault();
+    return;
+  }
+
+  // Check if clicking on bubble itself
+  if (target === bubble || target.closest("#bubble")) {
+    dragging = "bubble";
+    dragStart = getPos(e);
+    const state = loadState(f.id);
+    bubbleStart = { bx: state.bx, by: state.by, xOff: state.xOff, yOff: state.yOff };
+    container.classList.add("drag-bubble");
+    e.preventDefault();
+    return;
+  }
+}
+
+function onTouchStart(e) { onMouseDown(e.touches[0]); }
+
+function onMouseMove(e) {
+  if (!dragging) return;
+  const f = visibleFrames()[idx];
+  if (!f) return;
+
+  const rect = container.getBoundingClientRect();
+  const cx = e.clientX - rect.left;
+  const cy = e.clientY - rect.top;
+  const cw = rect.width;
+  const ch = rect.height;
+
+  if (dragging === "bubble") {
+    const dx = cx - dragStart.x;
+    const dy = cy - dragStart.y;
+    const state = loadState(f.id);
+    const newXOff = bubbleStart.xOff + dx;
+    const newYOff = bubbleStart.yOff + dy;
+    state.xOff = Math.round(newXOff);
+    state.yOff = Math.round(newYOff);
+    applyState(state);
+    // Sync sliders
+    document.getElementById("xOffset").value = state.xOff;
+    document.getElementById("xOffsetVal").textContent = state.xOff + "px";
+    document.getElementById("yOffset").value = state.yOff;
+    document.getElementById("yOffsetVal").textContent = state.yOff + "px";
+    updatePresetButtons(state);
+    e.preventDefault();
+  }
+
+  if (dragging === "tail") {
+    const state = loadState(f.id);
+    state.tx = Math.max(5, Math.min(cw * 0.9, Math.round(cx)));
+    state.ty = Math.round(cy - (state.by / 100) * ch);
+    applyState(state);
+    document.getElementById("tailX").value = state.tx;
+    document.getElementById("tailXVal").textContent = state.tx + "px";
+    document.getElementById("tailY").value = state.ty;
+    document.getElementById("tailYVal").textContent = state.ty + "px";
+    e.preventDefault();
+  }
+
+  if (dragging === "resize") {
+    const state = loadState(f.id);
+    state.bx = Math.max(5, Math.min(95, Math.round((cx / cw) * 100)));
+    state.by = Math.max(5, Math.min(95, Math.round((cy / ch) * 100)));
+    applyState(state);
+    updatePresetButtons(state);
+    e.preventDefault();
+  }
+}
+
+function onTouchMove(e) { onMouseMove(e.touches[0]); }
+
+function onMouseUp(e) {
+  if (!dragging) return;
+  const f = visibleFrames()[idx];
+  if (f) {
+    const state = loadState(f.id);
+    if (dragging === "bubble") {
+      state.xOff = parseInt(document.getElementById("xOffset").value);
+      state.yOff = parseInt(document.getElementById("yOffset").value);
+    }
+    if (dragging === "tail") {
+      state.tx = parseInt(document.getElementById("tailX").value);
+      state.ty = parseInt(document.getElementById("tailY").value);
+    }
+    if (dragging === "resize") {
+      state.bx = parseInt(document.getElementById("tailX").value); // repurposed
+    }
+    saveState(f.id, state);
+  }
+  dragging = null;
+  container.classList.remove("drag-bubble", "drag-pointer");
+}
+
+// ══════════════════════════════════════════════════════════════
+// SLIDERS
+// ══════════════════════════════════════════════════════════════
+function wireSlider(id, valId, key, min, max) {
+  const slider = document.getElementById(id);
+  const val = document.getElementById(valId);
+  slider.addEventListener("input", () => {
+    const f = visibleFrames()[idx];
+    if (!f) return;
+    val.textContent = slider.value + (id.includes("Offset") || id === "tailX" || id === "tailY" ? "px" : "%");
+    const state = loadState(f.id);
+    state[key] = parseInt(slider.value);
+    applyState(state);
+    saveState(f.id, state);
+  });
+}
+
+wireSlider("opacitySlider", "opacityVal", "opacity", 10, 100);
+wireSlider("xOffset",       "xOffsetVal",  "xOff",  -300, 300);
+wireSlider("yOffset",       "yOffsetVal",  "yOff",  -200, 200);
+wireSlider("tailX",         "tailXVal",    "tx",     5,   200);
+wireSlider("tailY",         "tailYVal",    "ty",   -50,    50);
+
+// ══════════════════════════════════════════════════════════════
+// PRESET BUTTONS
+// ══════════════════════════════════════════════════════════════
+const PRESETS = {
+  TL: { bx: 20, by: 12, xOff: 0, yOff: 0 },
+  TC: { bx: 50, by: 12, xOff: 0, yOff: 0 },
+  TR: { bx: 80, by: 12, xOff: 0, yOff: 0 },
+  BL: { bx: 20, by: 75, xOff: 0, yOff: 0 },
+  BC: { bx: 50, by: 75, xOff: 0, yOff: 0 },
+  BR: { bx: 80, by: 75, xOff: 0, yOff: 0 },
+};
+
+Object.entries(PRESETS).forEach(([key, vals]) => {
+  const btn = document.getElementById("btnPreset" + key);
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const f = visibleFrames()[idx];
+    if (!f) return;
+    const state = loadState(f.id);
+    Object.assign(state, vals);
+    applyState(state);
+    saveState(f.id, state);
+    // Sync sliders
+    document.getElementById("xOffset").value = 0;
+    document.getElementById("xOffsetVal").textContent = "0px";
+    document.getElementById("yOffset").value = 0;
+    document.getElementById("yOffsetVal").textContent = "0px";
+    updatePresetButtons(state);
+    document.querySelectorAll(".btn[id^='btnPreset']").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+// Tail direction buttons
+document.getElementById("btnTailLeft").addEventListener("click", () => {
+  const f = visibleFrames()[idx]; if (!f) return;
+  const s = loadState(f.id); s.tailSide = "left";
+  applyState(s); saveState(f.id, s);
+});
+document.getElementById("btnTailRight").addEventListener("click", () => {
+  const f = visibleFrames()[idx]; if (!f) return;
+  const s = loadState(f.id); s.tailSide = "right";
+  applyState(s); saveState(f.id, s);
+});
+
+// ══════════════════════════════════════════════════════════════
+// SCENE FILTER
+// ══════════════════════════════════════════════════════════════
+document.getElementById("sceneFilter").addEventListener("change", (e) => {
+  sceneFilter = e.target.value;
+  idx = 0;
+  renderFrame();
+});
+
+// ══════════════════════════════════════════════════════════════
+// KEYBOARD NAVIGATION
+// ══════════════════════════════════════════════════════════════
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  const frames = visibleFrames();
+  if (e.key === "ArrowLeft" && idx > 0) { idx--; renderFrame(); }
+  if (e.key === "ArrowRight" && idx < frames.length - 1) { idx++; renderFrame(); }
+  if (e.key === " ") { e.preventDefault(); document.getElementById("playBtn").click(); }
+});
+
+// ══════════════════════════════════════════════════════════════
+// TTS — PLAY PRE-GENERATED AUDIO
+// ══════════════════════════════════════════════════════════════
+function setPlayBtn(playing) {
+  const btn = document.getElementById("playBtn");
+  btn.classList.toggle("playing", playing);
+  btn.textContent = playing ? "⏸ Playing..." : "▶ Play Voice";
+}
+
+document.getElementById("playBtn").addEventListener("click", () => {
+  const f = visibleFrames()[idx];
+  if (!f || !f.speaker) {
+    setTTSStatus("No dialogue line for this frame.", "err");
+    return;
+  }
+
+  const audioPath = getAudioPath(f);
+  const statusEl = document.getElementById("ttsStatus");
+
+  if (!audioPath) {
+    setTTSStatus("No audio mapping for speaker: " + f.speaker, "err");
+    return;
+  }
+
+  // Try pre-generated MP3 first
+  fetch(audioPath, { method: "HEAD" })
+    .then(r => {
+      if (r.ok) {
+        playAudio(audioPath);
+      } else {
+        // Fall back to ComfyUI synthesis
+        synthesizeViaComfyUI(f);
+      }
+    })
+    .catch(() => synthesizeViaComfyUI(f));
+});
+
+function playAudio(path) {
+  const statusEl = document.getElementById("ttsStatus");
+  setTTSStatus("Loading audio...", "");
+  if (currentAudio) { currentAudio.pause(); }
+  currentAudio = new Audio(path);
+  currentAudio.addEventListener("canplaythrough", () => {
+    setTTSStatus("Playing: " + path.split("/").pop(), "ok");
+    setPlayBtn(true);
+  });
+  currentAudio.addEventListener("ended", () => {
+    setPlayBtn(false);
+    setTTSStatus("Finished playing.", "ok");
+  });
+  currentAudio.addEventListener("error", () => {
+    setPlayBtn(false);
+    setTTSStatus("Audio error. Try Synthesize.", "err");
+  });
+  currentAudio.load();
+}
+
+function setTTSStatus(msg, cls) {
+  const el = document.getElementById("ttsStatus");
+  el.textContent = msg;
+  el.className = "status" + (cls ? " " + cls : "");
+}
+
+// ══════════════════════════════════════════════════════════════
+// TTS — SYNTHESIZE VIA COMFYUI API
+// ══════════════════════════════════════════════════════════════
+document.getElementById("synthBtn").addEventListener("click", () => {
+  const f = visibleFrames()[idx];
+  if (!f || !f.speaker) {
+    setTTSStatus("No dialogue line for this frame.", "err");
+    return;
+  }
+  synthesizeViaComfyUI(f);
+});
+
+async function synthesizeViaComfyUI(frame) {
+  const charKey = getCharKey(frame.speaker);
+  if (!charKey) { setTTSStatus("Unknown character: " + frame.speaker, "err"); return; }
+  const charData = CHAR_INFO[charKey];
+  if (!charData) { setTTSStatus("No voice data for: " + charKey, "err"); return; }
+
+  setTTSStatus("<span class='spinner'></span>Synthesizing via ComfyUI Qwen3-TTS...", "");
+  document.getElementById("synthBtn").disabled = true;
+
+  try {
+    let speaker = charData.speaker;
+    let instruct = charData.instruct || null;
+
+    // Build ComfyUI prompt
+    let nodeDef;
+    if (speaker) {
+      // CustomVoice
+      nodeDef = {
+        inputs: {
+          text: frame.line,
+          speaker: speaker,
+          model_size: "1.7B",
+          language: "English",
+        },
+        class_type: "AILab_Qwen3TTSCustomVoice",
+      };
+    } else {
+      // VoiceDesign
+      nodeDef = {
+        inputs: {
+          text: frame.line,
+          instruct: instruct,
+          model_size: "1.7B",
+          language: "English",
+        },
+        class_type: "AILab_Qwen3TTSVoiceDesign",
+      };
+    }
+
+    const response = await fetch("http://localhost:8188/prompt", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: { "3": nodeDef } }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`ComfyUI API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const promptId = data.prompt_id;
+
+    // Poll for completion
+    let audioUrl = null;
+    for (let i = 0; i < 60; i++) {  // wait up to 60s
+      await sleep(1000);
+      const hist = await fetch("http://localhost:8188/history/" + promptId).then(r => r.json());
+      if (hist[promptId]) {
+        const outputs = hist[promptId].outputs;
+        for (const nodeId in outputs) {
+          const out = outputs[nodeId];
+          if (out.audio) {
+            audioUrl = out.audio.url || out.audio;
+            break;
+          }
+          if (out.images && out.images.length > 0) {
+            // some nodes return image instead
+          }
+        }
+        break;
+      }
+    }
+
+    if (!audioUrl) {
+      throw new Error("No audio returned from ComfyUI after 60s");
+    }
+
+    // Construct full URL
+    const fullUrl = audioUrl.startsWith("http") ? audioUrl : "http://localhost:8188" + audioUrl;
+    playAudio(fullUrl);
+    setTTSStatus("Synthesized and playing.", "ok");
+  } catch (err) {
+    setTTSStatus("Synthesis failed: " + err.message + ". Is ComfyUI running?", "err");
+  } finally {
+    document.getElementById("synthBtn").disabled = false;
+  }
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+renderFrame();
+</script>
+</body>
+</html>

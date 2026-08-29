@@ -25,7 +25,7 @@
 | Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1. ⚠️ **Combine consecutive beats to fill up to 15s per clip, don't generate one beat per call** — see `.agents/rules/clip_duration_rules.md` |
 | Bridging / continuation shots | ~~`Kling v3.0`~~ **use `MiniMax H3` instead** | 2560×1440 | same as dialogue row | **Superseded 2026-08-29 evening.** Kling was only picked because MiniMax's `--image-references` couldn't seed an exact continuation frame — `--start-image` fixes that at full 2K (see `.agents/rules/location_continuity_rules.md`), so there's no longer a reason to drop to Kling's 720p for a bridging shot. Keep Kling only as a fallback if `--start-image` continuity genuinely fails on a specific shot. |
 
-**Budget (last known, 2026-08-29 19:56 BST):** 721.05 credits remaining of an original
+**Budget (last known, 2026-08-29 20:15 BST):** 686.79 credits remaining of an original
 1208.5 + plan allotment. ~310 credits spent in ~4 hours on this session. Per-beat
 costs noted in §3.
 
@@ -104,9 +104,9 @@ cost, and reference the existing approved still + matching location coverage ang
 | 7 | F06b | Jan gesturing, MBA name-drop | `MiniMax H3` 2K (14 cr actual, 7.3s) | 14 | Jan + Christina, `--start-image` chained off F06a's exact last frame | ✅ (cartoon, F06b.jpg) | ✅ `video-tests/04b_f06b_jan_mba_punchline_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
 | 8 | F07 | Christina deadpan — "Diminishing returns..." | `MiniMax H3` 2K (22 cr actual, 11.5s — full line ~39 words, split across parts) | 22 | Christina + Jan, `--start-image` chained off F06b's exact last frame | ✅ (cartoon, F07.jpg) | ✅ `video-tests/05a_f07-f08_diminishing_returns_part1_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
 | 9 | F08 | Jan — "Great. Make it so." | (combined into F07's part2 clip, 23.35 cr actual, 9.42s) | 23.35 | Jan + Christina, `--start-image` chained off part1's exact last frame | ✅ (cartoon, F08.jpg) | ✅ `video-tests/05b_f07-f08_diminishing_returns_part2_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
-| 10 | F09 | Christina confused — "I am sorry, what?" | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F09.jpg) | ⬜ not started |
-| 11 | F10 | Jan — Star Trek reference | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F10.jpg) | ⬜ not started |
-| 12 | F11 | Christina — "Shockingly no." | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F11.jpg) | ⬜ not started |
+| 10 | F09 | Christina confused — "I am sorry, what?" | `MiniMax H3` 2K (34.26 cr actual, 9.42s, combined with F10+F11) | 34.26 | Christina + Jan, `--start-image` chained off 05b's exact last frame | ✅ (cartoon, F09.jpg) | ✅ `video-tests/06_f09-f11_star_trek_reference_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
+| 11 | F10 | Jan — Star Trek reference | (combined into F09's clip) | — | Jan, `jan_office_desk_front` | ✅ (cartoon, F10.jpg) | ✅ covered by row 10's clip |
+| 12 | F11 | Christina — "Shockingly no." | (combined into F09's clip) | — | Christina, `jan_office_desk_front` | ✅ (cartoon, F11.jpg) | ✅ covered by row 10's clip |
 | 13 | F12 | Jan dismisses — "Fine, just make it happen..." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F12.jpg) | ⬜ not started |
 | 14 | F13 | Christina — "poorly rehearsed presentations?" | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F13.jpg) | ⬜ not started |
 | 15 | F14 | Jan offended — "MBA from the University of --" | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F14.jpg) | ⬜ not started |

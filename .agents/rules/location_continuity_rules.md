@@ -76,3 +76,29 @@ natural cut point instead of forcing continuity: drop `start_image`, generate th
 `image_references` (the new character's identity + the relevant location coverage angle), and
 accept a fresh camera setup — a person walking into frame is an expected edit point, unlike a
 jump mid-conversation between two characters already on screen.
+
+## Generational drift: don't chain `--start-image` indefinitely
+
+Each `--start-image` continuation re-feeds the model's own prior output back into itself.
+Diffusion models compound their own stylistic bias with each pass — measured on
+2026-08-29 across a chain of 8 consecutive `--start-image` generations (all seeded from the
+same original `01_...` clip, no resets): brightness dropped and shadow-crushing roughly
+doubled every ~4 generations (depth 1 → 17.8% near-black pixels, depth 4 → 27.8%, depth 8 →
+36.8%), and the image visibly shifted from photoreal toward a more "painted/illustrated"
+look with harder local contrast. Saturation drifted early then plateaued, but the
+brightness/shadow trend was linear and ongoing — left unchecked it would have made later
+beats in a long scene look markedly worse than the opening ones.
+
+**Rule: don't chain `--start-image` for an entire scene.** Every ~6-8 generations (sooner if
+a natural cut point exists anyway, e.g. a new character entering per the constraint above),
+reset the chain by cutting to a different camera angle seeded from an undegraded source —
+a fresh location coverage plate via `image_references`, not a frame extracted from any
+previous video generation. This doubles as legitimate shot/reverse-shot cinematography
+(don't hold one static two-shot for 100+ seconds) rather than reading as a workaround.
+`video-tests/archive/*_drifted_minimax_h3.mp4` holds the clips that prompted this finding,
+kept for reference, not used in the cut.
+
+**How to tell if a clip has drifted**: extract a comparable frame and compare against an
+early clip's frame — `python3` + PIL, check `(arr.min(axis=2)<5).mean()` (fraction of
+near-black pixels) and overall brightness. Rising shadow-crush and falling brightness across
+a chain is the tell; eyeballing alone can miss it until it's severe.

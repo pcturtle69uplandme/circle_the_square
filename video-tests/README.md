@@ -16,14 +16,25 @@ Each numbered clip's beat coverage:
 | `02_f03-f04_pitch_and_listening_minimax_h3.mp4` | F03 (Christina pitches the idea) + F04 (Jan — "I'm listening.") |
 | `03a_f05_breakfast_pitch_part1_minimax_h3.mp4` + `03b_..._part2_minimax_h3.mp4` | F05 (Christina explains the breakfast-meeting concept) — one beat, split into two clips because its full script line (~47 words) exceeds the 15s ceiling on its own |
 | `04a_f06a_jan_enthused_part1_minimax_h3.mp4` + `04b_f06b_jan_mba_punchline_minimax_h3.mp4` | F06a+F06b (Jan's enthused reaction through the MBA punchline) — one script speech (~74 words), split the same way |
-| `05a_f07-f08_diminishing_returns_part1_minimax_h3.mp4` + `05b_..._part2_minimax_h3.mp4` | F07 (Christina's dry "diminishing returns" line, ~39 words) + F08 (Jan — "Great. Make it so.") — split at F07's sentence break, with the short F08 line folded into part 2 rather than given its own clip |
-| `06_f09-f11_star_trek_reference_minimax_h3.mp4` | F09+F10+F11 (Christina's confusion, Jan's Star Trek reference, Christina's "Shockingly no.") — three short lines, all fit in one clip |
+| `05a_f07_reverse_angle_part1_minimax_h3.mp4` + `05b_f07-f08_reverse_angle_part2_minimax_h3.mp4` | F07 (Christina's dry "diminishing returns" line) + F08 (Jan — "Great. Make it so.") — regenerated 2026-08-29 from a fresh reverse angle (`jan_office_desk_reverse.png`) as a drift-reset point, see below |
 
 When one beat's dialogue is too long for a single 15s clip, split it at a natural
 pause and give both parts the same leading number with an `a`/`b` suffix (as with
 `03a`/`03b`) rather than advancing the sequence number — they're one beat, not two.
 
 See `SCENE1_MINIMAX_TRACKER.md` §3 for the full per-beat plan and what's still pending.
+
+## Generational drift — reset the `--start-image` chain periodically
+
+Chaining `--start-image` for 8 straight generations (the original F09-F11 attempt) visibly
+degraded image quality — brightness dropping, shadows crushing, a shift from photoreal
+toward a "painted" look. Measured and documented in
+`.agents/rules/location_continuity_rules.md`. **Every ~6-8 generations, reset by cutting to
+a different camera angle** seeded from a fresh location coverage plate via
+`--image-references` (not `--start-image`) instead of always continuing from the previous
+clip's last frame. This doubles as legitimate shot/reverse-shot cinematography rather than
+holding one static two-shot for the whole scene. F07 (`05a_...`) is the first reset point,
+cut to an over-the-shoulder angle off `jan_office_desk_reverse.png`.
 
 ## `archive/`
 
@@ -39,6 +50,11 @@ Superseded or exploratory takes, kept for reference only — **not** part of the
   `--start-image`; caused a visible camera jump. Superseded by `02_f03-f04_...`
 - `frame_for_kling_start.png`, `opening_lastframe.png` — frame extracts from the above,
   kept only as a record of the seeding technique
+- `05a_f07-f08_part1_drifted_minimax_h3.mp4`, `05b_f07-f08_part2_drifted_minimax_h3.mp4`,
+  `06_f09-f11_drifted_minimax_h3.mp4` — F07/F08/F09-11 as originally generated, 6-8
+  `--start-image` generations deep from the original F01 clip with no reset. Visibly
+  degraded (see "Generational drift" below). Superseded by the `05a`/`05b` reverse-angle
+  regeneration; F09-11 not yet redone.
 
 ## Adding the next beat
 

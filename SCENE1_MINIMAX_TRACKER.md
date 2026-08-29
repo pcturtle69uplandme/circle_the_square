@@ -25,8 +25,8 @@
 | Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1. ⚠️ **Combine consecutive beats to fill up to 15s per clip, don't generate one beat per call** — see `.agents/rules/clip_duration_rules.md` |
 | Bridging / continuation shots | ~~`Kling v3.0`~~ **use `MiniMax H3` instead** | 2560×1440 | same as dialogue row | **Superseded 2026-08-29 evening.** Kling was only picked because MiniMax's `--image-references` couldn't seed an exact continuation frame — `--start-image` fixes that at full 2K (see `.agents/rules/location_continuity_rules.md`), so there's no longer a reason to drop to Kling's 720p for a bridging shot. Keep Kling only as a fallback if `--start-image` continuity genuinely fails on a specific shot. |
 
-**Budget (last known, 2026-08-29 20:39 BST):** 624.79 credits (includes a 22cr loss to a failed 503 job, retried successfully) remaining of an original
-1208.5 + plan allotment. ~310 credits spent in ~4 hours on this session. Per-beat
+**Budget (last known, 2026-08-29 21:32 BST):** 562.79 credits (includes a 22cr loss to a failed 503 job, retried successfully, plus 62cr across three F07/F08 fix regens — see §3 notes) remaining of an original
+1208.5 + plan allotment. ~372 credits spent in ~4.5 hours on this session. Per-beat
 costs noted in §3.
 
 **Local pipelines — DO NOT USE for Scene 1 video:**
@@ -102,8 +102,34 @@ cost, and reference the existing approved still + matching location coverage ang
 | 5 | F05 | Christina explains breakfast-meeting concept | `MiniMax H3` 2K (24+18 cr actual, split across 2 clips — full line ~47 words, too long for one 15s clip) | 42 | Christina, `--start-image` chained off beat-2's exact last frame, then off part1's last frame | ✅ (cartoon, F05.jpg) | ✅ `video-tests/03a_f05_breakfast_pitch_part1_minimax_h3.mp4` (12.25s) + `video-tests/03b_f05_breakfast_pitch_part2_minimax_h3.mp4` (9.42s) (2026-08-29) |
 | 6 | F06a | Jan enthused, steepled fingers | `MiniMax H3` 2K (30 cr actual, 14.4s — one long Jan speech split across F06a/F06b) | 30 | Jan + Christina, `--start-image` chained off beat-03b's exact last frame | ✅ (cartoon, F06a.jpg) | ✅ `video-tests/04a_f06a_jan_enthused_part1_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
 | 7 | F06b | Jan gesturing, MBA name-drop | `MiniMax H3` 2K (14 cr actual, 7.3s) | 14 | Jan + Christina, `--start-image` chained off F06a's exact last frame | ✅ (cartoon, F06b.jpg) | ✅ `video-tests/04b_f06b_jan_mba_punchline_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
-| 8 | F07 | Christina deadpan — "Diminishing returns..." | `MiniMax H3` 2K (22 cr actual, 11.5s — reset onto a fresh reverse angle, see drift note below) | 22 | Christina + Jan, `--image-references` (jan_office_desk_reverse + identity sheets, NOT `--start-image` — intentional cut, resets drift depth to 0) | ✅ (cartoon, F07.jpg) | ✅ `video-tests/05a_f07_reverse_angle_part1_minimax_h3.mp4` (2026-08-29), Whisper-verified (near-verbatim, natural "I" added) |
-| 9 | F08 | Jan — "Great. Make it so." | (combined into F07's part2 clip, 22 cr actual, 9.42s) | 22 | Jan + Christina, `--start-image` chained off the new F07 part1's exact last frame | ✅ (cartoon, F08.jpg) | ✅ `video-tests/05b_f07-f08_reverse_angle_part2_minimax_h3.mp4` (2026-08-29), Whisper-verified verbatim |
+| 8 | F07 | Christina deadpan — "Diminishing returns..." | `MiniMax H3` 2K (28 cr actual, 14.4s — regenerated a second time 2026-08-29 evening to add a walk-in preamble, see continuity note below) | 28 | Christina + Jan, `--image-references` (jan_office_desk_reverse + identity sheets, NOT `--start-image` — intentional cut, resets drift depth to 0) | ✅ (cartoon, F07.jpg) | ✅ `video-tests/05a_f07_reverse_angle_part1_minimax_h3.mp4` (regenerated 2026-08-29), Whisper-verified verbatim |
+| 9 | F08 | Jan — "Great. Make it so." | (combined into F07's part2 clip, 3rd regen 14 cr actual, 7.3s) | 14 | Jan + Christina, `--start-image` chained off the regenerated F07 part1's exact last frame | ✅ (cartoon, F08.jpg) | ✅ `video-tests/05b_f07-f08_reverse_angle_part2_minimax_h3.mp4` (regenerated again 2026-08-29), Whisper-verified verbatim |
+
+> ⚠️ **Continuity fix 2026-08-29 evening — F07/F08 regenerated a 2nd time.** The first `05a` take
+> (drift-reset cut described above) placed Christina already standing across the desk with no
+> on-screen motion connecting it to `04b`'s last frame, where she'd been standing beside Jan at
+> the desk's near corner — read as an instant teleport, and the shift to a colder-lit wall behind
+> her landed as a tone jump too. Fixed by re-running F07 with the same `image_references` (no new
+> asset) but a prompt that adds a walk-in preamble: she visibly steps back from Jan, crosses to the
+> visitor chair, and settles before her line. `05b` was then also regenerated (`--start-image` off
+> the new `05a`'s last frame) since it had been chained off the *old* `05a`'s last frame and would
+> otherwise pop at that internal join. Old takes kept as
+> `video-tests/archive/05a_f07_reverse_angle_part1_teleport_minimax_h3.mp4` and
+> `.../05b_f07-f08_reverse_angle_part2_teleport_minimax_h3.mp4`.
+>
+> **2nd fix, same evening — `05b` regenerated again.** That 2nd take of `05b` reopened with
+> Christina restating her whole "diminishing returns" line before Jan's response — a straight
+> repeat of what `05a` had just delivered a moment earlier, audible/visible as a duplicate once
+> the two clips play back to back. Also, per a user note: "Great. Make it so." is Picard's line
+> from *Star Trek: TNG* — and the script's very next beats (F09-F11) are Jan asking Christina if
+> she's seen it and her not getting the reference, so the line is a deliberate setup, not a throwaway.
+> Fixed both at once (required new footage anyway, so a plain trim of the old take wasn't enough):
+> regenerated `05b` a 3rd time, same `--start-image` off `05a`'s last frame, this time with no
+> restated dialogue (a silent beat, then straight to Jan's line) and a prompt directing Jan to
+> deliver it with a self-satisfied point-and-smile, playing up the reference, while Christina's
+> expression doesn't flicker. Old (repeat-line) take archived as
+> `video-tests/archive/05b_f07-f08_reverse_angle_part2_repeatline_minimax_h3.mp4`.
+> `scene1_stitched_preview.mp4` rebuilt (91.66s). Balance after all three regens: 562.79 credits.
 | 10 | F09 | Christina confused — "I am sorry, what?" | `MiniMax H3` 2K, combined with F10+F11 | TBD | Christina + Jan, `--start-image` chained forward from the reset point (depth 2 from reset) | ✅ (cartoon, F09.jpg) | ⬜ not started (regen) |
 | 11 | F10 | Jan — Star Trek reference | (combined into F09's clip) | — | Jan, `jan_office_desk_front` | ✅ (cartoon, F10.jpg) | ⬜ not started (regen) |
 | 12 | F11 | Christina — "Shockingly no." | (combined into F09's clip) | — | Christina, `jan_office_desk_front` | ✅ (cartoon, F11.jpg) | ⬜ not started (regen) |

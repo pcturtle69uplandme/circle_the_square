@@ -69,7 +69,7 @@
 
   .frame-container {
     position: relative;
-    aspect-ratio: 2.39 / 1;
+    aspect-ratio: 1376 / 768;
     background: var(--bg4);
     border-radius: 10px;
     overflow: hidden;
@@ -78,7 +78,10 @@
     user-select: none;
   }
 
+  /* Full-bleed frame image — covers entire container, no letterbox */
   .frame-container img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -87,7 +90,6 @@
   }
 
   .frame-container.drag-bubble { cursor: grabbing; }
-  .frame-container.drag-pointer { cursor: crosshair; }
 
   /* ── Speech Bubble ─────────────────────────────────────── */
   .bubble {
@@ -103,6 +105,9 @@
     border: 2px solid #1a1a1a;
     cursor: grab;
     z-index: 10;
+    /* No transitions on position — the bubble must jump to its saved spot */
+    left: 0; top: 0;
+    transition: opacity 0.15s;
   }
   .bubble:active { cursor: grabbing; }
   .bubble .speaker {
@@ -114,65 +119,30 @@
     margin-bottom: 2px;
     display: block;
   }
-  .bubble.sfx {
-    background: var(--bg3);
-    color: var(--text-muted);
-    border: 1px dashed var(--border);
-    font-style: italic;
-    font-size: 0.82rem;
-  }
-  .bubble.sfx::after,
-  .bubble.sfx::before { display: none; }
-
-  /* ── Bubble Tail / Pointer ─────────────────────────────── */
-  .bubble-tail {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    cursor: move;
-    z-index: 11;
-  }
-  .bubble-tail::before,  /* black triangle */
-  .bubble-tail::after {  /* white inner */
-    content: '';
-    position: absolute;
-  }
-  .bubble-tail::before {
-    border: 11px solid transparent;
-    border-top-color: #1a1a1a;
-    left: 0; bottom: 0;
-    transform-origin: top left;
-  }
-  .bubble-tail::after {
-    border: 9px solid transparent;
-    border-top-color: #fdfaf3;
-    left: 2px; bottom: 2px;
-    transform-origin: top left;
-  }
-
-  /* Tail positioning: we use CSS transforms applied to the ::before/::after */
-  .tail-pointing-left::before,
-  .tail-pointing-left::after { transform: rotate(-90deg); }
-  .tail-pointing-right::before,
-  .tail-pointing-right::after { transform: rotate(90deg); }
-
-  /* ── Drag handle / resize handle on bubble ─────────────── */
+  /* ── Bubble Resize handle ──────────────────────────────── */
   .bubble-handle {
     position: absolute;
-    top: -10px; right: -10px;
-    width: 22px; height: 22px;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
     background: var(--orange);
     border: 2px solid #1a1a1a;
     border-radius: 50%;
     cursor: nwse-resize;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; color: #fff; font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 900;
     z-index: 12;
-    opacity: 0.7;
+    opacity: 0;
     transition: opacity .15s;
+    user-select: none;
   }
   .bubble:hover .bubble-handle { opacity: 1; }
-  .bubble-handle:hover { background: var(--orange-light); }
+  .bubble-handle:hover { background: var(--orange-light); cursor: grabbing; }
 
   /* ── Controls Panel ─────────────────────────────────────── */
   .panel {
@@ -350,10 +320,10 @@
       <div class="frame-container" id="frameContainer">
         <img id="frameImg" alt="" />
         <div class="bubble" id="bubble">
+          <div class="bubble-handle" id="bubbleHandle" title="Drag to resize">⤡</div>
           <span class="speaker" id="bubbleSpeaker"></span>
           <span id="bubbleLine"></span>
         </div>
-        <div class="bubble-tail" id="bubbleTail"></div>
       </div>
     </div>
   </div>
@@ -361,109 +331,11 @@
   <!-- ── RIGHT: Controls Panel ───────────────────────────────── -->
   <div class="panel">
 
-    <!-- Frame nav -->
-    <div>
-      <div class="panel-section">
-        <h3>Frame</h3>
-        <div class="scene-nav">
-          <label for="sceneFilter">Scene</label>
-          <select id="sceneFilter">
-            <option value="all">All Scenes</option>
-            <option value="1" selected>Scene 1</option>
-            <option value="2">Scene 2</option>
-            <option value="3">Scene 3</option>
-          </select>
-        </div>
-        <div class="frame-grid" id="frameGrid"></div>
-      </div>
-    </div>
-
-    <!-- Bubble position -->
-    <div>
-      <div class="panel-section">
-        <h3>Bubble Position</h3>
-        <div class="btn-row" style="margin-bottom:8px">
-          <button class="btn" id="btnPresetTL" title="Top-Left">TL</button>
-          <button class="btn" id="btnPresetTC" title="Top-Center">TC</button>
-          <button class="btn" id="btnPresetTR" title="Top-Right">TR</button>
-        </div>
-        <div class="btn-row">
-          <button class="btn" id="btnPresetBL" title="Bottom-Left">BL</button>
-          <button class="btn" id="btnPresetBC" title="Bottom-Center">BC</button>
-          <button class="btn" id="btnPresetBR" title="Bottom-Right">BR</button>
-        </div>
-        <p class="hint">Or drag the bubble freely anywhere on the image.</p>
-      </div>
-    </div>
-
-    <!-- Pointer position -->
-    <div>
-      <div class="panel-section">
-        <h3>Pointer / Tail</h3>
-        <div class="btn-row">
-          <button class="btn" id="btnTailLeft">Point Left</button>
-          <button class="btn" id="btnTailRight">Point Right</button>
-        </div>
-        <div class="slider-row">
-          <label>Tail X</label>
-          <input type="range" id="tailX" min="0" max="100" value="20" />
-          <span class="val" id="tailXVal">20px</span>
-        </div>
-        <div class="slider-row">
-          <label>Tail Y</label>
-          <input type="range" id="tailY" min="-40" max="40" value="0" />
-          <span class="val" id="tailYVal">0px</span>
-        </div>
-        <p class="hint">Drag the orange handle on the bubble corner to resize. Drag the tail freely to reposition.</p>
-      </div>
-    </div>
-
     <!-- Bubble style -->
     <div>
       <div class="panel-section">
-        <h3>Style</h3>
         <div class="slider-row">
-          <label>Opacity</label>
-          <input type="range" id="opacitySlider" min="10" max="100" value="100" />
-          <span class="val" id="opacityVal">100%</span>
-        </div>
-        <div class="slider-row">
-          <label>X Offset</label>
-          <input type="range" id="xOffset" min="-300" max="300" value="0" />
-          <span class="val" id="xOffsetVal">0px</span>
-        </div>
-        <div class="slider-row">
-          <label>Y Offset</label>
-          <input type="range" id="yOffset" min="-200" max="200" value="0" />
-          <span class="val" id="yOffsetVal">0px</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TTS -->
-    <div>
-      <div class="panel-section">
-        <h3>Voice (Qwen3-TTS)</h3>
-        <div class="btn-row">
-          <button class="btn play-btn" id="playBtn" title="Play pre-generated voice line">
-            ▶ Play Voice
-          </button>
-          <button class="btn" id="synthBtn" title="Re-synthesize via ComfyUI TTS API">
-            🔄 Synthesize
-          </button>
-        </div>
-        <div class="status" id="ttsStatus">
-          Ready. Click Play Voice to hear the character read the dialogue line.
-        </div>
-      </div>
-    </div>
-
-    <!-- Info -->
-    <div>
-      <div class="panel-section">
-        <h3>Character Info</h3>
-        <div class="status" id="charInfo">
-          Christina Dross — Comms Lead, 38, slim, sharp dark brown bob. Charcoal-navy trouser suit, cream blouse. Voice: Serene, measured, dry.
+          <input type="range" id="opacitySlider" min="10" max="100" value="100" title="Bubble opacity" />
         </div>
       </div>
     </div>
@@ -483,7 +355,8 @@ const CHAR_INFO = {
     desc: "Soft overweight, thinning grey-brown comb-over, ruddy, smug half-smile. Navy suit, pale shirt, silver-grey tie.",
     voice: "High sharp strained tenor. Fast, erratic, anxious. Pompous, hysterical, angry. British RP.",
     color: "#2E86AB",
-    speaker: "Ryan",
+    speaker: null,
+    instruct: "pitch: High, sharp, strained tenor, male.\nspeed: Fast, erratic.\nemotion: Anxious, pompous, hysterical, angry.\npersonality: Blustering, insecure tyrant.\naccent: British Received Pronunciation.",
   },
   christina: {
     name: "Christina Dross",
@@ -492,7 +365,8 @@ const CHAR_INFO = {
     desc: "Slim upright, sharp dark brown chin-length bob with blunt fringe. Charcoal-navy trouser suit, cream blouse.",
     voice: "Low-to-mid, crisp, level alto. Measured, unhurried, steady. Cold, deadpan, calm. British London RP.",
     color: "#A23B72",
-    speaker: "Serena",
+    speaker: null,
+    instruct: "pitch: Low-to-mid, crisp, level alto, distinctly female.\nspeed: Measured, unhurried, steady.\nemotion: Cold, deadpan, calm.\npersonality: Dry, unflappable corporate strategist.\naccent: British London Received Pronunciation, female voice.",
   },
   sharon: {
     name: "Sharon Enfield",
@@ -501,7 +375,8 @@ const CHAR_INFO = {
     desc: "Curvy, shoulder-length wavy auburn hair. Emerald green blouse, black pencil skirt.",
     voice: "Warm, confident, grounded adult female. Casual, relaxed. Unbothered, amused. Scottish.",
     color: "#27AE60",
-    speaker: "Vivian",
+    speaker: null,
+    instruct: "pitch: Warm, mid-range, confident, female.\nspeed: Casual, relaxed.\nemotion: Unbothered, amused, grounded.\npersonality: Confident, unflappable opportunist.\naccent: Scottish.",
   },
   chris: {
     name: "Chris",
@@ -510,7 +385,8 @@ const CHAR_INFO = {
     desc: "Lean, short dark brown hair swept up, light stubble. Light blue button-down, sleeves rolled.",
     voice: "Bright, conversational baritone. Quick-witted, rising punchlines. Sarcastic, amused. South London/Estuary.",
     color: "#E67E22",
-    speaker: "Dylan",
+    speaker: null,
+    instruct: "pitch: Bright, conversational baritone, male.\nspeed: Quick-witted, rising punchline timing.\nemotion: Sarcastic, amused.\npersonality: Smart-mouthed office wit.\naccent: South London/Estuary English.",
   },
   rick: {
     name: "Rick",
@@ -519,7 +395,8 @@ const CHAR_INFO = {
     desc: "Sturdy broad muscular, short salt-and-pepper hair. Grey polo, navy work trousers.",
     voice: "Deep, gravelly bass-baritone. Slow, deliberate monotone. Flat, unhurried. Flat Midlands/East Anglian.",
     color: "#7F8C8D",
-    speaker: "Uncle_Fu",
+    speaker: null,
+    instruct: "pitch: Deep, gravelly bass-baritone, male.\nspeed: Slow, deliberate monotone.\nemotion: Flat, unhurried, unbothered.\npersonality: Blunt, matter-of-fact realist.\naccent: Flat Midlands/East Anglian English.",
   },
   maureen: {
     name: "Maureen",
@@ -585,22 +462,24 @@ const CHAR_INFO = {
 
 // ══════════════════════════════════════════════════════════════
 // EXPLICIT AUDIO MAP — frame.id → audio filename
-// This avoids relying on array index order.
 // ══════════════════════════════════════════════════════════════
 const AUDIO_MAP = {
   // Jan Peach
   F02: "jan_01.mp3", F04: "jan_02.mp3", F06a: "jan_03.mp3",
   F06b: "jan_04.mp3", F08: "jan_05.mp3", F10: "jan_06.mp3",
   F12: "jan_07.mp3", F14: "jan_08.mp3", F16: "jan_09.mp3",
-  F20: "jan_10.mp3",
+  F20: "jan_10.mp3", F24: "jan_11.mp3",
   // Christina Dross
   F01: "christina_01.mp3", F03: "christina_02.mp3", F05: "christina_03.mp3",
   F07: "christina_04.mp3", F09: "christina_05.mp3", F11: "christina_06.mp3",
   F13: "christina_07.mp3", F15: "christina_08.mp3",
   // Sharon Enfield
-  F23: "sharon_01.mp3", F24: "sharon_02.mp3", F25: "sharon_03.mp3",
+  F23: "sharon_01.mp3", F25: "sharon_02.mp3",
   // Chris
-  F28: "chris_01.mp3", F31: "chris_02.mp3", F32: "chris_03.mp3",
+  // F31 removed: it's a Jan line ("Right guys, as you know --"), not Chris —
+  // was previously misassigned to chris_02.mp3. Scene 2 chris/rick lines below
+  // are not yet verified against FRAMES; treat with caution until re-checked.
+  F28: "chris_01.mp3", F32: "chris_03.mp3",
   F38: "chris_04.mp3",
   // Rick
   F29: "rick_01.mp3", F36: "rick_02.mp3", F60: "rick_03.mp3",
@@ -625,7 +504,7 @@ const FRAMES = [
   { id:"F06b", shot:"S03", scene:1, speaker:"Jan",           line:"This is exactly the kind of strategic thinking." },
   { id:"F07",  shot:"S04", scene:1, speaker:"Christina",     line:"Thought you would like it." },
   { id:"F08",  shot:"S05", scene:1, speaker:"Jan",           line:"Great. Make it so." },
-  { id:"F09",  shot:"S05", scene:1, speaker:"Christina",     line:"I am sorry, what?" },
+  { id:"F09",  shot:"S05", scene:1, speaker:"Christina",     line:"I am sorry?.........What?" },
   { id:"F10",  shot:"S05", scene:1, speaker:"Jan",           line:"You never seen Star Trek Next Generation?" },
   { id:"F11",  shot:"S05", scene:1, speaker:"Christina",     line:"Shockingly no." },
   { id:"F12",  shot:"S06", scene:1, speaker:"Jan",           line:"Fine, just make it happen." },
@@ -690,9 +569,9 @@ let idx = 0;
 let currentAudio = null;
 
 // Drag state
-let dragging = null;  // 'bubble' | 'tail' | 'resize'
+let dragging = null;  // 'bubble' | 'resize'
 let dragStart = { x: 0, y: 0 };
-let bubbleStart = { x: 0, y: 0, w: 0, h: 0 };
+let dragStartState = {};
 
 function visibleFrames() {
   return sceneFilter === "all" ? FRAMES : FRAMES.filter(f => f.scene === Number(sceneFilter));
@@ -718,52 +597,75 @@ function getCharKey(speaker) {
 function getAudioPath(frame) {
   if (!frame.speaker) return null;
   const filename = AUDIO_MAP[frame.id];
-  if (filename) return `audio-refs/${filename}`;
-  // Fallback: derive from character key (may be wrong for reordered frames)
+  if (filename) return `../audio-refs/${filename}`;
   const charKey = getCharKey(frame.speaker);
   if (!charKey) return null;
   const charFrames = FRAMES.filter(f => getCharKey(f.speaker) === charKey);
   const lineIdx = charFrames.findIndex(f => f.id === frame.id) + 1;
   if (lineIdx === 0) return null;
   const idxStr = String(lineIdx).padStart(2, "0");
-  return `audio-refs/${charKey}_${idxStr}.mp3`;
+  return `../audio-refs/${charKey}_${idxStr}.mp3`;
 }
 
 // ══════════════════════════════════════════════════════════════
 // PERSISTENCE
 // ══════════════════════════════════════════════════════════════
-const STORAGE_KEY = "ctsBubbleStudio_v2";
+const STORAGE_KEY = "ctsBubbleStudio_v3";
+// Live state object for the current frame — written by drag/preset, saved on demand
+let currentState = null;
+let isDirty = false;   // true when currentState differs from disk
 
 function loadState(frameId) {
   const raw = localStorage.getItem(STORAGE_KEY + "_" + frameId);
-  if (!raw) return defaultState(frameId);
+  if (!raw) {
+    console.log("[bubble] no saved state for", frameId, "— using defaults");
+    return defaultState(frameId);
+  }
   try {
     const s = JSON.parse(raw);
-    // migrate missing fields
     return {
-      bx: s.bx ?? 50, by: s.by ?? 5,
-      tx: s.tx ?? 20, ty: s.ty ?? 0,
-      tw: s.tw ?? 60, th: s.th ?? 40,
+      bx: s.bx ?? 20,
+      by: s.by ?? 8,
       opacity: s.opacity ?? 100,
-      xOff: s.xOff ?? 0, yOff: s.yOff ?? 0,
-      tailSide: s.tailSide ?? "left",
     };
-  } catch { return defaultState(frameId); }
+  } catch {
+    console.warn("[bubble] bad localStorage for", frameId, "— using defaults");
+    return defaultState(frameId);
+  }
 }
 
 function defaultState(frameId) {
-  // Sensible defaults: bubble center-top for most frames
-  return { bx: 50, by: 5, tx: 20, ty: 0, tw: 60, th: 40,
-           opacity: 100, xOff: 0, yOff: 0, tailSide: "left" };
+  return { bx: 20, by: 8, opacity: 100 };
 }
 
 function saveState(frameId, state) {
   localStorage.setItem(STORAGE_KEY + "_" + frameId, JSON.stringify(state));
+  console.log("[bubble] saved", frameId, "→ bx:", state.bx, "by:", state.by);
+  isDirty = false;
+}
+
+function markDirty() {
+  isDirty = true;
 }
 
 // ══════════════════════════════════════════════════════════════
-// RENDER
+// APPLY STATE → DOM
 // ══════════════════════════════════════════════════════════════
+function applyState(s) {
+  const bubble = document.getElementById("bubble");
+  const container = document.getElementById("frameContainer");
+  const cw = container.offsetWidth;
+  const ch = container.offsetHeight;
+
+  // Guard: if container has no size yet, skip positioning.
+  // The next renderFrame (after layout) will apply the correct position.
+  if (!cw || !ch) return;
+
+  bubble.style.left = (s.bx / 100) * cw + "px";
+  bubble.style.top  = (s.by / 100) * ch + "px";
+  bubble.style.opacity = s.opacity / 100;
+}
+
 function renderFrame() {
   const frames = visibleFrames();
   if (idx < 0) idx = 0;
@@ -771,142 +673,53 @@ function renderFrame() {
   const f = frames[idx];
   if (!f) return;
 
-  // Stop audio
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  setPlayBtn(false);
 
-  // Update header
   document.getElementById("frameBadge").textContent = f.id;
   document.getElementById("shotBadge").textContent = f.shot;
   const scene = SCENES.find(s => s.id === f.scene);
   document.getElementById("sceneLabel").textContent = scene ? scene.label : "—";
-  document.getElementById("ttsStatus").textContent = "Ready. Click Play Voice to hear the dialogue line.";
-  document.getElementById("ttsStatus").className = "status";
 
-  // Load image
+  // Load image — looks in storyboard-frames/ relative to the HTML file
   const img = document.getElementById("frameImg");
-  const container = document.getElementById("frameContainer");
   img.style.display = "none";
   img.onload = () => { img.style.display = "block"; };
   img.onerror = () => { img.style.display = "none"; };
-  img.src = `storyboard-frames/${f.id}.jpg`;
+  img.src = `../storyboard-frames/${f.id}.jpg`;
 
-  // Bubble content
   const speakerEl = document.getElementById("bubbleSpeaker");
-  const lineEl = document.getElementById("bubbleLine");
-  const bubble = document.getElementById("bubble");
-  const tail = document.getElementById("bubbleTail");
+  const lineEl    = document.getElementById("bubbleLine");
+  const bubble    = document.getElementById("bubble");
 
   if (f.speaker) {
+    bubble.hidden = false;
     bubble.className = "bubble";
     speakerEl.textContent = f.speaker;
     lineEl.textContent = f.line;
   } else {
-    bubble.className = "bubble sfx";
-    speakerEl.textContent = "";
-    lineEl.textContent = "🔇 " + f.line;
+    // No speaker = an action/SFX description (e.g. "Door clicks shut — calm
+    // exit."), written for video-production planning, not dialogue — no
+    // caption needed for these frames.
+    bubble.hidden = true;
   }
 
-  // Character info
-  const charKey = getCharKey(f.speaker);
-  const charDiv = document.getElementById("charInfo");
-  if (charKey && CHAR_INFO[charKey]) {
-    const c = CHAR_INFO[charKey];
-    charDiv.innerHTML = `<b>${c.name}</b> — ${c.role}<br>${c.voice}`;
-    charDiv.style.borderLeft = `3px solid ${c.color}`;
-  } else {
-    charDiv.textContent = "No character info for this speaker.";
-    charDiv.style.borderLeft = "";
-  }
-
-  // Apply state
   const state = loadState(f.id);
+  currentState = state;
+  isDirty = false;
   applyState(state);
-
-  // Sync sliders
-  document.getElementById("opacitySlider").value = state.opacity;
-  document.getElementById("opacityVal").textContent = state.opacity + "%";
-  document.getElementById("xOffset").value = state.xOff;
-  document.getElementById("xOffsetVal").textContent = state.xOff + "px";
-  document.getElementById("yOffset").value = state.yOff;
-  document.getElementById("yOffsetVal").textContent = state.yOff + "px";
-  document.getElementById("tailX").value = state.tx;
-  document.getElementById("tailXVal").textContent = state.tx + "px";
-  document.getElementById("tailY").value = state.ty;
-  document.getElementById("tailYVal").textContent = state.ty + "px";
-
-  updatePresetButtons(state);
-  renderFrameGrid();
+  syncSliders(state);
+  autoPlay(f);
 }
 
-function applyState(s) {
-  const bubble = document.getElementById("bubble");
-  const tail = document.getElementById("bubbleTail");
-
-  // Bubble position: bx/by are percentage of container
-  // xOff/yOff are pixel fine adjustments
-  const container = document.getElementById("frameContainer");
-  const cw = container.offsetWidth;
-  const ch = container.offsetHeight;
-
-  // bx, by: position of the bubble's TOP-LEFT corner as % of container
-  // The bubble has max-width:50%, so we add half of that for centering presets
-  const bx = (s.bx / 100) * cw + s.xOff;
-  const by = (s.by / 100) * ch + s.yOff;
-
-  bubble.style.left = bx + "px";
-  bubble.style.top = by + "px";
-  bubble.style.opacity = s.opacity / 100;
-
-  // Tail position: absolute within frameContainer, draggable
-  // tx = px from left of frame (not bubble), so the tail can be placed anywhere
-  // ty = vertical offset (positive = down)
-  // tw/th = tail size
-  tail.style.left = s.tx + "px";
-  tail.style.top = s.ty + "px";
-  tail.style.width = s.tw + "px";
-  tail.style.height = s.th + "px";
-
-  // Tail direction
-  tail.className = "bubble-tail";
-  if (s.tailSide === "right") tail.classList.add("tail-pointing-right");
-  else if (s.tailSide === "left") tail.classList.add("tail-pointing-left");
-}
-
-function updatePresetButtons(s) {
-  // Determine which preset matches current state
-  const h = s.bx < 33 ? "left" : s.bx > 66 ? "right" : "center";
-  const v = s.by < 50 ? "top" : "bottom";
-  document.querySelectorAll(".btn[id^='btnPreset']").forEach(b => {
-    b.classList.remove("active");
-  });
-  const id = `btnPreset${v[0].toUpperCase()}${h[0].toUpperCase()}`;
-  const btn = document.getElementById(id);
-  if (btn) btn.classList.add("active");
-}
-
-function renderFrameGrid() {
-  const el = document.getElementById("frameGrid");
-  el.innerHTML = "";
-  const frames = visibleFrames();
-  frames.forEach((f, i) => {
-    const div = document.createElement("div");
-    div.className = "frame-thumb" + (i === idx ? " current" : "");
-    div.textContent = f.id;
-    div.onclick = () => { idx = i; renderFrame(); };
-    // Check if image exists
-    const img = new Image();
-    img.onload = () => div.classList.add("done");
-    img.src = `storyboard-frames/${f.id}.jpg`;
-    el.appendChild(div);
-  });
+function syncSliders(s) {
+  document.getElementById("opacitySlider").value = s.opacity;
 }
 
 // ══════════════════════════════════════════════════════════════
-// DRAG — BUBBLE
+// DRAG — BUBBLE / RESIZE
 // ══════════════════════════════════════════════════════════════
 const container = document.getElementById("frameContainer");
-const bubble = document.getElementById("bubble");
+const bubble   = document.getElementById("bubble");
 
 container.addEventListener("mousedown", onMouseDown);
 container.addEventListener("touchstart", onTouchStart, { passive: false });
@@ -916,43 +729,29 @@ document.addEventListener("mouseup", onMouseUp);
 document.addEventListener("touchend", onMouseUp);
 
 function getPos(e) {
-  const rect = container.getBoundingClientRect();
-  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  const r = container.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
 }
 
 function onMouseDown(e) {
   const f = visibleFrames()[idx];
-  if (!f) return;
-
+  if (!f || !currentState) return;
   const target = e.target;
-  const rect = container.getBoundingClientRect();
 
-  // Check if clicking on bubble resize handle
+  // ── Bubble resize handle (orange circle, top-right of bubble) ──
   if (target.classList.contains("bubble-handle")) {
     dragging = "resize";
-    const br = bubble.getBoundingClientRect();
-    bubbleStart = { x: e.clientX, y: e.clientY, w: br.width, h: br.height };
-    e.preventDefault();
-    return;
-  }
-
-  // Check if clicking on tail
-  if (target === document.getElementById("bubbleTail") ||
-      target.id === "bubbleTail" || target.closest("#bubbleTail")) {
-    dragging = "tail";
     dragStart = getPos(e);
-    const state = loadState(f.id);
-    bubbleStart = { tx: state.tx, ty: state.ty, tw: state.tw, th: state.th };
+    dragStartState = { bx: currentState.bx, by: currentState.by };
     e.preventDefault();
     return;
   }
 
-  // Check if clicking on bubble itself
+  // ── Bubble body drag ─────────────────────────────────────
   if (target === bubble || target.closest("#bubble")) {
     dragging = "bubble";
     dragStart = getPos(e);
-    const state = loadState(f.id);
-    bubbleStart = { bx: state.bx, by: state.by, xOff: state.xOff, yOff: state.yOff };
+    dragStartState = { bx: currentState.bx, by: currentState.by };
     container.classList.add("drag-bubble");
     e.preventDefault();
     return;
@@ -964,51 +763,36 @@ function onTouchStart(e) { onMouseDown(e.touches[0]); }
 function onMouseMove(e) {
   if (!dragging) return;
   const f = visibleFrames()[idx];
-  if (!f) return;
+  if (!f || !currentState) return;
 
-  const rect = container.getBoundingClientRect();
-  const cx = e.clientX - rect.left;
-  const cy = e.clientY - rect.top;
-  const cw = rect.width;
-  const ch = rect.height;
+  const r = container.getBoundingClientRect();
+  const cx = e.clientX - r.left;
+  const cy = e.clientY - r.top;
+  const cw = r.width;
+  const ch = r.height;
 
+  // ── Bubble move ───────────────────────────────────────────
   if (dragging === "bubble") {
     const dx = cx - dragStart.x;
     const dy = cy - dragStart.y;
-    const state = loadState(f.id);
-    const newXOff = bubbleStart.xOff + dx;
-    const newYOff = bubbleStart.yOff + dy;
-    state.xOff = Math.round(newXOff);
-    state.yOff = Math.round(newYOff);
-    applyState(state);
-    // Sync sliders
-    document.getElementById("xOffset").value = state.xOff;
-    document.getElementById("xOffsetVal").textContent = state.xOff + "px";
-    document.getElementById("yOffset").value = state.yOff;
-    document.getElementById("yOffsetVal").textContent = state.yOff + "px";
-    updatePresetButtons(state);
+    currentState.bx = Math.max(2, Math.min(98, dragStartState.bx + (dx / cw) * 100));
+    currentState.by = Math.max(2, Math.min(98, dragStartState.by + (dy / ch) * 100));
+    applyState(currentState);
+    markDirty();
     e.preventDefault();
+    return;
   }
 
-  if (dragging === "tail") {
-    const state = loadState(f.id);
-    state.tx = Math.max(5, Math.min(cw * 0.9, Math.round(cx)));
-    state.ty = Math.round(cy - (state.by / 100) * ch);
-    applyState(state);
-    document.getElementById("tailX").value = state.tx;
-    document.getElementById("tailXVal").textContent = state.tx + "px";
-    document.getElementById("tailY").value = state.ty;
-    document.getElementById("tailYVal").textContent = state.ty + "px";
-    e.preventDefault();
-  }
-
+  // ── Resize handle: drag corner to resize bubble ───────────
   if (dragging === "resize") {
-    const state = loadState(f.id);
-    state.bx = Math.max(5, Math.min(95, Math.round((cx / cw) * 100)));
-    state.by = Math.max(5, Math.min(95, Math.round((cy / ch) * 100)));
-    applyState(state);
-    updatePresetButtons(state);
+    const dx = cx - dragStart.x;
+    const dy = cy - dragStart.y;
+    currentState.bx = Math.max(2, Math.min(98, dragStartState.bx + (dx / cw) * 100));
+    currentState.by = Math.max(2, Math.min(98, dragStartState.by + (dy / ch) * 100));
+    applyState(currentState);
+    markDirty();
     e.preventDefault();
+    return;
   }
 }
 
@@ -1016,102 +800,29 @@ function onTouchMove(e) { onMouseMove(e.touches[0]); }
 
 function onMouseUp(e) {
   if (!dragging) return;
+  // Auto-save on drag end so the position sticks
   const f = visibleFrames()[idx];
-  if (f) {
-    const state = loadState(f.id);
-    if (dragging === "bubble") {
-      state.xOff = parseInt(document.getElementById("xOffset").value);
-      state.yOff = parseInt(document.getElementById("yOffset").value);
-    }
-    if (dragging === "tail") {
-      state.tx = parseInt(document.getElementById("tailX").value);
-      state.ty = parseInt(document.getElementById("tailY").value);
-    }
-    if (dragging === "resize") {
-      state.bx = parseInt(document.getElementById("tailX").value); // repurposed
-    }
-    saveState(f.id, state);
-  }
+  if (f && currentState && isDirty) saveState(f.id, currentState);
   dragging = null;
-  container.classList.remove("drag-bubble", "drag-pointer");
+  container.classList.remove("drag-bubble");
 }
 
 // ══════════════════════════════════════════════════════════════
 // SLIDERS
 // ══════════════════════════════════════════════════════════════
-function wireSlider(id, valId, key, min, max) {
+function wireSlider(id, key) {
   const slider = document.getElementById(id);
-  const val = document.getElementById(valId);
   slider.addEventListener("input", () => {
     const f = visibleFrames()[idx];
-    if (!f) return;
-    val.textContent = slider.value + (id.includes("Offset") || id === "tailX" || id === "tailY" ? "px" : "%");
-    const state = loadState(f.id);
-    state[key] = parseInt(slider.value);
-    applyState(state);
-    saveState(f.id, state);
+    if (!f || !currentState) return;
+    currentState[key] = parseInt(slider.value);
+    applyState(currentState);
+    markDirty();
+    saveState(f.id, currentState);
   });
 }
 
-wireSlider("opacitySlider", "opacityVal", "opacity", 10, 100);
-wireSlider("xOffset",       "xOffsetVal",  "xOff",  -300, 300);
-wireSlider("yOffset",       "yOffsetVal",  "yOff",  -200, 200);
-wireSlider("tailX",         "tailXVal",    "tx",     5,   200);
-wireSlider("tailY",         "tailYVal",    "ty",   -50,    50);
-
-// ══════════════════════════════════════════════════════════════
-// PRESET BUTTONS
-// ══════════════════════════════════════════════════════════════
-const PRESETS = {
-  TL: { bx: 20, by: 12, xOff: 0, yOff: 0 },
-  TC: { bx: 50, by: 12, xOff: 0, yOff: 0 },
-  TR: { bx: 80, by: 12, xOff: 0, yOff: 0 },
-  BL: { bx: 20, by: 75, xOff: 0, yOff: 0 },
-  BC: { bx: 50, by: 75, xOff: 0, yOff: 0 },
-  BR: { bx: 80, by: 75, xOff: 0, yOff: 0 },
-};
-
-Object.entries(PRESETS).forEach(([key, vals]) => {
-  const btn = document.getElementById("btnPreset" + key);
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    const f = visibleFrames()[idx];
-    if (!f) return;
-    const state = loadState(f.id);
-    Object.assign(state, vals);
-    applyState(state);
-    saveState(f.id, state);
-    // Sync sliders
-    document.getElementById("xOffset").value = 0;
-    document.getElementById("xOffsetVal").textContent = "0px";
-    document.getElementById("yOffset").value = 0;
-    document.getElementById("yOffsetVal").textContent = "0px";
-    updatePresetButtons(state);
-    document.querySelectorAll(".btn[id^='btnPreset']").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-  });
-});
-
-// Tail direction buttons
-document.getElementById("btnTailLeft").addEventListener("click", () => {
-  const f = visibleFrames()[idx]; if (!f) return;
-  const s = loadState(f.id); s.tailSide = "left";
-  applyState(s); saveState(f.id, s);
-});
-document.getElementById("btnTailRight").addEventListener("click", () => {
-  const f = visibleFrames()[idx]; if (!f) return;
-  const s = loadState(f.id); s.tailSide = "right";
-  applyState(s); saveState(f.id, s);
-});
-
-// ══════════════════════════════════════════════════════════════
-// SCENE FILTER
-// ══════════════════════════════════════════════════════════════
-document.getElementById("sceneFilter").addEventListener("change", (e) => {
-  sceneFilter = e.target.value;
-  idx = 0;
-  renderFrame();
-});
+wireSlider("opacitySlider", "opacity");
 
 // ══════════════════════════════════════════════════════════════
 // KEYBOARD NAVIGATION
@@ -1119,175 +830,23 @@ document.getElementById("sceneFilter").addEventListener("change", (e) => {
 document.addEventListener("keydown", (e) => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
   const frames = visibleFrames();
-  if (e.key === "ArrowLeft" && idx > 0) { idx--; renderFrame(); }
+  if (e.key === "ArrowLeft"  && idx > 0)           { idx--; renderFrame(); }
   if (e.key === "ArrowRight" && idx < frames.length - 1) { idx++; renderFrame(); }
-  if (e.key === " ") { e.preventDefault(); document.getElementById("playBtn").click(); }
 });
 
 // ══════════════════════════════════════════════════════════════
-// TTS — PLAY PRE-GENERATED AUDIO
+// TTS — AUTO-PLAY ON FRAME CHANGE
 // ══════════════════════════════════════════════════════════════
-function setPlayBtn(playing) {
-  const btn = document.getElementById("playBtn");
-  btn.classList.toggle("playing", playing);
-  btn.textContent = playing ? "⏸ Playing..." : "▶ Play Voice";
-}
-
-document.getElementById("playBtn").addEventListener("click", () => {
-  const f = visibleFrames()[idx];
-  if (!f || !f.speaker) {
-    setTTSStatus("No dialogue line for this frame.", "err");
-    return;
-  }
-
+function autoPlay(f) {
+  if (!f || !f.speaker) return;
   const audioPath = getAudioPath(f);
-  const statusEl = document.getElementById("ttsStatus");
-
-  if (!audioPath) {
-    setTTSStatus("No audio mapping for speaker: " + f.speaker, "err");
-    return;
-  }
-
-  // Try pre-generated MP3 first
-  fetch(audioPath, { method: "HEAD" })
-    .then(r => {
-      if (r.ok) {
-        playAudio(audioPath);
-      } else {
-        // Fall back to ComfyUI synthesis
-        synthesizeViaComfyUI(f);
-      }
-    })
-    .catch(() => synthesizeViaComfyUI(f));
-});
-
-function playAudio(path) {
-  const statusEl = document.getElementById("ttsStatus");
-  setTTSStatus("Loading audio...", "");
-  if (currentAudio) { currentAudio.pause(); }
-  currentAudio = new Audio(path);
-  currentAudio.addEventListener("canplaythrough", () => {
-    setTTSStatus("Playing: " + path.split("/").pop(), "ok");
-    setPlayBtn(true);
-  });
-  currentAudio.addEventListener("ended", () => {
-    setPlayBtn(false);
-    setTTSStatus("Finished playing.", "ok");
-  });
-  currentAudio.addEventListener("error", () => {
-    setPlayBtn(false);
-    setTTSStatus("Audio error. Try Synthesize.", "err");
-  });
+  if (!audioPath) return;
+  if (currentAudio) currentAudio.pause();
+  currentAudio = new Audio(audioPath);
+  currentAudio.volume = 0.85;
+  currentAudio.addEventListener("canplaythrough", () => { currentAudio.play().catch(() => {}); });
   currentAudio.load();
 }
-
-function setTTSStatus(msg, cls) {
-  const el = document.getElementById("ttsStatus");
-  el.textContent = msg;
-  el.className = "status" + (cls ? " " + cls : "");
-}
-
-// ══════════════════════════════════════════════════════════════
-// TTS — SYNTHESIZE VIA COMFYUI API
-// ══════════════════════════════════════════════════════════════
-document.getElementById("synthBtn").addEventListener("click", () => {
-  const f = visibleFrames()[idx];
-  if (!f || !f.speaker) {
-    setTTSStatus("No dialogue line for this frame.", "err");
-    return;
-  }
-  synthesizeViaComfyUI(f);
-});
-
-async function synthesizeViaComfyUI(frame) {
-  const charKey = getCharKey(frame.speaker);
-  if (!charKey) { setTTSStatus("Unknown character: " + frame.speaker, "err"); return; }
-  const charData = CHAR_INFO[charKey];
-  if (!charData) { setTTSStatus("No voice data for: " + charKey, "err"); return; }
-
-  setTTSStatus("<span class='spinner'></span>Synthesizing via ComfyUI Qwen3-TTS...", "");
-  document.getElementById("synthBtn").disabled = true;
-
-  try {
-    let speaker = charData.speaker;
-    let instruct = charData.instruct || null;
-
-    // Build ComfyUI prompt
-    let nodeDef;
-    if (speaker) {
-      // CustomVoice
-      nodeDef = {
-        inputs: {
-          text: frame.line,
-          speaker: speaker,
-          model_size: "1.7B",
-          language: "English",
-        },
-        class_type: "AILab_Qwen3TTSCustomVoice",
-      };
-    } else {
-      // VoiceDesign
-      nodeDef = {
-        inputs: {
-          text: frame.line,
-          instruct: instruct,
-          model_size: "1.7B",
-          language: "English",
-        },
-        class_type: "AILab_Qwen3TTSVoiceDesign",
-      };
-    }
-
-    const response = await fetch("http://localhost:8188/prompt", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: { "3": nodeDef } }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`ComfyUI API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const promptId = data.prompt_id;
-
-    // Poll for completion
-    let audioUrl = null;
-    for (let i = 0; i < 60; i++) {  // wait up to 60s
-      await sleep(1000);
-      const hist = await fetch("http://localhost:8188/history/" + promptId).then(r => r.json());
-      if (hist[promptId]) {
-        const outputs = hist[promptId].outputs;
-        for (const nodeId in outputs) {
-          const out = outputs[nodeId];
-          if (out.audio) {
-            audioUrl = out.audio.url || out.audio;
-            break;
-          }
-          if (out.images && out.images.length > 0) {
-            // some nodes return image instead
-          }
-        }
-        break;
-      }
-    }
-
-    if (!audioUrl) {
-      throw new Error("No audio returned from ComfyUI after 60s");
-    }
-
-    // Construct full URL
-    const fullUrl = audioUrl.startsWith("http") ? audioUrl : "http://localhost:8188" + audioUrl;
-    playAudio(fullUrl);
-    setTTSStatus("Synthesized and playing.", "ok");
-  } catch (err) {
-    setTTSStatus("Synthesis failed: " + err.message + ". Is ComfyUI running?", "err");
-  } finally {
-    document.getElementById("synthBtn").disabled = false;
-  }
-}
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ══════════════════════════════════════════════════════════════
 // INIT

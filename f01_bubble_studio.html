@@ -125,54 +125,95 @@
   .bubble.sfx::before { display: none; }
 
   /* ── Bubble Tail / Pointer ─────────────────────────────── */
+  /* Tail is a CHILD of .bubble, so it moves with the bubble automatically */
   .bubble-tail {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    cursor: move;
-    z-index: 11;
-  }
-  .bubble-tail::before,  /* black triangle */
-  .bubble-tail::after {  /* white inner */
-    content: '';
-    position: absolute;
-  }
-  .bubble-tail::before {
-    border: 11px solid transparent;
-    border-top-color: #1a1a1a;
-    left: 0; bottom: 0;
-    transform-origin: top left;
+    /* Default: attached to bottom-left of bubble */
+    left: 30px;
+    bottom: -18px;
+    width: 0;
+    height: 0;
+    z-index: 9;
+    /* Triangle pointing DOWN (from bubble toward speaker) */
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 18px solid #1a1a1a;
+    cursor: grab;
+    transition: left .05s, bottom .05s;
   }
   .bubble-tail::after {
-    border: 9px solid transparent;
-    border-top-color: #fdfaf3;
-    left: 2px; bottom: 2px;
-    transform-origin: top left;
+    content: '';
+    position: absolute;
+    /* Inner white triangle, 2px inset */
+    left: -8px;
+    top: -15px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 13px solid #fdfaf3;
   }
-
-  /* Tail positioning: we use CSS transforms applied to the ::before/::after */
-  .tail-pointing-left::before,
-  .tail-pointing-left::after { transform: rotate(-90deg); }
-  .tail-pointing-right::before,
-  .tail-pointing-right::after { transform: rotate(90deg); }
+  /* Tail pointing DOWN-LEFT */
+  .tail-pointing-left {
+    border-top-color: #1a1a1a;
+    left: 30px;
+    bottom: -18px;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+  }
+  /* Tail pointing DOWN */
+  .tail-pointing-center {
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: #1a1a1a;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+  }
+  /* Tail pointing DOWN-RIGHT */
+  .tail-pointing-right {
+    border-top-color: #1a1a1a;
+    left: auto;
+    right: 30px;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+  }
 
   /* ── Drag handle / resize handle on bubble ─────────────── */
   .bubble-handle {
     position: absolute;
-    top: -10px; right: -10px;
-    width: 22px; height: 22px;
+    top: -12px; right: -12px;
+    width: 24px; height: 24px;
     background: var(--orange);
     border: 2px solid #1a1a1a;
     border-radius: 50%;
-    cursor: nwse-resize;
+    cursor: grab;
     display: flex; align-items: center; justify-content: center;
-    font-size: 10px; color: #fff; font-weight: 900;
+    font-size: 14px; color: #fff;
     z-index: 12;
-    opacity: 0.7;
+    opacity: 0;
     transition: opacity .15s;
+    user-select: none;
   }
-  .bubble:hover .bubble-handle { opacity: 1; }
-  .bubble-handle:hover { background: var(--orange-light); }
+  .bubble:hover .bubble-handle { opacity: 0.9; }
+  .bubble-handle:hover { opacity: 1 !important; background: var(--orange-light); cursor: grabbing; }
+
+  /* Tail drag handle — tiny grabber at the tip of the tail */
+  .tail-drag-handle {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border: 1px solid #1a1a1a;
+    border-radius: 50%;
+    cursor: move;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity .15s;
+    z-index: 13;
+  }
+  .bubble:hover .tail-drag-handle { opacity: 1; }
+  .tail-drag-handle:hover { background: var(--orange); }
 
   /* ── Controls Panel ─────────────────────────────────────── */
   .panel {
@@ -350,10 +391,13 @@
       <div class="frame-container" id="frameContainer">
         <img id="frameImg" alt="" />
         <div class="bubble" id="bubble">
+          <div class="bubble-handle" id="bubbleHandle" title="Drag to move bubble">⇕</div>
           <span class="speaker" id="bubbleSpeaker"></span>
           <span id="bubbleLine"></span>
+          <div class="bubble-tail" id="bubbleTail">
+            <div class="tail-drag-handle" id="tailDragHandle" title="Drag the tail pointer">◆</div>
+          </div>
         </div>
-        <div class="bubble-tail" id="bubbleTail"></div>
       </div>
     </div>
   </div>
@@ -401,20 +445,16 @@
       <div class="panel-section">
         <h3>Pointer / Tail</h3>
         <div class="btn-row">
-          <button class="btn" id="btnTailLeft">Point Left</button>
-          <button class="btn" id="btnTailRight">Point Right</button>
+          <button class="btn" id="btnTailLeft">&#9664; Left</button>
+          <button class="btn" id="btnTailCenter">Center</button>
+          <button class="btn" id="btnTailRight">Right &#9654;</button>
         </div>
         <div class="slider-row">
-          <label>Tail X</label>
-          <input type="range" id="tailX" min="0" max="100" value="20" />
-          <span class="val" id="tailXVal">20px</span>
+          <label>Tail Pos</label>
+          <input type="range" id="tailX" min="5" max="95" value="50" />
+          <span class="val" id="tailXVal">50%</span>
         </div>
-        <div class="slider-row">
-          <label>Tail Y</label>
-          <input type="range" id="tailY" min="-40" max="40" value="0" />
-          <span class="val" id="tailYVal">0px</span>
-        </div>
-        <p class="hint">Drag the orange handle on the bubble corner to resize. Drag the tail freely to reposition.</p>
+        <p class="hint">Drag the bubble body or the orange handle (top-right) to move. Drag the gold ◆ handle on the tail to slide its anchor along the bubble edge.</p>
       </div>
     </div>
 
@@ -739,22 +779,23 @@ function loadState(frameId) {
   if (!raw) return defaultState(frameId);
   try {
     const s = JSON.parse(raw);
-    // migrate missing fields
     return {
-      bx: s.bx ?? 50, by: s.by ?? 5,
-      tx: s.tx ?? 20, ty: s.ty ?? 0,
-      tw: s.tw ?? 60, th: s.th ?? 40,
+      bx: s.bx ?? 50,
+      by: s.by ?? 8,
+      tx: s.tx ?? 50,
+      ty: s.ty ?? 0,
       opacity: s.opacity ?? 100,
-      xOff: s.xOff ?? 0, yOff: s.yOff ?? 0,
-      tailSide: s.tailSide ?? "left",
+      xOff: s.xOff ?? 0,
+      yOff: s.yOff ?? 0,
+      tailSide: s.tailSide ?? "center",
     };
   } catch { return defaultState(frameId); }
 }
 
 function defaultState(frameId) {
-  // Sensible defaults: bubble center-top for most frames
-  return { bx: 50, by: 5, tx: 20, ty: 0, tw: 60, th: 40,
-           opacity: 100, xOff: 0, yOff: 0, tailSide: "left" };
+  // Sensible defaults: bubble center-top, tail pointing down from center
+  return { bx: 50, by: 8, tx: 50, ty: 0,
+           opacity: 100, xOff: 0, yOff: 0, tailSide: "center" };
 }
 
 function saveState(frameId, state) {
@@ -843,14 +884,11 @@ function applyState(s) {
   const bubble = document.getElementById("bubble");
   const tail = document.getElementById("bubbleTail");
 
-  // Bubble position: bx/by are percentage of container
-  // xOff/yOff are pixel fine adjustments
+  // Bubble position: bx/by are percentage of frame container
   const container = document.getElementById("frameContainer");
   const cw = container.offsetWidth;
   const ch = container.offsetHeight;
 
-  // bx, by: position of the bubble's TOP-LEFT corner as % of container
-  // The bubble has max-width:50%, so we add half of that for centering presets
   const bx = (s.bx / 100) * cw + s.xOff;
   const by = (s.by / 100) * ch + s.yOff;
 
@@ -858,19 +896,13 @@ function applyState(s) {
   bubble.style.top = by + "px";
   bubble.style.opacity = s.opacity / 100;
 
-  // Tail position: absolute within frameContainer, draggable
-  // tx = px from left of frame (not bubble), so the tail can be placed anywhere
-  // ty = vertical offset (positive = down)
-  // tw/th = tail size
-  tail.style.left = s.tx + "px";
-  tail.style.top = s.ty + "px";
-  tail.style.width = s.tw + "px";
-  tail.style.height = s.th + "px";
-
-  // Tail direction
+  // Tail is now a CHILD of .bubble, so it moves with the bubble automatically.
+  // s.tx = tail anchor position on the bubble bottom edge (0=left, 50=center, 100=right)
+  // s.tailSide = "left" | "center" | "right"
   tail.className = "bubble-tail";
-  if (s.tailSide === "right") tail.classList.add("tail-pointing-right");
-  else if (s.tailSide === "left") tail.classList.add("tail-pointing-left");
+  if (s.tailSide === "left") tail.classList.add("tail-pointing-left");
+  else if (s.tailSide === "center") tail.classList.add("tail-pointing-center");
+  else if (s.tailSide === "right") tail.classList.add("tail-pointing-right");
 }
 
 function updatePresetButtons(s) {
@@ -903,7 +935,7 @@ function renderFrameGrid() {
 }
 
 // ══════════════════════════════════════════════════════════════
-// DRAG — BUBBLE
+// DRAG — BUBBLE & TAIL
 // ══════════════════════════════════════════════════════════════
 const container = document.getElementById("frameContainer");
 const bubble = document.getElementById("bubble");
@@ -925,29 +957,30 @@ function onMouseDown(e) {
   if (!f) return;
 
   const target = e.target;
-  const rect = container.getBoundingClientRect();
 
-  // Check if clicking on bubble resize handle
+  // ── Bubble move handle (top-right orange circle) ───────────────
   if (target.classList.contains("bubble-handle")) {
-    dragging = "resize";
-    const br = bubble.getBoundingClientRect();
-    bubbleStart = { x: e.clientX, y: e.clientY, w: br.width, h: br.height };
+    dragging = "bubble";
+    dragStart = getPos(e);
+    const state = loadState(f.id);
+    bubbleStart = { bx: state.bx, by: state.by, xOff: state.xOff, yOff: state.yOff };
     e.preventDefault();
     return;
   }
 
-  // Check if clicking on tail
-  if (target === document.getElementById("bubbleTail") ||
+  // ── Tail drag handle (◆ at tail tip) ─────────────────────────
+  if (target.classList.contains("tail-drag-handle") ||
       target.id === "bubbleTail" || target.closest("#bubbleTail")) {
     dragging = "tail";
     dragStart = getPos(e);
     const state = loadState(f.id);
-    bubbleStart = { tx: state.tx, ty: state.ty, tw: state.tw, th: state.th };
+    bubbleStart = { tx: state.tx };
+    container.classList.add("drag-pointer");
     e.preventDefault();
     return;
   }
 
-  // Check if clicking on bubble itself
+  // ── Bubble body (drag anywhere to move bubble) ──────────────
   if (target === bubble || target.closest("#bubble")) {
     dragging = "bubble";
     dragStart = getPos(e);
@@ -972,16 +1005,14 @@ function onMouseMove(e) {
   const cw = rect.width;
   const ch = rect.height;
 
+  // ── Move bubble ───────────────────────────────────────────
   if (dragging === "bubble") {
     const dx = cx - dragStart.x;
     const dy = cy - dragStart.y;
     const state = loadState(f.id);
-    const newXOff = bubbleStart.xOff + dx;
-    const newYOff = bubbleStart.yOff + dy;
-    state.xOff = Math.round(newXOff);
-    state.yOff = Math.round(newYOff);
+    state.xOff = Math.round(bubbleStart.xOff + dx);
+    state.yOff = Math.round(bubbleStart.yOff + dy);
     applyState(state);
-    // Sync sliders
     document.getElementById("xOffset").value = state.xOff;
     document.getElementById("xOffsetVal").textContent = state.xOff + "px";
     document.getElementById("yOffset").value = state.yOff;
@@ -990,24 +1021,23 @@ function onMouseMove(e) {
     e.preventDefault();
   }
 
+  // ── Drag tail anchor along bubble bottom edge ───────────────
+  // tx = 0 (left edge) → 50 (center) → 100 (right edge) of bubble width
   if (dragging === "tail") {
     const state = loadState(f.id);
-    state.tx = Math.max(5, Math.min(cw * 0.9, Math.round(cx)));
-    state.ty = Math.round(cy - (state.by / 100) * ch);
+    // tx is percentage of the bubble's width, so we need the bubble's current width
+    // Use the stored tx as a starting point and adjust from drag
+    const dx = cx - dragStart.x;
+    const newTx = Math.max(5, Math.min(95, Math.round(bubbleStart.tx + (dx / cw) * 100)));
+    state.tx = newTx;
+    // Auto-detect left/center/right
+    if (newTx < 35) state.tailSide = "left";
+    else if (newTx > 65) state.tailSide = "right";
+    else state.tailSide = "center";
     applyState(state);
     document.getElementById("tailX").value = state.tx;
-    document.getElementById("tailXVal").textContent = state.tx + "px";
-    document.getElementById("tailY").value = state.ty;
-    document.getElementById("tailYVal").textContent = state.ty + "px";
-    e.preventDefault();
-  }
-
-  if (dragging === "resize") {
-    const state = loadState(f.id);
-    state.bx = Math.max(5, Math.min(95, Math.round((cx / cw) * 100)));
-    state.by = Math.max(5, Math.min(95, Math.round((cy / ch) * 100)));
-    applyState(state);
-    updatePresetButtons(state);
+    document.getElementById("tailXVal").textContent = state.tx + "%";
+    updateTailButtons(state.tailSide);
     e.preventDefault();
   }
 }
@@ -1025,10 +1055,9 @@ function onMouseUp(e) {
     }
     if (dragging === "tail") {
       state.tx = parseInt(document.getElementById("tailX").value);
-      state.ty = parseInt(document.getElementById("tailY").value);
-    }
-    if (dragging === "resize") {
-      state.bx = parseInt(document.getElementById("tailX").value); // repurposed
+      if (state.tx < 35) state.tailSide = "left";
+      else if (state.tx > 65) state.tailSide = "right";
+      else state.tailSide = "center";
     }
     saveState(f.id, state);
   }
@@ -1093,16 +1122,30 @@ Object.entries(PRESETS).forEach(([key, vals]) => {
 });
 
 // Tail direction buttons
-document.getElementById("btnTailLeft").addEventListener("click", () => {
+function setTailSide(side, txVal) {
   const f = visibleFrames()[idx]; if (!f) return;
-  const s = loadState(f.id); s.tailSide = "left";
-  applyState(s); saveState(f.id, s);
-});
-document.getElementById("btnTailRight").addEventListener("click", () => {
-  const f = visibleFrames()[idx]; if (!f) return;
-  const s = loadState(f.id); s.tailSide = "right";
-  applyState(s); saveState(f.id, s);
-});
+  const s = loadState(f.id);
+  s.tailSide = side;
+  s.tx = txVal;
+  applyState(s);
+  saveState(f.id, s);
+  document.getElementById("tailX").value = txVal;
+  document.getElementById("tailXVal").textContent = txVal + "%";
+  updateTailButtons(side);
+}
+document.getElementById("btnTailLeft").addEventListener("click", () => setTailSide("left", 18));
+document.getElementById("btnTailCenter").addEventListener("click", () => setTailSide("center", 50));
+document.getElementById("btnTailRight").addEventListener("click", () => setTailSide("right", 82));
+
+function updateTailButtons(side) {
+  ["Left","Center","Right"].forEach(k => {
+    const btn = document.getElementById("btnTail" + k);
+    if (btn) btn.classList.toggle("active",
+      (k === "Left" && side === "left") ||
+      (k === "Center" && side === "center") ||
+      (k === "Right" && side === "right"));
+  });
+}
 
 // ══════════════════════════════════════════════════════════════
 // SCENE FILTER

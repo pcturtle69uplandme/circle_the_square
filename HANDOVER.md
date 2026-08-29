@@ -1,9 +1,11 @@
 # 🤝 HANDOVER — Circle the Square
 
 > **For**: the next Claude Code session, likely on a different machine.
-> **Written**: 2026-08-10, end of the session that switched the project to cartoon.
+> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-08-29 14:50 BST (Higgsfield + MiniMax-H3 2K video pivot, §10).
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
-> **Read next**: **`featurette_storyboard_image_prompts.md`** ← 64 episode keyframes ·
+> **Read next**: **`HANDOVER.md` §10** (active workflow, 2026-08-29) →
+> `video-tests/` (live 2K outputs) → `higgsfield-tools/` (CLI + manifests + usage tracker) →
+> `featurette_storyboard_image_prompts.md` (64 keyframes, cartoon anchor) ·
 > `CARTOON_BUILDING_TRAILER_PLAN.md` (✅ completed master trailer cut), `CARTOON_CAST_BIBLE.md`
 
 > 🎬 **MASTER WORKFLOW (Adopted 2026-08-17)**: Google Flow generates isolated character stencils (clean background),
@@ -408,3 +410,182 @@ and usage documented in `wan22-pipeline/comfyui-tools/README.md` (a `graph_to_pr
 tool is included there too, for driving ComfyUI headlessly via its `/prompt` API when the
 Chrome browser extension isn't available). Not yet applied to F01 itself — see
 `SCENE1_MINIMAX_TRACKER.md` row 1 for the concrete next step.
+
+---
+
+## 10. Session 2026-08-29 — Higgsfield 2K video pipeline (replaces §9's local pipelines)
+
+> 🆕 **This is now the active workflow for Scene 1 video.** Supersedes the F18-onward
+> "continue in Google Flow" directive in §3, and supersedes §9's local MiniMax-H3 +
+> Wan 2.2 split. All Scene 1 video is being generated on the **Higgsfield** cloud
+> platform at 2K (2560×1440). Local Wan 2.2 is **not** currently in the routing
+> — its `output/` dir is empty as of 14:50 BST and no video was produced from it
+> in this session.
+
+### What changed (today, 2026-08-29)
+
+The MiniMax-H3 + Wan 2.2 split-pipeline work in §9 produced good enough single-clip
+video, but two real gaps remained for assembling a usable episode: **(a)** the
+photoreal cast references generated back on 2026-08-25 were loose — they didn't have
+the *angle / lighting / expression* coverage needed to seed video from arbitrary
+camera moves, and **(b)** location references were a single 2D still each, so
+multi-angle coverage (e.g. wide vs desk-front vs window-side of Jan's office) had to
+be reinvented per shot. Both gaps closed today, on a new platform, with a
+credit-metered workflow worth understanding.
+
+**New platform — Higgsfield (CLI: `higgsfield`, tracked via `higgsfield-tools/usage-tracker.js`)**.
+Two purposes: (1) photoreal 2K reference-image generation for the full cast and
+every location, (2) direct 2K video generation (`MiniMax H3` and `Kling v3.0`
+engines, both on Higgsfield — these are **cloud billable products**, not the local
+MiniMax-H3 model from `minimax-h3-pipeline/`; same family name, different pipeline).
+The CLI wrapper lives at `higgsfield-tools/`:
+
+| File | Role | Last touched (BST) |
+| :--- | :--- | :--- |
+| `higgsfield-tools/generate-cast-refs.js` | 12-shot photoreal reference set per character (front, 3/4, profile, slight up/down, neutral + in-character expression, harsh + soft lighting, neutral + characteristic full body) | 2026-08-29 11:48 |
+| `higgsfield-tools/cast-refs-manifest.json` | per-shot `status`/`file`/`job_id` log, written as shots complete | 2026-08-29 12:05 |
+| `higgsfield-tools/generate-location-coverage.js` | 8-angle coverage set per location (master wide + 7 chained image-edits) — same master-edit chaining trick that worked for Flow plates in §5 | 2026-08-29 13:17 |
+| `higgsfield-tools/location-coverage-manifest.json` | per-angle log | 2026-08-29 12:58 |
+| `higgsfield-tools/usage-tracker.js` | `watch` (live per-generation credit counter) and `report` (cumulative). Polls `higgsfield account transactions` every 15s. State in `.usage-state.json`, full log in `usage-log.jsonl` | 2026-08-29 09:43 (script), live through 14:01+ today |
+
+**Reference assets now in place** (all generated today via Nano Banana 2 on Higgsfield, ~1.5 credits/shot for stills, 0.12 credits/shot for Soul Location identity-pass):
+
+| Asset | Path | Count | Last shot timestamp |
+| :--- | :--- | :--- | :--- |
+| Character refs | `character-refs/higgsfield/<slug>/` | 8 characters done — jan, christina, sharon, chris, rick, gemma, maureen, trevor (12 shots each) | 2026-08-29 12:00–12:05 |
+| Location coverage | `location-refs/higgsfield/coverage/<slug>/` | 3 locations — `goldfish_meeting_room`, `jan_office` (master only so far, more in flight), `jan_office_corridor` | 2026-08-29 13:16–13:20 |
+
+**Video output dir is `video-tests/`** (the agreed workspace for this pivot). Files
+written today, all from the Higgsfield CLI — engine names as recorded in the
+`usage-log.jsonl`:
+
+| File | Engine | Resolution | Duration | Notes | Timestamp |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `video-tests/opening_christina_greeting_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-10 credits) | **2560×1440** | 5.17s | Christina's opening greeting, first-person setup | 2026-08-29 13:07 |
+| `video-tests/opening_christina_greeting_v2_thirdperson.mp4` | Higgsfield `MiniMax H3` (-10 credits) | **2560×1440** | 5.17s | re-cut to third-person framing | 2026-08-29 13:27 |
+| `video-tests/frame_for_kling_start.png` | still (frame extract) | — | — | last-frame of the v2 cut, used to seed the Kling continuation | 2026-08-29 13:38 |
+| `video-tests/jan_response_kling_continuation.mp4` | Higgsfield `Kling v3.0` (-20 credits) | **1280×720** | 10.04s | Jan's reply, continuation off that still. ⚠️ **this file is 720p, not 2K** — Kling's default output is 720p, not a 2K render; flag if 2K continuity is needed for the cut | 2026-08-29 13:40 |
+| `video-tests/opening_full_15s_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-30 credits) | **2560×1440** | 15.08s | full 15s opening assembled as one longer shot | 2026-08-29 13:42 |
+| `video-tests/opening_lastframe.png` | still (frame extract) | — | — | last-frame extract of the 15s | 2026-08-29 13:51 |
+
+The "next-frame-as-seed" pattern is now the standard: end a shot, the
+`frame_for_kling_start.png`-style bridging still is the source image for the next
+shot. This is the same trick §5 called out for Flow plates (image-edit, not fresh
+text-to-image), applied to video continuity.
+
+### Credit & cost picture (today, 2026-08-29)
+
+From the `usage-tracker.js watch` log on the running terminal, and cross-checked
+against `usage-log.jsonl`:
+
+- **Starting balance**: 1208.5 credits + plan allotment (the 1200 figure in the log
+  is the subscription-credit grant, separate from plan)
+- **Ending balance (last logged tick, 14:01)**: 898.9 credits
+- **Session spent (charged work)**: ~309.6 credits in ~4 hours
+- **Per-engine cost observed**:
+  - `Nano Banana 2` (2K stills, our workhorse for refs): **1.5 credits/shot**
+  - `Soul Location` / `Higgsfield Soul V2` (identity-conditioned location variants): **0.12 credits/shot**
+  - `MiniMax H3` (2K video, short clip): **10 credits**
+  - `MiniMax H3` (longer 15s clip): **30 credits**
+  - `Kling v3.0` (720p video continuation): **20–30 credits**
+- **Refunds are normal and frequent** — `Nano Banana 2` policy-blocks / face-block /
+  content-block hits refund the credit automatically. Anything that logs `(refund)`
+  on the watch feed did not actually cost the credit. Plan the budget against
+  charged lines, not raw call count.
+- **`session spent: 51` plateaued for ~50 min during a long plate run** because the
+  generator was hitting repeated policy blocks on identity-protected faces — useful
+  diagnostic signal, not a bug. Watch for long flat stretches of `(refund)` rows.
+
+### Engine routing for Scene 1 — adopted (Higgsfield 2K only, as of 14:50 BST)
+
+1. **Stills / reference plates** → `Nano Banana 2` (Higgsfield) at 1.5 credits/shot.
+   Keep the §5 "image-edit off the master" pattern in `generate-location-coverage.js`
+   for chained angles — the master is one text-to-image, every other angle is an
+   `--image` edit off it, so furniture/materials/colors stay locked.
+2. **Video — close-up dialogue shots** → Higgsfield `MiniMax H3` (2K, 10 credits/short
+   clip, 30 credits/15s). This is the primary video path for the Scene 1 cut.
+3. **Video — continuation / bridging shots** → Higgsfield `Kling v3.0` (720p, 20–30
+   credits/shot), seeded with the previous shot's last-frame PNG. Confirmed working
+   today on `jan_response_kling_continuation.mp4`. ⚠️ **720p, not 2K** — call this out
+   in any editor; if 2K continuity is mandatory, regenerate as `MiniMax H3` and pay
+   the higher per-shot rate.
+4. **Local Wan 2.2 TI2V-5B** (`wan22-pipeline/`) is **not currently in the routing**.
+   The pipeline files are intact (README + `gen_wide_clip.py`, last touched
+   2026-08-26) and `output/` is empty for today. It's a viable free fallback if the
+   Higgsfield credit budget runs low, but it is **not** the adopted path right now —
+   earlier §9 routing language that paired "Wan 2.2 silent wides" with Higgsfield
+   dialogue was an over-extrapolation from the §9 addendum, not a working plan as of
+   14:50 BST. Treat it as available-but-unused.
+5. **Local MiniMax-H3** (`minimax-h3-pipeline/`) is **paused, not deleted**. Same
+   fallback role as local Wan 2.2.
+
+### What this supersedes
+
+- §3 "Next steps" #1 ("Continue generating Scene 1 frames in Google Flow starting at
+  Frame F18") — **replaced**. New plan is in `video-tests/` and follows the routing
+  above, not the F18/F19/F20 storyboard cadence.
+- §6 "Video generation route — settled 2026-08-13" — **replaced**. The "Flow / Veo 3.1
+  only" rule is now "Higgsfield (cloud, 2K, credit-metered) for the bulk of Scene 1".
+  Flow is no longer in the loop for the Scene 1 video cut.
+- §9's local-MiniMax-H3 + local-Wan-2.2 split-pipeline work for Scene 1 — **paused,
+  not deleted**, and **not** the adopted routing. `SCENE1_MINIMAX_TRACKER.md` rows
+  1–28 ("F01 Wan+TTS", "F02 3-clip split", etc.) describe the *paused* local pipeline
+  work, not the live Higgsfield cut in `video-tests/`. Read `video-tests/` for ground
+  truth. The tracker needs to be either rewritten against the new routing or
+  annotated with a "see §10 of HANDOVER, this work is paused" header.
+- The "Higgsfield 2K + local Wan 2.2 silent wides" line I wrote into the §10 routing
+  earlier today — **that was wrong.** Local Wan 2.2 is not currently used; everything
+  is Higgsfield 2K (`MiniMax H3`) plus one `Kling v3.0` 720p continuation. Verified
+  against `ffprobe` of the 4 video files: 3 at 2560×1440 (H3), 1 at 1280×720 (Kling).
+  `wan22-pipeline/output/` is empty.
+
+### Next steps, in priority order
+
+1. Finish the in-flight `jan_office` coverage set — only the master wide exists in
+   `location-refs/higgsfield/coverage/jan_office/` right now; the chained angles
+   (`desk_front`, `desk_reverse`, `window_side`, `wall_feature_closeup`, `seating_area`,
+   `door_entrance`, `high_corner_wide` — all defined in
+   `location-coverage-manifest.json`) need to be re-run with `--image` chaining off the
+   master. They were attempted in this session and policy-blocked on face-bearing angles;
+   retry with the master as `--image` source and tighter identity-locking prompts.
+2. Re-plan Scene 1 against the Higgsfield-only routing: 1–2 dialogue close-ups
+   (`MiniMax H3`, 10–30 credits each), 1 continuation (`Kling v3.0` at 720p, 20–30
+   credits — flag the 2K gap if needed) per beat. Re-budget the 28 keyframes
+   against the remaining 898.9 credit balance.
+3. Either rewrite `SCENE1_MINIMAX_TRACKER.md` against the Higgsfield routing or
+   prepend a "superseded by HANDOVER §10" header — the current rows mislead.
+4. Watch the running `node higgsfield-tools/usage-tracker.js watch` for any long refund
+   stretches (face-block signals) and any credit-balance inflection; report either
+   back here as an addendum.
+
+### Gotchas (Higgsfield-specific, learned today)
+
+- **Kling v3.0 outputs 720p, not 2K** — confirmed by `ffprobe` on
+  `jan_response_kling_continuation.mp4` (1280×720). The credit log shows
+  `Kling v3.0` at 20–30 credits, same as the 2K `MiniMax H3` short clip, so
+  you're paying similar money for lower resolution. Default to `MiniMax H3` for
+  the 2K cut, use `Kling v3.0` only when its specific style/motion characteristics
+  are needed for that shot.
+- **Refund rows are silent in the spend total but loud in the log** — `session spent`
+  does not move on a `(refund)` line. Easy to miss if you're only watching the
+  balance, not the per-line label. Long stretches of "Nano Banana 2 (refund)" usually
+  mean the face is hitting identity protection and you need to swap reference image
+  or relax the prompt.
+- **The `higgsfield` CLI binary is shimmed as `higgsfield.cmd` on Windows** — every
+  script in `higgsfield-tools/` routes through `cmd.exe /c higgsfield.cmd …` for that
+  reason (see comment at the top of `usage-tracker.js`). Don't try `exec("higgsfield …")`
+  directly, the deprecation warning is one thing, the silent arg-mangling is worse.
+- **Nano Banana 2 is the right engine for the 2K stills**, not the
+  `Higgsfield Soul V2` / `Soul Location` variants — those are the 0.12-credit
+  identity-conditioned location passes, used for quick location variants, *not* for
+  the main cast refs. The 1.5-credit Nano Banana 2 is what gives you the 2K stills
+  in `character-refs/higgsfield/<slug>/`.
+- **Don't trust a single-frame "lastframe.png" as a good seed** — the seed frame
+  inherits the model's artifact of that exact frame (e.g. mid-blur on a hand
+  transition). For the next-shot seed, prefer the cleanest 1–2s segment of the
+  previous clip, not the literal final frame, when the budget allows a re-extract.
+- **Higgsfield `MiniMax H3` (cloud) ≠ local `minimax-h3-pipeline/`** — same family
+  name, different pipeline. Don't mix files between the two; the cloud output lives
+  in `video-tests/`, the local pipeline's output would live under
+  `minimax-h3-pipeline/output/` (currently empty).
+

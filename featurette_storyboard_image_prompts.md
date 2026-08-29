@@ -183,7 +183,7 @@ Stylised British sitcom comic art, clean bold line art, flat muted colour palett
 | F18 | S09 | 1 | Jan unbuttons shirt, flustered/sweating | ✅ |
 | F19 | S09 | 1 | Jan removes shirt, arrow revealed | ✅ |
 | F20 | S10 | 1 | Sharon enters unannounced — Jan reacts | ✅ |
-| F21 | S11 | 1 | Sharon glances at the arrow | ⬜ |
+| F21 | S11 | 1 | Sharon glances at the arrow | ✅ |
 | F22 | S11 | 1 | Jan frozen, mortified | ⬜ |
 | F23 | S12 | 1 | Sharon — "breakfast meetings now." | ⬜ |
 | F24 | S13 | 1 | Jan brushes her off | ⬜ |

@@ -15,6 +15,7 @@ Each numbered clip's beat coverage:
 | `01_f01-f02_opening_greeting_minimax_h3.mp4` | F01 (Christina enters, greets Jan) + F02 (Jan — "Barely...") |
 | `02_f03-f04_pitch_and_listening_minimax_h3.mp4` | F03 (Christina pitches the idea) + F04 (Jan — "I'm listening.") |
 | `03a_f05_breakfast_pitch_part1_minimax_h3.mp4` + `03b_..._part2_minimax_h3.mp4` | F05 (Christina explains the breakfast-meeting concept) — one beat, split into two clips because its full script line (~47 words) exceeds the 15s ceiling on its own |
+| `04a_f06a_jan_enthused_part1_minimax_h3.mp4` + `04b_f06b_jan_mba_punchline_minimax_h3.mp4` | F06a+F06b (Jan's enthused reaction through the MBA punchline) — one script speech (~74 words), split the same way |
 
 When one beat's dialogue is too long for a single 15s clip, split it at a natural
 pause and give both parts the same leading number with an `a`/`b` suffix (as with
@@ -43,5 +44,8 @@ Superseded or exploratory takes, kept for reference only — **not** part of the
 2. Generate the next beat with `--start-image` set to that frame (never `--image-references`
    for continuity — see the gotcha in `.agents/rules/location_continuity_rules.md`)
 3. Save it as the next `NN_` numbered file describing the beats it covers
-4. Rebuild `scene1_stitched_preview.mp4` by concatenating all numbered files in order
-5. Update `SCENE1_MINIMAX_TRACKER.md` §3
+4. **Whisper-transcribe the new clip and diff it against the script line(s) before
+   ticking the beat off** (`whisper <clip> --model small --language English`) — cheap
+   check, and it has already caught one real script typo
+5. Rebuild `scene1_stitched_preview.mp4` by concatenating all numbered files in order
+6. Update `SCENE1_MINIMAX_TRACKER.md` §3

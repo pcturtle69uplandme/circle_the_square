@@ -1,0 +1,116 @@
+{
+  "jan_office": {
+    "master_wide": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_master_wide.png",
+      "job_id": "27e92298-2670-4c3e-868e-d9efb9773294"
+    },
+    "desk_front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_desk_front.png",
+      "job_id": "abe2981e-2644-4df5-b41a-ed222444b30d"
+    },
+    "desk_reverse": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_desk_reverse.png",
+      "job_id": "480e57a6-3f48-4936-903d-8f42fbd278f4"
+    },
+    "window_side": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_window_side.png",
+      "job_id": "6374d4fd-a381-4123-a48a-06536c224911"
+    },
+    "wall_feature_closeup": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_wall_feature_closeup.png",
+      "job_id": "2d9dbf65-5d57-4302-992f-ec95c7404864"
+    },
+    "seating_area": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_seating_area.png",
+      "job_id": "e3eadd4b-756f-4c34-b7a1-56c29652f328"
+    },
+    "door_entrance": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_door_entrance.png",
+      "job_id": "589d74cc-a410-405d-9ae0-30adabd5043a"
+    },
+    "high_corner_wide": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_high_corner_wide.png",
+      "job_id": "cc60c386-65ba-4a17-bd76-f4618188ab2c"
+    },
+    "table_head": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_table_head.png",
+      "job_id": "fa2089e3-1d8a-4dc7-9a56-46c5392987d3"
+    },
+    "table_reverse": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_table_reverse.png",
+      "job_id": "d1c3fd79-2855-486f-8b9c-7a7de9cc0931"
+    },
+    "table_side": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_table_side.png",
+      "job_id": "3ac2d56f-5345-446e-9a94-d52aed79c114"
+    },
+    "decal_closeup": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_decal_closeup.png",
+      "job_id": "2b659d5b-c147-4fad-9e11-4dacac605dfc"
+    },
+    "corridor_view": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_corridor_view.png",
+      "job_id": "9c9676c3-e69d-4e76-bb3b-55e0687ecc0c"
+    },
+    "door_closed": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_door_closed.png",
+      "job_id": "dbb7c69b-b5fe-49ff-b253-f04aff388f34"
+    },
+    "openplan_context_wide": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office\\jan_office_openplan_context_wide.png",
+      "job_id": "1898e5f8-b25c-40c0-bea7-15ad00a13281"
+    }
+  },
+  "jan_office_corridor": {
+    "table_head": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_table_head.png",
+      "job_id": "3790bfef-739e-4cbf-8a46-15015d465218"
+    },
+    "table_reverse": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_table_reverse.png",
+      "job_id": "7d5134cb-f198-401c-93cc-27258b3a8798"
+    },
+    "table_side": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_table_side.png",
+      "job_id": "e6273fd6-5ada-4a36-b420-3e3ad58db804"
+    },
+    "decal_closeup": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_decal_closeup.png",
+      "job_id": "023f8c55-2e44-4bd0-ac97-a88eae7dc196"
+    },
+    "corridor_view": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_corridor_view.png",
+      "job_id": "fbb7a66d-29b3-4620-9924-82c01118b4a2"
+    },
+    "door_closed": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_door_closed.png",
+      "job_id": "606e9304-b65c-41f6-a3c0-40944363cd85"
+    },
+    "openplan_context_wide": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_openplan_context_wide.png",
+      "job_id": "4ffa5913-cc95-4cbc-9282-40c92d6dca05"
+    }
+  }
+}

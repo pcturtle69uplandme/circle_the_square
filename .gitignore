@@ -23,3 +23,11 @@ flow_*.png
 cdp_*.png
 .playwright-mcp/
 scratch/
+
+# Higgsfield CLI vendored skill bundles (reinstalled by the CLI itself, not project content)
+.agents/skills/
+.claude/skills/
+skills-lock.json
+
+# Kimi CLI project config (unrelated coding-tool experiment, not project content)
+.kimi-code/

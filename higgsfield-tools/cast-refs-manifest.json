@@ -1,0 +1,436 @@
+{
+  "jan": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_front.png",
+      "job_id": "44c8a0fd-d39b-42dc-98ee-73c3cf56d9cc"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_three_quarter_left.png",
+      "job_id": "65df25c8-00d9-4c78-b2d3-c29d9688efbd"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_three_quarter_right.png",
+      "job_id": "78244d86-820d-46d9-9b28-c750656f6897"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_profile.png",
+      "job_id": "2c2aab1d-15a7-4511-b8a0-c49378469efa"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_slight_up.png",
+      "job_id": "c6c64158-15e1-4e0b-8e50-cd493679046a"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_slight_down.png",
+      "job_id": "b52bdc05-8080-43fc-b330-51ceb3b07365"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_expression_neutral.png",
+      "job_id": "2dc8cbed-3ad0-4a05-a047-52584e99d10f"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_expression_incharacter.png",
+      "job_id": "b2067464-d27f-4e1c-ba26-775164bf11da"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_fullbody_neutral.png",
+      "job_id": "7bcdbbac-2851-43db-8d84-02474933e6b4"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_fullbody_characteristic.png",
+      "job_id": "1a3912bf-3d0a-4f95-95f4-a632c8aee095"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_lighting_soft.png",
+      "job_id": "ec99e88c-28a0-4c88-b8f4-a9c4692a60bb"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\jan\\jan_lighting_harsh.png",
+      "job_id": "1b3953d7-d16d-4517-9f7a-f80b6ae99e14"
+    }
+  },
+  "christina": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_front.png",
+      "job_id": "f781e9fb-0342-4d75-8f64-4b248f368be6"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_three_quarter_left.png",
+      "job_id": "afd252bc-91c5-4153-90a2-ebabf9f1fb4f"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_three_quarter_right.png",
+      "job_id": "4ca8bc78-34cd-41b7-a8a9-5043f7538e9a"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_profile.png",
+      "job_id": "f448f504-3333-4d54-a0d9-19ad3aa51a30"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_slight_up.png",
+      "job_id": "5b4b8c80-4d43-4ece-a479-d6cbd16f78f7"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_slight_down.png",
+      "job_id": "1110c86b-7733-4d9a-abd6-ffa21218b6e2"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_expression_neutral.png",
+      "job_id": "80247ac8-1ee3-4852-93d7-f119ea93cd49"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_expression_incharacter.png",
+      "job_id": "e8e2c0da-fb35-4d27-b52b-eaa933489d92"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_fullbody_neutral.png",
+      "job_id": "52297a1e-e70b-4cb1-b34b-3b4d4658033c"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_fullbody_characteristic.png",
+      "job_id": "cd39f6fe-37cd-480c-8cf1-71d611fe536c"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_lighting_soft.png",
+      "job_id": "cf9f1049-c8c2-453f-ace8-ae8166e1f37f"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\christina\\christina_lighting_harsh.png",
+      "job_id": "7d298e51-8ffb-4cad-9e24-502756db0700"
+    }
+  },
+  "chris": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_front.png",
+      "job_id": "2d807b9a-d421-4f40-93be-680621d90328"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_three_quarter_left.png",
+      "job_id": "85506b27-315f-42ab-8f14-0f1d5fc200d3"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_three_quarter_right.png",
+      "job_id": "6024b769-5ab0-4ec2-ab7f-f43c8b1fd9fa"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_profile.png",
+      "job_id": "f17c49d3-7e8a-48b4-b289-26bb531230c5"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_slight_up.png",
+      "job_id": "0dd4ec0a-975f-4dfe-be76-cca8d2969f9f"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_slight_down.png",
+      "job_id": "50357b8d-adc5-46a2-b4c3-bfec7052fe96"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_expression_neutral.png",
+      "job_id": "ee23dabc-ecd9-4993-9d0f-50df6df86b4e"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_expression_incharacter.png",
+      "job_id": "6ebdfbad-8919-4d97-977f-71c9784842ca"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_fullbody_neutral.png",
+      "job_id": "9ebb7183-8655-4935-8db4-e91cb38007f7"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_fullbody_characteristic.png",
+      "job_id": "fcacdb02-d040-430b-97f1-bce9c8d78030"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_lighting_soft.png",
+      "job_id": "86a46b9e-3563-4bfc-a3d4-b7bef828b5e8"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\chris\\chris_lighting_harsh.png",
+      "job_id": "afea3a17-399e-4aaa-8182-18c8dbefef49"
+    }
+  },
+  "rick": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_front.png",
+      "job_id": "562f79c3-c12e-4500-a218-7d500c28590b"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_three_quarter_left.png",
+      "job_id": "544a145e-f6fd-426b-b16a-9efc5fdf8e4a"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_three_quarter_right.png",
+      "job_id": "6c73030e-3129-48db-99f7-bb51648d0893"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_profile.png",
+      "job_id": "714bc44a-41bd-4fde-98cf-0ab1b9235a50"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_slight_up.png",
+      "job_id": "c89dd57a-1d08-4801-ae28-ba4c59a421f3"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_slight_down.png",
+      "job_id": "cffcae1c-39c5-4205-93e9-8c1cc542cb48"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_expression_neutral.png",
+      "job_id": "fab34ef7-166b-4d67-b21d-33313d68373e"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_expression_incharacter.png",
+      "job_id": "e588d8b1-a9ed-4bda-8d96-bed7f7ae6c55"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_fullbody_neutral.png",
+      "job_id": "ca099019-c79d-4362-a147-fcb0d71ea35b"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_fullbody_characteristic.png",
+      "job_id": "042e9ddc-6a09-4bf8-aab2-586786cfefb3"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_lighting_soft.png",
+      "job_id": "6aa4716c-a234-49db-90ac-205323bf529d"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\rick\\rick_lighting_harsh.png",
+      "job_id": "34e8e18f-6373-4493-98ac-f30466f07510"
+    }
+  },
+  "gemma": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_front.png",
+      "job_id": "90f71274-82cf-4fa2-9dd9-d340c08a5674"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_three_quarter_left.png",
+      "job_id": "27210b75-418c-49d8-a066-ffab20a6583e"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_three_quarter_right.png",
+      "job_id": "af273a41-d45a-45e6-b829-7f8c7022fce5"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_profile.png",
+      "job_id": "b2bd8756-8c9d-47c3-9d8e-f923e0d00e42"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_slight_up.png",
+      "job_id": "87552018-a376-4412-98a7-fe82e8a187ad"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_slight_down.png",
+      "job_id": "8a8d3eb9-a644-4621-9908-0027c6450f96"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_expression_neutral.png",
+      "job_id": "91687bd3-59b9-4cc5-ac21-c2a94b8f8e74"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_expression_incharacter.png",
+      "job_id": "4d523de2-70ee-4728-ab97-a7cdf4b83ef4"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_fullbody_neutral.png",
+      "job_id": "cd2483e4-7f99-41c9-a5b0-1a10df6dfb3e"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_fullbody_characteristic.png",
+      "job_id": "6634f1ca-2192-490b-885e-234a7c7ccae9"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_lighting_soft.png",
+      "job_id": "f836ebaa-720a-441a-91b8-61d76eb9d06a"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\gemma\\gemma_lighting_harsh.png",
+      "job_id": "b38d8c98-b9bd-4326-b5c9-378b82619888"
+    }
+  },
+  "trevor": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_front.png",
+      "job_id": "f6cc4b09-511d-4f58-816b-5d92b1228020"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_three_quarter_left.png",
+      "job_id": "9fa39abe-fe86-4a55-9a68-19641ef5ad88"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_three_quarter_right.png",
+      "job_id": "de758cbd-8a02-4e1b-8895-dd253dc29a2a"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_profile.png",
+      "job_id": "61170684-0837-4298-8ef7-13ae1e89eafb"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_slight_up.png",
+      "job_id": "5a3135e9-6fbf-4a22-854e-987269cf7fce"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_slight_down.png",
+      "job_id": "29880d4a-732d-4c0b-b28a-7fe0abc771d4"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_expression_neutral.png",
+      "job_id": "b785f54d-b10a-4b6e-badd-62e6cee6e897"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_expression_incharacter.png",
+      "job_id": "f3aa8516-9210-43c3-8b2e-854fec7c571c"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_fullbody_neutral.png",
+      "job_id": "cd2d7906-2d8d-4881-97df-eaf11c8992b6"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_fullbody_characteristic.png",
+      "job_id": "a4812d67-fc65-40b4-877c-e58061a1f7c3"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_lighting_soft.png",
+      "job_id": "ad9010ff-7cda-4789-8fd5-4e056888564c"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\trevor\\trevor_lighting_harsh.png",
+      "job_id": "bd139e7e-da24-4cf0-9b3c-17173c530245"
+    }
+  },
+  "maureen": {
+    "front": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_front.png",
+      "job_id": "48171fa5-734c-4297-bf2a-33edb2eb5da3"
+    },
+    "three_quarter_left": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_three_quarter_left.png",
+      "job_id": "694a8922-2fda-4729-8e25-b2b21668907c"
+    },
+    "three_quarter_right": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_three_quarter_right.png",
+      "job_id": "5b119e5d-d81f-4475-b5db-9a14df88bf95"
+    },
+    "profile": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_profile.png",
+      "job_id": "6a57c67f-2e9d-4938-80bb-12dd63279a43"
+    },
+    "slight_up": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_slight_up.png",
+      "job_id": "7256a668-1e8a-4ddf-a55d-bdb1e76ff00b"
+    },
+    "slight_down": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_slight_down.png",
+      "job_id": "bc39a392-3305-495f-b046-8daaedbf921a"
+    },
+    "expression_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_expression_neutral.png",
+      "job_id": "eb2adaae-7c84-40c4-9176-510181712a30"
+    },
+    "expression_incharacter": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_expression_incharacter.png",
+      "job_id": "496aa782-7357-4842-b7a8-60798ab014e9"
+    },
+    "fullbody_neutral": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_fullbody_neutral.png",
+      "job_id": "2cfc91cc-3e5d-4304-96d9-43cfb29f908d"
+    },
+    "fullbody_characteristic": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_fullbody_characteristic.png",
+      "job_id": "c66c47f9-ba04-476f-b461-477b060c72a9"
+    },
+    "lighting_soft": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_lighting_soft.png",
+      "job_id": "f5bb21e0-8cb2-4824-9a26-cbbd2fcad4b2"
+    },
+    "lighting_harsh": {
+      "status": "ok",
+      "file": "C:\\ai\\Circle the Square\\character-refs\\higgsfield\\maureen\\maureen_lighting_harsh.png",
+      "job_id": "ab539898-32ef-4ee8-9141-49ee17ce637f"
+    }
+  }
+}

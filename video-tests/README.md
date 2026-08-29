@@ -16,6 +16,7 @@ Each numbered clip's beat coverage:
 | `02_f03-f04_pitch_and_listening_minimax_h3.mp4` | F03 (Christina pitches the idea) + F04 (Jan — "I'm listening.") |
 | `03a_f05_breakfast_pitch_part1_minimax_h3.mp4` + `03b_..._part2_minimax_h3.mp4` | F05 (Christina explains the breakfast-meeting concept) — one beat, split into two clips because its full script line (~47 words) exceeds the 15s ceiling on its own |
 | `04a_f06a_jan_enthused_part1_minimax_h3.mp4` + `04b_f06b_jan_mba_punchline_minimax_h3.mp4` | F06a+F06b (Jan's enthused reaction through the MBA punchline) — one script speech (~74 words), split the same way |
+| `05a_f07-f08_diminishing_returns_part1_minimax_h3.mp4` + `05b_..._part2_minimax_h3.mp4` | F07 (Christina's dry "diminishing returns" line, ~39 words) + F08 (Jan — "Great. Make it so.") — split at F07's sentence break, with the short F08 line folded into part 2 rather than given its own clip |
 
 When one beat's dialogue is too long for a single 15s clip, split it at a natural
 pause and give both parts the same leading number with an `a`/`b` suffix (as with

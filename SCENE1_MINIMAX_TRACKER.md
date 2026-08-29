@@ -1,4 +1,221 @@
-# Scene 1 — MiniMax-H3 Generation Tracker
+# Scene 1 — Higgsfield 2K Video Tracker
+
+> ⚠️ **SUPERSEDED DOCUMENT (rewrite in progress).** This file used to track Scene 1
+> video through the **local MiniMax-H3 Ref2VA pipeline** (`minimax-h3-pipeline/`).
+> That route is **paused, not deleted** — see `HANDOVER.md` §9 for full history.
+> The **adopted Scene 1 video route is now Higgsfield 2K only** (Higgsfield `MiniMax H3`
+> for dialogue close-ups, Higgsfield `Kling v3.0` for bridging/continuation shots) —
+> see `HANDOVER.md` §10 and `video-tests/` for ground truth.
+>
+> **Do NOT route any Scene 1 video through the local MiniMax-H3, local Wan 2.2,
+> Qwen3-TTS, or MuseTalk pipelines.** Those are fallbacks only, and per the user's
+> 2026-08-29 directive they are not in the active path.
+>
+> This file is being rewritten to track the **Higgsfield 2K cut** instead. The legacy
+> rows below the horizontal rule are kept for archaeology only; ignore them when
+> planning new work.
+
+---
+
+## 1. Engine routing (Higgsfield 2K only)
+
+| Shot type | Engine | Resolution | Typical cost | Notes |
+|---|---|---|---|---|
+| 2K stills / reference plates | `Nano Banana 2` (Higgsfield) | 2560×1440 | 1.5 credits/shot | Master-edit chaining for multi-angle coverage (see `generate-location-coverage.js`) |
+| Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1 |
+| Bridging / continuation shots | `Kling v3.0` (Higgsfield cloud) | ⚠️ **1280×720** | 20–30 credits/shot | Seeded with previous shot's last-frame PNG. **720p, not 2K** — flag in editor if 2K continuity is mandatory |
+
+**Budget (last known, 2026-08-29 14:01 BST):** 898.9 credits remaining of an original
+1208.5 + plan allotment. ~310 credits spent in ~4 hours on this session. Per-beat
+costs noted in §3.
+
+**Local pipelines — DO NOT USE for Scene 1 video:**
+- `minimax-h3-pipeline/` (local MiniMax-H3, Q4_K + EasyCache) — paused
+- `wan22-pipeline/` (local Wan 2.2 TI2V-5B) — paused, `output/` empty
+- Qwen3-TTS voice cloning — paused
+- MuseTalk lip-sync — paused
+
+Available as fallbacks if the Higgsfield credit budget runs low, but **not** the
+adopted path.
+
+---
+
+## 2. Reference asset state (as of 2026-08-29)
+
+### Characters — 12-shot photoreal reference set per character
+Path: `character-refs/higgsfield/<slug>/` (12 shots: front, 3/4, profile, slight up/down,
+neutral + in-character expression, harsh + soft lighting, neutral + characteristic full body)
+
+| Character | Status | Manifest |
+|---|---|---|
+| Jan | ✅ done | `higgsfield-tools/cast-refs-manifest.json` |
+| Christina | ✅ done | same |
+| Sharon | ✅ done | same |
+| Chris | ✅ done | same |
+| Rick | ✅ done | same |
+| Gemma | ✅ done | same |
+| Maureen | ✅ done | same |
+| Trevor | ✅ done | same |
+
+4 script characters without Higgsfield refs yet: **Priya, Barbara, Dev, Tomasz**
+(supporting cast, may or may not appear in Scene 1 — confirm against
+`featurette_storyboard_image_prompts.md` script before generating).
+
+### Locations — multi-angle coverage
+Path: `location-refs/higgsfield/coverage/<slug>/`
+
+| Location | Angles | Status |
+|---|---|---|
+| `jan_office` | 15 (master_wide + 7 chained + 7 bonus) | ✅ all done |
+| `goldfish_meeting_room` | 8 (master_wide + 7 chained) | ✅ all done |
+| `jan_office_corridor` | 1 (master_wide only) | 🔶 master done, chained angles pending |
+
+`jan_office_corridor` chained angles to fill (defined in `location-coverage-manifest.json`):
+`corridor_view`, `door_closed`, `table_head`, `table_reverse`, `table_side`,
+`decal_closeup`, `openplan_context_wide`. Retry face-bearing angles with `--image`
+chaining off the master + tighter identity-locking prompts (initial attempts were
+policy-blocked on identity-protected faces — see HANDOVER §10 addendum).
+
+---
+
+## 3. Per-beat plan (Scene 1, F01–F26b)
+
+Storyboard stills F01–F21 are **approved as cartoon keyframes** in
+`storyboard-frames/F01.jpg` … `F21.jpg` from the pre-pivot Google Flow track
+(verified, committed). F22–F26b are the only stills not yet approved.
+
+The **video** is a separate track and is being generated from scratch on Higgsfield.
+Video planning below: per beat, pick the engine based on the shot type, list estimated
+cost, and reference the existing approved still + matching location coverage angle.
+
+> **Re-plan pending.** This table is the proposed re-plan based on the HANDOVER §10
+> routing. Confirm beat-by-beat before generating — some beats (e.g. wide establishing
+> shots) will need re-cuts that don't match the approved cartoon stills.
+
+| # | Frame | Beat | Engine | Est. cost | Refs (char + loc angle) | Still approved? | Video status |
+|---|-------|------|--------|-----------|-------------------------|-----------------|--------------|
+| 1 | F01 | Wide establishing — Christina enters, greets Jan | `MiniMax H3` 2K (10 cr) | 10 | Jan + Christina, `jan_office_master_wide` | ✅ (cartoon, F01.jpg) | ⬜ not started on Higgsfield |
+| 2 | F02 | Jan sighs — "Barely..." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` or `_master_wide` | ✅ (cartoon, F02.jpg) | ⬜ not started |
+| 3 | F03 | Christina pitches — "I have an idea..." | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F03.jpg) | ⬜ not started |
+| 4 | F04 | Jan — "I'm listening." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F04.jpg) | ⬜ not started |
+| 5 | F05 | Christina explains breakfast-meeting concept | `MiniMax H3` 2K (10–15 cr, may need 15s) | 15 | Christina, `jan_office_master_wide` | ✅ (cartoon, F05.jpg) | ⬜ not started |
+| 6 | F06a | Jan enthused, steepled fingers | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F06a.jpg) | ⬜ not started |
+| 7 | F06b | Jan gesturing, MBA name-drop | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F06b.jpg) | ⬜ not started |
+| 8 | F07 | Christina deadpan — "Diminishing returns..." | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F07.jpg) | ⬜ not started |
+| 9 | F08 | Jan — "Great. Make it so." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F08.jpg) | ⬜ not started |
+| 10 | F09 | Christina confused — "I am sorry, what?" | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F09.jpg) | ⬜ not started |
+| 11 | F10 | Jan — Star Trek reference | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F10.jpg) | ⬜ not started |
+| 12 | F11 | Christina — "Shockingly no." | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F11.jpg) | ⬜ not started |
+| 13 | F12 | Jan dismisses — "Fine, just make it happen..." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F12.jpg) | ⬜ not started |
+| 14 | F13 | Christina — "poorly rehearsed presentations?" | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F13.jpg) | ⬜ not started |
+| 15 | F14 | Jan offended — "MBA from the University of --" | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F14.jpg) | ⬜ not started |
+| 16 | F15 | Christina cuts in — "Made Up Place?" | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F15.jpg) | ⬜ not started |
+| 17 | F16 | Jan screams — "GET OUT NOW YOU STUPID COW!" | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F16.jpg) | ⬜ not started |
+| 18 | F17 | Christina exits calmly, door shuts | `Kling v3.0` 720p (20 cr) | 20 | Christina, `jan_office_door_entrance` (seed w/ F16 last-frame) | ✅ (cartoon, F17.jpg) | ⬜ not started |
+| 19 | F18 | Jan unbuttons shirt, flustered/sweating | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_master_wide` | ✅ (cartoon, F18.jpg) | ⬜ not started |
+| 20 | F19 | Jan removes shirt, arrow revealed | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_seating_area` | ✅ (cartoon, F19.jpg) | ⬜ not started |
+| 21 | F20 | Sharon enters unannounced — Jan reacts | `MiniMax H3` 2K (10 cr) | 10 | Jan + Sharon, `jan_office_door_entrance` | ✅ (cartoon, F20.jpg) | ⬜ not started |
+| 22 | F21 | Sharon glances at the arrow | `MiniMax H3` 2K (10 cr) | 10 | Sharon, `jan_office_seating_area` | ✅ (cartoon, F21.jpg) | ⬜ not started |
+| 23 | F22 | Jan frozen, mortified | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_seating_area` | ⬜ still pending | ⬜ not started |
+| 24 | F23 | Sharon — "breakfast meetings now." | `MiniMax H3` 2K (10 cr) | 10 | Sharon, `jan_office_seating_area` | ⬜ still pending | ⬜ not started |
+| 25 | F24 | Jan brushes her off | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_master_wide` | ⬜ still pending | ⬜ not started |
+| 26 | F25 | Sharon — "I have needs too Jan..." | `MiniMax H3` 2K (10 cr) | 10 | Sharon, `jan_office_seating_area` | ⬜ still pending | ⬜ not started |
+| 27 | F26a | Jan yanks blinds shut | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_window_side` | ⬜ still pending | ⬜ not started |
+| 28 | F26b | Jan locks the door | `Kling v3.0` 720p (20 cr) | 20 | Jan, `jan_office_door_entrance` (seed w/ F26a last-frame) | ⬜ still pending | ⬜ not started |
+
+**Estimated total: ~290 credits** (27 × 10 + 1 × 15 for F05) for `MiniMax H3`,
+plus ~40 credits for the 2 `Kling v3.0` bridging shots. **~330 credits for full Scene 1.**
+
+This is **well within** the remaining 898.9-credit budget. ⚠️ **Recalc before
+running** — F05 may need 15s+ for the breakfast-meeting explanation dialogue and
+the bridging shots' exact engine choice may change. Confirm with the user before
+spending.
+
+---
+
+## 4. Output workspace
+
+- **Video files:** `video-tests/`
+- **Reference stills:** `character-refs/higgsfield/<slug>/` and `location-refs/higgsfield/coverage/<slug>/`
+- **Manifests:** `higgsfield-tools/cast-refs-manifest.json` and `higgsfield-tools/location-coverage-manifest.json`
+- **Usage log:** `higgsfield-tools/usage-log.jsonl` (append-only, polled by `usage-tracker.js`)
+- **Last-frame bridging stills:** `video-tests/<scene>_<frame>_lastframe.png` (used to seed next shot)
+
+Existing test outputs in `video-tests/` (proof-of-concept only — not the final Scene 1 cut):
+- `opening_christina_greeting_minimax_h3.mp4` (2K, 5.17s, 10 cr) — first-person framing
+- `opening_christina_greeting_v2_thirdperson.mp4` (2K, 5.17s, 10 cr) — re-cut third-person
+- `frame_for_kling_start.png` — last-frame extract, seed for Kling
+- `jan_response_kling_continuation.mp4` (⚠️ 720p, 10.04s, 20 cr) — Kling continuation test
+- `opening_full_15s_minimax_h3.mp4` (2K, 15.08s, 30 cr) — single 15s opening
+- `opening_lastframe.png` — last-frame extract of the 15s
+
+---
+
+## 5. QA Rules (Higgsfield-specific)
+
+1. **Default to `MiniMax H3` (2K) for any dialogue close-up.** Kling v3.0 is 720p
+   and should only be used for bridging/continuation shots where its specific
+   motion characteristics are needed. ⚠️ Always check `ffprobe` output resolution
+   before declaring a shot done — the credit log alone won't tell you the resolution.
+2. **Bridging shots: use a clean 1–2s segment of the previous clip as seed, not
+   the literal final frame.** Final-frame seeds inherit that exact frame's
+   artifacts (e.g. mid-blur on a hand transition). Re-extract from a clean segment
+   if budget allows. See HANDOVER §10 "Gotchas" for the full finding.
+3. **Verify on a single frame before committing to a full generation.** Higgsfield
+   `Nano Banana 2` policy-blocks / face-blocks auto-refund, but `MiniMax H3` and
+   `Kling v3.0` video credits are charged regardless. The `usage-tracker.js watch`
+   feed is the early-warning signal — long stretches of `(refund)` rows on the
+   ref generator usually mean a face is hitting identity protection and you
+   need to swap reference or relax the prompt.
+4. **Credit balance: stop and re-plan at <200 credits remaining.** The
+   `usage-tracker.js watch` terminal shows the live balance; do not assume the
+   last logged tick is current. Refresh before each batch.
+5. **Reference continuity: every clip in §3 should pick a location coverage
+   angle that matches the storyboard beat, not the closest one available.**
+   Example: a "Jan yanks the blinds" beat (F26a) should use
+   `jan_office_window_side`, not the generic `master_wide`. If the right angle
+   doesn't exist in `location-refs/higgsfield/coverage/jan_office/`, generate it
+   first (Nano Banana 2, 1.5 cr) before attempting the video.
+6. **720p shots must be flagged in any editor/cut list.** `Kling v3.0` outputs
+   `1280×720`, not 2K. If 2K continuity is mandatory for the final cut,
+   regenerate the bridging shot as `MiniMax H3` and pay 10–30 credits/shot
+   instead of 20–30.
+
+---
+
+## 6. Next steps (priority order)
+
+1. **Fill `jan_office_corridor` chained coverage angles** — only `master_wide`
+   exists. Need `corridor_view`, `door_closed`, `table_head`, `table_reverse`,
+   `table_side`, `decal_closeup`, `openplan_context_wide` (7 angles × 1.5 cr = 10.5 cr).
+   Retry face-bearing angles with `--image` chaining off the master + tighter
+   identity-locking prompts.
+2. **Resolve F22–F26b storyboard stills** (5 keyframes, no Higgsfield video can
+   be cut without a reference still to anchor the beat — even though the
+   adopted route is Higgsfield video, not Flow stills, the storyboard still
+   drives the per-beat reference choice). 5 × 1.5 cr = 7.5 cr.
+3. **Pilot the F01 Higgsfield cut as the working test case** — uses
+   `jan_office_master_wide` + Jan + Christina refs, 10 cr. This validates the
+   §3 plan against a real shot before committing to all 28 beats.
+4. **Run the Scene 1 budget through `usage-tracker.js watch`** during the
+   F01 test to confirm per-shot costs match the §3 estimates. Re-budget §3
+   if the test comes in materially different.
+5. **Re-cut the test outputs in `video-tests/` into a coherent Scene 1 opening
+   once F01 is validated** (3 × 2K H3 + 1 × 720p Kling → ~15s of the S01–S03
+   beats, then continue forward through §3).
+
+---
+
+## 7. What this file used to be (archaeology — do not action)
+
+> Everything below the next horizontal rule is the **legacy local-pipeline tracker**
+> from before the 2026-08-29 Higgsfield pivot. Kept so the git history of
+> attempts is not lost. **Do not generate anything from these rows** — they
+> describe a paused route. See §1 for the active engine routing.
+
+---
+
+# [LEGACY — DO NOT USE] Scene 1 — MiniMax-H3 Generation Tracker
 
 Photoreal Ref2VA pipeline (turbo Q4_K denoiser + EasyCache as of 2026-08-26, auto-fit backend,
 24fps / 864x480, frame count now sized per clip to fit its dialogue at natural pace — see
@@ -54,7 +271,7 @@ matches script beat, (6) dialogue pace sounds natural, not rushed (needs a human
 F01 and both F02 clips are provisional and will be regenerated from scratch on restart, per
 the restart plan below. Nothing after F02 has been attempted yet.
 
-## Restart plan — do this before generating F01 again
+## [LEGACY] Restart plan — do this before generating F01 again
 
 1. Fix `refs/jan_office_location_fixed.png`: add venetian blinds to the windows (raised/open
    position, since Scene 1 opens with them up and F26a is the payoff of lowering them). Draft
@@ -70,7 +287,7 @@ the restart plan below. Nothing after F02 has been attempted yet.
 4. Only then regenerate F01 clip 1, then F02 clips, then continue forward — do not resume
    mid-list without redoing these two.
 
-## QA Rules (added 2026-08-25)
+## [LEGACY] QA Rules (added 2026-08-25)
 
 1. **Dialogue pacing must not be rushed.** Original per-clip word budgets assumed too much
    speech fits in 56 frames (2.33s) — F02 clip 2 (14 words) already sounds rushed. Natural
@@ -106,3 +323,28 @@ the restart plan below. Nothing after F02 has been attempted yet.
    against the reference — F02 clip 1 and clip 2 (same shot, same ref) already drifted on
    shelving contents and a background glass element. Flag any such drift during QA even when
    the reference match is individually fine.
+
+## [LEGACY] Addendum — 2026-08-27: cartoon-track F01 test on MiniMax-H3 (separate from the row above)
+
+Everything above this line is the **photoreal** track. A separate **cartoon** track exists
+(`storyboard-frames/F01.jpg` etc., style anchor in `MASTER_STORYBOARD_SESSION_PROMPTS.md`) and
+had never been tried through MiniMax-H3 — only Google Flow. Ran one test:
+`F01_cartoon_v1.mp4` (seed 401001), refs `jan_f01_cartoon_stencil.png` +
+`christina_f01_cartoon_stencil.png` (cutout stencils from `character-refs/stencils/`) +
+`office_cartoon_L10.jpg` (`location-refs/cartoon-plates/L10_jans_office.jpg`), standard
+denoiser + EasyCache, 56 frames/864x480, dialogue embedded directly in the prompt text.
+
+- **Audio correct** — Whisper transcription: "morning, Jan. Survive the weekend." exact
+  match to the scripted line. No separate TTS/lip-sync pass needed for this track.
+- **The photoreal wide-shot blur problem (row 1 above) did not reproduce** — Jan and
+  Christina's faces stayed legible at 864x480 in the same full-room wide framing. Flat
+  cel-shaded cartoon faces appear to carry much better than photoreal texture at this
+  resolution, though this is one data point, not yet a settled finding.
+- **New problem, not seen on the photoreal track**: every flat surface (ceiling, floor,
+  glass, walls) picked up an unwanted sketchy cross-hatch texture not present in the
+  reference stencils/plate or the original `F01.jpg` (which is clean flat cel-shaded art,
+  no hatching). Likely the model interpreting "cartoon line art" loosely. Untried fix: add
+  `cross-hatch, sketch texture, pencil shading` to the negative prompt on the next attempt.
+
+Not yet decided whether this becomes the adopted cartoon-track route — one clip, one
+character pair, no chained/multi-clip test yet.

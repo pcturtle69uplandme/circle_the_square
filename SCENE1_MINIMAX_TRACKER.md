@@ -23,7 +23,7 @@
 |---|---|---|---|---|
 | 2K stills / reference plates | `Nano Banana 2` (Higgsfield) | 2560×1440 | 1.5 credits/shot | Master-edit chaining for multi-angle coverage (see `generate-location-coverage.js`) |
 | Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1. ⚠️ **Combine consecutive beats to fill up to 15s per clip, don't generate one beat per call** — see `.agents/rules/clip_duration_rules.md` |
-| Bridging / continuation shots | `Kling v3.0` (Higgsfield cloud) | ⚠️ **1280×720** | 20–30 credits/shot | Seeded with previous shot's last-frame PNG. **720p, not 2K** — flag in editor if 2K continuity is mandatory |
+| Bridging / continuation shots | ~~`Kling v3.0`~~ **use `MiniMax H3` instead** | 2560×1440 | same as dialogue row | **Superseded 2026-08-29 evening.** Kling was only picked because MiniMax's `--image-references` couldn't seed an exact continuation frame — `--start-image` fixes that at full 2K (see `.agents/rules/location_continuity_rules.md`), so there's no longer a reason to drop to Kling's 720p for a bridging shot. Keep Kling only as a fallback if `--start-image` continuity genuinely fails on a specific shot. |
 
 **Budget (last known, 2026-08-29 19:56 BST):** 721.05 credits remaining of an original
 1208.5 + plan allotment. ~310 credits spent in ~4 hours on this session. Per-beat
@@ -112,7 +112,7 @@ cost, and reference the existing approved still + matching location coverage ang
 | 15 | F14 | Jan offended — "MBA from the University of --" | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F14.jpg) | ⬜ not started |
 | 16 | F15 | Christina cuts in — "Made Up Place?" | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F15.jpg) | ⬜ not started |
 | 17 | F16 | Jan screams — "GET OUT NOW YOU STUPID COW!" | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F16.jpg) | ⬜ not started |
-| 18 | F17 | Christina exits calmly, door shuts | `Kling v3.0` 720p (20 cr) | 20 | Christina, `jan_office_door_entrance` (seed w/ F16 last-frame) | ✅ (cartoon, F17.jpg) | ⬜ not started |
+| 18 | F17 | Christina exits calmly, door shuts | `MiniMax H3` 2K (~10-15 cr est.) — **routing corrected**, was `Kling v3.0` 720p; that was only needed before `--start-image` was discovered (see below) | ~12 | Christina, `--start-image` chained off F16's exact last frame | ✅ (cartoon, F17.jpg) | ⬜ not started |
 | 19 | F18 | Jan unbuttons shirt, flustered/sweating | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_master_wide` | ✅ (cartoon, F18.jpg) | ⬜ not started |
 | 20 | F19 | Jan removes shirt, arrow revealed | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_seating_area` | ✅ (cartoon, F19.jpg) | ⬜ not started |
 | 21 | F20 | Sharon enters unannounced — Jan reacts | `MiniMax H3` 2K (10 cr) | 10 | Jan + Sharon, `jan_office_door_entrance` | ✅ (cartoon, F20.jpg) | ⬜ not started |
@@ -122,7 +122,7 @@ cost, and reference the existing approved still + matching location coverage ang
 | 25 | F24 | Jan brushes her off | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_master_wide` | ⬜ still pending | ⬜ not started |
 | 26 | F25 | Sharon — "I have needs too Jan..." | `MiniMax H3` 2K (10 cr) | 10 | Sharon, `jan_office_seating_area` | ⬜ still pending | ⬜ not started |
 | 27 | F26a | Jan yanks blinds shut | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_window_side` | ⬜ still pending | ⬜ not started |
-| 28 | F26b | Jan locks the door | `Kling v3.0` 720p (20 cr) | 20 | Jan, `jan_office_door_entrance` (seed w/ F26a last-frame) | ⬜ still pending | ⬜ not started |
+| 28 | F26b | Jan locks the door | `MiniMax H3` 2K (~10-15 cr est.) — **routing corrected**, was `Kling v3.0` 720p, same reason as F17 | ~12 | Jan, `--start-image` chained off F26a's exact last frame | ⬜ still pending | ⬜ not started |
 
 **Estimated total: ~290 credits** (27 × 10 + 1 × 15 for F05) for `MiniMax H3`,
 plus ~40 credits for the 2 `Kling v3.0` bridging shots. **~330 credits for full Scene 1.**

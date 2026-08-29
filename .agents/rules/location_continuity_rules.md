@@ -50,3 +50,29 @@ past if you only read the feature bullets.
 - Other locations (Forecourt, Reception/Atrium, Canteen, Open-plan floor, Breakout/Pitstop,
   Courtyard, Corridor) have **not yet** had this script cross-check done — do it before generating
   their master shots, not after.
+
+## Chaining video clips: `--start-image`, not `--image-references`
+
+`minimax_h3`'s params include both `start_image` (object) and `image_references` (array) —
+these are **not interchangeable**. `image_references` is a loose style/identity reference; the
+model treats it as inspiration and is free to invent its own camera setup around it.
+`start_image` actually seeds the video's literal first frame.
+
+Passing a previous clip's last-frame PNG via `--image-references` (done for
+`video-tests/archive/f03_standalone_wrong_seed_minimax_h3.mp4`, 2026-08-29) produced a visible
+camera jump at the join — same room, same characters, but a distinctly different camera
+position, because the model wasn't told to start exactly there. Re-seeding the same beat with
+`--start-image` instead (`video-tests/02_f03-f04_pitch_and_listening_minimax_h3.mp4`) reproduced
+the seed frame pixel-for-pixel as frame 1 — genuinely seamless.
+
+**Rule: when chaining a new clip off a previous clip's last frame for camera continuity,
+always use `--start-image`, never `--image-references`.**
+
+**Constraint this creates**: the API rejects mixing `start_image`/`end_image` with reference
+media in the same call. If the continuation beat introduces a **new character who isn't in
+the seed frame**, you cannot both seed the exact camera position AND pass that character's
+identity reference sheet in one call. In that situation, treat the character's entrance as a
+natural cut point instead of forcing continuity: drop `start_image`, generate that shot with
+`image_references` (the new character's identity + the relevant location coverage angle), and
+accept a fresh camera setup — a person walking into frame is an expected edit point, unlike a
+jump mid-conversation between two characters already on screen.

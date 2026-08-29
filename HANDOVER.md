@@ -461,15 +461,15 @@ written today, all from the Higgsfield CLI — engine names as recorded in the
 
 | File | Engine | Resolution | Duration | Notes | Timestamp |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `video-tests/opening_christina_greeting_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-10 credits) | **2560×1440** | 5.17s | Christina's opening greeting, first-person setup | 2026-08-29 13:07 |
-| `video-tests/opening_christina_greeting_v2_thirdperson.mp4` | Higgsfield `MiniMax H3` (-10 credits) | **2560×1440** | 5.17s | re-cut to third-person framing | 2026-08-29 13:27 |
-| `video-tests/frame_for_kling_start.png` | still (frame extract) | — | — | last-frame of the v2 cut, used to seed the Kling continuation | 2026-08-29 13:38 |
-| `video-tests/jan_response_kling_continuation.mp4` | Higgsfield `Kling v3.0` (-20 credits) | **1280×720** | 10.04s | Jan's reply, continuation off that still. ⚠️ **this file is 720p, not 2K** — Kling's default output is 720p, not a 2K render; flag if 2K continuity is needed for the cut | 2026-08-29 13:40 |
-| `video-tests/opening_full_15s_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-30 credits) | **2560×1440** | 15.08s | full 15s opening assembled as one longer shot | 2026-08-29 13:42 |
-| `video-tests/opening_lastframe.png` | still (frame extract) | — | — | last-frame extract of the 15s | 2026-08-29 13:51 |
+| `video-tests/archive/christina_greeting_v1_pov_rejected_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-10 credits) | **2560×1440** | 5.17s | Christina's opening greeting, first-person setup | 2026-08-29 13:07 |
+| `video-tests/archive/christina_greeting_v2_thirdperson_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-10 credits) | **2560×1440** | 5.17s | re-cut to third-person framing | 2026-08-29 13:27 |
+| `video-tests/archive/frame_for_kling_start.png` | still (frame extract) | — | — | last-frame of the v2 cut, used to seed the Kling continuation | 2026-08-29 13:38 |
+| `video-tests/archive/jan_response_kling_continuation_720p.mp4` | Higgsfield `Kling v3.0` (-20 credits) | **1280×720** | 10.04s | Jan's reply, continuation off that still. ⚠️ **this file is 720p, not 2K** — Kling's default output is 720p, not a 2K render; flag if 2K continuity is needed for the cut | 2026-08-29 13:40 |
+| `video-tests/01_f01-f02_opening_greeting_minimax_h3.mp4` | Higgsfield `MiniMax H3` (-30 credits) | **2560×1440** | 15.08s | full 15s opening assembled as one longer shot | 2026-08-29 13:42 |
+| `video-tests/archive/opening_lastframe.png` | still (frame extract) | — | — | last-frame extract of the 15s | 2026-08-29 13:51 |
 
 The "next-frame-as-seed" pattern is now the standard: end a shot, the
-`frame_for_kling_start.png`-style bridging still is the source image for the next
+`archive/frame_for_kling_start.png`-style bridging still is the source image for the next
 shot. This is the same trick §5 called out for Flow plates (image-edit, not fresh
 text-to-image), applied to video continuity.
 
@@ -506,7 +506,7 @@ against `usage-log.jsonl`:
    clip, 30 credits/15s). This is the primary video path for the Scene 1 cut.
 3. **Video — continuation / bridging shots** → Higgsfield `Kling v3.0` (720p, 20–30
    credits/shot), seeded with the previous shot's last-frame PNG. Confirmed working
-   today on `jan_response_kling_continuation.mp4`. ⚠️ **720p, not 2K** — call this out
+   today on `archive/jan_response_kling_continuation_720p.mp4`. ⚠️ **720p, not 2K** — call this out
    in any editor; if 2K continuity is mandatory, regenerate as `MiniMax H3` and pay
    the higher per-shot rate.
 4. **Local Wan 2.2 TI2V-5B** (`wan22-pipeline/`) is **not currently in the routing**.
@@ -561,7 +561,7 @@ against `usage-log.jsonl`:
 ### Gotchas (Higgsfield-specific, learned today)
 
 - **Kling v3.0 outputs 720p, not 2K** — confirmed by `ffprobe` on
-  `jan_response_kling_continuation.mp4` (1280×720). The credit log shows
+  `archive/jan_response_kling_continuation_720p.mp4` (1280×720). The credit log shows
   `Kling v3.0` at 20–30 credits, same as the 2K `MiniMax H3` short clip, so
   you're paying similar money for lower resolution. Default to `MiniMax H3` for
   the 2K cut, use `Kling v3.0` only when its specific style/motion characteristics

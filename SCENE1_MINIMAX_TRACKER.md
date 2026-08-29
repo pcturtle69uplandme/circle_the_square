@@ -22,10 +22,10 @@
 | Shot type | Engine | Resolution | Typical cost | Notes |
 |---|---|---|---|---|
 | 2K stills / reference plates | `Nano Banana 2` (Higgsfield) | 2560×1440 | 1.5 credits/shot | Master-edit chaining for multi-angle coverage (see `generate-location-coverage.js`) |
-| Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1 |
+| Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1. ⚠️ **Combine consecutive beats to fill up to 15s per clip, don't generate one beat per call** — see `.agents/rules/clip_duration_rules.md` |
 | Bridging / continuation shots | `Kling v3.0` (Higgsfield cloud) | ⚠️ **1280×720** | 20–30 credits/shot | Seeded with previous shot's last-frame PNG. **720p, not 2K** — flag in editor if 2K continuity is mandatory |
 
-**Budget (last known, 2026-08-29 14:01 BST):** 898.9 credits remaining of an original
+**Budget (last known, 2026-08-29 18:11 BST):** 872.4 credits remaining of an original
 1208.5 + plan allotment. ~310 credits spent in ~4 hours on this session. Per-beat
 costs noted in §3.
 
@@ -94,10 +94,11 @@ cost, and reference the existing approved still + matching location coverage ang
 
 | # | Frame | Beat | Engine | Est. cost | Refs (char + loc angle) | Still approved? | Video status |
 |---|-------|------|--------|-----------|-------------------------|-----------------|--------------|
-| 1 | F01 | Wide establishing — Christina enters, greets Jan | `MiniMax H3` 2K (10 cr) | 10 | Jan + Christina, `jan_office_master_wide` | ✅ (cartoon, F01.jpg) | ⬜ not started on Higgsfield |
-| 2 | F02 | Jan sighs — "Barely..." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` or `_master_wide` | ✅ (cartoon, F02.jpg) | ⬜ not started |
-| 3 | F03 | Christina pitches — "I have an idea..." | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F03.jpg) | ⬜ not started |
-| 4 | F04 | Jan — "I'm listening." | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F04.jpg) | ⬜ not started |
+| 1 | F01 | Wide establishing — Christina enters, greets Jan | `MiniMax H3` 2K (30 cr, 15s) | 30 | Jan + Christina, `jan_office_master_wide` | ✅ (cartoon, F01.jpg) | ✅ covered by `video-tests/01_f01-f02_opening_greeting_minimax_h3.mp4` (F01+F02 combined, 2026-08-29) |
+| 2 | F02 | Jan sighs — "Barely..." | (combined into row 1's 15s clip) | — | Jan, `jan_office_desk_front` or `_master_wide` | ✅ (cartoon, F02.jpg) | ✅ covered by row 1's clip |
+| 3 | F03 | Christina pitches — "I have an idea..." | `MiniMax H3` 2K (22 cr actual, 11.5s, combined with F04) | 22 | Christina + Jan, `--start-image` seeded off beat-1's exact last frame (see gotcha below — NOT `--image-references`) | ✅ (cartoon, F03.jpg) | ✅ `video-tests/02_f03-f04_pitch_and_listening_minimax_h3.mp4` (2026-08-29) — combined with F04 |
+| 3b | — | (superseded attempt, kept for reference) | — | — | — | — | ⚠️ `video-tests/archive/f03_standalone_wrong_seed_minimax_h3.mp4` — seeded via `--image-references` instead of `--start-image`; caused a visible camera jump at the join. Not used in the cut. |
+| 4 | F04 | Jan — "I'm listening." | (combined into row 3's clip) | — | Jan, `jan_office_desk_front` | ✅ (cartoon, F04.jpg) | ✅ covered by row 3's clip |
 | 5 | F05 | Christina explains breakfast-meeting concept | `MiniMax H3` 2K (10–15 cr, may need 15s) | 15 | Christina, `jan_office_master_wide` | ✅ (cartoon, F05.jpg) | ⬜ not started |
 | 6 | F06a | Jan enthused, steepled fingers | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F06a.jpg) | ⬜ not started |
 | 7 | F06b | Jan gesturing, MBA name-drop | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F06b.jpg) | ⬜ not started |
@@ -142,12 +143,12 @@ spending.
 - **Last-frame bridging stills:** `video-tests/<scene>_<frame>_lastframe.png` (used to seed next shot)
 
 Existing test outputs in `video-tests/` (proof-of-concept only — not the final Scene 1 cut):
-- `opening_christina_greeting_minimax_h3.mp4` (2K, 5.17s, 10 cr) — first-person framing
-- `opening_christina_greeting_v2_thirdperson.mp4` (2K, 5.17s, 10 cr) — re-cut third-person
-- `frame_for_kling_start.png` — last-frame extract, seed for Kling
-- `jan_response_kling_continuation.mp4` (⚠️ 720p, 10.04s, 20 cr) — Kling continuation test
-- `opening_full_15s_minimax_h3.mp4` (2K, 15.08s, 30 cr) — single 15s opening
-- `opening_lastframe.png` — last-frame extract of the 15s
+- `archive/christina_greeting_v1_pov_rejected_minimax_h3.mp4` (2K, 5.17s, 10 cr) — first-person framing
+- `archive/christina_greeting_v2_thirdperson_minimax_h3.mp4` (2K, 5.17s, 10 cr) — re-cut third-person
+- `archive/frame_for_kling_start.png` — last-frame extract, seed for Kling
+- `archive/jan_response_kling_continuation_720p.mp4` (⚠️ 720p, 10.04s, 20 cr) — Kling continuation test
+- `01_f01-f02_opening_greeting_minimax_h3.mp4` (2K, 15.08s, 30 cr) — single 15s opening
+- `archive/opening_lastframe.png` — last-frame extract of the 15s
 
 ---
 

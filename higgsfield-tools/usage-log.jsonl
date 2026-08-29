@@ -192,3 +192,6 @@
 {"action":"spend","created_at":"2026-08-29T19:15:08.386565Z","credits":-1.29,"display_name":"Claude Opus 5"}
 {"action":"spend","created_at":"2026-08-29T19:15:24.792309Z","credits":-1.12,"display_name":"Claude Opus 5"}
 {"action":"spend","created_at":"2026-08-29T19:52:09.66782Z","credits":-18,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T20:24:49.94313Z","credits":-22,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T20:29:29.941284Z","credits":-22,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T20:39:15.125989Z","credits":-18,"display_name":"MiniMax H3"}

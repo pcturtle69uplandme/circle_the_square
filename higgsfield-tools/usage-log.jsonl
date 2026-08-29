@@ -167,3 +167,28 @@
 {"action":"spend","created_at":"2026-08-29T15:09:44.179476Z","credits":-1.5,"display_name":"Nano Banana 2"}
 {"action":"spend","created_at":"2026-08-29T15:10:05.37467Z","credits":-1.5,"display_name":"Nano Banana 2"}
 {"action":"spend","created_at":"2026-08-29T15:10:26.39779Z","credits":-1.5,"display_name":"Nano Banana 2"}
+{"action":"spend","created_at":"2026-08-29T17:11:55.246456Z","credits":-16,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T17:34:32.313116Z","credits":-22,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T17:49:28.275726Z","credits":-24,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T17:58:37.875712Z","credits":-18,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T18:24:00.327357Z","credits":-28,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T18:35:42.404065Z","credits":-14,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T18:47:43.070096Z","credits":-22,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T18:56:26.867774Z","credits":-18,"display_name":"MiniMax H3"}
+{"action":"spend","created_at":"2026-08-29T19:00:57.181195Z","credits":-0.74,"display_name":"Claude Opus 5"}
+{"action":"reserve","created_at":"2026-08-29T19:01:13.502636Z","credits":-78.4,"display_name":"Reservation"}
+{"action":"spend","created_at":"2026-08-29T19:01:16.144937Z","credits":-0.7,"display_name":"Claude Opus 5"}
+{"action":"spend","created_at":"2026-08-29T19:01:21.990977Z","credits":-3.91,"display_name":"Claude Opus 5"}
+{"action":"spend","created_at":"2026-08-29T19:03:28.884596Z","credits":-1.03,"display_name":"Claude Opus 5"}
+{"action":"reserve","created_at":"2026-08-29T19:05:53.653989Z","credits":-78.4,"display_name":"Reservation"}
+{"action":"spend","created_at":"2026-08-29T19:06:06.535373Z","credits":-1.36,"display_name":"Claude Opus 5"}
+{"action":"reserve","created_at":"2026-08-29T19:13:13.947296Z","credits":-78.4,"display_name":"Reservation"}
+{"action":"spend","created_at":"2026-08-29T19:13:19.995652Z","credits":-4.43,"display_name":"Claude Opus 5"}
+{"action":"spend","created_at":"2026-08-29T19:13:22.587966Z","credits":-4.35,"display_name":"Claude Opus 5"}
+{"action":"spend","created_at":"2026-08-29T19:13:27.514286Z","credits":-1.12,"display_name":"Claude Opus 5"}
+{"action":"reserve","created_at":"2026-08-29T19:13:28.012559Z","credits":-78.4,"display_name":"Reservation"}
+{"action":"spend","created_at":"2026-08-29T19:13:41.514217Z","credits":-1.56,"display_name":"Claude Opus 5"}
+{"action":"reserve","created_at":"2026-08-29T19:15:00.099151Z","credits":-78.4,"display_name":"Reservation"}
+{"action":"spend","created_at":"2026-08-29T19:15:08.386565Z","credits":-1.29,"display_name":"Claude Opus 5"}
+{"action":"spend","created_at":"2026-08-29T19:15:24.792309Z","credits":-1.12,"display_name":"Claude Opus 5"}
+{"action":"spend","created_at":"2026-08-29T19:52:09.66782Z","credits":-18,"display_name":"MiniMax H3"}

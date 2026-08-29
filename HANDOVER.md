@@ -1,10 +1,12 @@
 # 🤝 HANDOVER — Circle the Square
 
 > **For**: the next Claude Code session, likely on a different machine.
-> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-08-29 14:50 BST (Higgsfield + MiniMax-H3 2K video pivot, §10).
+> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-08-29 20:20 BST (beat-chaining the Scene 1 cut, §11).
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
-> **Read next**: **`HANDOVER.md` §10** (active workflow, 2026-08-29) →
-> `video-tests/` (live 2K outputs) → `higgsfield-tools/` (CLI + manifests + usage tracker) →
+> **Read next**: **`HANDOVER.md` §11** (active workflow, 2026-08-29 evening) →
+> `video-tests/README.md` (rebuild order + adding-the-next-beat checklist) →
+> `SCENE1_MINIMAX_TRACKER.md` §3 (per-beat plan, what's done vs pending) →
+> `.agents/rules/` (mechanics gotchas — read before generating anything) →
 > `featurette_storyboard_image_prompts.md` (64 keyframes, cartoon anchor) ·
 > `CARTOON_BUILDING_TRAILER_PLAN.md` (✅ completed master trailer cut), `CARTOON_CAST_BIBLE.md`
 
@@ -589,3 +591,109 @@ against `usage-log.jsonl`:
   in `video-tests/`, the local pipeline's output would live under
   `minimax-h3-pipeline/output/` (currently empty).
 
+
+---
+
+## 11. Session 2026-08-29 evening — beat-by-beat Scene 1 generation, stopped after F11
+
+> 🆕 **Continues §10's Higgsfield 2K routing** — this section documents actually
+> generating the Scene 1 cut beat-by-beat, the mechanics gotchas hit along the way,
+> and a routing correction to §10 itself (Kling v3.0 is no longer used — read on).
+
+### What's done
+
+**Beats F01–F11 are generated, QA'd, committed, and pushed.** Ground truth is
+`video-tests/scene1_stitched_preview.mp4` — **100.4s**, currently ends right after
+Christina's "Shockingly no." (F11). `video-tests/README.md` lists every numbered clip's
+beat coverage and the rebuild procedure; `SCENE1_MINIMAX_TRACKER.md` §3 has the
+row-by-row status for the whole scene (F01–F26b) with actual costs/durations for
+everything generated so far.
+
+**Next beat to generate: F12** (Jan's dismissal — "Fine, just make it happen...").
+Read `video-tests/README.md`'s "Adding the next beat" checklist before generating it —
+don't skip the `--start-image` seeding step or the Whisper QA step, both are load-bearing
+(see Gotchas below).
+
+**Credits remaining: 686.79** (started this session's generation work at ~721, before
+that ~766, etc. — `SCENE1_MINIMAX_TRACKER.md` §1 has the running balance, update it after
+every clip). Full-episode duration/cost projection (all 3 scenes: Jan's office, corridor,
+canteen) worked out with the user mid-session: **~5.9 minutes total, ~714 credits**,
+leaving comfortable margin against the current balance — see the conversation for the
+word-count-based methodology if it needs redoing after real script edits.
+
+### Three mechanics rules discovered this session — now committed to the repo
+
+All three are in `.agents/rules/` — **read them before generating anything**, don't
+re-derive:
+
+1. **`clip_duration_rules.md`** — MiniMax H3 accepts `--duration` up to 15s, billed by
+   length not by beat. Combine consecutive script beats into one call to fill that 15s
+   rather than one beat per call. If a single beat's dialogue is too long for 15s even
+   alone (several are — Christina and Jan both have long monologues later in the script),
+   split it at a natural pause into `NNa_`/`NNb_` files sharing the same leading number.
+2. **`location_continuity_rules.md`** (updated this session) — chaining a new clip off a
+   previous clip's last frame **must** use `--start-image`, never `--image-references`.
+   The latter only loosely inspires the model and produces a visible camera jump
+   (confirmed the hard way — see `video-tests/archive/f03_standalone_wrong_seed_minimax_h3.mp4`
+   vs. the corrected `02_f03-f04_...` clip, pixel-identical first frame). `start_image`
+   can't be combined with identity-reference images in the same call — a beat that
+   introduces a **new character not already in the seed frame** (e.g. Sharon barging in
+   at F20) needs to drop `start_image` and use `image_references` instead, treating the
+   entrance as a natural cut point rather than forcing continuity.
+3. **Whisper QA, every clip, no exceptions** — `whisper <clip> --model small --language
+   English` (already installed locally), diff the transcript against
+   `CTS_Featurette_Episode.fountain` before ticking a beat off. Cheap, and it already
+   caught one real script typo ("Survive the weekend?" → corrected to "Survived", the
+   generated audio was right and the script was wrong).
+
+### Routing correction to §10 — Kling v3.0 dropped
+
+§10 above says Kling v3.0 is the engine for "bridging/continuation shots," with MiniMax H3
+for dialogue. **That's superseded.** Kling was only necessary because, at the time §10 was
+written, MiniMax's `--image-references` couldn't seed an exact continuation frame — Kling
+was the only thing that worked for continuity, at the cost of 720p instead of 2K. Now that
+`--start-image` gives pixel-exact 2K continuation (rule #2 above), there's no reason left to
+drop resolution for a bridging shot. `SCENE1_MINIMAX_TRACKER.md` rows for F17 and F26b
+(the two shots originally planned as Kling bridges) were corrected to `MiniMax H3` +
+`--start-image`. **Kling is now a fallback only** — try `--start-image` first even on a
+shot that feels like "a Kling shot," and only reach for Kling if continuity genuinely fails.
+
+### `video-tests/` reorganized
+
+Numbered top-level files (`01_`, `02_`, `03a`/`03b`, ...) are the adopted sequence in
+rebuild order; `video-tests/archive/` holds superseded/exploratory takes (the POV-shot
+reject, the wrong-seed F03 attempt, the original Kling continuation test, old frame
+extracts). Full README at `video-tests/README.md`. Don't touch `archive/` when adding
+new beats.
+
+### Higgsfield MCP connector — added, not yet authenticated
+
+`https://mcp.higgsfield.ai/mcp` is a legitimate Higgsfield-run MCP server (native tool
+access instead of shelling out through `cmd.exe`/`higgsfield.cmd`, same account/credits,
+30+ models including ones our CLI scripts don't target). Added at project scope
+(`.mcp.json`, committed — no secrets in it, just the URL). **Still shows "Pending
+approval"** as of this write-up — the user needs to restart `claude` in this directory,
+approve the new project MCP server when prompted, then complete Higgsfield account
+auth (likely a browser popup). Once connected, worth comparing against the CLI approach
+for the remaining beats, but the CLI approach documented above works fine and is what's
+been used for F01–F11.
+
+### Cost comparison worked out this session (informational, not actioned)
+
+User asked whether direct MiniMax API or fal.ai would be cheaper than Higgsfield:
+
+- Direct MiniMax API, 2K: **$0.13/sec** flat.
+- fal.ai `minimax/h3-max` (cheaper promo pricing): only goes up to **768p**, not 2K —
+  not a fair comparison, same resolution tradeoff we just moved away from with Kling.
+- fal.ai `minimax/h3` (plain, 2K-capable): **$0.13/sec** — identical to direct API, no
+  discount for 2K specifically.
+- Higgsfield observed rate: **~2.0 credits/second** for MiniMax H3 2K (averaged across
+  all 8 clips generated before this analysis — see `SCENE1_MINIMAX_TRACKER.md` for the
+  per-clip breakdown). User confirmed paying **$59** for what's assumed to be the
+  session's starting 1208.5-credit balance (per §10's opening balance) → **~$0.0488/credit**.
+  That puts Higgsfield at roughly **$0.098/sec effective — about 25% cheaper** than both
+  direct MiniMax API and fal.ai's 2K option. **Not fully confirmed** — the $59-to-1208.5-
+  credits mapping is an assumption from timing, not a verified receipt; check the
+  Higgsfield billing page directly if this needs to be exact rather than a good estimate.
+
+**Conclusion: no cheaper verified 2K alternative found. Keep using Higgsfield.**

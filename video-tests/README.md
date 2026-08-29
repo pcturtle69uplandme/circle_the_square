@@ -14,6 +14,11 @@ Each numbered clip's beat coverage:
 |---|---|
 | `01_f01-f02_opening_greeting_minimax_h3.mp4` | F01 (Christina enters, greets Jan) + F02 (Jan — "Barely...") |
 | `02_f03-f04_pitch_and_listening_minimax_h3.mp4` | F03 (Christina pitches the idea) + F04 (Jan — "I'm listening.") |
+| `03a_f05_breakfast_pitch_part1_minimax_h3.mp4` + `03b_..._part2_minimax_h3.mp4` | F05 (Christina explains the breakfast-meeting concept) — one beat, split into two clips because its full script line (~47 words) exceeds the 15s ceiling on its own |
+
+When one beat's dialogue is too long for a single 15s clip, split it at a natural
+pause and give both parts the same leading number with an `a`/`b` suffix (as with
+`03a`/`03b`) rather than advancing the sequence number — they're one beat, not two.
 
 See `SCENE1_MINIMAX_TRACKER.md` §3 for the full per-beat plan and what's still pending.
 

@@ -25,7 +25,7 @@
 | Dialogue close-ups | `MiniMax H3` (Higgsfield cloud) | **2560×1440** | 10 credits/short clip, 30 credits/15s | Primary video path for Scene 1. ⚠️ **Combine consecutive beats to fill up to 15s per clip, don't generate one beat per call** — see `.agents/rules/clip_duration_rules.md` |
 | Bridging / continuation shots | `Kling v3.0` (Higgsfield cloud) | ⚠️ **1280×720** | 20–30 credits/shot | Seeded with previous shot's last-frame PNG. **720p, not 2K** — flag in editor if 2K continuity is mandatory |
 
-**Budget (last known, 2026-08-29 18:11 BST):** 872.4 credits remaining of an original
+**Budget (last known, 2026-08-29 18:58 BST):** 808.4 credits remaining of an original
 1208.5 + plan allotment. ~310 credits spent in ~4 hours on this session. Per-beat
 costs noted in §3.
 
@@ -99,7 +99,7 @@ cost, and reference the existing approved still + matching location coverage ang
 | 3 | F03 | Christina pitches — "I have an idea..." | `MiniMax H3` 2K (22 cr actual, 11.5s, combined with F04) | 22 | Christina + Jan, `--start-image` seeded off beat-1's exact last frame (see gotcha below — NOT `--image-references`) | ✅ (cartoon, F03.jpg) | ✅ `video-tests/02_f03-f04_pitch_and_listening_minimax_h3.mp4` (2026-08-29) — combined with F04 |
 | 3b | — | (superseded attempt, kept for reference) | — | — | — | — | ⚠️ `video-tests/archive/f03_standalone_wrong_seed_minimax_h3.mp4` — seeded via `--image-references` instead of `--start-image`; caused a visible camera jump at the join. Not used in the cut. |
 | 4 | F04 | Jan — "I'm listening." | (combined into row 3's clip) | — | Jan, `jan_office_desk_front` | ✅ (cartoon, F04.jpg) | ✅ covered by row 3's clip |
-| 5 | F05 | Christina explains breakfast-meeting concept | `MiniMax H3` 2K (10–15 cr, may need 15s) | 15 | Christina, `jan_office_master_wide` | ✅ (cartoon, F05.jpg) | ⬜ not started |
+| 5 | F05 | Christina explains breakfast-meeting concept | `MiniMax H3` 2K (24+18 cr actual, split across 2 clips — full line ~47 words, too long for one 15s clip) | 42 | Christina, `--start-image` chained off beat-2's exact last frame, then off part1's last frame | ✅ (cartoon, F05.jpg) | ✅ `video-tests/03a_f05_breakfast_pitch_part1_minimax_h3.mp4` (12.25s) + `video-tests/03b_f05_breakfast_pitch_part2_minimax_h3.mp4` (9.42s) (2026-08-29) |
 | 6 | F06a | Jan enthused, steepled fingers | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F06a.jpg) | ⬜ not started |
 | 7 | F06b | Jan gesturing, MBA name-drop | `MiniMax H3` 2K (10 cr) | 10 | Jan, `jan_office_desk_front` | ✅ (cartoon, F06b.jpg) | ⬜ not started |
 | 8 | F07 | Christina deadpan — "Diminishing returns..." | `MiniMax H3` 2K (10 cr) | 10 | Christina, `jan_office_desk_front` | ✅ (cartoon, F07.jpg) | ⬜ not started |

@@ -1,6 +1,16 @@
-# 🎬 RIVE CUTOUT-RIGGING PIVOT — read this before touching character animation
+# 🎬 RIVE CUTOUT-RIGGING PIVOT — archived, read this before reviving
 
-> **Branch**: `rive-cutout-rigging-pivot` (created 2026-08-17, off `main`).
+> 📦 **ARCHIVED 2026-08-30.** This pivot's proof-of-concept work is preserved on
+> `archive/rive-cutout-rigging-pivot` (pinned at commit `695db70`), not on the
+> branch this file used to live on. That branch (`rive-cutout-rigging-pivot`)
+> diverged into unrelated work — the Higgsfield + MiniMax H3 photoreal video
+> pipeline (see `HANDOVER.md` §10-11) — and has been renamed
+> `higgsfield-minimax-h3-pipeline` to match what it actually contains. Nothing
+> below was carried forward; if this pivot is revived, branch off
+> `archive/rive-cutout-rigging-pivot` again rather than off `main`, to keep the
+> Rive-specific setup (uploaded asset, artboard sizing, CDP scripts) intact.
+
+> **Branch**: `archive/rive-cutout-rigging-pivot` (created 2026-08-17, off `main`; archived 2026-08-30).
 > **Status**: proof-of-concept only. One character (Jan Peach), one pose (front view), no bones yet.
 > **Read alongside**: `HANDOVER.md` (overall project state), `.agents/rules/browser_automation_cdp.md`
 > (the browser-automation method used to build this — now updated with Rive-specific gotchas).

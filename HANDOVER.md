@@ -1,24 +1,35 @@
 # 🤝 HANDOVER — Circle the Square
 
 > **For**: the next Claude Code session, likely on a different machine.
-> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-08-29 20:20 BST (beat-chaining the Scene 1 cut, §11).
+> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-08-30 (photoreal-route
+> reconciliation + branch rename, see the banner immediately below and §2).
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
+> **Active branch**: `higgsfield-minimax-h3-pipeline` (renamed 2026-08-30 from
+> `rive-cutout-rigging-pivot`, which had drifted entirely off its stated purpose —
+> the abandoned Rive cutout-rigging proof-of-concept is preserved on
+> `archive/rive-cutout-rigging-pivot`, see `RIVE_RIGGING_PIVOT.md`).
 > **Read next**: **`HANDOVER.md` §11** (active workflow, 2026-08-29 evening) →
 > `video-tests/README.md` (rebuild order + adding-the-next-beat checklist) →
 > `SCENE1_MINIMAX_TRACKER.md` §3 (per-beat plan, what's done vs pending) →
-> `.agents/rules/` (mechanics gotchas — read before generating anything) →
-> `featurette_storyboard_image_prompts.md` (64 keyframes, cartoon anchor) ·
-> `CARTOON_BUILDING_TRAILER_PLAN.md` (✅ completed master trailer cut), `CARTOON_CAST_BIBLE.md`
+> `.agents/rules/` (mechanics gotchas — read before generating anything).
+> `featurette_storyboard_image_prompts.md`, `CARTOON_BUILDING_TRAILER_PLAN.md`,
+> `CARTOON_CAST_BIBLE.md` are the **cartoon-era master workflow, currently inactive**
+> — see the banner below before treating them as current.
 
-> 🎬 **MASTER WORKFLOW (Adopted 2026-08-17)**: Google Flow generates isolated character stencils (clean background),
-> composited with locked cartoon plates (`location-refs/cartoon-plates/`) and foreground furniture occlusion layers
-> in Rive / layered canvas (`render_multiplane_frame.py`). Eliminates background drift, furniture amnesia, and scale hallucinations.
-> All frames follow the strict HARD/SOFT Take QA checklist.
+> 🆕 **ACTIVE WORKFLOW (adopted 2026-08-29, see §10-11): Higgsfield 2K, photoreal.**
+> Stills via `Nano Banana 2`, video via `MiniMax H3` (both Higgsfield cloud, 2K).
+> This is what actually produced `video-tests/scene1_stitched_preview.mp4` (F01-F11).
+> Read `HANDOVER.md` §10-11, `SCENE1_MINIMAX_TRACKER.md`, and `video-tests/README.md`
+> before touching Scene 1 video.
 
-> 🧪 **PILOT IN PROGRESS (2026-08-25)**: Local video generation via **MiniMax-H3** is being
-> trialled as a possible route for Scene 1, in parallel with the master workflow above — not
-> yet adopted project-wide. **Read `minimax-h3-pipeline/README.md` and
-> `SCENE1_MINIMAX_TRACKER.md` before touching this** — full details in §9 below.
+> 📦 **SUPERSEDED, not deleted — the cartoon/Flow master workflow below.** The
+> 2026-08-17 "Google Flow generates character stencils, composited with cartoon
+> plates + Rive/layered-canvas occlusion" workflow, and the 2026-08-25 local
+> MiniMax-H3/Wan 2.2 pilot (§9), are **not** what's generating the live Scene 1 cut.
+> Cartoon assets (`character-refs/*_cartoon_sheet.jpg`, `location-refs/cartoon-plates/`)
+> and the local pipelines (`minimax-h3-pipeline/`, `wan22-pipeline/`) are kept on disk
+> as fallbacks, per §10's "What this supersedes." Don't plan new Scene 1 work against
+> them without checking §10-11 first.
 
 ---
 
@@ -47,10 +58,22 @@ It reads as **likeness protection on a photoreal human face, not content policy*
 small-in-frame in a wide two-shot and failed every solo close-up. The photoreal character sheets were
 likely built from a real person's photograph.
 
-**Do not try to go back to photoreal for characters.** It has been tested and it does not work.
+**Do not try to go back to photoreal for characters — on Google Flow.** It was tested there and did
+not work.
+
+> ⚠️ **Correction, 2026-08-25 → 2026-08-29 (§9-11): photoreal came back, on different engines.**
+> The constraint above is Flow's likeness-protection filter specifically — it does not apply to
+> local FLUX/ComfyUI (§9) or Higgsfield Nano Banana 2 / MiniMax H3 (§10-11), neither of which has
+> blocked a photoreal Jan Peach. §9 reintroduced photoreal stills "alongside the cartoon assets,
+> not a replacement" for a local MiniMax-H3 pilot; by §10-11 that photoreal route (now on
+> Higgsfield) became **the actual, sole route generating the live Scene 1 cut** — cartoon assets
+> are not part of the current pipeline, whatever "alongside" implied in §9. Don't read the
+> sentence above as a live project-wide rule; it describes why Flow specifically was dropped, not
+> a standing ban on photoreal.
 
 The user also decided the deliverable is now a **cartoon animated video**, not a comic-strip storyboard.
-So the 64 frames become keyframes for video rather than panels in a slideshow.
+So the 64 frames become keyframes for video rather than panels in a slideshow. **This too was
+superseded 2026-08-29** — the live cut is photoreal video, see the banner at the top of this file.
 
 ---
 

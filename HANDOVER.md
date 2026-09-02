@@ -1,26 +1,29 @@
 # 🤝 HANDOVER — Circle the Square
 
 > **For**: the next Claude Code session, likely on a different machine.
-> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-08-30 (photoreal-route
-> reconciliation + branch rename, see the banner immediately below and §2).
+> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-09-02 (Scene 2 routing
+> pivot to fal.ai free tier, see the banner immediately below and §12).
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
 > **Active branch**: `higgsfield-minimax-h3-pipeline` (renamed 2026-08-30 from
 > `rive-cutout-rigging-pivot`, which had drifted entirely off its stated purpose —
 > the abandoned Rive cutout-rigging proof-of-concept is preserved on
 > `archive/rive-cutout-rigging-pivot`, see `RIVE_RIGGING_PIVOT.md`).
-> **Read next**: **`HANDOVER.md` §11** (active workflow, 2026-08-29 evening) →
-> `video-tests/README.md` (rebuild order + adding-the-next-beat checklist) →
-> `SCENE1_MINIMAX_TRACKER.md` §3 (per-beat plan, what's done vs pending) →
-> `.agents/rules/` (mechanics gotchas — read before generating anything).
+> **Read next**: **`HANDOVER.md` §12** (Scene 2 routing, 2026-09-02) → §11 (Scene 1,
+> now closed) → `video-tests/README.md` (rebuild order + adding-the-next-beat
+> checklist) → `SCENE1_MINIMAX_TRACKER.md` §3 (Scene 1 per-beat plan, all done) →
+> `.agents/rules/` (mechanics gotchas — read before generating anything; still apply
+> to Scene 2, same model family, see §12).
 > `featurette_storyboard_image_prompts.md`, `CARTOON_BUILDING_TRAILER_PLAN.md`,
 > `CARTOON_CAST_BIBLE.md` are the **cartoon-era master workflow, currently inactive**
 > — see the banner below before treating them as current.
 
-> 🆕 **ACTIVE WORKFLOW (adopted 2026-08-29, see §10-11): Higgsfield 2K, photoreal.**
-> Stills via `Nano Banana 2`, video via `MiniMax H3` (both Higgsfield cloud, 2K).
-> This is what actually produced `video-tests/scene1_stitched_preview.mp4` (F01-F11).
-> Read `HANDOVER.md` §10-11, `SCENE1_MINIMAX_TRACKER.md`, and `video-tests/README.md`
-> before touching Scene 1 video.
+> 🆕 **SCENE 1 CLOSED at Higgsfield 2K (§10-11). SCENE 2 ONWARD: fal.ai free tier,
+> 768p (§12, adopted 2026-09-02).** Scene 1 is done and stays on the 2K Higgsfield
+> `MiniMax H3` cut in `video-tests/scene1_stitched_preview.mp4` — do not regenerate
+> it to match Scene 2's lower resolution. Scene 2 deliberately trades resolution for
+> zero cost: fal.ai's sandbox gives 5 free `MiniMax H3 Max` generations/24hr, no
+> login, capped at 768p (not 2K — that's the accepted tradeoff, see §12). Read §12
+> before generating anything for Scene 2.
 
 > 📦 **SUPERSEDED, not deleted — the cartoon/Flow master workflow below.** The
 > 2026-08-17 "Google Flow generates character stencils, composited with cartoon
@@ -625,24 +628,41 @@ against `usage-log.jsonl`:
 
 ### What's done
 
-**Beats F01–F11 are generated, QA'd, committed, and pushed.** Ground truth is
-`video-tests/scene1_stitched_preview.mp4` — **100.4s**, currently ends right after
-Christina's "Shockingly no." (F11). `video-tests/README.md` lists every numbered clip's
+**Beats F01–F12 are generated, QA'd, and committed.** Ground truth is
+`video-tests/scene1_stitched_preview.mp4` — **116.2s**, currently ends right after
+Jan's dismissal line (F12). `video-tests/README.md` lists every numbered clip's
 beat coverage and the rebuild procedure; `SCENE1_MINIMAX_TRACKER.md` §3 has the
 row-by-row status for the whole scene (F01–F26b) with actual costs/durations for
 everything generated so far.
 
-**Next beat to generate: F12** (Jan's dismissal — "Fine, just make it happen...").
+> ⚠️ **Correction, 2026-08-30**: this section previously claimed "F01-F11 done, QA'd,
+> committed, pushed" at 100.4s. That was wrong — F09-F11 had been generated on
+> 2026-08-29 but then archived as `archive/06_f09-f11_drifted_minimax_h3.mp4` for the
+> same generational-drift problem that hit F07/F08, and was **never actually
+> regenerated** despite this banner saying otherwise. The 100.4s file at the time
+> silently jumped from F08 to nothing (or was itself stale) — always check
+> `video-tests/README.md`'s rebuild table and `ls video-tests/*.mp4` against this
+> banner's claims rather than trusting the prose alone. F09-F11 is now genuinely done
+> (`06_f09-f11_star_trek_reference_minimax_h3.mp4`, seeded off F08's real last frame,
+> Whisper-verified), and F12 followed it (`07_f12_...`, a proactive drift-reset off a
+> fresh `jan_office_door_entrance` angle — see `SCENE1_MINIMAX_TRACKER.md` §3 rows
+> 10-13 for the full detail).
+
+**Next beat to generate: F13-F16** (the escalating exchange — Christina's "poorly
+rehearsed presentations?" dig through Jan's "GET OUT NOW YOU STUPID COW!" scream).
 Read `video-tests/README.md`'s "Adding the next beat" checklist before generating it —
 don't skip the `--start-image` seeding step or the Whisper QA step, both are load-bearing
-(see Gotchas below).
+(see Gotchas below). This beat should chain off **F12's** last frame (the door-entrance
+angle), not F09-11's.
 
-**Credits remaining: 686.79** (started this session's generation work at ~721, before
-that ~766, etc. — `SCENE1_MINIMAX_TRACKER.md` §1 has the running balance, update it after
-every clip). Full-episode duration/cost projection (all 3 scenes: Jan's office, corridor,
-canteen) worked out with the user mid-session: **~5.9 minutes total, ~714 credits**,
-leaving comfortable margin against the current balance — see the conversation for the
-word-count-based methodology if it needs redoing after real script edits.
+**Credits remaining: 514.79** (as of 2026-08-30 15:43 BST, per `higgsfield account
+status` — was 686.79 at the end of the 2026-08-29 session, before this session's F09-F11
+regen and F12 generation; `SCENE1_MINIMAX_TRACKER.md` §1 has the running balance, update
+it after every clip). Full-episode duration/cost projection (all 3 scenes: Jan's office,
+corridor, canteen) worked out with the user mid-session on 2026-08-29: **~5.9 minutes
+total, ~714 credits**, leaving comfortable margin against the balance at the time — see
+the conversation for the word-count-based methodology if it needs redoing after real
+script edits.
 
 ### Three mechanics rules discovered this session — now committed to the repo
 
@@ -720,3 +740,76 @@ User asked whether direct MiniMax API or fal.ai would be cheaper than Higgsfield
   Higgsfield billing page directly if this needs to be exact rather than a good estimate.
 
 **Conclusion: no cheaper verified 2K alternative found. Keep using Higgsfield.**
+
+---
+
+## 12. Session 2026-09-02 — Scene 1 closed, Scene 2 pivots to fal.ai free tier (768p)
+
+> 🆕 **Deliberate resolution downgrade, user-decided, not a bug or an oversight.**
+> §11's cost analysis rejected fal.ai's `minimax/h3-max` because it caps at 768p, not
+> Higgsfield's 2K. That reasoning still holds for **Scene 1**, which is finished and
+> stays as-is. For **Scene 2**, the user's priority flipped: they were about to stop
+> production rather than keep spending Higgsfield credits, and would rather build
+> Scene 2 slowly at reduced quality via fal.ai's free tier than not build it at all.
+> **Do not "fix" this by pushing Scene 2 back onto paid Higgsfield 2K** without
+> checking with the user first — the resolution drop was accepted knowingly.
+
+### What was decided
+
+- **Scene 1**: closed, unchanged. `video-tests/scene1_stitched_preview.mp4`, Higgsfield
+  `MiniMax H3` 2K (2560×1440), F01–F12+ per §11. Don't touch it to "match" Scene 2.
+- **Scene 2 onward**: **fal.ai sandbox**, model `minimax/h3-max` (text-to-video and
+  image-to-video), free tier: **5 generations per rolling 24-hour window, no login
+  required, 768p, up to 15s per clip with synced audio**. Entry point used in this
+  session: `https://fal.ai/sandbox?models=&op=video.image_to_video` (also reachable
+  from `https://fal.ai/minimax-h3-max`). Confirmed via web search 2026-09-02 (not yet
+  hands-on tested in this project) — see sources in that turn of the conversation if
+  the terms need re-verifying, free-tier limits on hosted platforms drift.
+- **Grok Imagine** (xAI's Aurora-based video model, also free on fal.ai at 5/day,
+  720p, up to 10s) was discussed and **not adopted**. It's a different model family
+  from MiniMax H3 with a different visual signature — mixing it into a scene already
+  anchored on MiniMax H3's look would read as a visible style break. Don't reach for
+  it for Scene 2 dialogue shots; it's only worth revisiting if Scene 2 needed a
+  distinct look on purpose (it doesn't).
+
+### Why this doesn't fully contradict §9-11
+
+[[project_circle-the-square-runpod-trial]] (memory) established that MiniMax H3's 2K
+output comes from a **hosted-only** post-processing stage (Regenerate-2K) that every
+paid reseller (Higgsfield, direct API, fal.ai's paid tier) buys access to — self-hosting
+can't replicate it. **fal.ai's *free* sandbox tier is a different thing again**: it's
+not self-hosted, but it's also not running the paid pipeline — 768p is presumably
+fal.ai's free/promotional tier gating people away from the 2K stage, not a technical
+ceiling. So this isn't "the RunPod mistake again" (renting bigger hardware for a
+problem hardware can't fix) — it's accepting a real, known quality tier in exchange for
+$0 cost and slow, incremental progress, which is a legitimate tradeoff §9-11 never
+evaluated because Scene 1 was still being actively funded at the time.
+
+### Open items for the next session — none of this was hands-on verified yet
+
+1. **No fal.ai tooling exists in this repo.** `higgsfield-tools/` is Higgsfield-CLI-
+   specific (the `cmd.exe /c higgsfield.cmd` shim, `usage-tracker.js` polling
+   `higgsfield account transactions`) and does not apply to fal.ai. First real task:
+   work out whether fal.ai's sandbox is browser-only (use `claude-in-chrome`, per
+   [[reference_flow-browser-automation]] — note that memory is about Flow's canvas
+   specifically, fal.ai's sandbox UI hasn't been tested for automation hangs) or has
+   an API/CLI worth scripting (fal.ai does have a general API — check whether the free
+   sandbox tier is reachable through it or is UI-gated only).
+2. **Mechanics rules probably still apply, not yet confirmed on fal.ai**: same model
+   family (MiniMax H3), so `.agents/rules/clip_duration_rules.md` (≤15s/call, combine
+   beats) and `.agents/rules/location_continuity_rules.md` (`--start-image`-equivalent
+   chaining, reset the chain every 6-8 generations to avoid generational drift) are
+   the right starting assumptions — but fal.ai's sandbox may not expose the same
+   parameter names or a `--start-image` equivalent at all. Verify before assuming
+   parity with the Higgsfield CLI usage in §10-11.
+3. **Whisper QA still applies unconditionally** — [[feedback_circle-the-square-video-qa]]
+   isn't platform-specific, transcribe every new Scene 2 clip against the script the
+   same way F01–F12 were checked in §11.
+4. **5/day is a hard pace constraint.** Plan Scene 2's shot list expecting roughly one
+   week of generations per ~35 clips (Scene 1 ran well past that count). Batch
+   planning/prompting work between generation days rather than trying to burn all 5
+   in one sitting on trial-and-error.
+5. **Output location undecided.** Scene 1 used `video-tests/` for the adopted sequence
+   with `archive/` for rejects. Next session should decide whether Scene 2 gets its
+   own directory (e.g. `video-tests-scene2/`) or continues numbering in `video-tests/`
+   — the numbering scheme there currently implies one continuous scene.

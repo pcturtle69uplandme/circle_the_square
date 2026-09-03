@@ -23,6 +23,11 @@ flow_*.png
 cdp_*.png
 .playwright-mcp/
 scratch/
+higgsfield-tools/browser/shots/
+
+# Playwright persistent browser profiles (session cookies -- never commit)
+ai.chrome_playwright_profile/
+.chrome_playwright_profile*/
 
 # Higgsfield CLI vendored skill bundles (reinstalled by the CLI itself, not project content)
 .agents/skills/

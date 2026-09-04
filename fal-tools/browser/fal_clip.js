@@ -287,6 +287,20 @@ async function main() {
         console.log(`COST: $${(balBefore - balAfter).toFixed(2)} charged | balance now $${balAfter.toFixed(2)}`);
       }
       await browser.close();
+
+      // AUDIO GATE. A saved file is not a good clip: MiniMax H3 is a Chinese model and
+      // has rendered an entire take in Mandarin from an English-only prompt, and an
+      // earlier H3 take is recorded in SCENE1_MINIMAX_TRACKER as having unusable audio.
+      // Transcribe every render and exit non-zero if it is not English or does not say
+      // the scripted lines, so run_clips.js will not mark it done and will re-roll it.
+      const { spawnSync } = require('child_process');
+      console.log('verifying audio...');
+      const v = spawnSync('python', [path.join(REPO, 'verify_clip_audio.py'), dest],
+                          { stdio: 'inherit' });
+      if (v.status !== 0) {
+        console.log('AUDIO CHECK FAILED -- clip saved but NOT accepted');
+        process.exit(2);
+      }
       return;
     }
     const err = await page.evaluate(() =>

@@ -78,39 +78,32 @@
   },
   "jan_office_corridor": {
     "table_head": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_table_head.png",
-      "job_id": "3790bfef-739e-4cbf-8a46-15015d465218"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     },
     "table_reverse": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_table_reverse.png",
-      "job_id": "7d5134cb-f198-401c-93cc-27258b3a8798"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     },
     "table_side": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_table_side.png",
-      "job_id": "e6273fd6-5ada-4a36-b420-3e3ad58db804"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     },
     "decal_closeup": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_decal_closeup.png",
-      "job_id": "023f8c55-2e44-4bd0-ac97-a88eae7dc196"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     },
     "corridor_view": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_corridor_view.png",
-      "job_id": "fbb7a66d-29b3-4620-9924-82c01118b4a2"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     },
     "door_closed": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_door_closed.png",
-      "job_id": "606e9304-b65c-41f6-a3c0-40944363cd85"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     },
     "openplan_context_wide": {
-      "status": "ok",
-      "file": "C:\\ai\\Circle the Square\\location-refs\\higgsfield\\coverage\\jan_office_corridor\\jan_office_corridor_openplan_context_wide.png",
-      "job_id": "4ffa5913-cc95-4cbc-9282-40c92d6dca05"
+      "status": "archived_wrong_layout",
+      "reason": "generated with the glass-meeting-room ROOM_LAYOUT; see _archive-corridor-meetingroom-wrong/"
     }
   }
 }

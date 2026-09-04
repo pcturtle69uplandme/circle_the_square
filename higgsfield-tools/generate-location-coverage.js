@@ -38,32 +38,102 @@ const LOCATIONS = {
 // Shot 0 is the master: pure text-to-image, generated once. Every other angle is an
 // image-edit off that master (--image), keeping furniture/materials/colors locked.
 const MASTER_SLUG = "master_wide";
-// Fixed room geography, repeated verbatim in every prompt so table/door position and
-// glass-wall count stay pinned across angles instead of drifting shot to shot.
-const ROOM_LAYOUT = "Fixed room layout: the sliding glass door is on the LEFT wall, opening onto " +
-  "the open-plan floor corridor - this is the ONLY door. All four walls are full-height glass " +
-  "partitions. The frosted dot privacy film sits at eye-to-shoulder height on the RIGHT-hand " +
-  "glass wall, with the triangle-motif decal accent on that same panel. The small white 4-seat " +
-  "table runs down the CENTER of the room, long axis pointing from the door toward the back wall, " +
-  "mesh-back chairs on both long sides. The wall-mounted TV is fixed to the glass wall facing the " +
-  "corridor, visible from outside the room. Fitted venetian blinds are mounted inside each glass " +
-  "panel, raised/open and folded up at the top unless a shot specifically calls for them lowered. " +
-  "Beyond the glass, the open-plan floor with hot-desk workstations and the suspended " +
-  "triangle/hexagon ceiling sculpture is consistently visible in the background on the same side " +
-  "each time.";
-const keepRoom = `Keep this exact room, same table, same glass walls, same decal position, same TV position as the reference image. ${ROOM_LAYOUT} —`;
 
-function buildShots(loc) {
-  return [
-    { slug: MASTER_SLUG, anchor: true, prompt: `${loc.base} ${ROOM_LAYOUT} Wide establishing shot from just inside the sliding door, showing the whole room, table and glass walls in frame, open-plan floor visible beyond.` },
-    { slug: "table_head", prompt: `${keepRoom} camera at the head of the table looking down its length toward the far end, as if seated at the head chair.` },
-    { slug: "table_reverse", prompt: `${keepRoom} reverse angle from the far end of the table looking back toward the sliding door.` },
-    { slug: "table_side", prompt: `${keepRoom} side angle along the length of the table, glass walls visible on both sides of the frame.` },
-    { slug: "decal_closeup", prompt: `${keepRoom} closer angle on the frosted dot privacy film and the triangle-motif decal on the glass, tighter framing than the wide shot.` },
-    { slug: "corridor_view", prompt: `${keepRoom} camera positioned OUTSIDE the room, in the open-plan floor corridor, looking IN through the glass wall - the wall-mounted TV and the frosted dot pattern are visible from this angle, people at hot-desks visible in the foreground of this shot.` },
-    { slug: "door_closed", prompt: `${keepRoom} the sliding glass door is shown closed, venetian blinds fitted inside the glass and lowered for privacy, emphasizing this as a deliberate, visible act from outside.` },
-    { slug: "openplan_context_wide", prompt: `${keepRoom} wide shot taken from further out on the open-plan floor, showing the glass meeting room nested within the larger office floor, hot-desk workstations and the suspended triangle/hexagon sculpture prominent in the foreground.` },
-  ];
+// Fixed geography, repeated verbatim in every prompt for that location so layout stays
+// pinned across angles instead of drifting shot to shot.
+//
+// NOTE (fixed 2026-09-03): the layout text and the shot list used to be two module-level
+// constants describing the glass meeting room, applied to EVERY location. That is why the
+// corridor set came back as eight meeting-room angles (table_head, table_side, ...)
+// instead of corridor coverage. Both are now per-location; a location MUST define its own.
+const LAYOUTS = {
+  goldfish_meeting_room:
+    "Fixed room layout: the sliding glass door is on the LEFT wall, opening onto " +
+    "the open-plan floor corridor - this is the ONLY door. All four walls are full-height glass " +
+    "partitions. The frosted dot privacy film sits at eye-to-shoulder height on the RIGHT-hand " +
+    "glass wall, with the triangle-motif decal accent on that same panel. The small white 4-seat " +
+    "table runs down the CENTER of the room, long axis pointing from the door toward the back wall, " +
+    "mesh-back chairs on both long sides. The wall-mounted TV is fixed to the glass wall facing the " +
+    "corridor, visible from outside the room. Fitted venetian blinds are mounted inside each glass " +
+    "panel, raised/open and folded up at the top unless a shot specifically calls for them lowered. " +
+    "Beyond the glass, the open-plan floor with hot-desk workstations and the suspended " +
+    "triangle/hexagon ceiling sculpture is consistently visible in the background on the same side " +
+    "each time.",
+
+  jan_office:
+    "Fixed room layout: the single glazed door with the black metal frame is on the LEFT wall and " +
+    "is the ONLY entrance, leading out to an interior corridor. The walnut desk with the orange " +
+    "accent panel sits CENTER-RIGHT, angled so the occupant faces the door. The red/black/white " +
+    "triangular acoustic feature wall is the BACK wall behind the desk. The built-in walnut shelving " +
+    "is on the RIGHT wall. The modest window showing the new-build housing estate is on the RIGHT " +
+    "wall beyond the shelving. The grey sofa with the orange cushion and the potted fig tree are on " +
+    "the LEFT, near the door. Dark wood herringbone flooring throughout. Venetian blinds inside the " +
+    "door glass, raised/open unless a shot calls for them lowered.",
+
+  jan_office_corridor:
+    "Fixed corridor layout: Jan's single glazed office door with the black metal frame is on the " +
+    "LEFT of frame, set into a wall of exposed dark red-brick and warm walnut panelling with black " +
+    "banding, its venetian blinds raised. Through that door's glass, a hint of the walnut desk and " +
+    "the red/black/white triangular feature wall is visible. This is a PRIVATE WALLED OFFICE with " +
+    "one glazed door - it is NOT a fully glass-walled meeting room, and there is no meeting table " +
+    "anywhere in these shots. The corridor runs from that door away toward a daylight window at the " +
+    "FAR END. The open-plan hot-desk workstations are on the RIGHT, grey carpet-tile flooring " +
+    "throughout, recessed ceiling downlights plus a suspended linear pendant. Further glazed " +
+    "partitions recede down the corridor past Jan's door on the left.",
+};
+
+const SHOTS = {
+  // Angles that make sense inside a small glazed meeting room.
+  goldfish_meeting_room: [
+    { slug: MASTER_SLUG, anchor: true, framing: "Wide establishing shot from just inside the sliding door, showing the whole room, table and glass walls in frame, open-plan floor visible beyond." },
+    { slug: "table_head", framing: "camera at the head of the table looking down its length toward the far end, as if seated at the head chair." },
+    { slug: "table_reverse", framing: "reverse angle from the far end of the table looking back toward the sliding door." },
+    { slug: "table_side", framing: "side angle along the length of the table, glass walls visible on both sides of the frame." },
+    { slug: "decal_closeup", framing: "closer angle on the frosted dot privacy film and the triangle-motif decal on the glass, tighter framing than the wide shot." },
+    { slug: "corridor_view", framing: "camera positioned OUTSIDE the room, in the open-plan floor corridor, looking IN through the glass wall - the wall-mounted TV and the frosted dot pattern are visible from this angle, people at hot-desks visible in the foreground of this shot." },
+    { slug: "door_closed", framing: "the sliding glass door is shown closed, venetian blinds fitted inside the glass and lowered for privacy, emphasizing this as a deliberate, visible act from outside." },
+    { slug: "openplan_context_wide", framing: "wide shot taken from further out on the open-plan floor, showing the glass meeting room nested within the larger office floor, hot-desk workstations and the suspended triangle/hexagon sculpture prominent in the foreground." },
+  ],
+
+  // Angles for a private walled office.
+  jan_office: [
+    { slug: MASTER_SLUG, anchor: true, framing: "Wide establishing shot from just inside the door, showing the whole room, desk and feature wall in frame." },
+    { slug: "desk_front", framing: "camera in front of the desk looking toward the occupant's chair and the triangular feature wall behind it." },
+    { slug: "desk_reverse", framing: "reverse angle from behind the desk looking back toward the glazed door and the sofa." },
+    { slug: "window_side", framing: "angle toward the RIGHT wall, taking in the shelving and the modest window with the new-build housing estate outside." },
+    { slug: "wall_feature_closeup", framing: "closer angle on the red/black/white triangular acoustic feature wall behind the desk." },
+    { slug: "seating_area", framing: "angle onto the grey sofa with the orange cushion and the potted fig tree near the door." },
+    { slug: "door_entrance", framing: "angle onto the single glazed door from inside the room, venetian blinds visible inside its glass, thumb-turn lock readable on the handle." },
+    { slug: "high_corner_wide", framing: "high corner wide angle looking down across the whole room, desk, sofa and feature wall all in frame." },
+  ],
+
+  // Angles for the corridor OUTSIDE Jan's office. Chosen to cover Scene 2
+  // (CTS_Featurette_Episode.fountain lines 88-151) - see SCENE2_PLATE_SHOT_LIST.md.
+  jan_office_corridor: [
+    { slug: MASTER_SLUG, anchor: true, framing: "Wide establishing shot along the corridor, Jan's glazed office door prominent on the LEFT, open-plan hot-desks on the RIGHT, corridor receding to the daylight window at the far end." },
+    { slug: "door_closed", framing: "closer angle on Jan's office door from the corridor, door shut, blinds inside its glass raised, the thumb-turn lock on the handle readable. Brick and walnut wall around it." },
+    { slug: "door_ajar", framing: "the same door standing ajar, swung toward the corridor, a wedge of the office interior visible through the gap - walnut desk and the triangular feature wall." },
+    { slug: "desk_run", framing: "angle onto the run of open-plan hot-desk workstations on the RIGHT side of the corridor, monitors, task chairs and desk clutter, Jan's office door soft in the background." },
+    { slug: "corridor_length", framing: "camera low and centred in the corridor looking down its full length toward the daylight window at the far end, glazed partitions receding on the left, desks on the right." },
+    { slug: "gathering_area", framing: "the open floor area where the corridor meets the open-plan desks, clear standing space for a crowd to assemble, Jan's door visible at the left edge." },
+    { slug: "reverse_toward_door", framing: "reverse angle from out on the open-plan floor looking BACK toward Jan's office door, desks in the foreground, the door and brick-and-walnut wall as the background." },
+    { slug: "high_wide", framing: "elevated wide angle looking down across the corridor and the adjoining open-plan floor, showing the whole geography in one frame." },
+  ],
+};
+
+function buildShots(loc, slug) {
+  const layout = LAYOUTS[slug];
+  const shots = SHOTS[slug];
+  if (!layout) throw new Error(`No LAYOUTS entry for location "${slug}" - add one before generating.`);
+  if (!shots) throw new Error(`No SHOTS entry for location "${slug}" - add one before generating.`);
+
+  const keep = `Keep this exact space, same architecture, same materials, same fixture positions as the reference image. ${layout} -`;
+
+  return shots.map((shot) =>
+    shot.anchor
+      ? { slug: shot.slug, anchor: true, prompt: `${loc.base} ${layout} ${shot.framing}` }
+      : { slug: shot.slug, prompt: `${keep} ${shot.framing}` }
+  );
 }
 
 async function downloadImage(url, destPath) {
@@ -95,7 +165,7 @@ async function run(onlySlug, limit) {
     fs.mkdirSync(outDir, { recursive: true });
     manifest[slug] = manifest[slug] || {};
 
-    const allShots = buildShots(loc);
+    const allShots = buildShots(loc, slug);
     const shots = limit ? allShots.slice(0, limit) : allShots;
     console.log(`\n=== ${loc.name} (${shots.length}/${allShots.length} angles) ===`);
     let masterPath = null;

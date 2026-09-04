@@ -37,3 +37,7 @@ skills-lock.json
 
 # Kimi CLI project config (unrelated coding-tool experiment, not project content)
 .kimi-code/
+
+# Never commit credentials -- these sit untracked in clips/cartoon/ and must stay that way
+credentials*.txt
+*credentials*.txt

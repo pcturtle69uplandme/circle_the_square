@@ -51,6 +51,11 @@ const C = {
 
 const CROWD = 'THE CROWD - about ten to twelve British office workers in smart-casual clothes with company lanyards. Four of them are the specific people in the full-body studio reference photos and MUST match those photos exactly: a 45-year-old Black British woman with short natural curly black hair in a mustard-yellow knit top and grey trousers; a 55-year-old British South Asian man with greying hair and a short grey beard in a charcoal crew-neck jumper over a pale blue collar and navy chinos; a woman in her thirties with long light brown wavy hair in a white floral-print blouse and navy trousers; a man in his thirties with dark hair and glasses in a blue checked shirt.';
 
+// The prop taser, described by APPEARANCE so it reads unmistakably as a stun device
+// rather than a pistol silhouette. The first pass returned a plain black blocky
+// object that was legible but generic. No brand name is printed on the prop.
+const TASER = 'THE PROP - a bright YELLOW and black handheld electroshock stun device of the familiar police pattern: a chunky high-visibility yellow plastic body with a black grip and a black squared-off front, clearly a non-lethal stun device and obviously NOT a firearm. It is unmistakably yellow. No brand name or lettering on it.';
+
 // State that must persist once it has happened.
 const SMASHED_CHINA = 'ON THE FLOOR - broken white china plates and bowls lie smashed across the pale tiled floor in front of the servery counter, in scattered shards and larger fragments. This mess stays on the floor and is never cleared.';
 const BROKEN_WINDOW = 'THE WINDOW - one tall glass pane of the window wall is now SHATTERED and mostly gone, leaving a jagged empty black metal frame with glass teeth around the edge and a wide spray of broken glass across the floor beneath it. Daylight and outside air come straight through the hole. The other panes are still intact.';
@@ -87,7 +92,11 @@ module.exports = {
 
   s3_03_that_is_it: {
     beat: 'Jan, veins bulging: "OH THAT IS IT!"',
-    refs: [SERVERY, JAN, MAUREEN, E3],
+    // The crowd has to be here. The canteen was established busy in clip 1 and every
+    // person in it freezes and stares in clip 4, so an empty room in between reads as a
+    // jump cut to a different time of day. First attempt omitted them and came back
+    // deserted.
+    refs: [SERVERY, JAN, MAUREEN, E3, E4],
     prompt: [
       'Photoreal cinematic film still, 35mm lens, natural daylight, medium close shot on Jan, pushed in tight.',
       LOCATION,
@@ -96,6 +105,8 @@ module.exports = {
       C.maureen,
       'She is behind the counter recoiling slightly, eyebrows up, startled and unimpressed rather than frightened.',
       'The empty crumb-strewn trays and the intact stacks of white china plates are still on the counter between them.',
+      'WARDROBE CHECK - his DARK RED TIE must be clearly visible, knotted at the open collar and hanging loose down the front of his pale blue shirt. He is wearing a tie in this shot, as he is in every other shot of this scene.',
+      'THE ROOM IS BUSY - other office workers are queueing behind Jan along the counter and sitting at the tables beyond, including the Black British woman in the mustard-yellow knit top and the South Asian man with the grey beard in the charcoal jumper. Several of them have turned toward the noise and are starting to look at Jan. The canteen is NOT empty.',
       NO_CITY, STYLE,
     ].join(' '),
   },
@@ -159,7 +170,8 @@ module.exports = {
       'This is the MOMENT IMMEDIATELY AFTER Jan has dropped. Nothing violent is happening in this frame - it is the calm aftermath.',
       'JAN lies FACE-DOWN on the pale tiled floor, completely limp and unconscious, arms loose at his sides, cheek against the tiles, eyes closed. He is a 52-year-old overweight British man in a too-tight dark navy suit jacket over a pale blue shirt and a dark red tie, thinning greying mid-brown hair. A second meeting chair lies on the floor beside him where he dropped it.',
       C.rick,
-      'He stands calmly a couple of paces BEHIND Jan, looking down at him, entirely unbothered and matter-of-fact, holding a small black plastic prop device loosely at his side, already lowering it. His expression is mild, almost bored - the demeanour of a man who has solved a minor problem.',
+      TASER,
+      'He stands calmly a couple of paces BEHIND Jan, looking down at him, entirely unbothered and matter-of-fact, holding the yellow prop stun device loosely at his side, already lowering it, its yellow body clearly visible against his dark trousers. His expression is mild, almost bored - the demeanour of a man who has solved a minor problem.',
       BROKEN_WINDOW,
       'Office workers stand further back around the edges of the room, frozen mid-gasp, hands over mouths, staring.',
       NO_CITY, STYLE,
@@ -189,7 +201,8 @@ module.exports = {
       'Photoreal cinematic film still, 35mm lens, natural daylight, medium two-shot on Rick and Chris with Jan on the floor.',
       LOCATION,
       C.rick,
-      'He is the focus of the shot, standing over the unconscious Jan, calmly tucking the small black plastic prop device away into his trouser pocket without looking at it, mid-sentence, completely relaxed and matter-of-fact, faintly pleased with himself.',
+      TASER,
+      'He is the focus of the shot, standing over the unconscious Jan, calmly tucking the yellow prop stun device away into his trouser pocket without looking at it, the yellow body still clearly visible in his hand as it goes, mid-sentence, completely relaxed and matter-of-fact, faintly pleased with himself.',
       C.chris,
       'He is still crouched beside Jan, looking up at Rick, eyebrows raised, listening.',
       'JAN lies face-down and motionless on the tiled floor between and below them, unconscious, in the too-tight navy suit jacket over a pale blue shirt and dark red tie.',

@@ -79,12 +79,24 @@ any prompt:
   clip 4 onward**. It must stay on the floor in every later clip; it never gets tidied.
 - **The window**: intact in clips 1–5 → **shattered from clip 6 onward**. The stack of
   heavy meeting chairs loses one chair from clip 6.
-- **Jan**: composed-ish in clip 2 → flushed and shouting 3–6 → **face-down on the floor,
-  unconscious, from clip 7**. He is never upright again.
+- **Jan**: composed-ish in clip 2 → flushed and shouting 3–6 → **on the floor,
+  unconscious, from clip 7**. He is never upright again. He goes down **face-first**
+  in clip 7 (the script's word) but lies **on his back** in clips 8–9. That is
+  deliberate, not drift: Chris crouches to check him between those clips and asks
+  "Have you killed him?", and rolling someone over to see if they are breathing is
+  exactly what that line implies. Do not "fix" clips 8–9 to face-down — it would
+  make Chris's check unreadable.
 - **Rick**: must be **absent or unremarkable in the background** for clips 1–6, then
   revealed behind Jan in clip 7. Showing him early kills the reveal.
 - **The crowd**: eating and talking in clip 1, **frozen and staring from clip 4**
   (the script says so explicitly), then crowding closer at 8–9.
+- **Room occupancy is itself continuity.** A prompt that names only the speaking
+  characters comes back with an EMPTY canteen — that is what happened to the first
+  clip 3, which rendered a deserted room between a busy clip 1 and a frozen-crowd
+  clip 4, reading as a cut to a different time of day. Every clip from 1 to 9 must
+  say the room is occupied and roughly what the occupants are doing. Same lesson as
+  Scene 2's Shot 07 (Jan had to be visible inside the office): **absence has to be a
+  deliberate choice, never an omission.**
 
 ## Known risks
 

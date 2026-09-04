@@ -53,15 +53,21 @@ const CAST = 'JAN is 52, overweight, thinning greying hair, too-tight navy suit 
 
 const LOOK = 'Photoreal live-action comedy, 35mm lens, natural office daylight, handheld-steady camera. Keep every face, costume and the set exactly as in the reference frame. No on-screen text, captions or subtitles.';
 
+// c01 was written as a wide two-shot with "push in very slowly" and came back a MEDIUM
+// two-shot -- a much bigger move than asked. That is survivable inside a clip but it
+// breaks the join with the next one. State the shot size at the START and at the END so
+// the model has a framing target rather than a vague speed, and cap the travel.
+const FRAMING = 'CAMERA: hold the reference frame shot size. Any movement is a very slight drift only -- the framing at the END of the clip must still match the framing at the START. Do not push in, do not zoom, do not reframe to a tighter shot.';
+
 module.exports = {
   c01_corridor_gossip: {
     beats: 'Shot 06 — Chris and Rick gossip outside Jan\'s shut office door',
     seconds: 10,
     startImage: `${S}/shot06_corridor_gossip.png`,
     prompt: [
-      LOOK, CAST,
-      'ACTION: Chris and Rick stand in the corridor beside the desk run. The glazed office door behind them stays shut with its venetian blinds closed flat and opaque throughout — nothing inside is ever visible. Chris tilts his head toward the shut door as he speaks, exasperated and amused. Rick does not react at all, arms folded, staring flatly ahead — his complete lack of reaction is the joke. Camera holds, or pushes in very slowly.',
-      'DIALOGUE: CHRIS (wry, South London): "Christ! They don\'t even try to hide it any more do they." Then RICK (flat monotone, no expression change): "Never have. Give it another five minutes."',
+      LOOK, CAST, FRAMING,
+      'ACTION: Chris and Rick stand in the corridor beside the desk run. The glazed office door behind them stays shut with its venetian blinds closed flat and opaque throughout — nothing inside is ever visible. Chris tilts his head toward the shut door as he speaks, exasperated and amused. Rick does not react at all, arms folded, staring flatly ahead — his complete lack of reaction is the joke. Camera holds steady.',
+      'DIALOGUE: CHRIS (wry, South London): "Christ! They don\'t even try to hide it any more do they." Then RICK : "Never have. Give it another five minutes." CRITICAL FOR RICK: he delivers this in a completely FLAT monotone with a DEAD, MOTIONLESS face. His eyebrows do not move, he does not smile, he does not turn to look at Chris, he does not react in any way at all. Only his mouth moves to form the words. His total non-reaction IS the joke and must read as deliberate deadpan, not as ordinary conversation.',
       'AUDIO: quiet open-plan office ambience — distant keyboards, a phone ringing far off. No music.',
       "TIMING: the dialogue occupies the first 8 seconds. HOLD the final 2 seconds on Rick's completely blank, unmoving deadpan while Chris waits for a reaction that never comes. No further dialogue, no new action.",
     ].join(' '),
@@ -95,7 +101,7 @@ module.exports = {
     seconds: 15,
     startImage: `${S}/shot07b1_jan_addresses.png`,
     prompt: [
-      LOOK, CAST,
+      LOOK, CAST, FRAMING,
       'ACTION: Jan stands at the focal point where the corridor meets the open-plan desks, shirt re-buttoned askew, tie crooked, self-important and pleased with himself. He claps his hands together twice to gather everyone, and the staff drift in around him. He begins his address, chin raised. Chris, standing in the crowd on the right, half-raises a hand and cuts in with a pointed question. Jan\'s composure slips for a moment — eyes flicking away, a tug at his collar — before he recovers and answers smoothly.',
       'DIALOGUE: JAN (booming, self-important): "Right guys, as you know —" Then CHRIS (interrupting, knowing smirk): "Does Sharon get a pass on attending this?" Then JAN (caught out, evasive, recovering): "Err... yes she does. I have given her the rest of the day off for personal reasons."',
       'AUDIO: two sharp handclaps, footsteps and chair scrapes as people gather, then attentive quiet under the dialogue.',
@@ -108,8 +114,8 @@ module.exports = {
     seconds: 15,
     startImage: `${S}/shot07b2_shut_up_flareup.png`,
     prompt: [
-      LOOK, CAST,
-      'ACTION: the shot opens on the crowd. Quiet sniggering spreads through them person to person — one snorts, another claps a hand over their mouth, shoulders shaking, people glancing at each other, all trying and failing not to laugh at him. Jan\'s face darkens and reddens as he watches it spread, then he erupts, both hands raised and open in exasperation. The laughter cuts dead instantly. Camera pushes in slightly on Jan as he shouts.',
+      LOOK, CAST, FRAMING,
+      'ACTION: the shot opens on the crowd. Quiet sniggering spreads through them person to person — one snorts, another claps a hand over their mouth, shoulders shaking, people glancing at each other, all trying and failing not to laugh at him. Jan\'s face darkens and reddens as he watches it spread, then he erupts, both hands raised and open in exasperation. The laughter cuts dead instantly. Camera holds steady on Jan as he shouts.',
       'DIALOGUE: JAN (exploding, flushed, humiliated): "SHUT UP! I am truly appalled by the lack of discipline in this place and that changes now! I have decided a new project is required to manage all the change around here."',
       'AUDIO: suppressed sniggering building and spreading, then abrupt total silence the instant he shouts. His voice echoes slightly off the hard floor.',
       'TIMING: the dialogue ends at about 12 seconds. HOLD the final 3 seconds on total frozen silence -- Jan breathing hard and glaring, the crowd rigid and not daring to move. The silence after the outburst is the joke. No further dialogue.',
@@ -121,7 +127,7 @@ module.exports = {
     seconds: 15,
     startImage: `${S}/shot07c1_rick_questions.png`,
     prompt: [
-      LOOK, CAST,
+      LOOK, CAST, FRAMING,
       'ACTION: Rick, arms folded, delivers his question flat and blunt, with a small deliberate pause before the last three words. Jan\'s pleased expression curdles. He turns to face Rick and begins a long defensive explanation, one hand raised palm-up in a placating, patronising gesture, chin lifted. The crowd watch, a few exchanging looks.',
       'DIALOGUE: RICK (deadpan, unimpressed, pausing before the last clause): "What happened to the last project for this, isn\'t it ongoing? By that I mean... completely failing." Then JAN (defensive, patronising, talking over the murmur): "There\'s no need for the previous project as everything has been a great success even though most things were not delivered on time or within budget."',
       'AUDIO: a low ripple of amusement from the crowd after Rick\'s line, quickly suppressed. Otherwise quiet.',
@@ -133,7 +139,7 @@ module.exports = {
     seconds: 15,
     startImage: `${S}/shot07c2_naming_inception.png`,
     prompt: [
-      LOOK, CAST,
+      LOOK, CAST, FRAMING,
       'ACTION: Jan continues, gathering pomposity, then builds to the announcement — chest puffed, one arm raised high and presenting, palm open, beaming as if announcing a moon landing. Rick stands beside and slightly behind him, arms folded, staring flatly, entirely unimpressed. The crowd\'s reaction is flat and unenthused.',
       'DIALOGUE: JAN (pompous, building to a flourish): "I know because I see everything happening so am best placed to judge. We need a new project to continue the success of the previous project. So I have decided to call the project... Inception."',
       'AUDIO: dead silence on the announcement — no applause, no reaction at all, which is the joke.',
@@ -162,7 +168,7 @@ module.exports = {
     seconds: 15,
     startImage: `${S}/shot08c_merch_gag.png`,
     prompt: [
-      LOOK, CAST,
+      LOOK, CAST, FRAMING,
       'ACTION: Jan glances down at a large open cardboard box of branded merchandise on a desk beside him — foam stress balls, pens and folded t-shirts, all printed "PROJECT INCEPTION", with the same printed on the box. His face falls as he realises he has already ordered a thousand of them and it is far too late to change the name. He gestures at the box with a caught-out, sheepish shrug. Chris, facing him, asks a straight question. Jan rallies into smugness, pauses deliberately, and delivers the reveal. The crowd draws breath.',
       'DIALOGUE: CHRIS (straightforward, curious): "Will there be a lead for this?" Then JAN (rallying, pompous, with a deliberate pause before the last two words): "At last something sensible is asked. Yes there will. However, it is with regret that I have to inform you all that the position has already been filled... by me."',
       'AUDIO: cardboard shifting as he gestures at the box; a collective intake of breath on the reveal.',
@@ -175,7 +181,7 @@ module.exports = {
     seconds: 15,
     startImage: `${S}/shot09_1_groans.png`,
     prompt: [
-      LOOK, CAST,
+      LOOK, CAST, FRAMING,
       'ACTION: the clip opens on the groan — heads tipping back, eyes rolling, hands rubbing faces, arms folding, shoulders slumping. Weary rather than angry. Jan faces them entirely untroubled, raising one hand palm-down to quiet them, wearing a small self-satisfied smile, and talks straight over the noise.',
       'DIALOGUE: JAN (smug, unbothered, talking over the groaning): "Yes groan all you like, but I am the one with the most talent and skills to deliver this. It will add fifty thousand pounds to my salary as I simply add this role into my duties."',
       'AUDIO: a loud collective groan opening the clip, subsiding into resentful muttering under his line.',
@@ -188,8 +194,8 @@ module.exports = {
     seconds: 10,
     startImage: `${S}/shot09_2_50k_outburst.png`,
     prompt: [
-      LOOK, CAST,
-      'ACTION: Jan escalates from smug calm into a full bellow — fist raised, face flushing deep red, sweat at his hairline, mouth wide. The crowd recoil and immediately start turning away to their desks, some wincing, some with heads in hands. Camera is tighter on Jan than the earlier outburst.',
+      LOOK, CAST, FRAMING,
+      'ACTION: Jan escalates from smug calm into a full bellow — fist raised, face flushing deep red, sweat at his hairline, mouth wide. The crowd recoil and immediately start turning away to their desks, some wincing, some with heads in hands. Camera holds the reference framing throughout.',
       'DIALOGUE: JAN (starting level, then bellowing the last five words): "I will let you know when more information is available, now GET BACK TO WORK!"',
       'AUDIO: his shout, then chairs scraping and footsteps as people disperse fast. Cut to office ambience.',
       'TIMING: the shout lands at about 6 seconds. USE the final 4 seconds for the crowd breaking up and hurrying back to their desks, leaving Jan standing alone in the middle of the floor, chest heaving, as the room empties around him. This is the last shot of the scene, so let it breathe. No further dialogue.',

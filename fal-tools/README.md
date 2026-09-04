@@ -50,15 +50,34 @@ node run_clips.js                 # generate up to 5 clips (one free-tier day)
 node run_clips.js --only c07_inception_exchange   # re-render one clip
 ```
 
-## ⚠️ Before the first real generation
+## Calibrated 2026-09-04 — what the live sandbox actually does
 
-**The selectors in `fal_clip.js` (`SEL`) are first guesses and are NOT calibrated.**
-Run `node fal_clip.js probe` on the live page while signed in, then correct `SEL` from
-what it prints. A wrong selector burns one of only five free generations a day.
+Probed while signed in. Four things differed from the documentation:
 
-`probe` reports the visible buttons, every file input, textareas, dropdowns, whether the
-session looks signed in, and any line of page text mentioning "free" — which is where
-the remaining allowance is usually shown.
+1. **The model playground URL 404s.** `fal.ai/models/fal-ai/minimax/h3-max/...` does not
+   exist. The working surface is the **sandbox**:
+   `https://fal.ai/sandbox?models=&op=video.image_to_video`.
+2. **The free allowance showed "50 free generations today"**, not the documented 5/day.
+   Treat 5 as the guaranteed floor and 50 as a bonus that may be promotional — the
+   driver still caps at `--max 5` by default.
+3. **Duration is a dropdown of 5s / 10s / 15s only** — not free-form seconds. Every clip
+   in `scene2_clips.js` is snapped **up** to the next allowed value so no line is cut,
+   which took Scene 2 from 109s to 125s of billed video.
+4. **Two image inputs** (`accept="image/*"`), which is exactly what the first/last
+   keyframe pairs need.
+
+Re-run `node fal_clip.js probe` if fal changes its UI.
+
+## A trap worth knowing
+
+The sandbox renders **every previous generation** on the same page, so "a `<video>`
+element exists" proves nothing about your own run. `fal_clip.js` snapshots the video
+sources before submitting and accepts only one that was not already there. This is the
+same stale-result bug that mislabelled two Higgsfield stills before it was guarded —
+without it, a clip will happily save a video from two days ago.
+
+Duration also **persists between runs**, so it is set and then read back and verified
+every time; otherwise a 15s clip silently renders as 5s.
 
 ## How this differs from the Higgsfield toolkit
 

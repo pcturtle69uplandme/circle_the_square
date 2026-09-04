@@ -11,10 +11,8 @@
 //   - the result is matched against OUR submission, never "something new appeared"
 //   - retries and resumability live in run_clips.js, not here
 //
-// ⚠️ SELECTORS ARE NOT YET CALIBRATED. Everything in SEL below is a first guess from
-// fal.ai's documented UI. Run `probe` against the live page while signed in and correct
-// SEL before generating anything -- a wrong selector wastes one of only five free
-// generations per day. probe prints every candidate control it can find.
+// Selectors were calibrated against the live sandbox on 2026-09-04. If fal changes its
+// UI, re-run `probe` and fix SEL -- a wrong selector wastes a free generation.
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
@@ -23,16 +21,21 @@ const CLIPS = require(process.env.FAL_CLIPS || './scene2_clips.js');
 const REPO = path.resolve(__dirname, '..', '..');
 const CDP = 'http://127.0.0.1:9333';
 
-// --- Calibrate these with `probe`. ---------------------------------------------
+// --- Calibrated against the live sandbox, 2026-09-04 -----------------------------
+// URL matters: the FREE allowance lives in the sandbox, not the model playground page
+// (https://fal.ai/models/... 404s for this model anyway). The sandbox exposes exactly
+// two image inputs, which is what the first/last keyframe pairs need.
+const SANDBOX = 'https://fal.ai/sandbox?models=&op=video.image_to_video';
+
 const SEL = {
-  prompt: 'textarea, [contenteditable="true"]',
-  // fal exposes separate uploads for the first and last frame in image-to-video.
-  imageInputs: 'input[type=file]',
-  duration: 'input[name="duration"], select[name="duration"]',
-  resolution: 'select[name="resolution"], [role="combobox"]',
-  run: 'button:has-text("Run"), button:has-text("Generate")',
-  result: 'video source, video',
+  prompt: 'textarea[placeholder*="Describe what you want"]',
+  imageInputs: 'input[type=file][accept="image/*"]',  // exactly 2: first frame, last frame
+  run: 'button:has-text("Run")',
+  result: 'video',
 };
+
+// fal offers ONLY these durations. Anything else must snap (see scene2_clips.js).
+const DURATIONS = [5, 10, 15];
 // -------------------------------------------------------------------------------
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -104,7 +107,15 @@ async function main() {
     return;
   }
 
+  if (!page.url().includes('/sandbox')) {
+    await page.goto(SANDBOX, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(6000);
+  }
   await dismissOverlays(page);
+
+  if (!DURATIONS.includes(clip.seconds)) {
+    throw new Error(`clip ${cmd} asks for ${clip.seconds}s but fal only offers ${DURATIONS.join('/')}s`);
+  }
 
   // Attach the start frame, and the end frame when this is a keyframe pair.
   const inputs = page.locator(SEL.imageInputs);
@@ -121,21 +132,40 @@ async function main() {
   await page.keyboard.press('Backspace');
   await page.keyboard.type(clip.prompt, { delay: 3 });
 
-  // Duration is billed per second, so never leave it at a default.
-  const dur = page.locator(SEL.duration).first();
-  if (await dur.count()) await dur.fill(String(clip.seconds)).catch(() => {});
+  // Duration is a dropdown of 5s/10s/15s, not a free-text field. It persists between
+  // runs, so it must be set explicitly every time or a 15s clip silently renders as 5s.
+  await page.getByRole('button', { name: /^\d+s$/ }).first().click();
+  await page.waitForTimeout(900);
+  await page.getByRole('option', { name: `${clip.seconds}s` }).first().click()
+    .catch(async () => { await page.getByText(`${clip.seconds}s`, { exact: true }).last().click(); });
+  await page.waitForTimeout(700);
+  const shown = await page.getByRole('button', { name: /^\d+s$/ }).first().innerText().catch(() => '?');
+  if (shown.trim() !== `${clip.seconds}s`) {
+    throw new Error(`duration did not take: wanted ${clip.seconds}s, control shows ${shown}`);
+  }
+  console.log(`duration set to ${shown.trim()}`);
 
   await dismissOverlays(page);
+
+  // The sandbox page also renders every PREVIOUS generation, so "a video element
+  // exists" proves nothing. Snapshot what is already on the page and accept only a src
+  // that was not there before -- the same stale-result bug cost two mislabelled stills
+  // on the Higgsfield side before it was guarded there.
+  const before = new Set(await page.evaluate((sel) =>
+    Array.from(document.querySelectorAll(sel)).map(v => v.currentSrc || v.src).filter(Boolean), SEL.result));
+  console.log(`${before.size} existing video(s) on page, ignoring those`);
+
   await page.locator(SEL.run).first().click();
   console.log('submitted, waiting for render...');
 
   // Video takes far longer than the image pipeline did; poll patiently.
   for (let i = 0; i < 240; i++) {
     await sleep(5000);
-    const src = await page.evaluate((sel) => {
-      const v = document.querySelector(sel);
-      return v ? (v.currentSrc || v.src || null) : null;
-    }, SEL.result).catch(() => null);
+    const src = await page.evaluate(({ sel, seen }) => {
+      const all = Array.from(document.querySelectorAll(sel))
+        .map(v => v.currentSrc || v.src).filter(Boolean);
+      return all.find(u => !seen.includes(u)) || null;
+    }, { sel: SEL.result, seen: [...before] }).catch(() => null);
     if (src && /^https?:/.test(src)) {
       const b64 = await page.evaluate(async (u) => {
         const r = await fetch(u);

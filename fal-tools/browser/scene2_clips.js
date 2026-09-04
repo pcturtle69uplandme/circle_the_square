@@ -18,7 +18,10 @@
 //    model animates BETWEEN two adopted stills. That is how the blinds open (c02) and
 //    how Jan's reaction lands (c07) without either state having to be invented.
 //
-// Durations are billed per second, so they are deliberate, not decorative.
+// DURATION IS NOT FREE-FORM. fal's sandbox offers only 5s, 10s and 15s -- verified on
+// the live page 2026-09-04. Every clip below is snapped UP to the next allowed value so
+// a line can never be cut off mid-delivery; the spare tail is trimmed in the edit. The
+// beat estimates the snapping came from are in VIDEO_BUDGET.md.
 
 const S = 'scene2-stills';
 
@@ -30,7 +33,7 @@ const LOOK = 'Photoreal live-action comedy, 35mm lens, natural office daylight, 
 module.exports = {
   c01_corridor_gossip: {
     beats: 'Shot 06 — Chris and Rick gossip outside Jan\'s shut office door',
-    seconds: 8,
+    seconds: 10,
     startImage: `${S}/shot06_corridor_gossip.png`,
     prompt: [
       LOOK, CAST,
@@ -58,7 +61,7 @@ module.exports = {
 
   c03_jan_addresses: {
     beats: 'Shot 07b-1 — Jan emerges, claps, is asked about Sharon, deflects',
-    seconds: 13,
+    seconds: 15,
     startImage: `${S}/shot07b1_jan_addresses.png`,
     prompt: [
       LOOK, CAST,
@@ -70,7 +73,7 @@ module.exports = {
 
   c04_shut_up: {
     beats: 'Shot 07b-2 — sniggering ripples, Jan flares up',
-    seconds: 12,
+    seconds: 15,
     startImage: `${S}/shot07b2_shut_up_flareup.png`,
     prompt: [
       LOOK, CAST,
@@ -94,7 +97,7 @@ module.exports = {
 
   c06_naming_inception: {
     beats: 'Shot 07c-2 — Jan finishes justifying and names the project',
-    seconds: 13,
+    seconds: 15,
     startImage: `${S}/shot07c2_naming_inception.png`,
     prompt: [
       LOOK, CAST,
@@ -122,7 +125,7 @@ module.exports = {
 
   c08_merch_gag: {
     beats: 'Shot 08c — the branded merch, and Jan appoints himself',
-    seconds: 14,
+    seconds: 15,
     startImage: `${S}/shot08c_merch_gag.png`,
     prompt: [
       LOOK, CAST,
@@ -134,7 +137,7 @@ module.exports = {
 
   c09_groans: {
     beats: 'Shot 09-1 — the crowd groans, Jan justifies the 50k',
-    seconds: 13,
+    seconds: 15,
     startImage: `${S}/shot09_1_groans.png`,
     prompt: [
       LOOK, CAST,
@@ -146,7 +149,7 @@ module.exports = {
 
   c10_get_back_to_work: {
     beats: 'Shot 09-2 — "now GET BACK TO WORK!"',
-    seconds: 6,
+    seconds: 10,
     startImage: `${S}/shot09_2_50k_outburst.png`,
     prompt: [
       LOOK, CAST,

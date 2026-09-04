@@ -13,8 +13,9 @@ const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const SHOTS = require('./scene2_shots.js');
-const OUT = path.resolve(__dirname, '..', '..', 'scene2-stills');
+// HF_SHOTS/HF_OUT let this drive any shot module, not just Scene 2's stills.
+const SHOTS = require(process.env.HF_SHOTS || './scene2_shots.js');
+const OUT = process.env.HF_OUT || path.resolve(__dirname, '..', '..', 'scene2-stills');
 
 const args = process.argv.slice(2);
 const force = args.includes('--force');
@@ -63,9 +64,10 @@ for (const [n, slug] of todo.entries()) {
   let ok = false;
   for (let attempt = 1; attempt <= 3 && !ok; attempt++) {
     if (attempt > 1) console.log(`  retry ${attempt}/3 for ${slug}`);
-    const r = spawnSync(process.execPath, [path.join(__dirname, 'run_shot.js'), slug], {
+    const r = spawnSync(process.execPath, [path.join(__dirname, 'run_shot.js'), slug, OUT], {
       stdio: 'inherit',
       timeout: 20 * 60 * 1000,
+      env: process.env,
     });
     ok = r.status === 0;
     if (!ok && attempt < 3) { spawnSync(process.execPath, ['-e', 'setTimeout(()=>{},15000)']); ensureBrowser(); }

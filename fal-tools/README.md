@@ -113,6 +113,37 @@ Either way a small top-up covers it, and both figures are still at or below Higg
 and with them every bit of character and location continuity the 19 QA'd stills exist to
 provide. Paying a few dollars is far cheaper than regenerating that consistency.
 
+## 🔑 The start frame must contain every character — fal is not Higgsfield
+
+**This is the biggest architectural difference between the two platforms, and it
+dictates how the clips are cut.**
+
+Higgsfield takes a gallery of character reference images alongside the prompt, so a
+character can be introduced mid-shot and still hold their identity. **fal's
+image-to-video takes only a first frame and an optional last frame.** There is no
+reference slot. Anything not in the start frame is invented from the text description —
+which will not match a cast reference, and therefore will not match Scene 1's footage.
+
+**Rule: every character who needs identity-locking must already be IN the clip's start
+frame.** Dropping a character sheet into the second slot does not help — that slot is
+the LAST frame, so the clip would end on a studio portrait.
+
+Audited across Scene 2: ten of eleven clips already satisfy this, because each start
+still contains everyone who appears. Only the Sharon beat did not, and it failed exactly
+as predicted — starting from `shot06` (Chris and Rick only) left Sharon *and* Jan to be
+invented, and the render put Sharon in the corridor having never come out of the office.
+
+The fix drove the cut structure:
+
+| Clip | Start frame | Why |
+|---|---|---|
+| `c02a_blinds_raised` | `shot06` | Fixture change only — **nobody in shot needs anchoring** |
+| `c02b_sharon_exits` | `shot07` | Contains **all four** — Sharon, Jan, Chris, Rick |
+
+So a beat that needs a character who is not in the available still gets **split**, so that
+one half needs no anchoring and the other starts from a frame that has everybody. That is
+a structural consequence of the platform, not a stylistic choice.
+
 ## Handling the fixed durations
 
 fal offers only 5s / 10s / 15s, but the beats are 8s, 12s, 13s, 14s and so on. Every

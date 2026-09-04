@@ -57,7 +57,7 @@ const LOOK = 'Photoreal live-action comedy, 35mm lens, natural office daylight, 
 // two-shot -- a much bigger move than asked. That is survivable inside a clip but it
 // breaks the join with the next one. State the shot size at the START and at the END so
 // the model has a framing target rather than a vague speed, and cap the travel.
-const FRAMING = 'CAMERA: hold the reference frame shot size. Any movement is a very slight drift only -- the framing at the END of the clip must still match the framing at the START. Do not push in, do not zoom, do not reframe to a tighter shot.';
+const FRAMING = 'CAMERA: stay close to the reference frame shot size. Gentle handheld life and a small drift are welcome, but do not travel to a significantly tighter or wider framing -- the shot should still read as the same setup at the end as at the start.';
 
 module.exports = {
   c01_corridor_gossip: {
@@ -73,24 +73,55 @@ module.exports = {
     ].join(' '),
   },
 
-  c02_sharon_exits: {
-    beats: 'Shot 07 — the blinds go up, the door opens, Sharon leaves dishevelled',
+
+
+  c02a_blinds_raised: {
+    beats: 'Shot 06→07 bridge — the blinds go up and the door opens, before Sharon appears',
+    // Nobody who needs identity-locking is in this shot, so a start frame alone is
+    // enough. Splitting the blinds action out gives it the whole clip instead of
+    // competing with Sharon's exit, which is what the single combined attempt failed at.
     seconds: 5,
+    startImage: `${S}/shot06_corridor_gossip.png`,
+    prompt: [
+      LOOK, CAST, FRAMING,
+      'ACTION: hold on the corridor with the glazed office door shut and its venetian blinds closed flat and opaque. Partway through, the blinds are RAISED from inside, folding up to the top of the glass and revealing the lit office interior behind it. The door handle turns and the door begins to open. Nobody comes out yet — the clip ends as the door swings open on the empty-looking doorway. Chris and Rick stand where they are and turn their heads toward the movement.',
+      'DIALOGUE: none. Nobody speaks.',
+      'AUDIO: quiet office ambience, then the distinct rattle and clack of a venetian blind being raised, then a door latch turning.',
+    ].join(' '),
+  },
+
+  c02b_sharon_exits: {
+    beats: 'Shot 07 — the blinds go up, the door opens, Sharon leaves dishevelled',
+    seconds: 10,
     // Keyframe pair. Fixes the continuity hole flagged in SCENE2_VIDEO_SCRIPT 2.1:
     // clip 1 ends with the blinds shut, clip 2's still has them open, and nothing
     // showed the change. Animating between the two frames IS the explanation.
     //
-    // chainFrom, not the original still: c01 was written as a wide two-shot with a slow
-    // push-in and came back a MEDIUM two-shot. Seeding c02 from shot06 would jump the
-    // camera back out to a framing it has already left, and this is continuous action
-    // (Chris and Rick watch Sharon leave), not a cut. So start from c01's real last
-    // frame -- run `node last_frame.js c01_corridor_gossip` first.
-    chainFrom: 'c01_corridor_gossip',
-    startImage: `${S}/shot06_corridor_gossip.png`,   // fallback if the chain frame is absent
-    endImage: `${S}/shot07_sharon_exits.png`,
+    // chainFrom was TRIED HERE AND REVERTED. c01 overshot to a medium two-shot, so
+    // chaining asked the model to pull the camera back out, relocate Chris and Rick,
+    // raise the blinds, open the door AND produce Sharon in five seconds. It dropped the
+    // actions and teleported the people: Sharon simply appeared mid-corridor having never
+    // come out of the office. Chaining only helps when the previous clip's END framing
+    // already matches this clip's intended START -- otherwise it propagates the error.
+    //
+    // shot06 -> shot07 is the correct pair: same camera, same geography, Chris and Rick
+    // in identical positions in both. The only changes are blinds up, door open, Sharon
+    // walks out -- a small coherent transformation the model can actually perform.
+    // START FROM shot07, NOT shot06. This is the architectural difference from
+    // Higgsfield: there you attach a gallery of character references, but fal gives you
+    // only first frame / last frame, so EVERY character who needs identity-locking must
+    // already be IN the start frame. shot06 contains only Chris and Rick, so starting
+    // there left Sharon and Jan to be invented from text -- and Sharon has to match her
+    // Scene 1 appearance. shot07 contains all four (Sharon mid-exit, Jan seated inside,
+    // Chris and Rick watching), so it anchors everyone.
+    //
+    // The cost is that shot07 already has the blinds up and the door open, so the
+    // blinds-raise is no longer inside this clip -- see c02a below, which does it with
+    // nobody in shot and therefore needs no anchoring.
+    startImage: `${S}/shot07_sharon_exits.png`,
     prompt: [
       LOOK, CAST,
-      'ACTION: begin exactly on the first frame — the office door shut, blinds closed flat. The venetian blinds are then raised from inside, revealing the office interior, and the door opens. SHARON steps out and walks toward camera: 34, curvy, shoulder-length wavy auburn hair now visibly mussed, makeup smudged, a sheen of sweat, blouse creased and untucked, eyes down, dazed but trying to compose herself, smoothing her blouse as she goes. Inside the office behind her JAN remains seated at his desk, not looking out. Chris and Rick watch her from further down the corridor. End exactly on the final frame.',
+      'ACTION: begin exactly on the first frame — Sharon in the open office doorway, Jan seated at his desk inside behind her, Chris and Rick further down the corridor. Sharon walks OUT of the doorway and away down the corridor toward camera, smoothing her creased blouse and pushing her mussed hair back, eyes down, dazed but trying to compose herself. She is dishevelled: hair out of place, makeup smudged, a light sheen of sweat. Jan stays seated inside and does not look out. CHRIS AND RICK DO NOT MOVE — they stay where the first frame puts them and simply turn their heads to watch her pass.',
       'DIALOGUE: none. Nobody speaks.',
       'AUDIO: the rattle and clack of a venetian blind being raised, a door handle, her heels on carpet tile, and a single quiet snigger from Chris.',
     ].join(' '),
@@ -157,7 +188,7 @@ module.exports = {
     endImage: `${S}/shot08b_inception_explained.png`,
     prompt: [
       LOOK, CAST,
-      'ACTION: Chris shouts from across the room, hands cupped near his mouth, grinning, over rising laughter. Jan turns toward him, genuinely baffled — a blank, uncomprehending stare, he has not got it. Chris then explains patiently with a raised hand, as if to a child, to more laughter. Jan understands, and deflates: mouth open, eyes darting sideways, shoulders dropping, one hand raised in a weak dismissive wave as he covers badly.',
+      'ACTION, ending in the state of the final reference frame (Jan flustered and deflated) -- reach that STATE, the exact framing need not match: Chris shouts from across the room, hands cupped near his mouth, grinning, over rising laughter. Jan turns toward him, genuinely baffled — a blank, uncomprehending stare, he has not got it. Chris then explains patiently with a raised hand, as if to a child, to more laughter. Jan understands, and deflates: mouth open, eyes darting sideways, shoulders dropping, one hand raised in a weak dismissive wave as he covers badly.',
       'DIALOGUE, four turns in order: CHRIS (shouting over laughter): "You\'re dreaming Jan!" Then JAN (blank, genuinely not getting it): "What?!" Then CHRIS (patiently explaining, amused): "Inception is the name of a film about dreams Jan." Then JAN (flustered, deflating, covering): "Oh, well... it is also the name of this project."',
       'AUDIO: a big laugh on the heckle, a beat of silence on Jan\'s "What?!", then broader laughter on the explanation which Jan talks weakly over.',
     ].join(' '),

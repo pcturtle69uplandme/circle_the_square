@@ -26,6 +26,7 @@
 const MASTER = 'location-refs/higgsfield/coverage/staff_canteen/staff_canteen_master_wide.png';
 const SERVERY = 'location-refs/higgsfield/coverage/staff_canteen/staff_canteen_servery_counter.png';
 const WINDOW = 'location-refs/higgsfield/coverage/staff_canteen/staff_canteen_window_wall.png';
+const COLLAPSE = 'scene3-stills/s3_07b_taser_collapse.png';
 
 const JAN = 'character-refs/higgsfield/jan/jan_front.png';
 const CHRIS = 'character-refs/higgsfield/chris/chris_front.png';
@@ -193,15 +194,20 @@ module.exports = {
   // instead of inventing it. Rick must NOT appear here; the reveal belongs to 07b.
   s3_07a_second_chair: {
     beat: 'Jan turns back and grabs a second chair -- the moment before the discharge',
-    refs: [WINDOW, JAN, E3, E4],
+    // Seeded from s3_07b, NOT the generic window plate. 07a and 07b form a keyframe
+    // pair, so any geometry difference between them becomes a warp INSIDE one clip --
+    // the first attempt put the broken pane centre-frame with no door visible while 07b
+    // has it left-of-frame with a glazed door beside it, which would have slid the whole
+    // window wall sideways mid-shot. Inheriting 07b's exact framing removes the problem.
+    refs: [COLLAPSE, JAN, E3, E4],
     prompt: [
-      'Photoreal cinematic film still, 35mm lens, natural daylight, medium-wide shot facing the window wall.',
+      'Photoreal cinematic film still, 35mm lens, natural daylight. MATCH THE REFERENCE IMAGE FRAMING EXACTLY - identical camera position, identical shot size, the broken window pane in the SAME place in frame, the glazed door in the SAME place, the servery counter along the right exactly as shown, the same scatter of broken glass on the floor. This is the SAME camera setup a moment EARLIER.',
       LOCATION,
       C.jan,
-      'He has turned BACK toward the stack of heavy meeting chairs against the brick pier and has both hands on the topmost chair, lifting it clear of the stack, body braced and twisted with the effort, face flushed deep red, teeth bared, still mid-rage and about to throw again.',
+      'THIS IS THE MOMENT BEFORE THE REFERENCE IMAGE. Jan is still STANDING, in the same spot where the reference shows him lying on the floor. He holds ONE heavy dark grey meeting chair raised at chest height, body braced and twisted, face flushed deep red, teeth bared, mid-rage and about to hurl it. He is turned toward the broken window.',
       BROKEN_WINDOW,
       'The first chair he already threw lies on its side out on the courtyard paving beyond the hole.',
-      'CRITICAL - Rick is NOT in this shot and must not appear anywhere in frame. Office workers stand well back around the edges of the room, frozen and appalled, some with hands over their mouths, nobody intervening.',
+      'CRITICAL - Rick is NOT in this shot and must not appear anywhere in frame; he arrives afterwards. The same onlookers as the reference stand in the same places, frozen and appalled with hands over their mouths. The chair Jan already threw still lies out on the courtyard paving beyond the broken pane.',
       NO_CITY, STYLE,
     ].join(' '),
   },

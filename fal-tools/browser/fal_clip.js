@@ -26,6 +26,7 @@ const CDP = 'http://127.0.0.1:9333';
 // (https://fal.ai/models/... 404s for this model anyway). The sandbox exposes exactly
 // two image inputs, which is what the first/last keyframe pairs need.
 const SANDBOX = 'https://fal.ai/sandbox?models=&op=video.image_to_video';
+const MODEL = 'minimax/h3-max/image-to-video';
 
 const SEL = {
   prompt: 'textarea[placeholder*="Describe what you want"]',
@@ -44,6 +45,11 @@ const SEL = {
 
 // fal offers ONLY these durations. Anything else must snap (see scene2_clips.js).
 const DURATIONS = [5, 10, 15];
+
+// Measured, not published: c01 charged $0.20 for 10s while the free counter did not
+// move, so image-to-video is metered at $0.02/sec. fal's public page quotes $0.08/sec
+// for this model, so re-check if the balance starts dropping faster than this predicts.
+const RATE_PER_SEC = 0.02;
 // -------------------------------------------------------------------------------
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -153,9 +159,28 @@ async function main() {
       .map(b => (b.innerText || '').trim())
       .find(t => /^(Add models|\d+ models?)$/.test(t)) || null);
   if (!modelBtn || /Add models/.test(modelBtn)) {
-    throw new Error('no model selected in the sandbox -- pick minimax/h3-max/image-to-video first');
+    // The composer resets after every run and drops the model with it, so select it
+    // rather than failing. The picker is a Radix popover: open it, click the row, and
+    // close it -- leaving it open would swallow every later click.
+    console.log('no model selected, picking minimax/h3-max/image-to-video...');
+    await page.getByRole('button', { name: /Add models/i }).first().click();
+    await page.waitForTimeout(2500);
+    const row = page.getByText(MODEL, { exact: false }).first();
+    await row.waitFor({ state: 'visible', timeout: 15000 });
+    const bb = await row.boundingBox();
+    if (!bb) throw new Error(`could not locate ${MODEL} in the model picker`);
+    await page.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2);
+    await page.waitForTimeout(2000);
+    await dismissOverlays(page);
+    const now = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('button'))
+        .map(b => (b.innerText || '').trim())
+        .find(t => /^(Add models|\d+ models?)$/.test(t)) || null);
+    if (!now || /Add models/.test(now)) throw new Error('model selection did not take');
+    console.log(`model: ${now}`);
+  } else {
+    console.log(`model: ${modelBtn}`);
   }
-  console.log(`model: ${modelBtn}`);
 
   if (!DURATIONS.includes(clip.seconds)) {
     throw new Error(`clip ${cmd} asks for ${clip.seconds}s but fal only offers ${DURATIONS.join('/')}s`);
@@ -214,6 +239,13 @@ async function main() {
   // exists" proves nothing. Snapshot what is already on the page and accept only a src
   // that was not there before -- the same stale-result bug cost two mislabelled stills
   // on the Higgsfield side before it was guarded there.
+  const balBefore = await page.evaluate(() => {
+    const m = document.body.innerText.match(/\$(\d+\.\d+)/);
+    return m ? parseFloat(m[1]) : null;
+  }).catch(() => null);
+  console.log(`estimated cost: $${(clip.seconds * RATE_PER_SEC).toFixed(2)} (${clip.seconds}s @ $${RATE_PER_SEC}/sec)` +
+              (balBefore !== null ? ` | balance before: $${balBefore.toFixed(2)}` : ''));
+
   const before = new Set(await page.evaluate((sel) =>
     Array.from(document.querySelectorAll(sel)).map(v => v.currentSrc || v.src).filter(Boolean), SEL.result));
   console.log(`${before.size} existing video(s) on page, ignoring those`);
@@ -247,6 +279,13 @@ async function main() {
       fs.mkdirSync(path.dirname(dest), { recursive: true });
       fs.writeFileSync(dest, Buffer.from(b64, 'base64'));
       console.log(`SAVED ${dest} (${fs.statSync(dest).size} bytes)`);
+      const balAfter = await page.evaluate(() => {
+        const m = document.body.innerText.match(/\$(\d+\.\d+)/);
+        return m ? parseFloat(m[1]) : null;
+      }).catch(() => null);
+      if (balBefore !== null && balAfter !== null) {
+        console.log(`COST: $${(balBefore - balAfter).toFixed(2)} charged | balance now $${balAfter.toFixed(2)}`);
+      }
       await browser.close();
       return;
     }

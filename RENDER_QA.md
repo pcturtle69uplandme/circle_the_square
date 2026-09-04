@@ -76,6 +76,30 @@ does not smile, he does not turn to look at Chris… Only his mouth moves."*
 
 ---
 
+## 2.4 The stills are a GUIDE, not a specification 📌
+
+User direction, 2026-09-04: *"images were just a guide for video, we do not have to use
+them — if video can achieve then all the better."*
+
+This sets the QA standard for every clip. A still exists to **anchor identity and
+location** — the right faces, the right wardrobe, the right room. It is not a target the
+motion has to land on, and a clip that differs from its still while serving the beat
+better is a **pass, not a fail**.
+
+Applied concretely:
+
+- **Judge against the beat, not the frame.** c02 v1's real failure was not that it looked
+  different from `shot07` — it was that **Sharon never came out of the office**, which is
+  the entire beat. Chris and Rick drifting was also a genuine fault, because the audience
+  had just seen them established in c01. Framing that differs but plays is fine.
+- **`endImage` is for story state, not composition.** Forcing a hard landing is right
+  where the end state *carries story* — the china must be broken, the window must be
+  gone, Jan must be on the floor. It is over-constraining where the still is merely one
+  plausible rendering of a moment, such as Sharon's exact position mid-stride.
+- Scene 2 has only two keyframe pairs (`c02`, `c07`) and both end on story states, so
+  both keep their end frames — but the wording asks for the **state** to be reached, not
+  for the frame to be matched pixel-for-pixel.
+
 ## 3. Decisions still open 🔶
 
 ### 3.1 Resolution mismatch across the film

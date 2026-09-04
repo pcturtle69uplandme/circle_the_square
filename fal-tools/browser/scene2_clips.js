@@ -18,6 +18,17 @@
 //    model animates BETWEEN two adopted stills. That is how the blinds open (c02) and
 //    how Jan's reaction lands (c07) without either state having to be invented.
 //
+// HANDLING THE FIXED DURATIONS. fal offers only 5s/10s/15s, and every clip is snapped
+// UP so no line is ever cut mid-delivery. The danger of snapping up is NOT dead air --
+// it is that the model invents business, repeats a gesture, or worst of all invents
+// dialogue, to fill time it was given and told nothing about. So every clip with slack
+// carries an explicit TIMING line saying where the dialogue ends and exactly what to
+// hold on for the remainder, always ending "No further dialogue."
+//
+// In practice the slack is an asset rather than a cost: the held beats are the silence
+// after "SHUT UP!", the blank non-reaction to the name "Inception", and the room
+// emptying around Jan at the end. Those are comedy beats the scene wants anyway.
+//
 // DURATION IS NOT FREE-FORM. fal's sandbox offers only 5s, 10s and 15s -- verified on
 // the live page 2026-09-04. Every clip below is snapped UP to the next allowed value so
 // a line can never be cut off mid-delivery; the spare tail is trimmed in the edit. The
@@ -40,6 +51,7 @@ module.exports = {
       'ACTION: Chris and Rick stand in the corridor beside the desk run. The glazed office door behind them stays shut with its venetian blinds closed flat and opaque throughout — nothing inside is ever visible. Chris tilts his head toward the shut door as he speaks, exasperated and amused. Rick does not react at all, arms folded, staring flatly ahead — his complete lack of reaction is the joke. Camera holds, or pushes in very slowly.',
       'DIALOGUE: CHRIS (wry, South London): "Christ! They don\'t even try to hide it any more do they." Then RICK (flat monotone, no expression change): "Never have. Give it another five minutes."',
       'AUDIO: quiet open-plan office ambience — distant keyboards, a phone ringing far off. No music.',
+      "TIMING: the dialogue occupies the first 8 seconds. HOLD the final 2 seconds on Rick's completely blank, unmoving deadpan while Chris waits for a reaction that never comes. No further dialogue, no new action.",
     ].join(' '),
   },
 
@@ -68,6 +80,7 @@ module.exports = {
       'ACTION: Jan stands at the focal point where the corridor meets the open-plan desks, shirt re-buttoned askew, tie crooked, self-important and pleased with himself. He claps his hands together twice to gather everyone, and the staff drift in around him. He begins his address, chin raised. Chris, standing in the crowd on the right, half-raises a hand and cuts in with a pointed question. Jan\'s composure slips for a moment — eyes flicking away, a tug at his collar — before he recovers and answers smoothly.',
       'DIALOGUE: JAN (booming, self-important): "Right guys, as you know —" Then CHRIS (interrupting, knowing smirk): "Does Sharon get a pass on attending this?" Then JAN (caught out, evasive, recovering): "Err... yes she does. I have given her the rest of the day off for personal reasons."',
       'AUDIO: two sharp handclaps, footsteps and chair scrapes as people gather, then attentive quiet under the dialogue.',
+      'TIMING: the dialogue occupies the first 13 seconds. HOLD the final 2 seconds on Jan looking pleased with his own answer while the crowd stare back flatly. No further dialogue.',
     ].join(' '),
   },
 
@@ -80,6 +93,7 @@ module.exports = {
       'ACTION: the shot opens on the crowd. Quiet sniggering spreads through them person to person — one snorts, another claps a hand over their mouth, shoulders shaking, people glancing at each other, all trying and failing not to laugh at him. Jan\'s face darkens and reddens as he watches it spread, then he erupts, both hands raised and open in exasperation. The laughter cuts dead instantly. Camera pushes in slightly on Jan as he shouts.',
       'DIALOGUE: JAN (exploding, flushed, humiliated): "SHUT UP! I am truly appalled by the lack of discipline in this place and that changes now! I have decided a new project is required to manage all the change around here."',
       'AUDIO: suppressed sniggering building and spreading, then abrupt total silence the instant he shouts. His voice echoes slightly off the hard floor.',
+      'TIMING: the dialogue ends at about 12 seconds. HOLD the final 3 seconds on total frozen silence -- Jan breathing hard and glaring, the crowd rigid and not daring to move. The silence after the outburst is the joke. No further dialogue.',
     ].join(' '),
   },
 
@@ -104,6 +118,7 @@ module.exports = {
       'ACTION: Jan continues, gathering pomposity, then builds to the announcement — chest puffed, one arm raised high and presenting, palm open, beaming as if announcing a moon landing. Rick stands beside and slightly behind him, arms folded, staring flatly, entirely unimpressed. The crowd\'s reaction is flat and unenthused.',
       'DIALOGUE: JAN (pompous, building to a flourish): "I know because I see everything happening so am best placed to judge. We need a new project to continue the success of the previous project. So I have decided to call the project... Inception."',
       'AUDIO: dead silence on the announcement — no applause, no reaction at all, which is the joke.',
+      'TIMING: the dialogue ends at about 13 seconds. HOLD the final 2 seconds on complete silence and blank faces -- nobody reacts to the name at all. That non-reaction is the joke. No further dialogue.',
     ].join(' '),
   },
 
@@ -132,6 +147,7 @@ module.exports = {
       'ACTION: Jan glances down at a large open cardboard box of branded merchandise on a desk beside him — foam stress balls, pens and folded t-shirts, all printed "PROJECT INCEPTION", with the same printed on the box. His face falls as he realises he has already ordered a thousand of them and it is far too late to change the name. He gestures at the box with a caught-out, sheepish shrug. Chris, facing him, asks a straight question. Jan rallies into smugness, pauses deliberately, and delivers the reveal. The crowd draws breath.',
       'DIALOGUE: CHRIS (straightforward, curious): "Will there be a lead for this?" Then JAN (rallying, pompous, with a deliberate pause before the last two words): "At last something sensible is asked. Yes there will. However, it is with regret that I have to inform you all that the position has already been filled... by me."',
       'AUDIO: cardboard shifting as he gestures at the box; a collective intake of breath on the reveal.',
+      "TIMING: the dialogue ends at about 14 seconds. HOLD the final 1 second on the crowd's stunned faces. No further dialogue.",
     ].join(' '),
   },
 
@@ -144,6 +160,7 @@ module.exports = {
       'ACTION: the clip opens on the groan — heads tipping back, eyes rolling, hands rubbing faces, arms folding, shoulders slumping. Weary rather than angry. Jan faces them entirely untroubled, raising one hand palm-down to quiet them, wearing a small self-satisfied smile, and talks straight over the noise.',
       'DIALOGUE: JAN (smug, unbothered, talking over the groaning): "Yes groan all you like, but I am the one with the most talent and skills to deliver this. It will add fifty thousand pounds to my salary as I simply add this role into my duties."',
       'AUDIO: a loud collective groan opening the clip, subsiding into resentful muttering under his line.',
+      "TIMING: the dialogue ends at about 13 seconds. HOLD the final 2 seconds on Jan's self-satisfied face over the resentful muttering. No further dialogue.",
     ].join(' '),
   },
 
@@ -156,6 +173,7 @@ module.exports = {
       'ACTION: Jan escalates from smug calm into a full bellow — fist raised, face flushing deep red, sweat at his hairline, mouth wide. The crowd recoil and immediately start turning away to their desks, some wincing, some with heads in hands. Camera is tighter on Jan than the earlier outburst.',
       'DIALOGUE: JAN (starting level, then bellowing the last five words): "I will let you know when more information is available, now GET BACK TO WORK!"',
       'AUDIO: his shout, then chairs scraping and footsteps as people disperse fast. Cut to office ambience.',
+      'TIMING: the shout lands at about 6 seconds. USE the final 4 seconds for the crowd breaking up and hurrying back to their desks, leaving Jan standing alone in the middle of the floor, chest heaving, as the room empties around him. This is the last shot of the scene, so let it breathe. No further dialogue.',
     ].join(' '),
   },
 };

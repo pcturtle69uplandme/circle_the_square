@@ -60,13 +60,43 @@ Probed while signed in. Four things differed from the documentation:
 2. **The free allowance showed "50 free generations today"**, not the documented 5/day.
    Treat 5 as the guaranteed floor and 50 as a bonus that may be promotional — the
    driver still caps at `--max 5` by default.
-3. **Duration is a dropdown of 5s / 10s / 15s only** — not free-form seconds. Every clip
-   in `scene2_clips.js` is snapped **up** to the next allowed value so no line is cut,
-   which took Scene 2 from 109s to 125s of billed video.
+3. **Duration is a dropdown of 5s / 10s / 15s only** — not free-form seconds. See
+   "Handling the fixed durations" below.
 4. **Two image inputs** (`accept="image/*"`), which is exactly what the first/last
    keyframe pairs need.
 
 Re-run `node fal_clip.js probe` if fal changes its UI.
+
+## Handling the fixed durations
+
+fal offers only 5s / 10s / 15s, but the beats are 8s, 12s, 13s, 14s and so on. Every
+clip is snapped **up**, never down, so a line can never be cut mid-delivery. That takes
+Scene 2 from 109s of content to 125s of clip — **16s of slack across 10 clips**, with 3
+landing exactly.
+
+**The danger of snapping up is not dead air — it is that the model fills time it was
+given and told nothing about**, with invented business, a repeated gesture, or worst of
+all invented dialogue over a finished line. So every clip with slack carries an explicit
+`TIMING:` line stating where the dialogue ends, exactly what to hold on for the
+remainder, and always closing with *"No further dialogue."*
+
+| Clip | Content | Clip | Held beat |
+|---|---|---|---|
+| `c01` | 8s | 10s | Rick's blank deadpan while Chris waits for a reaction |
+| `c03` | 13s | 15s | Jan pleased with his own answer, crowd flat |
+| `c04` | 12s | 15s | **Frozen silence after "SHUT UP!"** |
+| `c06` | 13s | 15s | **Nobody reacting at all to the name "Inception"** |
+| `c08` | 14s | 15s | The crowd's stunned faces after "…by me" |
+| `c09` | 13s | 15s | Jan's smug face over resentful muttering |
+| `c10` | 6s | 10s | **The room emptying around Jan, alone** — the scene's last shot |
+
+In practice the slack is an asset. The silence after the outburst, the blank
+non-reaction to the project name, and the floor clearing around Jan at the end are
+comedy beats the scene wants anyway — the fixed durations just force us to direct them
+deliberately instead of hoping they emerge.
+
+If a generation still overruns, the fallback is to re-chunk which beats share a clip
+rather than to trim in the edit, since trimming cuts the audio tail mid-flow.
 
 ## A trap worth knowing
 

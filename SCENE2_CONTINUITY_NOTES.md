@@ -14,27 +14,76 @@
 > stays clean as the actual screenplay. This file is the companion continuity layer,
 > same relationship as `LOCATION_PLATE_SHOT_LIST.md` is to the location plates.
 
-## Adopted stills — local files (downloaded 2026-09-03)
+## Adopted stills — local files (regenerated 2026-09-03 late)
 
-All adopted Scene 2 stills are saved locally in `scene2-stills/` (2752×1536 PNGs,
-downloaded directly from the Higgsfield CDN since the in-app Download button didn't
-trigger a file in the Playwright-automated browser profile). Rejected variants are
-kept in `scene2-stills/rejected/` for reference, not for use.
+All adopted Scene 2 stills live in `scene2-stills/` (2752×1536 PNGs, Nano Banana 2 at
+16:9/2K on the free Unlimited tier, downloaded straight from the Higgsfield CDN — the
+in-app Download button raises no download event in the Playwright-automated profile).
 
-| Shot | File |
-|---|---|
-| 06 | `scene2-stills/shot06_corridor_gossip.png` |
-| 07 | `scene2-stills/shot07_sharon_exits.png` |
-| 07b | `scene2-stills/shot07b_shut_up_flareup.png` |
-| 07c | `scene2-stills/shot07c_naming_inception.png` |
-| 08 | `scene2-stills/shot08_project_inception_heckle.png` |
-| 08b | `scene2-stills/shot08b_merch_gag.png` |
-| 09 | `scene2-stills/shot09_50k_outburst.png` |
+> **The whole scene was regenerated from Shot 06 onward on 2026-09-03**, replacing the
+> first pass. Two reasons: the first-pass stills predated `extra_01`–`extra_04`, so the
+> background crowd was a different set of people in every frame; and the first pass had
+> drifted off the script in wardrobe (see the Rick note below). The old filenames
+> (`shot07b_*`, `shot07c_*`, `shot09_50k_*`) are superseded by the split-aware slugs
+> below — one file per **planned video clip**, matching `SCENE2_VIDEO_PLAN.md`.
 
-Recurring background-extra reference photos: `character-refs/higgsfield/extra_01/`
-(woman, light brown hair, white patterned blouse) and `extra_02/` (man, dark hair,
-glasses, blue checked shirt) — see `SCENE2_VIDEO_PLAN.md` for the crowd-consistency
-plan these support. **`extra_03` and `extra_04` still need generating.**
+| Clip | File | Beat |
+|---|---|---|
+| 06 | `scene2-stills/shot06_corridor_gossip.png` | Chris & Rick gossip, blinds shut |
+| 07 | `scene2-stills/shot07_sharon_exits.png` | Sharon exits dishevelled, Jan still inside |
+| 07b-1 | `scene2-stills/shot07b1_jan_addresses.png` | Jan emerges, claps, "Right guys" |
+| 07b-2 | `scene2-stills/shot07b2_shut_up_flareup.png` | Sniggering → "SHUT UP!" |
+| 07c-1 | `scene2-stills/shot07c1_rick_questions.png` | Rick questions the old project |
+| 07c-2 | `scene2-stills/shot07c2_naming_inception.png` | Jan names "Inception" |
+| 08 | `scene2-stills/shot08_project_inception_heckle.png` | Chris heckles across the crowd |
+| 08b | `scene2-stills/shot08b_merch_gag.png` | Branded merch gag + self-appointment |
+| 09-1 | `scene2-stills/shot09_1_groans.png` | Crowd groans, Jan calm and smug |
+| 09-2 | `scene2-stills/shot09_2_50k_outburst.png` | "GET BACK TO WORK!" |
+
+**Prompts are no longer ad-hoc.** Every prompt above is defined in
+`higgsfield-tools/browser/scene2_shots.js` and generated with
+`node higgsfield-tools/browser/run_shot.js <slug>`, which clears the previous
+references, attaches the right ones, types the prompt, verifies the free tier and
+saves the full-res PNG. Re-roll any shot by editing that file and re-running the slug —
+do not hand-type prompts into the web UI, or this file goes stale again.
+
+Recurring background extras are complete: `character-refs/higgsfield/extra_01` through
+`extra_04` (2F/2M). Every crowd prompt names all four and attaches their reference
+photos. Rejected variants stay in `scene2-stills/rejected/`, for reference only.
+
+### Wardrobe is pinned by the script, not by the character refs
+
+The cast reference photos deliberately leave shirt colour loose ("casual-smart office
+wear", "plain button-down or polo"), but the **script's own parentheticals pin it**:
+`CHRIS (32, lean, light blue shirt)` and `RICK (40, broad, grey polo)`. The first-pass
+Shot 06 put Rick in a **navy button-down** — the ref photo didn't say otherwise and the
+prompt didn't either. Every prompt in `scene2_shots.js` now restates both wardrobes
+verbatim. Restate wardrobe in *every* prompt; it does not carry over from a reference
+photo.
+
+### Getting the closed blinds to actually read as closed (Shot 06)
+
+This took four attempts and the fix generalises to any "fixture is in a non-default
+state" prompt:
+
+1. "blinds lowered" → rendered lowered but with the slats open; the desk, chair and red
+   triangle wall showed straight through.
+2. "lowered AND slats tilted completely shut, opaque" → the *door* pane went opaque but
+   the narrow side panel and the corner return still leaked the interior.
+3. Naming **every pane** ("the wide glazed door, the tall narrow side panel beside it,
+   and the glazed panel on the corner return, ALL of them") plus describing the
+   **result** rather than the mechanism ("must read as a SOLID OPAQUE PALE PANEL like a
+   blank white wall; no furniture, no colour, no silhouettes through any pane") finally
+   held — but it overcorrected into **frosted glass** and the camera crept in tight.
+4. Adding "the closed slats must still read as a VENETIAN BLIND, fine horizontal slat
+   lines visible, not frosted glass" plus an explicit FRAMING line ("stand well back,
+   take in the whole door, both men from the knees up, corridor receding behind") gave
+   the adopted frame.
+
+Lesson: describe the **visible result** you want, enumerate **every instance** of the
+fixture, and state framing explicitly — a negative constraint alone ("blinds shut")
+gets interpreted as a mechanism, not an outcome, and fixing an outcome tends to drag
+the framing with it.
 
 ---
 

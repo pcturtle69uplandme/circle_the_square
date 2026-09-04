@@ -42,14 +42,26 @@ characters (Priya, Barbara, Dev, Tomasz, per `SCENE1_MINIMAX_TRACKER.md` §2) fi
 none of those names appear anywhere in this script, so they're not applicable here;
 the extras are freshly invented generic names.
 
-**Progress (2026-09-03 evening)**: `extra_01` (woman, light brown hair, white patterned
-blouse) and `extra_02` (man, dark hair, glasses, blue checked shirt) generated and
-saved. **`extra_03` and `extra_04` still pending** — not yet generated when this
-session paused. Both saved as `character-refs/higgsfield/extra_0N/extra_0N_fullbody_neutral.png`,
-2752×1536, downloaded directly from the Higgsfield CDN URL (the in-app Download button
-didn't trigger a file in this Playwright-automated browser profile — direct URL fetch
-via `curl` worked instead, see the technique in [[project_higgsfield_account_switch_gotcha]]
-if extending this pattern).
+**DONE (2026-09-03 late)**: all four recurring background extras exist as
+`character-refs/higgsfield/extra_0N/extra_0N_fullbody_neutral.png` (2752x1536, Nano
+Banana 2, 16:9, 2K, free/Unlimited tier on `groovingmushroom1467`):
+
+| Ref | Who |
+|---|---|
+| `extra_01` | woman, 30s, long light brown wavy hair, white floral-print blouse, navy trousers |
+| `extra_02` | man, 30s, dark hair, glasses, blue checked shirt |
+| `extra_03` | Black British woman, 45, short natural curly black hair, mustard knit top, grey trousers |
+| `extra_04` | British South Asian man, 55, greying hair and short grey beard, charcoal jumper over pale blue collar, navy chinos |
+
+Both new refs were generated with the same prompt shape as `extra_01`/`extra_02`
+(full body head-to-shoe, front-facing, arms relaxed, plain light-grey studio
+backdrop, even lighting, no lanyard) so the four read as one consistent set.
+
+**And the retrofit question is settled**: rather than leave the seven first-pass
+stills predating the extras, the user's call (2026-09-03) was to **regenerate every
+Scene 2 beat from Shot 06 onward** with the extras wired into each crowd prompt.
+That work is tracked in `higgsfield-tools/browser/scene2_shots.js`, which is now the
+single source of truth for Scene 2 prompts -- see `SCENE2_CONTINUITY_NOTES.md`.
 
 ---
 

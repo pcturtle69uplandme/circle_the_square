@@ -100,6 +100,33 @@ Applied concretely:
   both keep their end frames — but the wording asks for the **state** to be reached, not
   for the frame to be matched pixel-for-pixel.
 
+## 2.5 Voices — investigated 2026-09-04, no better option exists 🔴
+
+**Nothing on fal lets you supply the voice.** Checked because voice consistency across
+clips is a bigger risk than picture: a character whose voice changes between cuts is
+unusable, and there are eleven Scene 2 clips.
+
+| Route | Voice consistency | Verdict |
+|---|---|---|
+| Prompt direction | Model invents a voice per clip | **In use.** Now `@Name (speaking in a … accent):`, the format Scene 1 proved |
+| Supply audio, model lip-syncs | Would be perfect | **Not available.** Wan 2.6's `audio_url` is *background music only* and it does not lip-sync to supplied speech; MiniMax offers no audio input either |
+| TTS + separate lip-sync | Perfect | Built and validated by this project (Qwen3-TTS + MuseTalk), then paused as too complex |
+
+**Wan 2.6 was evaluated and rejected**, despite being cheaper ($0.05–0.15/sec vs $0.13):
+its dialogue is specified through prompt speaker cues exactly like MiniMax, so it buys no
+extra voice control, while adding a model-family style break against Scene 1's MiniMax
+footage — the same objection that ruled out Grok Imagine and Veo. Saving ~$4 is not worth
+an unproven voice and a visible seam between scenes.
+
+Also worth noting the saved project rule *"video model must do its own audio — rules out
+Wan"* referred to **Wan 2.2**, which had no native audio at all. Wan 2.6 does have native
+audio. The rule's conclusion still holds here, but for a different reason than when it
+was written.
+
+**Open risk**: voice drift across the eleven clips is unproven. Scene 1 shipped 19 clips
+on MiniMax H3, so it is evidently achievable, and the TTS+lip-sync chain is the fallback
+if it is not. Check voice consistency explicitly when the first three clips exist.
+
 ## 3. Decisions still open 🔶
 
 ### 3.1 Resolution mismatch across the film

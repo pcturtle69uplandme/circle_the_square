@@ -1,5 +1,25 @@
 # 💷 VIDEO BUDGET — Scenes 2 and 3 on MiniMax H3
 
+> 🔴 **CORRECTION 2026-09-04: fal is $0.13/sec, not $0.02/sec.** An earlier version of
+> this file inferred $0.02/sec from a single balance delta on the first clip. That was
+> wrong — fal prints an explicit "Total Cost" against every generation, and two 10s
+> renders both charged **$1.300**, matching the balance drop exactly. Read the printed
+> cost (`node fal-tools/browser/feed_costs.js`), never a balance delta: free credit can
+> absorb part of a charge and make the rate look far lower than it is.
+>
+> **Consequence: Higgsfield is CHEAPER than fal, at higher resolution.**
+>
+> | Route | Rate | Scene 2 (135s) | Resolution |
+> |---|---|---|---|
+> | fal `h3-max` | $0.13/sec | **~$17.55** | 768p |
+> | Higgsfield | ~$0.098/sec | **~$10.64** | 2560×1440 |
+>
+> This restores the conclusion `HANDOVER.md` §11 reached independently: *"Higgsfield at
+> roughly $0.098/sec effective — about 25% cheaper than both direct MiniMax API and
+> fal.ai's 2K option. No cheaper verified 2K alternative found."* The project's original
+> analysis was right; the $0.02/sec figure was the anomaly and should not have displaced
+> it on one observation.
+
 > Costed from **actual observed spend**, not list prices. Source:
 > `higgsfield-tools/usage-log.jsonl` (Scene 1's real generations) and
 > `.agents/rules/clip_duration_rules.md`.

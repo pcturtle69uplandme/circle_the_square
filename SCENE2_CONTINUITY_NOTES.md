@@ -51,6 +51,46 @@ Recurring background extras are complete: `character-refs/higgsfield/extra_01` t
 `extra_04` (2F/2M). Every crowd prompt names all four and attaches their reference
 photos. Rejected variants stay in `scene2-stills/rejected/`, for reference only.
 
+### Two pipeline bugs that silently produced WRONG stills
+
+Both produced plausible-looking Scene 2 frames, so neither showed up as a failure —
+only side-by-side QA caught them. Guards are now in `run_shot.js`; don't remove them.
+
+1. **Shots saved each other's images.** The runner accepted "the feed head changed" as
+   proof its own render had arrived. But a job submitted by an *earlier failed attempt*
+   renders minutes later and becomes the head, so `shot07b2` saved `shot07c2`'s image
+   (byte-identical files) and `shot09_1` saved the flare-up. Fixed by parsing the UTC
+   timestamp embedded in the CDN filename (`hf_YYYYMMDD_HHMMSS_<uuid>.png`) and
+   rejecting any asset that predates our own submit, plus waiting for the queue to go
+   idle before submitting.
+
+2. **The composer wedged and locked out uploads.** `clearRefs` matched `div.size-14`,
+   which is also the class of the trailing "add reference" button — a tile with no
+   image and no remove control. The loop span on it forever, left references attached,
+   and an attached reference flips the uploader from multi-file to single-file mode,
+   so every later shot failed with the uploader "never appearing". Match on tiles that
+   *contain an `<img>`*, not on the class. `hf_reset.js` replaces the tab when
+   placeholders wedge beyond recovery.
+
+Also: Chrome must be started **detached** (`hf_up.js`), not by a script that blocks
+forever. A blocking launcher is a long-lived background task, and when those get
+cleaned up the browser dies mid-batch — that killed two runs.
+
+### QA is per-shot and manual; "generated" is not "good"
+
+`.<slug>.gen.json` sidecars record a fingerprint of the prompt+refs that produced each
+adopted PNG, so editing one shot's prompt re-rolls only that shot. Two beats kept an
+earlier take over a later one, both recorded in their sidecar:
+
+- **07b-2** — the re-render drifted `extra_03` to braided hair (her ref is short
+  natural curls) and framed tighter than 09-2 needs, since 09-2 is meant to be the
+  tighter escalation.
+- **08** — the re-render drifted Jan to a patterned tie (plain blue everywhere else)
+  and lost the red/black triangle feature wall.
+
+Losing takes live in `scene2-stills/candidates/`; the pre-split first pass is in
+`scene2-stills/superseded/`.
+
 ### Wardrobe is pinned by the script, not by the character refs
 
 The cast reference photos deliberately leave shirt colour loose ("casual-smart office

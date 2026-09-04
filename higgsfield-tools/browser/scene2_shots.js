@@ -26,7 +26,9 @@ const E4 = 'character-refs/higgsfield/extra_04/extra_04_fullbody_neutral.png';
 // Repeated verbatim in every prompt so the set cannot drift between shots.
 const LOCATION = "LOCATION - reproduce the corridor reference image exactly: the same corridor and open-plan office floor, exposed dark red-brick and warm walnut panelling with black banding, grey carpet-tile flooring, hot-desk workstations on the right, a daylight window at the far end of the corridor, recessed ceiling lights and a suspended linear pendant. Jan's black-framed glazed office door and the large glazed panel beside it are on the LEFT of frame.";
 
-const STYLE = 'Natural office daylight, photorealistic, shallow depth of field, no text, no captions, no on-screen graphics, no watermark.';
+// Signage on the office door (e.g. a "JAN'S OFFICE" vinyl on the glass) is fine --
+// user call, 2026-09-04. This rule is only about captions/watermarks/overlays.
+const STYLE = 'Natural office daylight, photorealistic, shallow depth of field, no captions, no subtitles, no on-screen graphics, no watermark.';
 
 // Character descriptions, restated every time -- the reference photos are neutral
 // studio shots and carry no emotional or physical state of their own.

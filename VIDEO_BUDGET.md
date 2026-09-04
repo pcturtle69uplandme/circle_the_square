@@ -159,3 +159,70 @@ cheaper than any workaround.
 **Recommendation: option 2 if not topping up, option 1 if you are.** Scene 3 is the
 better first spend either way — it is cheaper, it is the ending, and its combined-clip
 structure means fewer calls and therefore fewer chances to burn credits on a retake.
+
+
+---
+
+## 🆕 Platform comparison — verified 2026-09-04
+
+`HANDOVER.md` §12 recorded fal.ai's free tier from a web search in September and noted
+it was never hands-on verified. Re-checked against fal's own model page today.
+
+### fal.ai `minimax/h3-max` — confirmed
+
+| | |
+|---|---|
+| **Free tier** | **5 generations/day**, up to **15s each**, rolling 24h reset. Account required, no subscription. |
+| **Resolution** | 768p (1344×768 @ 24fps), or 480p |
+| **Metered beyond free** | **$0.08/sec** at 768p (a launch promo of $0.04/sec was advertised — verify it still applies before relying on it) |
+| **Keyframing** | ✅ image-to-video with **first-to-last frame** support |
+| **Audio** | ✅ synchronised audio generated in the same pass — room tone, foley, ambience |
+
+Two things matter here beyond price:
+
+- **First-to-last frame keyframing is supported.** That is exactly what clips 4, 6 and
+  7 need — they were deliberately anchored on aftermath so the break happens as motion
+  between two frames. Without keyframing that plan would not port.
+- **Audio is in the same pass**, which satisfies the project rule that the video model
+  must generate its own audio (no separate TTS or lip-sync chain).
+
+### Google Flow — not viable for Scenes 2 or 3
+
+Flow runs **Veo 3.1**, not MiniMax H3. Three blockers, in order of severity:
+
+1. **Different model family.** §12 already rejected Grok Imagine on exactly this
+   reasoning: mixing another family into a scene anchored on MiniMax H3's look reads as
+   a visible style break.
+2. **Clips cap at 4–8s.** Six of Scene 2's clips run 12–15s, so every one would split —
+   10 clips becomes ~15, with more cuts and more drift.
+3. **Resolution** below Scene 1's 2560×1440.
+
+Credits are not the constraint (AI Pro = 1,000/month; Scene 2 ≈ 300 at Veo 3.1 Fast).
+The look is. **Keep Flow for work that does not need to match MiniMax** — the title
+sequence and the building/drone establishing plates it was already used for.
+
+### Scene 2 costed three ways
+
+Scene 2 is 10 combined clips totalling ~111s.
+
+| Route | Resolution | Cost | Elapsed |
+|---|---|---|---|
+| **fal.ai free** | 768p | **£0** | ~2 days (5/day), ~3 with retakes |
+| **fal.ai metered** | 768p | ~**$8.88** (~$4.44 if the promo holds) | same day |
+| **Higgsfield** | 2K | ~218 cr ≈ **$10.64** | same day |
+
+fal.ai metered at 768p is cheaper per second than Higgsfield at 2K, but the real choice
+is £0-and-slow versus 2K-and-now.
+
+### Recommended split
+
+- **Scene 2 → fal.ai free tier.** 768p, £0, two to three days. Same model family, so it
+  still cuts against Scene 1 and Scene 3.
+- **Scene 3 → Higgsfield 2K** (~130 credits of the ~287 balance). The finale at full
+  quality, leaving ~157 credits as retake buffer.
+- **Google Flow → neither.** Reserve for title/drone work.
+
+**Blocker before starting**: there is still **no fal.ai tooling in this repo** —
+`higgsfield-tools/` is Higgsfield-specific. Scene 2 on fal.ai needs a small driver
+equivalent to `run_shot.js`, plus the account. That is the first task if this route is
+taken.

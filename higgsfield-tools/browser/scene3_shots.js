@@ -31,6 +31,7 @@ const JAN = 'character-refs/higgsfield/jan/jan_front.png';
 const CHRIS = 'character-refs/higgsfield/chris/chris_front.png';
 const RICK = 'character-refs/higgsfield/rick/rick_front.png';
 const MAUREEN = 'character-refs/higgsfield/maureen/maureen_front.png';
+const CHRISTINA = 'character-refs/higgsfield/christina/christina_front.png';
 const E1 = 'character-refs/higgsfield/extra_01/extra_01_fullbody_neutral.png';
 const E2 = 'character-refs/higgsfield/extra_02/extra_02_fullbody_neutral.png';
 const E3 = 'character-refs/higgsfield/extra_03/extra_03_fullbody_neutral.png';
@@ -46,6 +47,7 @@ const C = {
   jan: 'JAN - 52, visibly overweight, 5 foot 10, prominent round belly straining his shirt buttons, soft double chin, thinning mid-brown hair greying at the temples slicked into a side parting over a receding hairline, gold wristwatch, wedding ring. NEXT MORNING WARDROBE - the same too-tight dark navy suit jacket, but now over a PALE BLUE dress shirt with a DARK RED tie, the collar open and the tie loosened and hanging askew.',
   chris: 'CHRIS - 32, lean, 5 foot 11, short textured dark hair, wearing a LIGHT BLUE shirt with sleeves rolled up, tan chino trousers, company lanyard.',
   rick: 'RICK - 40, broad and sturdy, 6 foot, short greying near-buzzcut hair with light stubble, wearing a plain GREY POLO SHIRT with sleeves rolled, dark sturdy trousers, company lanyard.',
+  christina: 'CHRISTINA DROSS - 38, slim and upright with squared shoulders, 5 foot 6, sleek dark brown bob with a blunt fringe, tailored charcoal blazer over a cream blouse, tailored trousers, low block heels, minimal gold jewellery, company lanyard. Cold, controlled, faint deadpan smile.',
   maureen: 'MAUREEN the canteen worker - 58, average build, short greying curly hair pinned back, reading glasses on a chain around her neck, a beige apron over a white polo shirt. She stands behind the servery counter.',
 };
 
@@ -61,14 +63,37 @@ const SMASHED_CHINA = 'ON THE FLOOR - broken white china plates and bowls lie sm
 const BROKEN_WINDOW = 'THE WINDOW - one tall glass pane of the window wall is now SHATTERED and mostly gone, leaving a jagged empty black metal frame with glass teeth around the edge and a wide spray of broken glass across the floor beneath it. Daylight and outside air come straight through the hole. The other panes are still intact.';
 
 module.exports = {
+  // Restores the scene's causal setup, which was in the script but in no asset:
+  // "prepared by the canteen team to a specific high-sugar recipe given by Christina.
+  // Even the canteen staff thought the sugar content was far too high, but Christina
+  // assured them it was fine." Without it Jan simply explodes about a pastry and the
+  // Christina throughline from Scene 1 pays off nowhere. Set the PREVIOUS DAY, so the
+  // counter is dressed differently: full trays, no crowd, no mess.
+  s3_00_christina_recipe: {
+    beat: 'THE DAY BEFORE - Christina dictates the high-sugar recipe over Maureen objecting',
+    refs: [SERVERY, CHRISTINA, MAUREEN],
+    prompt: [
+      'Photoreal cinematic film still, 35mm lens, natural daylight, medium two-shot across the servery counter.',
+      LOCATION,
+      'THIS IS THE PREVIOUS DAY, BEFORE THE MAIN SCENE - the canteen is quiet and closed, no queue and no diners, and the counter is clean and undamaged.',
+      C.christina,
+      'She stands on the near side of the counter holding out a printed recipe card toward Maureen, tapping one line on it with a manicured finger, chin slightly raised, giving a small cold reassuring smile that does not reach her eyes. Entirely unbothered.',
+      C.maureen,
+      'She is behind the counter holding a large catering bag of white sugar in one hand, looking down at the recipe card with her eyebrows raised and her mouth open in doubt, clearly about to object to the quantity.',
+      'ON THE COUNTER between them - baking trays of unbaked pain au chocolat pastries ready for the oven, a set of kitchen scales, and an open bag of sugar. No people other than these two.',
+      NO_CITY, STYLE,
+    ].join(' '),
+  },
+
   s3_01_canteen_busy: {
     beat: 'Canteen busy with free pastries; the last one is claimed just before Jan enters',
-    refs: [MASTER, E1, E2, E3, E4],
+    refs: [MASTER, CHRIS, E1, E2, E3, E4],
     prompt: [
       'Photoreal cinematic film still, 35mm lens, natural daylight, wide establishing shot of a busy staff canteen at mid-morning.',
       LOCATION,
       CROWD,
       'They are queueing along the servery counter and sitting at the tables eating and talking, relaxed and cheerful, trays and coffee cups on the tables. There is a real crush of people around the counter because the food is free.',
+      'ALSO IN THE CROWD - ' + C.chris + ' He is in the queue partway along the counter, holding a tray, chatting to the person beside him. He is present but not the focus.',
       'THE STORY DETAIL - on the counter under the glass sneeze guard, large stainless serving trays of pain au chocolat pastries, nearly all taken. One office worker at the front of the queue is lifting the very LAST pastry off the tray with tongs onto their plate, leaving the tray empty behind them.',
       NO_CITY, STYLE,
     ].join(' '),
@@ -113,7 +138,7 @@ module.exports = {
 
   s3_04_plates_swept: {
     beat: 'AFTERMATH - plates swept off the counter, china smashed, the room frozen and staring',
-    refs: [SERVERY, JAN, MAUREEN, E3, E4],
+    refs: [SERVERY, JAN, MAUREEN, CHRIS, E3, E4],
     prompt: [
       'Photoreal cinematic film still, 35mm lens, natural daylight, wide shot taking in the counter, Jan, and the watching room.',
       LOCATION,
@@ -124,6 +149,7 @@ module.exports = {
       C.maureen,
       'She stands behind the counter with a hand to her mouth, staring at the mess.',
       CROWD,
+      'ALSO IN THE CROWD - ' + C.chris + ' He stands among the onlookers holding his tray, staring at Jan like everyone else. Present but not the focus.',
       'CRITICAL - every single person in the room has STOPPED and is staring at Jan in frozen silence. Forks halfway to mouths, mid-conversation, heads all turned toward him, nobody eating, nobody talking. The whole canteen is frozen.',
       NO_CITY, STYLE,
     ].join(' '),
@@ -161,7 +187,26 @@ module.exports = {
     ].join(' '),
   },
 
-  s3_07_taser_collapse: {
+  // Clip 7 was carrying four distinct actions plus Rick's reveal behind a single
+  // aftermath frame -- Jan turning back, grabbing a second chair, freezing at the
+  // discharge, and dropping. Split so the video has a real start frame for the grab
+  // instead of inventing it. Rick must NOT appear here; the reveal belongs to 07b.
+  s3_07a_second_chair: {
+    beat: 'Jan turns back and grabs a second chair -- the moment before the discharge',
+    refs: [WINDOW, JAN, E3, E4],
+    prompt: [
+      'Photoreal cinematic film still, 35mm lens, natural daylight, medium-wide shot facing the window wall.',
+      LOCATION,
+      C.jan,
+      'He has turned BACK toward the stack of heavy meeting chairs against the brick pier and has both hands on the topmost chair, lifting it clear of the stack, body braced and twisted with the effort, face flushed deep red, teeth bared, still mid-rage and about to throw again.',
+      BROKEN_WINDOW,
+      'The first chair he already threw lies on its side out on the courtyard paving beyond the hole.',
+      'CRITICAL - Rick is NOT in this shot and must not appear anywhere in frame. Office workers stand well back around the edges of the room, frozen and appalled, some with hands over their mouths, nobody intervening.',
+      NO_CITY, STYLE,
+    ].join(' '),
+  },
+
+  s3_07b_taser_collapse: {
     beat: 'Jan face-down unconscious; Rick revealed behind him with the prop taser',
     refs: [WINDOW, JAN, RICK, E3, E4],
     prompt: [

@@ -265,15 +265,24 @@ appear in the clip prompt. No separate TTS or foley pass exists.
 
 ---
 
-## ✅ Section 5 — Decisions needed before generating video
+## ✅ Section 5 — Decisions TAKEN 2026-09-04
 
-1. **Use the fountain dialogue, not the guide** (§1.1, §1.2) — affects clips 7–11.
-   *Recommend: fountain, all four Inception turns and Jan's full closing speech.*
-2. **Split the Inception exchange into two clips** (§2.3)? Needs one new free still.
-   *Recommend: yes.*
-3. **Bridge 06→07 with Sharon opening the blinds** (§2.1)? *Recommend: yes — otherwise
-   the fixture state contradicts itself.*
-4. **How to mark "Minutes later"** (§2.2) — hard cut or held beat?
-5. **Merch quantity** (clip 9) — one box, or find stacked boxes?
+All of the below are now implemented in `higgsfield-tools/browser/scene2_shots.js`
+and the stills regenerated. Kept as a record of what changed and why.
 
-If 2 is taken, Scene 2 becomes **11 clips**, not 10.
+1. ✅ **Fountain dialogue, not the guide** (§1.1, §1.2). All four Inception turns and
+   Jan's full closing speech. The guide is now treated as an audio sketch only.
+2. ✅ **Inception exchange split in two.** `shot08` → `shot08a_dreaming_heckle`
+   (heckle + "What?!") and a new `shot08b_inception_explained` (Chris explains, Jan
+   climbs down flustered) — Jan's flustered beat previously had no anchor at all. The
+   merch gag becomes `shot08c_merch_gag`. Scene 2 is now **11 clips**.
+3. ✅ **06→07 bridged by Sharon opening the blinds**, as a start/end keyframe pair.
+   No new still needed — clip 06 (shut) and clip 07 (open) already are the two frames.
+4. ✅ **"Minutes later" is a hard cut** into clip 07b-1. Standard grammar, needs no
+   asset; just do not chain 07 → 07b-1 as continuous motion.
+5. ✅ **Merch stays one box.** The script's 1,000 items read as the tip of the order;
+   a second still would not earn its clip.
+
+Scene 2 is therefore **11 clips**. Slug changes: `shot08_project_inception_heckle` →
+`shot08a_dreaming_heckle`; `shot08b_merch_gag` → `shot08c_merch_gag`; new
+`shot08b_inception_explained`.

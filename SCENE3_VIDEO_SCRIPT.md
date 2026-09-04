@@ -276,18 +276,25 @@ Recorded so a later pass does not "correct" them back out. All are deliberate.
 
 ---
 
-## ✅ Section 4 — Decisions needed before generating video
+## ✅ Section 4 — Decisions TAKEN 2026-09-04
 
-1. **Christina's sabotage (§1.1)** — add clip 0, voiceover, or drop? *Recommend: add.*
-2. **Rick's full line (§1.2)** — confirm we use the fountain version, not the guide's
-   trimmed one. *Recommend: fountain.*
-3. **Split clip 7 (§ clip 7)** — four actions plus a reveal in ~6s is the highest-risk
-   clip in the scene. *Recommend: split into 07a / 07b.*
-4. **Jan's entrance (§1.3)** — fold into clip 2, or cut to him already at the counter?
-5. **Chris placed in the crowd from clip 1 (§1.4)** — confirm, since it changes the
-   clip 1 and clip 4 video prompts.
+All implemented in `higgsfield-tools/browser/scene3_shots.js`, stills regenerated.
 
-If 1 and 3 are both taken, Scene 3 becomes **11 clips**, not 9.
+1. ✅ **Christina's sabotage restored** as `s3_00_christina_recipe` — the day before,
+   Christina handing Maureen the recipe card and tapping the sugar line while Maureen
+   holds the sugar bag and objects. Option B.
+2. ✅ **Rick's full fountain line**, including "I knew this Taser would come in useful
+   one day in this place." ~30 words, ~11s, inside the ceiling.
+3. ✅ **Clip 7 split.** New `s3_07a_second_chair` (Jan turning back and lifting a second
+   chair off the stack, Rick deliberately absent) and `s3_07b_taser_collapse` (the
+   aftermath and reveal, renamed from `s3_07_taser_collapse`).
+4. ✅ **Jan's entrance folded into clip 2's opening motion** — he walks in and crosses to
+   the counter. No new still; the existing one is the clip's end state.
+5. ✅ **Chris now in the crowd from clip 1.** Clips 1 and 4 regenerated with him in the
+   queue and among the frozen onlookers, so he no longer materialises at clip 8.
+
+Scene 3 is therefore **11 clips**. Still-numbering note: clip 0 is new, clip 7 is now
+07a/07b, and clips 1 and 4 were regenerated to carry Chris.
 
 ---
 

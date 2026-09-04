@@ -145,7 +145,12 @@ module.exports = {
     ].join(' '),
   },
 
-  shot08_project_inception_heckle: {
+  // The Inception exchange is FOUR turns, not one line: Chris heckles ("You're
+  // dreaming Jan!"), Jan misses it ("What?!"), Chris explains, Jan climbs down. The
+  // dialogue guide deletes the first two, which removes the double meaning and leaves
+  // Chris merely stating a film fact. Split across two clips so both of Jan's reaction
+  // beats have an anchor -- neither did before. See SCENE2_VIDEO_SCRIPT.md 1.1 / 2.3.
+  shot08a_dreaming_heckle: {
     beat: 'Chris heckles across the crowd: you are dreaming Jan',
     refs: [LOC, JAN, CHRIS, E1, E2, E3, E4],
     prompt: [
@@ -161,7 +166,23 @@ module.exports = {
     ].join(' '),
   },
 
-  shot08b_merch_gag: {
+  shot08b_inception_explained: {
+    beat: 'Chris explains the film reference; Jan climbs down, flustered',
+    refs: [LOC, JAN, CHRIS, E3, E4],
+    prompt: [
+      'Photoreal cinematic film still, 35mm lens, natural daylight, medium two-shot favouring Jan.',
+      LOCATION,
+      C.chris,
+      'He stands within the crowd, half-turned toward Jan, one hand raised in a patient explaining gesture, eyebrows up, wearing the expression of a man spelling out something obvious to laughter around him.',
+      C.jan,
+      'He is the focus. He has just understood, and he is FLUSTERED rather than angry - mouth slightly open, eyes darting sideways, one hand half-raised in a weak dismissive wave, shoulders dropping, caught out and covering badly. His bluster has collapsed. Shirt re-buttoned askew, tie crooked.',
+      CROWD,
+      'They are openly laughing at him now, several looking at each other.',
+      STYLE,
+    ].join(' '),
+  },
+
+  shot08c_merch_gag: {
     beat: 'Branded merch sight gag, then the lead position is revealed as filled by Jan',
     refs: [LOC, JAN, CHRIS, E3, E4],
     prompt: [

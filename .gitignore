@@ -26,8 +26,9 @@ scratch/
 higgsfield-tools/browser/shots/
 
 # Playwright persistent browser profiles (session cookies -- never commit)
-ai.chrome_playwright_profile/
+ai.chrome_playwright_profile*/
 .chrome_playwright_profile*/
+fal-tools/browser/shots/
 
 # Higgsfield CLI vendored skill bundles (reinstalled by the CLI itself, not project content)
 .agents/skills/

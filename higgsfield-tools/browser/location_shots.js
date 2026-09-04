@@ -52,10 +52,11 @@ module.exports = {
     beat: 'The window Jan hurls a chair through -- must be established before it breaks',
     refs: [MASTER],
     prompt: [
-      // Asking for a new angle while saying "reproduce the reference exactly" just gets
-// the reference back: the first attempt returned the master's camera position with
-// a chair stack added. State the camera MOVE explicitly and say what must now be
-// out of frame, otherwise the model treats the reference as the composition too.
+      // Asking for a new angle while also saying "reproduce the reference exactly" just
+      // gets the reference back: the first attempt returned the master's camera position
+      // with a chair stack added. State the camera MOVE explicitly, and say what must
+      // now be OUT of frame -- otherwise the reference is treated as the composition
+      // too, not just the materials.
       'Photoreal architectural interior photograph, 35mm lens. Match the MATERIALS and FITTINGS of the reference image exactly - same brick piers with black banding, same walnut panelling, same cream tiled floor, same concrete columns, same black-framed glazing, same furniture. But this is a COMPLETELY DIFFERENT CAMERA POSITION: the camera has turned 90 degrees to the RIGHT compared with the reference. You are standing in the middle of the seating area facing the full-height glazed window wall HEAD-ON, square to the glass, so that the tall glass panes FILL THE FRAME from top to bottom and side to side. The servery counter is now BEHIND the camera and must NOT be visible anywhere in this shot. Do not reproduce the reference image composition.',
       CANTEEN,
       'DETAIL THIS SHOT MUST SHOW - the window wall is a run of tall floor-to-ceiling glass panes in slim black metal frames, each pane clean and completely INTACT and unbroken. Against the brick pier beside the window stands a neat stack of heavy dark grey upholstered meeting-room chairs with black metal frames, the kind wheeled in for large meetings.',

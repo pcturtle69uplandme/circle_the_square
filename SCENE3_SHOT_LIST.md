@@ -20,6 +20,13 @@ Three plates in `location-refs/higgsfield/coverage/staff_canteen/`, defined in
 | `staff_canteen_servery_counter` | Jan's exchange with Maureen. Establishes the empty pastry trays and the china stacks he later sweeps. |
 | `staff_canteen_window_wall` | Establishes the intact glazing Jan hurls a chair through, and the stack of heavy meeting chairs he takes it from. |
 
+**All three adopted 2026-09-04.** One lesson worth keeping: the window wall needed a
+re-roll because asking for a new camera angle while also saying "reproduce the
+reference exactly" simply returns the reference — the first attempt handed back the
+master's composition with a chair stack added. Stating the camera *move* ("turned 90
+degrees right… the servery counter is now BEHIND the camera and must NOT be visible")
+fixed it. Describe what leaves the frame, not just what enters it.
+
 The master wide is text-to-image and the other two chain off it, deliberately: the
 `jan_office_corridor` set was ruined by deriving angles from layout text alone (see
 `location-refs/higgsfield/_archive-corridor-meetingroom-wrong/WHY_ARCHIVED.txt`), and

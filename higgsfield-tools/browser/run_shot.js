@@ -12,7 +12,9 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
-const SHOTS = require('./scene2_shots.js');
+// Which shot definitions to drive. Defaults to Scene 2's stills; set HF_SHOTS to
+// point at another module (e.g. ./location_shots.js for the Scene 3 canteen plates).
+const SHOTS = require(process.env.HF_SHOTS || './scene2_shots.js');
 const REPO = path.resolve(__dirname, '..', '..');
 const CDN = 'd8j0ntlcm91z4.cloudfront.net';
 
@@ -180,7 +182,13 @@ async function main() {
 
   const files = shot.refs.map(r => path.join(REPO, r));
   for (const f of files) if (!fs.existsSync(f)) throw new Error(`missing reference: ${f}`);
+  if (!files.length) console.log('no references (text-to-image)');
   await dismissOverlays(page);
+  if (files.length) await attachRefs(page, files);
+  await runPrompt(page, shot, dest, before, browser);
+}
+
+async function attachRefs(page, files) {
   // With no references attached the composer exposes one multi-file input; as soon as
   // any reference exists it swaps to a single-file "add another" input. Handle both,
   // so a partially-cleared composer degrades to slower uploads instead of failing.
@@ -199,7 +207,9 @@ async function main() {
   console.log(`attached ${files.length} reference(s)`);
   // Uploads must finish before the prompt is submitted or they are dropped.
   await page.waitForTimeout(4000 + 1500 * files.length);
+}
 
+async function runPrompt(page, shot, dest, before, browser) {
   await dismissOverlays(page);
   const composer = page.locator('[contenteditable="true"], textarea').first();
   await composer.click();

@@ -18,6 +18,18 @@
 //    model animates BETWEEN two adopted stills. That is how the blinds open (c02) and
 //    how Jan's reaction lands (c07) without either state having to be invented.
 //
+// CAMERA DRIFT AND CHAINING. A clip's prompt can ask for a slow push-in and get a much
+// bigger move: c01 was written wide and came back a medium two-shot. That is fine inside
+// a clip but breaks the JOIN, because the next clip would seed from a framing the camera
+// has already left. Clips that continue the same action therefore carry `chainFrom`,
+// which seeds them from the PREVIOUS clip's real last frame instead of an adopted still
+// (extract it with last_frame.js).
+//
+// Do not chain everywhere. Scene 1 measured generational drift compounding down a chain
+// -- brightness falling and shadows crushing roughly twice every ~4 links -- so reset to
+// an adopted still at every genuine cut, which is most of this scene. Only c02 continues
+// c01's action; the rest are cuts and keep their own stills.
+//
 // HANDLING THE FIXED DURATIONS. fal offers only 5s/10s/15s, and every clip is snapped
 // UP so no line is ever cut mid-delivery. The danger of snapping up is NOT dead air --
 // it is that the model invents business, repeats a gesture, or worst of all invents
@@ -61,7 +73,14 @@ module.exports = {
     // Keyframe pair. Fixes the continuity hole flagged in SCENE2_VIDEO_SCRIPT 2.1:
     // clip 1 ends with the blinds shut, clip 2's still has them open, and nothing
     // showed the change. Animating between the two frames IS the explanation.
-    startImage: `${S}/shot06_corridor_gossip.png`,
+    //
+    // chainFrom, not the original still: c01 was written as a wide two-shot with a slow
+    // push-in and came back a MEDIUM two-shot. Seeding c02 from shot06 would jump the
+    // camera back out to a framing it has already left, and this is continuous action
+    // (Chris and Rick watch Sharon leave), not a cut. So start from c01's real last
+    // frame -- run `node last_frame.js c01_corridor_gossip` first.
+    chainFrom: 'c01_corridor_gossip',
+    startImage: `${S}/shot06_corridor_gossip.png`,   // fallback if the chain frame is absent
     endImage: `${S}/shot07_sharon_exits.png`,
     prompt: [
       LOOK, CAST,

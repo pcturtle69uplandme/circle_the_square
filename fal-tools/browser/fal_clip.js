@@ -29,8 +29,16 @@ const SANDBOX = 'https://fal.ai/sandbox?models=&op=video.image_to_video';
 
 const SEL = {
   prompt: 'textarea[placeholder*="Describe what you want"]',
-  imageInputs: 'input[type=file][accept="image/*"]',  // exactly 2: first frame, last frame
-  run: 'button:has-text("Run")',
+  // ⚠️ Do NOT target input[type=file] directly. The page's SEARCH-BY-IMAGE box is also
+  // an accept="image/*" file input and sorts EARLIER in the DOM, so setInputFiles on it
+  // silently runs a similarity search instead of attaching a reference -- the composer
+  // stays empty and Run stays disabled. Go through the composer's own "Add image"
+  // button and answer the file chooser it raises.
+  addImage: 'button:has-text("Add image")',
+  searchByImageClear: 'input[placeholder*="Searching by image"] ~ button, button[aria-label*="clear" i]',
+  // Must be an exact-text match on a VISIBLE button. A loose :has-text("Run") also
+  // matches hidden ancestors and transient nodes, which then time out on waitFor.
+  run: 'button:visible',
   result: 'video',
 };
 
@@ -41,6 +49,15 @@ const DURATIONS = [5, 10, 15];
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function dismissOverlays(page) {
+  // Radix poppers (the model picker, the duration menu) stay open and swallow clicks
+  // aimed at anything underneath, so close any that are showing before doing anything.
+  for (let i = 0; i < 3; i++) {
+    const open = await page.evaluate(() =>
+      !!document.querySelector('[data-radix-popper-content-wrapper]')).catch(() => false);
+    if (!open) break;
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(500);
+  }
   for (let i = 0; i < 6; i++) {
     const acted = await page.evaluate(() => {
       const vis = (e) => e && e.getBoundingClientRect().width > 0;
@@ -96,7 +113,21 @@ async function main() {
   const outDir = process.argv.slice(3).find(a => !a.startsWith('--')) || path.join(REPO, 'scene2-clips');
   const dest = path.join(outDir, `${cmd}.mp4`);
 
-  const frames = [clip.startImage, clip.endImage].filter(Boolean).map(f => path.join(REPO, f));
+  // chainFrom seeds this clip from the previous clip's real last frame, so the join
+  // survives whatever the camera actually did (see scene2_clips.js). Falls back to the
+  // adopted still if the frame has not been extracted yet.
+  let start = clip.startImage;
+  if (clip.chainFrom) {
+    const chained = path.join('scene2-clips', 'lastframes', `${clip.chainFrom}_last.png`);
+    if (fs.existsSync(path.join(REPO, chained))) {
+      start = chained;
+      console.log(`chaining from ${clip.chainFrom}'s last frame`);
+    } else {
+      console.log(`WARNING: ${clip.chainFrom} last frame missing, falling back to ${clip.startImage}`);
+      console.log(`  run: node last_frame.js ${clip.chainFrom}`);
+    }
+  }
+  const frames = [start, clip.endImage].filter(Boolean).map(f => path.join(REPO, f));
   for (const f of frames) if (!fs.existsSync(f)) throw new Error(`missing frame: ${f}`);
   console.log(`${cmd}: ${clip.seconds}s, ${frames.length} keyframe(s)`);
   console.log(`  ${clip.beats}`);
@@ -113,17 +144,49 @@ async function main() {
   }
   await dismissOverlays(page);
 
+  // The sandbox starts with NO model selected ("Add models"), and Run with none picked
+  // would either fail or fall through to whatever default fal chooses. Selection
+  // persists in the session URL (?models=...), so this only has to be done once -- but
+  // verify every time rather than assume.
+  const modelBtn = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('button'))
+      .map(b => (b.innerText || '').trim())
+      .find(t => /^(Add models|\d+ models?)$/.test(t)) || null);
+  if (!modelBtn || /Add models/.test(modelBtn)) {
+    throw new Error('no model selected in the sandbox -- pick minimax/h3-max/image-to-video first');
+  }
+  console.log(`model: ${modelBtn}`);
+
   if (!DURATIONS.includes(clip.seconds)) {
     throw new Error(`clip ${cmd} asks for ${clip.seconds}s but fal only offers ${DURATIONS.join('/')}s`);
   }
 
-  // Attach the start frame, and the end frame when this is a keyframe pair.
-  const inputs = page.locator(SEL.imageInputs);
-  if (await inputs.count() < frames.length) {
-    throw new Error(`page exposes ${await inputs.count()} file input(s) but this clip needs ${frames.length} -- run \`probe\` and fix SEL.imageInputs`);
+  // Clear any leftover search-by-image state from a previous mistake, so the feed is
+  // not filtered and the composer is the only thing holding our frames.
+  await page.evaluate(() => {
+    const si = document.querySelector('input[placeholder*="Searching by image" i]');
+    if (si) {
+      const clear = si.parentElement && si.parentElement.querySelector('button');
+      if (clear) clear.click();
+    }
+  }).catch(() => {});
+  await page.waitForTimeout(800);
+
+  // Attach the start frame, and the end frame when this is a keyframe pair, through the
+  // composer's own control. Each click raises a native file chooser which Playwright
+  // answers directly -- a real picker dialog cannot be seen or clicked.
+  for (let i = 0; i < frames.length; i++) {
+    const chooser = page.waitForEvent('filechooser', { timeout: 20000 });
+    await page.locator(SEL.addImage).first().click();
+    await (await chooser).setFiles(frames[i]);
+    await page.waitForTimeout(4000);
+    await dismissOverlays(page);
   }
-  for (let i = 0; i < frames.length; i++) await inputs.nth(i).setInputFiles(frames[i]);
-  await page.waitForTimeout(3000 + 2000 * frames.length);
+
+  const attached = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('img'))
+      .filter(im => { const r = im.getBoundingClientRect(); return r.width > 20 && r.width < 200 && r.y > 520; }).length);
+  console.log(`attached ${frames.length} frame(s), composer shows ${attached} thumbnail(s)`);
 
   await dismissOverlays(page);
   const box = page.locator(SEL.prompt).first();
@@ -155,7 +218,13 @@ async function main() {
     Array.from(document.querySelectorAll(sel)).map(v => v.currentSrc || v.src).filter(Boolean), SEL.result));
   console.log(`${before.size} existing video(s) on page, ignoring those`);
 
-  await page.locator(SEL.run).first().click();
+  const runBtn = page.locator(SEL.run).filter({ hasText: /^Run/ }).last();
+  await runBtn.waitFor({ state: 'visible', timeout: 15000 });
+  for (let i = 0; i < 20 && await runBtn.isDisabled(); i++) await page.waitForTimeout(1000);
+  if (await runBtn.isDisabled()) {
+    throw new Error('Run is still disabled -- the reference image or prompt did not register');
+  }
+  await runBtn.click();
   console.log('submitted, waiting for render...');
 
   // Video takes far longer than the image pipeline did; poll patiently.

@@ -57,15 +57,61 @@ Probed while signed in. Four things differed from the documentation:
 1. **The model playground URL 404s.** `fal.ai/models/fal-ai/minimax/h3-max/...` does not
    exist. The working surface is the **sandbox**:
    `https://fal.ai/sandbox?models=&op=video.image_to_video`.
-2. **The free allowance showed "50 free generations today"**, not the documented 5/day.
-   Treat 5 as the guaranteed floor and 50 as a bonus that may be promotional — the
-   driver still caps at `--max 5` by default.
+2. **The "50 free generations today" banner is split PER MODEL, and is misleading.**
+   The breakdown (user-supplied, 2026-09-04) reads:
+
+   | Model | Free/day |
+   |---|---|
+   | Z Image Turbo | 10 |
+   | Birefnet Background Removal V2 | 10 |
+   | FLUX.2 [klein] 9B | 10 |
+   | Wan Text to Video | 5 |
+   | Flux 3 Text To Video Draft | 5 |
+   | **MiniMax H3 Max — Text to Video** | **5** |
+   | Grok Imagine Video 1.5 | 5 |
+
+   🔴 **The MiniMax entry is TEXT-to-video. There is no image-to-video line.** Every
+   clip in this project is image-to-video, anchored on a QA'd still — that is the whole
+   point of the 19 stills. So the free allowance may not cover our route at all. See
+   "Is image-to-video free?" below; this is unresolved and must be settled before
+   planning around £0.
 3. **Duration is a dropdown of 5s / 10s / 15s only** — not free-form seconds. See
    "Handling the fixed durations" below.
 4. **Two image inputs** (`accept="image/*"`), which is exactly what the first/last
    keyframe pairs need.
 
 Re-run `node fal_clip.js probe` if fal changes its UI.
+
+## 🔴 Is image-to-video free? — UNRESOLVED
+
+The free breakdown names **"MiniMax H3 Max Text to Video"** only. Our route is
+image-to-video. Three possibilities, in decreasing order of optimism:
+
+1. The 5/day covers the model regardless of mode, and the label is just loose.
+2. Image-to-video is metered while text-to-video is free.
+3. Image-to-video is metered at a different rate again.
+
+**Evidence to hand**: an earlier session's `minimax/h3-max/image-to-video` run, 5s, is
+logged in the sandbox feed as **Total Cost $0.100** — i.e. ~$0.02/sec, well under the
+$0.08/sec on the public model page. The account balance stands at **$0.74**.
+
+**How to settle it cheaply**: generate exactly one short image-to-video clip and watch
+which counter moves — the free tally, or the $0.74. That costs at most ten cents and
+answers it definitively. Do this before committing to a route.
+
+**What it means if image-to-video is metered:**
+
+| Rate | Scene 2 (125s) | Covered by $0.74? |
+|---|---|---|
+| $0.02/sec (observed) | ~$2.50 | ❌ short ~$1.76 |
+| $0.08/sec (published) | ~$10.00 | ❌ short ~$9.26 |
+
+Either way a small top-up covers it, and both figures are still at or below Higgsfield's
+~$10.64 for the same scene at 2K.
+
+**Do NOT fall back to text-to-video to stay free.** It would discard the still anchors,
+and with them every bit of character and location continuity the 19 QA'd stills exist to
+provide. Paying a few dollars is far cheaper than regenerating that consistency.
 
 ## Handling the fixed durations
 

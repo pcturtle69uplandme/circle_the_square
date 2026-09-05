@@ -56,13 +56,13 @@ const shots = [
   },
   {
     slug: "s4_07_book_him",
-    camera: "Over-the-shoulder shot FAVORING JAN, same setup as shot 2 (behind Christina's shoulder looking at Jan).",
-    action: "Jan's whole face has brightened, sitting up straighter despite the neck brace, one finger pointed decisively toward Christina, delighted with his own decision. Christina's visible profile has one eyebrow raised in silent warning.",
+    camera: "Over-the-shoulder shot FAVORING JAN, same setup as shot 2 (behind Christina's shoulder looking at Jan). CRITICAL -- CHRISTINA IS STANDING, not sitting. She stands beside the desk exactly as in every other shot of this scene; there is no chair under her and she never sits down at any point in this scene.",
+    action: "Jan's whole face has brightened, sitting up straighter despite the neck brace, one finger pointed decisively toward Christina, delighted with his own decision. Christina, standing, her visible profile has one eyebrow raised in silent warning.",
   },
   {
     slug: "s4_08_own_facilities",
     camera: "Medium shot on Christina alone, camera positioned side-on to the desk, same framing as shot 6.",
-    action: "Christina delivers the line flatly, arms now folded, tablet tucked under one arm, coffee cup set down on the desk edge. Jan is small and soft-focused behind her, slumping slightly.",
+    action: "Christina delivers the line flatly, arms now folded, a closed manila document folder tucked under one arm (not a tablet, not a laptop), coffee cup set down on the desk edge. Jan is small and soft-focused behind her, slumping slightly.",
   },
   {
     slug: "s4_09_risk_management",
@@ -72,17 +72,17 @@ const shots = [
   {
     slug: "s4_11_made_up_place",
     camera: "Wide two-shot holding BOTH Jan and Christina in frame together, camera pulled back to the desk-front master framing (matching Picture 1's original wide composition), for a rapid back-and-forth volley of short lines. CRITICAL -- JAN REMAINS SEATED in his desk chair the entire time, exactly as in Picture 1; he never stands up. Christina stands on the near side of the desk as usual.",
-    action: "Jan and Christina are mid-volley, trading quick one-line jabs -- Jan seated, leaning forward across the desk from his chair and gesturing indignantly with one hand, Christina standing at the desk edge replying with flat, immediate put-downs, leaning slightly toward him. Comic rhythm, both fully visible at all times. Jan's chair and lower body are visible, seated, not standing.",
+    action: "Jan and Christina are mid-volley, trading quick one-line jabs -- Jan seated, leaning forward across the desk from his chair and gesturing indignantly with one hand, Christina standing at the desk edge replying with flat, immediate put-downs, leaning slightly toward him with both hands pressed flat on the desk. Her closed manila document folder is set down flat on the desk in front of her hands -- clearly visible, the same folder she has been carrying all scene, not held right now because she needs both hands on the desk to lean in. Comic rhythm, both fully visible at all times. Jan's chair and lower body are visible, seated, not standing.",
   },
   {
     slug: "s4_12_incident_form",
-    camera: "Medium shot on Christina alone, camera positioned side-on near the glazed door, Christina already half-turned to leave, Jan visible small and soft-focused behind the desk.",
-    action: "Christina delivers her line over one shoulder as she turns toward the door, tablet held up slightly, completely unbothered, already checked out of the conversation.",
+    camera: "Medium shot on Christina alone, camera positioned side-on to the desk, same general area and same standing position relative to the desk as the earlier Christina-solo shots -- NOT near the door, the door is not the focus of this shot. Jan visible small and soft-focused behind the desk, seated, same relative position as always.",
+    action: "Christina delivers her line standing at the desk, holding a closed slim manila document folder flat against her chest with both arms -- NOT a tablet, NOT a laptop, just a plain closed folder -- completely unbothered, already mentally checked out of the conversation but still physically present in the room -- she does NOT walk toward the door or leave in this shot. That happens later, at the very end of the scene, not here.",
   },
   {
     slug: "s4_13_give_it_here",
     camera: "Over-the-shoulder shot FAVORING JAN, same setup as shot 2 (behind Christina's shoulder looking at Jan).",
-    action: "Jan sighs and extends one open hand across the desk, resigned, then a beat later his eyes widen in fresh alarm at the page count. Christina's visible profile is already handing him a thick stapled document.",
+    action: "Jan sighs and extends one open hand across the desk, resigned. Christina has just opened the closed manila folder she was carrying and pulled out THE DOCUMENT -- a stapled bundle of roughly fourteen off-white A4 pages, about 5-6mm thick, with a single silver staple through the top-left corner and slightly curled page corners -- and is holding it out, already handing it across the desk to Jan. A beat later Jan's eyes widen in fresh alarm as he registers its thickness. The empty manila folder is now tucked under Christina's other arm.",
   },
   {
     slug: "s4_14_relationship_authority",

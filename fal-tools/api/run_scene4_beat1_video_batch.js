@@ -25,22 +25,22 @@ const NOTEXT = 'No on-screen text, captions or subtitles.';
 
 const shots = [
   { slug: "s4_01_neckbrace_establish", duration: 5,
-    action: "Jan sits alone behind his desk, compulsively squeezing a stress ball in a slow steady rhythm, staring blankly ahead, dazed. After a beat, Christina pushes open the glazed door on the left and steps into the room, tablet against her chest, coffee in her other hand, eyes fixed on Jan with cool appraisal.",
+    action: "Jan sits alone behind his desk, compulsively squeezing a stress ball in a slow steady rhythm, staring blankly ahead, dazed. Christina pushes open the glazed door on the left and walks steadily and naturally across the room, arriving at the near side of the desk by the end of the clip, a closed manila document folder against her chest (not a tablet, not a laptop), coffee in her other hand, eyes fixed on Jan with cool appraisal. She has FULLY CROSSED THE ROOM and is already standing at the desk in the final frame -- not still near the door.",
     dialogue: null,
     audio: "Quiet office room tone, the soft rhythmic squeeze of the stress ball, the door latch and Christina's footsteps entering." },
 
-  { slug: "s4_02_alive_then", duration: 14,
-    action: "Christina stands just inside the room looking at Jan with flat unimpressed appraisal. Jan looks up at her from his stress ball, slightly indignant, then launches into an explanation, gesturing with one hand while the other still holds a stress ball, chin lifted with wounded dignity.",
+  { slug: "s4_02_alive_then", duration: 14, chainFrom: "s4_01_neckbrace_establish",
+    action: "Continuing in ONE continuous unbroken shot from the previous frame -- no cut, and Christina does NOT move or travel any further; she is already standing at the desk right where the previous frame left her. She looks at Jan with flat unimpressed appraisal. Jan looks up at her from his stress ball, slightly indignant. As they begin talking, the camera slowly and gently pushes in toward Jan, gradually settling into a closer over-the-shoulder framing on him by partway through the clip -- a small, smooth camera move only, not a large repositioning. Jan launches into his explanation, gesturing with one hand while the other still holds a stress ball, chin lifted with wounded dignity.",
     dialogue: 'CHRISTINA (flat): "You\'re alive then. Shame." JAN (wounded): "It takes more than eight thousand volts to put Jan Peach down, Christina. I\'ve decided to reframe it internally as a live team-cohesion stress-test. Very on-brand for Inception, if you think about it."',
     audio: "Office room tone, Christina's low heels settling on the floor, the faint squeak of the stress ball." },
 
-  { slug: "s4_03_forty_witnesses", duration: 13,
-    action: "Christina, standing at the edge of the desk, ticks a point off on one raised finger as she lists off witnesses, completely deadpan. Jan's visible profile in the foreground looks increasingly ill as she talks, then delivers his flippant reply with a small dismissive shrug.",
+  { slug: "s4_03_forty_witnesses", duration: 13, chainFrom: "s4_02_alive_then",
+    action: "Continuing in ONE continuous unbroken shot from the previous frame -- no cut. This is a SMALL, SUBTLE camera move only -- barely more than a refocus, NOT a pan or swing to a new angle. The camera does not rotate, arc, or reveal any new geography at all: keep the exact same background elements in the exact same positions as the previous frame (the same triangular feature wall and bookshelf, if visible there; if the previous frame showed a bookshelf close behind Jan, that same bookshelf stays exactly there). Absolutely do NOT cut to or reveal a corridor, glass meeting-room walls, wooden doors, or any office area -- this shot stays inside Jan's office only, tight on the two of them. Christina does not move her feet; she stays exactly where she is standing, holding the SAME closed manila document folder against her chest throughout -- it does not disappear. She shifts the folder to one arm, freeing her other hand to tick a point off on one raised finger as she lists off witnesses, completely deadpan. Jan's visible profile in the foreground looks increasingly ill as she talks, then delivers his flippant reply with a small dismissive shrug.",
     dialogue: 'CHRISTINA (deadpan): "Rick tasered you in front of forty witnesses, the canteen\'s insurance assessor, and a man from Environmental Health who was only there about the extractor fan." JAN: "Yes, well. Nolan films are famously misunderstood on first viewing."',
     audio: "Quiet office room tone only." },
 
-  { slug: "s4_04_crumb_ratio", duration: 13,
-    action: "Christina continues, unimpressed, recounting the incident flatly. Jan's visible profile brightens slightly with an odd, proud half-smile as he asks his question, genuinely curious rather than ashamed.",
+  { slug: "s4_04_crumb_ratio", duration: 13, chainFrom: "s4_03_forty_witnesses",
+    action: "Continuing the exact same held shot with no cut -- Christina continues, unimpressed, recounting the incident flatly. Jan's visible profile brightens slightly with an odd, proud half-smile as he asks his question, genuinely curious rather than ashamed.",
     dialogue: 'CHRISTINA: "It wasn\'t a film, Jan. You threw a chair through a window and collapsed face-first into a tray of pain au chocolat crumbs." JAN (pause, proud): "Did I get a good crumb-to-face ratio? I don\'t remember that part."',
     audio: "Quiet office room tone only." },
 
@@ -49,18 +49,18 @@ const shots = [
     dialogue: 'CHRISTINA: "Ninety percent coverage. HR has photos. For the file." JAN (sudden panic): "There\'s a FILE?!"',
     audio: "Quiet office room tone only." },
 
-  { slug: "s4_06_keynote_offer", duration: 11,
-    action: "Christina, isolated in a medium shot with Jan soft in the background, recites an escalating list off an invisible mental checklist, completely deadpan, gesturing minutely as if counting.",
+  { slug: "s4_06_keynote_offer", duration: 11, chainFrom: "s4_05_for_the_file",
+    action: "Continuing in ONE continuous unbroken shot from the previous frame -- no cut, and NO ROTATING away from the desk area. The camera simply pulls back a little and reframes slightly sideways to bring more of Christina into frame -- the SAME triangular black-white-red feature wall and the SAME built-in bookshelf stay visible in the background throughout, just seen from a little further away. Do not reveal a window wall, a different door, or any part of the room not already visible in the previous frame. Jan remains seated at the desk in the background, small and soft-focused, still in front of the triangular wall. As the camera settles, Christina recites an escalating list off an invisible mental checklist, completely deadpan, gesturing minutely as if counting.",
     dialogue: 'CHRISTINA: "There\'s several. Legal opened one. So did the landlord. So did, somehow, a man on LinkedIn calling himself a \'workplace culture strategist\' who is already offering us a keynote."',
     audio: "Quiet office room tone only." },
 
-  { slug: "s4_07_book_him", duration: 9,
-    action: "Jan's whole face brightens, sitting up straighter despite the neck brace, delighted with his own decision. Christina reacts with a single flat warning word, then Jan barrels past her objection, jabbing a finger for emphasis.",
+  { slug: "s4_07_book_him", duration: 9, chainFrom: "s4_06_keynote_offer",
+    action: "Continuing in ONE continuous unbroken shot from the previous frame -- no cut. Both people are calm and mostly still. Christina remains standing exactly where she was, arms loosely folded, not moving her feet. Jan remains seated and relaxed behind the desk, unmoving from the waist down, resting back in his chair -- he smiles faintly and gives one small pointing gesture with a single hand and a small nod of his head. That is the only movement he makes. The camera pans gently from Christina back toward Jan.",
     dialogue: 'JAN (brightening): "Book him." CHRISTINA: "Jan." JAN: "BOOK. HIM. If a man on the internet believes I have \'culture,\' I am not going to be the one to argue."',
     audio: "Quiet office room tone only." },
 
   { slug: "s4_08_own_facilities", duration: 5,
-    action: "Christina, arms folded, tablet under one arm, delivers the line flatly to Jan seated small in the background behind the desk.",
+    action: "Christina, arms folded, a closed manila document folder under one arm (not a tablet, not a laptop), delivers the line flatly to Jan seated small in the background behind the desk.",
     dialogue: 'CHRISTINA (flat): "There\'s also the small matter of you being tasered by your own Head of Facilities."',
     audio: "Quiet office room tone only." },
 
@@ -81,22 +81,22 @@ const shots = [
     audio: "Quiet office room tone only." },
 
   { slug: "s4_12_incident_form", duration: 9,
-    action: "Christina, already turning toward the glazed door, delivers her line back over one shoulder, tablet held up slightly, completely unbothered, then continues walking toward the door.",
-    dialogue: 'CHRISTINA (leaving): "Speaking of which -- HR needs you to complete an Incident Reflection Form before you\'re cleared to re-enter any room with furniture in it."',
-    audio: "Quiet office room tone, the start of Christina's footsteps moving away." },
+    action: "Christina stands at the desk delivering her line, holding a closed manila document folder flat against her chest (not a tablet, not a laptop), completely unbothered and matter-of-fact. She does NOT walk toward the door and does NOT leave the room in this clip -- she remains standing in roughly the same spot throughout, near the desk, facing Jan. Camera does not follow her anywhere; there is no exit.",
+    dialogue: 'CHRISTINA: "Speaking of which -- HR needs you to complete an Incident Reflection Form before you\'re cleared to re-enter any room with furniture in it."',
+    audio: "Quiet office room tone only." },
 
   { slug: "s4_13_give_it_here", duration: 5,
-    action: "Jan sighs and extends one open hand across the desk toward Christina, resigned. Christina hands him a thick stapled document. A beat later Jan's eyes widen in fresh alarm as he registers its thickness.",
+    action: "Jan sighs and extends one open hand across the desk toward Christina, resigned. Christina opens the closed manila folder she has been carrying this whole scene and draws out THE DOCUMENT -- a stapled bundle of roughly fourteen off-white A4 pages, about 5-6mm thick, a single silver staple through the top-left corner, slightly curled page corners -- handing it across the desk to Jan. The now-empty folder is tucked under her other arm. A beat later Jan's eyes widen in fresh alarm as he registers its thickness.",
     dialogue: 'JAN (sighing): "Fine. Give it here." CHRISTINA: "It\'s fourteen pages." JAN: "FOURTEEN?! For a taser?!"',
     audio: "Quiet office room tone, the rustle/thump of the document changing hands." },
 
-  { slug: "s4_14_relationship_authority", duration: 8,
-    action: "Christina, leaning in slightly, gestures toward the document with clinical bureaucratic calm as she explains its contents. Jan, small in the background, stares down at the pages in dawning horror as he flips through them.",
+  { slug: "s4_14_relationship_authority", duration: 8, chainFrom: "s4_13_give_it_here",
+    action: "Continuing in ONE continuous unbroken shot from the previous frame -- no cut, and NO ROTATING away from the desk area -- the SAME triangular feature wall and bookshelf stay visible, do not reveal a window wall or any part of the room not already visible. The camera pulls back a little and reframes slightly to bring more of Christina into view. She holds the empty manila folder under one arm and gestures toward the document -- the EXACT SAME physical document Jan is now holding, same thickness, same curled corners, unchanged -- with clinical bureaucratic calm as she explains its contents. Jan, small in the background, stares down at that same document in dawning horror as he flips through it.",
     dialogue: 'CHRISTINA (clinical): "Page one is the taser. Pages two through fourteen are follow-up questions about your \'relationship with authority,\' prompted by page one."',
     audio: "Quiet office room tone, the soft rustle of turning pages." },
 
-  { slug: "s4_15_coversheet_memo", duration: 8,
-    action: "Jan mutters down at the document, defeated, one hand rubbing his forehead near the plaster. Christina, now mid-stride toward the open glazed door, delivers her closing line back over her shoulder without breaking stride, then exits through the door, pulling it most of the way closed behind her.",
+  { slug: "s4_15_coversheet_memo", duration: 8, chainFrom: "s4_14_relationship_authority",
+    action: "Continuing in ONE continuous unbroken shot from the previous frame -- no cut, and NO ROTATING to reveal any part of the room not already established (the same triangular wall, bookshelf and glazed door area). The camera pulls back further to a wide two-shot. Jan mutters down at the SAME document -- unchanged thickness -- defeated, one hand rubbing his forehead near the plaster. Christina, folder still under one arm, steps away toward the glazed door on the left and delivers her closing line back over her shoulder without breaking stride, then exits through the door, pulling it most of the way closed behind her.",
     dialogue: 'JAN (muttering): "This is worse than the coversheet memo." CHRISTINA (leaving, over her shoulder): "Everything is worse than the coversheet memo, Jan. That\'s why we keep sending it."',
     audio: "Quiet office room tone, Christina's footsteps receding, the door clicking mostly shut at the very end." },
 ];

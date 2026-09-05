@@ -1,0 +1,698 @@
+<title>Circle the Square — Cast Bible</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #211d17;
+      --paper-raised: #2a251d;
+      --paper-tab: #171310;
+      --ink: #ede6d6;
+      --ink-soft: #b7ae99;
+      --line: #4a4030;
+      --accent: #e2603f;
+      --accent-soft: rgba(226, 96, 63, 0.18);
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #211d17;
+    --paper-raised: #2a251d;
+    --paper-tab: #171310;
+    --ink: #ede6d6;
+    --ink-soft: #b7ae99;
+    --line: #4a4030;
+    --accent: #e2603f;
+    --accent-soft: rgba(226, 96, 63, 0.18);
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
+
+  :root {
+    --paper: #e4dfcf;
+    --paper-raised: #f3efe3;
+    --paper-tab: #d8cfb4;
+    --ink: #2a2620;
+    --ink-soft: #6b6455;
+    --line: #c9c0a8;
+    --accent: #b0381f;
+    --accent-soft: rgba(176, 56, 31, 0.1);
+    --shadow: rgba(42, 38, 32, 0.18);
+
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.55;
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  .cover {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    padding: 2rem 2rem 1.6rem;
+    position: relative;
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: -8px; left: 28px;
+    width: 34px; height: 16px;
+    background: var(--paper-tab);
+    border: 1px solid var(--line);
+    border-bottom: none;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 4.4vw, 2.6rem);
+    margin: 0.25rem 0 0.4rem;
+    text-wrap: balance;
+  }
+  .cover-sub { font-size: 0.95rem; color: var(--ink-soft); max-width: 64ch; }
+  .cover-meta {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem;
+    margin-top: 1.1rem; padding-top: 0.9rem;
+    border-top: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 0.78rem; color: var(--ink-soft);
+  }
+  .cover-meta b { color: var(--ink); font-weight: 600; }
+
+  .callout {
+    margin-top: 1.4rem;
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 1rem 1.2rem;
+    font-size: 0.88rem;
+  }
+  .callout b { color: var(--accent); }
+  .callout ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+  .callout li { margin-bottom: 0.35rem; }
+
+  .directory {
+    margin-top: 1.6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.7rem;
+  }
+  .dir-card {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    text-decoration: none; color: var(--ink);
+  }
+  .dir-badge {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    border: 1.5px solid var(--accent); color: var(--accent);
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dir-name { font-size: 0.86rem; font-weight: 600; line-height: 1.2; }
+  .dir-role { font-size: 0.72rem; color: var(--ink-soft); }
+
+  section.file { margin-top: 2.4rem; position: relative; }
+  .tab {
+    display: inline-flex; align-items: baseline; gap: 0.6rem;
+    background: var(--paper-tab); border: 1px solid var(--line); border-bottom: none;
+    padding: 0.4rem 0.9rem 0.3rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .folder {
+    border: 1px solid var(--line); background: var(--paper-raised);
+    padding: 1.6rem 1.8rem 1.8rem; box-shadow: 0 2px 10px var(--shadow);
+  }
+  .file-head {
+    display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;
+    gap: 0.8rem; border-bottom: 1px solid var(--line); padding-bottom: 0.9rem; margin-bottom: 1.1rem;
+  }
+  .file-name { font-family: var(--display); font-size: 1.7rem; margin: 0; }
+  .file-role { color: var(--ink-soft); font-size: 0.9rem; margin-top: 0.15rem; }
+  .stamp {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); border: 1.5px solid var(--accent); padding: 0.28rem 0.55rem;
+    transform: rotate(-3deg); white-space: nowrap;
+  }
+
+  .grid { display: grid; grid-template-columns: 210px 1fr; gap: 1.8rem; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  .fields dl {
+    margin: 0; display: grid; grid-template-columns: auto 1fr;
+    row-gap: 0.55rem; column-gap: 0.5rem; font-family: var(--mono); font-size: 0.78rem;
+  }
+  .fields dt { color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.68rem; padding-top: 0.15rem; }
+  .fields dd { margin: 0; }
+
+  .narrative h4 {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin: 1.1rem 0 0.3rem;
+  }
+  .narrative h4:first-child { margin-top: 0; }
+  .narrative p { margin: 0 0 0.2rem; font-size: 0.95rem; }
+  .narrative ul { margin: 0.2rem 0 0; padding-left: 1.2rem; font-size: 0.92rem; }
+  .narrative li { margin-bottom: 0.25rem; }
+
+  .gallery {
+    margin-top: 1.4rem; border-top: 1px dashed var(--line); padding-top: 1.2rem;
+  }
+  .gallery h4 {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 0.6rem;
+  }
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.6rem;
+  }
+  .gallery-grid figure { margin: 0; }
+  .gallery-grid img {
+    width: 100%; height: 110px; object-fit: cover; display: block;
+    border: 1px solid var(--line); background: var(--paper-tab);
+  }
+  .gallery-grid figcaption {
+    font-family: var(--mono); font-size: 0.64rem; color: var(--ink-soft);
+    margin-top: 0.25rem; line-height: 1.3;
+  }
+
+  .flag {
+    display: inline-block; margin-top: 0.5rem; font-family: var(--mono); font-size: 0.72rem;
+    background: var(--accent-soft); color: var(--accent); padding: 0.3rem 0.5rem; border: 1px solid var(--accent);
+  }
+
+  .notes { margin-top: 2.4rem; border: 1px solid var(--line); background: var(--paper-raised); padding: 1.6rem 1.8rem; }
+  .notes h3 { font-family: var(--display); font-size: 1.25rem; margin: 0 0 0.9rem; }
+  .notes table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .notes td, .notes th { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .notes th { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+
+  footer { margin-top: 2.5rem; text-align: center; font-family: var(--mono); font-size: 0.7rem; color: var(--ink-soft); letter-spacing: 0.06em; }
+</style>
+
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow">Prism &nbsp;·&nbsp; Cast File &nbsp;·&nbsp; Confidential Draft</div>
+    <h1>Circle the Square — Cast Bible</h1>
+    <p class="cover-sub">The people of ExInc, treated the way <code>location-bible.html</code> treats the building. Physical description, wardrobe and demeanor locked once from the exact text used to generate each character's reference set in <code>character-refs/higgsfield/</code>, so prompts across scenes never drift from the art.</p>
+    <div class="cover-meta">
+      <span><b>9</b> cast files</span>
+      <span><b>8</b> with a complete 12-shot reference set</span>
+      <span><b>1</b> new, turnaround sheet only (Debbie Vance)</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <b>Route: photoreal, not the archived cartoon pivot.</b>
+    <ul>
+      <li>This supersedes <code>CARTOON_CAST_BIBLE.md</code> / <code>character-bible.html</code> — those are the abandoned comic-style pass (company renamed "PRISM", height-scale model sheets). The live route is photoreal, per <code>SCENE2_PLATE_SHOT_LIST.md</code> and <code>SCENE3_SHOT_LIST.md</code>.</li>
+      <li>The company in-universe is <b>ExInc</b> (per <code>CTS_Featurette_Episode.fountain</code>). "Prism" above is the real-world production credit, not the fictional employer.</li>
+      <li>Every physical description below is copied verbatim from the <code>CHARACTERS</code> object in <code>higgsfield-tools/generate-cast-refs.js</code> — that file is the actual source of the prompts that produced the reference images, so this page and the generator can't silently disagree.</li>
+    </ul>
+  </div>
+
+  <div class="directory">
+    <a class="dir-card" href="#c1"><span class="dir-badge">01</span><span><span class="dir-name">Jan Peach</span><br><span class="dir-role">CEO</span></span></a>
+    <a class="dir-card" href="#c2"><span class="dir-badge">02</span><span><span class="dir-name">Christina Dross</span><br><span class="dir-role">Comms Lead</span></span></a>
+    <a class="dir-card" href="#c3"><span class="dir-badge">03</span><span><span class="dir-name">Sharon Enfield</span><br><span class="dir-role">Staff</span></span></a>
+    <a class="dir-card" href="#c4"><span class="dir-badge">04</span><span><span class="dir-name">Chris</span><br><span class="dir-role">Staff</span></span></a>
+    <a class="dir-card" href="#c5"><span class="dir-badge">05</span><span><span class="dir-name">Rick</span><br><span class="dir-role">Head of Facilities</span></span></a>
+    <a class="dir-card" href="#c6"><span class="dir-badge">06</span><span><span class="dir-name">Maureen</span><br><span class="dir-role">Canteen worker</span></span></a>
+    <a class="dir-card" href="#c7"><span class="dir-badge">07</span><span><span class="dir-name">Gemma Ashcroft</span><br><span class="dir-role">Receptionist</span></span></a>
+    <a class="dir-card" href="#c8"><span class="dir-badge">08</span><span><span class="dir-name">Trevor</span><br><span class="dir-role">Data analyst · unused</span></span></a>
+    <a class="dir-card" href="#c9"><span class="dir-badge">09</span><span><span class="dir-name">Debbie Vance</span><br><span class="dir-role">HR manager · NEW</span></span></a>
+  </div>
+
+  <!-- 01 — JAN -->
+  <section class="file" id="c1">
+    <div class="tab">01 · Principal</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Jan Peach</p>
+          <p class="file-role">CEO, ExInc — appears in every scene so far</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>52</dd>
+            <dt>Height</dt><dd>5'10"</dd>
+            <dt>Build</dt><dd>Visibly overweight, round belly</dd>
+            <dt>Wardrobe</dt><dd>Too-tight navy suit, gold watch</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>52-year-old British man. Visibly overweight build, 5'10", a prominent round belly straining and pulling at his shirt buttons, soft double chin, rounded slumped shoulders. Thinning mid-brown hair greying at the temples, combed sideways in a clear side parting over a receding hairline, visibly product-slicked and flat. Slightly-too-tight dark navy two-button suit jacket open over a white dress shirt stretched across his stomach, top button undone, tie visibly loosened and hanging askew (not tightly knotted), oversized flashy gold wristwatch, wedding ring.</p>
+          <h4>In-character expression</h4>
+          <p>Arrogant, pompous expression, chin raised, mid-sentence as if lecturing someone.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing with hands on hips in a self-important power pose, chest puffed out.</p>
+          <h4>Wardrobe drift by scene</h4>
+          <ul>
+            <li>Scenes 1–2: white shirt, tie loosened askew (script-pinned).</li>
+            <li>Scene 3 ("next morning"): pale blue shirt, dark red tie — same suit jacket silhouette.</li>
+            <li>Scene 4 ("next day"): same Scene 3 shirt/tie, now creased, re-buttoned wrong, plus a large foam neck brace (swaps for a smaller one in the canteen beat).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/jan/jan_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/jan/jan_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — CHRISTINA -->
+  <section class="file" id="c2">
+    <div class="tab">02 · Principal</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Christina Dross</p>
+          <p class="file-role">Comms Lead, ExInc — Jan's fixer</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>38</dd>
+            <dt>Height</dt><dd>5'6"</dd>
+            <dt>Build</dt><dd>Slim, upright, squared shoulders</dd>
+            <dt>Wardrobe</dt><dd>Charcoal blazer, cream blouse</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>38-year-old British woman. Slim, upright build with squared shoulders, 5'6". Sleek dark brown bob with a blunt fringe or crisp side part, always neatly set. Tailored charcoal or navy blazer over a cream blouse, tailored trousers or pencil skirt, low block heels, minimal gold jewellery, company lanyard.</p>
+          <h4>In-character expression</h4>
+          <p>Cold, controlled, faint deadpan smile, appraising look.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing holding a tablet against her chest, poised and composed.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/christina/christina_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/christina/christina_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — SHARON -->
+  <section class="file" id="c3">
+    <div class="tab">03 · Principal</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Sharon Enfield</p>
+          <p class="file-role">Staff, ExInc — Jan's affair</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>34</dd>
+            <dt>Height</dt><dd>5'5"</dd>
+            <dt>Build</dt><dd>Curvy</dd>
+            <dt>Wardrobe</dt><dd>Jewel-tone blouse, pencil skirt</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>34-year-old British woman. Curvy build, 5'5". Shoulder-length wavy auburn hair worn loose. Fitted jewel-tone blouse, pencil skirt, heels, hair and makeup neatly done, company lanyard.</p>
+          <h4>In-character expression</h4>
+          <p>Warm, knowing half-smile, relaxed confidence.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing with one hand on hip, phone in the other hand, casual confident stance.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/sharon/sharon_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/sharon/sharon_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — CHRIS -->
+  <section class="file" id="c4">
+    <div class="tab">04 · Principal</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Chris</p>
+          <p class="file-role">Staff, ExInc — office smart-mouth</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>32</dd>
+            <dt>Height</dt><dd>5'11"</dd>
+            <dt>Build</dt><dd>Lean</dd>
+            <dt>Wardrobe</dt><dd>Light blue shirt (script-pinned)</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>32-year-old British man. Lean build, 5'11". Short, textured dark hair. Casual-smart office wear, shirt untucked or sleeves rolled, no tie, company lanyard, casual shoes.</p>
+          <h4>In-character expression</h4>
+          <p>Sarcastic smirk, one eyebrow raised, amused.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing leaning slightly to one side, coffee cup in hand, relaxed slouched posture.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/chris/chris_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/chris/chris_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — RICK -->
+  <section class="file" id="c5">
+    <div class="tab">05 · Principal</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Rick</p>
+          <p class="file-role">Head of Facilities, ExInc — title confirmed in Scene 4 dialogue</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>40</dd>
+            <dt>Height</dt><dd>6'0"</dd>
+            <dt>Build</dt><dd>Sturdy, broad</dd>
+            <dt>Wardrobe</dt><dd>Grey polo (script-pinned)</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>40-year-old British man. Sturdy, broad build, 6'0". Short greying hair, near-buzzcut. Plain button-down or polo shirt, sleeves rolled, sturdy trousers, practical shoes, company lanyard.</p>
+          <h4>In-character expression</h4>
+          <p>Flat, unbothered, unblinking stare, arms crossed.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing at ease with arms crossed, sturdy stance, watching something off camera.</p>
+          <h4>Props</h4>
+          <p>Prop taser (Scene 3 climax). Scene 4 establishes a whole desk drawer of contraband: bear spray, zip ties, a second taser, an unlicensed flare gun.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/rick/rick_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/rick/rick_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — MAUREEN -->
+  <section class="file" id="c6">
+    <div class="tab">06 · Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Maureen</p>
+          <p class="file-role">Canteen worker — Scene 3's "CANTEEN WORKER," named in production</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>58</dd>
+            <dt>Build</dt><dd>Average</dd>
+            <dt>Wardrobe</dt><dd>Beige apron, white polo</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>58-year-old British woman, a canteen worker. Average build. Short greying curly hair pinned back, reading glasses on a chain. Beige apron over a white polo shirt.</p>
+          <h4>In-character expression</h4>
+          <p>Warm, no-nonsense, faint smile, practical demeanor.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing behind a counter gesture, wiping hands on apron, welcoming but brisk posture.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/maureen/maureen_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/maureen/maureen_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — GEMMA -->
+  <section class="file" id="c7">
+    <div class="tab">07 · Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Gemma Ashcroft</p>
+          <p class="file-role">Receptionist, front of house — no scene yet</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>26</dd>
+            <dt>Height</dt><dd>5'7"</dd>
+            <dt>Build</dt><dd>Slim</dd>
+            <dt>Wardrobe</dt><dd>White blouse, slate-grey blazer</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>26-year-old British woman, a receptionist. Slim build, 5'7". Sleek dark blonde hair in a high ponytail. White blouse, slate-grey blazer, pencil skirt, black low heels, orange lanyard, discreet telephone headset.</p>
+          <h4>In-character expression</h4>
+          <p>Polished, professional customer-service smile, warm and welcoming.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing with one hand near her ear adjusting the telephone headset, professional welcoming posture.</p>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/gemma/gemma_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/gemma/gemma_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 — TREVOR -->
+  <section class="file" id="c8">
+    <div class="tab">08 · Supporting</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Trevor</p>
+          <p class="file-role">Data analyst — unused, no scene written</p>
+        </div>
+        <div class="stamp">Reference locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>35</dd>
+            <dt>Height</dt><dd>5'10"</dd>
+            <dt>Build</dt><dd>Average</dd>
+            <dt>Wardrobe</dt><dd>Charcoal overcoat</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>35-year-old British man, a data analyst. Average build, 5'10". Short neat brown hair, clean-shaven. Charcoal overcoat over a slate-grey shirt, dark trousers, cross-body messenger bag, company lanyard.</p>
+          <h4>In-character expression</h4>
+          <p>Completely deadpan, blank stare directly into camera, no expression.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing perfectly still, arms at sides, blank deadpan expression, messenger bag across his body.</p>
+          <div class="flag">Age/build/hair are invented placeholders per generate-cast-refs.js — not established project canon. Confirm before treating as final if a scene finally uses him.</div>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plates (12/12)</h4>
+        <div class="gallery-grid">
+          <figure><img src="character-refs/higgsfield/trevor/trevor_front.png"><figcaption>front (anchor)</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_three_quarter_left.png"><figcaption>3/4 left</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_three_quarter_right.png"><figcaption>3/4 right</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_profile.png"><figcaption>profile</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_slight_up.png"><figcaption>slight up</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_slight_down.png"><figcaption>slight down</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_expression_neutral.png"><figcaption>expression: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_expression_incharacter.png"><figcaption>expression: in-character</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_fullbody_neutral.png"><figcaption>fullbody: neutral</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_fullbody_characteristic.png"><figcaption>fullbody: characteristic</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_lighting_soft.png"><figcaption>lighting: soft</figcaption></figure>
+          <figure><img src="character-refs/higgsfield/trevor/trevor_lighting_harsh.png"><figcaption>lighting: harsh</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 — DEBBIE -->
+  <section class="file" id="c9">
+    <div class="tab">09 · New — Scene 4</div>
+    <div class="folder">
+      <div class="file-head">
+        <div>
+          <p class="file-name">Debbie Vance</p>
+          <p class="file-role">HR manager, ExInc — introduced in Scene 4 (SCENE4_SHOT_LIST.md)</p>
+        </div>
+        <div class="stamp">Turnaround locked</div>
+      </div>
+      <div class="grid">
+        <div class="fields">
+          <dl>
+            <dt>Age</dt><dd>45</dd>
+            <dt>Height</dt><dd>5'6"</dd>
+            <dt>Build</dt><dd>Average, sturdy</dd>
+            <dt>Wardrobe</dt><dd>Forest-green cardigan</dd>
+          </dl>
+        </div>
+        <div class="narrative">
+          <h4>Physical description</h4>
+          <p>45-year-old British woman, an HR manager. Average sturdy build, 5'6". Straight shoulder-length mousy brown hair with a blunt fringe, practical and unstyled. Plain forest-green cardigan over a cream blouse, sensible navy trousers, flat shoes, an HR lanyard with a laminated badge, reading glasses pushed up on top of her head.</p>
+          <h4>In-character expression</h4>
+          <p>Completely unbothered, professionally blank deadpan expression — the look of someone who stopped being surprised by anything in this building years ago.</p>
+          <h4>Characteristic pose</h4>
+          <p>Standing holding a clipboard against her chest with both hands, weight on one hip, patiently waiting.</p>
+          <div class="flag">Generated 2026-09-05 via Google Flow, project "AI - Circle the square," Nano Banana Pro, 16:9, x1, 0 credits. Higgsfield's web free tier and the 2.07-credit MCP balance were both exhausted first — see <code>higgsfield-tools/browser/debbie_refs.js</code> for the abandoned 12-shot-recipe attempt. This one turnaround sheet is the current reference; a matching 12-shot angle/expression/lighting set (front/3-4/profile/slight-up/slight-down/expressions/fullbody/lighting) has not been built yet, so composited shots needing an exact angle not shown here should be edited from this sheet rather than invented from text alone.</div>
+        </div>
+      </div>
+      <div class="gallery">
+        <h4>Reference plate — turnaround sheet</h4>
+        <figure style="margin:0;max-width:520px;">
+          <img src="character-refs/higgsfield/debbie/debbie_turnaround_sheet.png" style="width:100%;height:auto;border:1px solid var(--line);">
+          <figcaption style="font-family:var(--mono);font-size:0.68rem;color:var(--ink-soft);margin-top:0.4rem;">front / 3-4 / profile / back — single generation, 1376×768</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h3>Cast status</h3>
+    <table>
+      <tr><th>Character</th><th>Status</th><th>First appearance</th></tr>
+      <tr><td>Jan Peach</td><td>Active, reference locked</td><td>Scene 1 — Jan's office</td></tr>
+      <tr><td>Christina Dross</td><td>Active, reference locked</td><td>Scene 1 — Jan's office</td></tr>
+      <tr><td>Sharon Enfield</td><td>Active, reference locked</td><td>Scene 1 — Jan's office</td></tr>
+      <tr><td>Chris</td><td>Active, reference locked</td><td>Scene 1 — Corridor/open-plan</td></tr>
+      <tr><td>Rick</td><td>Active, reference locked</td><td>Scene 1 — Corridor/open-plan; taser reveal in Scene 3</td></tr>
+      <tr><td>Maureen</td><td>Active, reference locked</td><td>Scene 3 — Canteen</td></tr>
+      <tr><td>Gemma Ashcroft</td><td>Reference locked, unused</td><td>None written yet</td></tr>
+      <tr><td>Trevor</td><td>Reference locked, unused, canon unconfirmed</td><td>None written yet</td></tr>
+      <tr><td>Debbie Vance</td><td><b>New — turnaround sheet generated, 12-shot set not yet built</b></td><td>Scene 4 — HR breakout room</td></tr>
+    </table>
+  </div>
+
+  <footer>Circle the Square — Cast Bible · generated 2026-09-05 · companion to location-bible.html</footer>
+
+</div>

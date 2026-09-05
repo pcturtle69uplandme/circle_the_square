@@ -174,10 +174,24 @@ module.exports = {
   c06_naming_inception: {
     beats: 'Shot 07c-2 — Jan finishes justifying and names the project',
     seconds: 15,
-    startImage: `${S}/shot07c2_naming_inception.png`,
+    // ACCEPTED TAKE chains from c05's real last frame, NOT shot07c2_naming_inception.png.
+    // Jan's justification-into-naming is one unbroken speech in the fountain, split only
+    // for fal's 15s cap -- no scene/beat break here. A fresh-still take from shot07c2 (a
+    // different, wider angle by Jan's office door) rendered and passed QA but read as Jan
+    // warping to a new shot mid-sentence. See
+    // .agents/rules/location_continuity_rules.md ("Never let a still-speaking character
+    // warp to a different shot mid-line").
+    //
+    // v2: also has RICK WALK OFF during the final silent hold. c07's accepted take (the
+    // shot08a/shot08b keyframe pair) never included Rick, which read as him vanishing
+    // between clips. Rather than risk another broken fix on c07 (already tried once, see
+    // run_c07_inception_exchange_v2_REJECTED.js), c06 now motivates his absence instead:
+    // unimpressed, he turns and walks away down the corridor, back to camera, before c06
+    // ends -- so c07 opening without him reads as a deliberate exit, not a continuity error.
+    startImage: `${S}/../scene2-clips/lastframes/c05_rick_questions_last.png`,
     prompt: [
       LOOK, CAST, LANG, FRAMING,
-      'ACTION: Jan continues, gathering pomposity, then builds to the announcement — chest puffed, one arm raised high and presenting, palm open, beaming as if announcing a moon landing. Rick stands beside and slightly behind him, arms folded, staring flatly, entirely unimpressed. The crowd\'s reaction is flat and unenthused.',
+      'ACTION: begin exactly on the reference frame -- continuing directly from Jan\'s explanation, mid-conversation, no cut. Jan gathers pomposity as he keeps talking, chest puffing up, then builds to the announcement -- one arm raising high and presenting, palm open, beaming as if unveiling a moon landing. Rick stays arms folded beside him, staring flatly, entirely unimpressed. The crowd\'s reaction is flat and unenthused.',
       'DIALOGUE: @Jan (speaking in a pompous English Home Counties accent): "I know because I see everything happening so am best placed to judge. We need a new project to continue the success of the previous project. So I have decided to call the project... Inception."',
       'AUDIO: dead silence on the announcement — no applause, no reaction at all, which is the joke.',
       'TIMING: the dialogue ends at about 13 seconds. HOLD the final 2 seconds on complete silence and blank faces -- nobody reacts to the name at all. That non-reaction is the joke. No further dialogue.',
@@ -187,9 +201,18 @@ module.exports = {
   c07_inception_exchange: {
     beats: 'Shots 08a + 08b — all FOUR turns of the Inception gag',
     seconds: 10,
-    // Keyframe pair: opens on Chris mid-heckle, ends on Jan's flustered climb-down.
-    // Both of Jan's reaction beats ("What?!" and the climb-down) had no anchor at all
-    // before shot08b was generated. See SCENE2_VIDEO_SCRIPT 2.3.
+    // ACCEPTED TAKE (v3) is a single start image: shot08a_dreaming_heckle_v3.png, composited
+    // (fal-tools/api/compose_shot08_heckle_v3.js) from c06's REAL last frame -- so Jan, the
+    // crowd, and Rick (still mid-corridor, back turned, walking away) are pixel-accurate --
+    // plus Chris added via his character reference sheet. Fixes the two problems the v2
+    // composite had: pass `aspect_ratio`/`resolution` explicitly on the nano-banana-pro/edit
+    // call (came back 2752x1536, matching the scene, vs. v2's default 1024x1024 square), and
+    // leave Rick out of the CAST/dialogue prompt entirely -- he has no lines and is already
+    // correctly rendered in the seed image, and naming him alongside Jan/Chris in v2
+    // coincided with a voice-swap (Jan's line coming out in Chris's voice). See
+    // .agents/rules/location_continuity_rules.md for the full history: v1 (this keyframe
+    // pair, kept at scene2-clips/superseded/) had correct aspect/voices but no Rick at all;
+    // v2 (run_c07_inception_exchange_v2_REJECTED.js) added him back but broke both.
     startImage: `${S}/shot08a_dreaming_heckle.png`,
     endImage: `${S}/shot08b_inception_explained.png`,
     prompt: [
@@ -203,6 +226,14 @@ module.exports = {
   c08_merch_gag: {
     beats: 'Shot 08c — the branded merch, and Jan appoints himself',
     seconds: 15,
+    // ACCEPTED TAKE chains from c07's real last frame, NOT shot08c_merch_gag.png. No
+    // scene/beat break in the fountain between c07's last line and this one -- same
+    // continuous paragraph, same two people (Jan, Chris) already on screen. The merch box
+    // is a new PROP, not a new character, so it carries none of the identity-lock risk
+    // that ruled out chaining for c07 -- described in text only, referencing this still for
+    // the intended look (cardboard box printed "PROJECT INCEPTION", foam balls/pens/shirts
+    // inside). See fal-tools/api/run_c08_merch_gag.js and
+    // .agents/rules/location_continuity_rules.md.
     startImage: `${S}/shot08c_merch_gag.png`,
     prompt: [
       LOOK, CAST, LANG, FRAMING,
@@ -216,6 +247,9 @@ module.exports = {
   c09_groans: {
     beats: 'Shot 09-1 — the crowd groans, Jan justifies the 50k',
     seconds: 15,
+    // ACCEPTED TAKE chains from c08's real last frame, NOT shot09_1_groans.png -- no
+    // scene/beat break in the fountain between the merch reveal and the crowd's groan.
+    // See fal-tools/api/run_c09_groans.js and .agents/rules/location_continuity_rules.md.
     startImage: `${S}/shot09_1_groans.png`,
     prompt: [
       LOOK, CAST, LANG, FRAMING,
@@ -229,6 +263,10 @@ module.exports = {
   c10_get_back_to_work: {
     beats: 'Shot 09-2 — "now GET BACK TO WORK!"',
     seconds: 10,
+    // ACCEPTED TAKE chains from c09's real last frame, NOT shot09_2_50k_outburst.png --
+    // one unbroken speech in the fountain, split into c09/c10 only for the duration cap.
+    // See fal-tools/api/run_c10_get_back_to_work.js and
+    // .agents/rules/location_continuity_rules.md.
     startImage: `${S}/shot09_2_50k_outburst.png`,
     prompt: [
       LOOK, CAST, LANG, FRAMING,

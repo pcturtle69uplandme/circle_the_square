@@ -102,3 +102,84 @@ kept for reference, not used in the cut.
 early clip's frame — `python3` + PIL, check `(arr.min(axis=2)<5).mean()` (fraction of
 near-black pixels) and overall brightness. Rising shadow-crush and falling brightness across
 a chain is the tell; eyeballing alone can miss it until it's severe.
+
+## Never let a still-speaking character warp to a different shot mid-line
+
+When a single scripted speech is split across two clips only because of fal's 15s duration
+cap — not because the fountain has an actual beat break — the second clip MUST chain from
+the first clip's real extracted last frame, never from an independently pre-designed
+"adopted still," even when that still shows a plausible alternate camera angle for the
+same beat.
+
+**Case that cost a render**: `c05_rick_questions` → `c06_naming_inception` (Scene 2). The
+fountain writes Jan's justification and the "Inception" naming as one unbroken speech
+(`CTS_Featurette_Episode.fountain` L122); it's split into two clips purely for the duration
+cap. c06 was first generated from an independently adopted still
+(`shot07c2_naming_inception.png`) showing a different, wider angle near Jan's office door —
+reasoned at the time as an intentional cut for the reveal beat, since the two stills were
+designed with different framings. It rendered fine and passed the audio-transcription gate,
+but on review it reads as Jan warping to a new position mid-sentence, because there is no
+cut in the underlying scene to justify it. The render was wasted; redone chained from
+`c05`'s actual last frame instead.
+
+**Rule: if the character is still speaking the same continuous line (no scene/beat break in
+the fountain at that point), chain the next clip from the previous clip's real last frame —
+per "Chaining video clips" above. Only cut to a different adopted still when the fountain
+itself has an actual beat change there (new speaker taking over, a described entrance/exit,
+a genuine scene cut). The existence of a differently-framed production still for the next
+beat is NOT by itself evidence of an intentional cut — check the script, not the art.**
+
+This sharpens the "genuine cut vs continuation" test above: the test is whether the SCRIPT
+has a break there, not whether a separately-designed still happens to exist for the next beat.
+
+## A shot-list number is production planning, not the script — and a cut can't drop someone
+
+Two further corrections from the same c06→c07 handoff (Scene 2), both from watching the
+actual render rather than reasoning about it in advance:
+
+1. **A shot-list renumbering (07c → 08a/08b) is not evidence of a script break either.**
+   I initially treated the new shot number as proof this was a genuine cut. It isn't — the
+   fountain has no scene heading or action break between Jan's line and Chris's heckle,
+   same as the 07c-1/07c-2 case above. Shot numbers are a downstream production-planning
+   artifact (breaking a long scene into coverage), not the screenplay itself. **Check the
+   fountain text directly; don't infer a break from any shot-list document.**
+
+2. **Even a legitimate cut can't make an already-on-screen character vanish.** c07's stills
+   (`shot08a`/`shot08b`) never included RICK, who was clearly on screen a moment earlier in
+   c06 (arms folded, beside Jan). Cutting to them was defensible for *introducing* Chris
+   (a new character entering is a legitimate edit point, per "Chaining video clips" above)
+   but it silently dropped Rick too — which reads as a continuity error, not an edit,
+   because nothing in the script or the cut motivates his absence. **Before using any still
+   for a clip that follows one where multiple characters are already established, check
+   that still contains every character who was just on screen** — not only the ones with
+   lines in the upcoming clip. If it doesn't, composite a corrected still (base it on the
+   *previous clip's real last frame*, so the already-established characters are
+   pixel-accurate, and add only the new character via their reference sheet) rather than
+   using the incomplete one or forcing a chain that has to invent the new character from
+   text alone.
+
+   **Follow-up, same clip — the fix above still cost a wasted render.** The composited
+   still (`fal-tools/api/compose_shot08_heckle.js`, via `fal-ai/nano-banana-pro/edit`) came
+   back **1024×1024** because no aspect ratio was requested, while every other Scene 2 still
+   is **2752×1536**. Nothing checked this before submitting it to `image-to-video`, which
+   just inherits whatever aspect ratio its seed image has — no independent aspect parameter
+   overrides it. The render came back **768×768**, a visibly square clip spliced into an
+   otherwise-widescreen scene, on top of a separate voice-assignment glitch (Jan's voice came
+   out of Chris) that surfaced once a third named speaker (Rick) was added to the same
+   dialogue prompt. Both were only caught on manual review after paying for the render, and
+   the fix was reverted — the original two-speaker keyframe pair (missing Rick, but correct
+   aspect and voices) was kept as the accepted take instead.
+
+   **Rule: `ffprobe -v error -show_entries stream=width,height -of csv=p=0 <image>` EVERY
+   image straight out of a generation/composite step, before it ever gets passed to
+   `image_url` for a video render — not just when something already looks wrong.** Compare
+   against the scene's standing resolution (Scene 2 = 2752×1536). If it doesn't match, pass
+   an explicit aspect-ratio/size parameter on the image-generation call, or crop/pad the
+   result to match. Never submit a mismatched-aspect still to the video model and catch it
+   after the fact — that's a paid render spent to discover something a one-line `ffprobe`
+   check catches for free.
+
+   **Related, unresolved**: adding a third named speaker (Rick) to a dialogue prompt that
+   previously had only two (Jan, Chris) coincided with the model assigning Jan's line to
+   Chris's voice. Not yet root-caused or proven as the mechanism — noted here so the next
+   multi-speaker prompt watches for it and reports back what's found.

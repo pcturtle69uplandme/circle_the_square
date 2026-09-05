@@ -1,3 +1,51 @@
+## 🔴 2026-09-05 — switched to the paid API, not the browser/free-tier route
+
+The free-tier sandbox route below (`browser/`) is superseded for actual generation.
+Reasons: the "50 free/day" banner turned out not to cover our route reliably, and the
+user's volume needs exceed what any free tier realistically supports. Generation now
+goes through the real API key (`FAL_KEY`, see `set-fal-key.ps1`) via `fal-tools/api/`,
+using **`fal-ai/minimax-h3-turbo/image-to-video`**, not `minimax/h3-max`.
+
+**Turbo is a different, much cheaper model than Max** — confirmed, not estimated:
+
+| Model | Confirmed rate | Basis |
+|---|---|---|
+| `minimax/h3-max` | ~$0.13/sec of **output video** | fal's own printed "Total Cost" on multiple 10s renders, see `VIDEO_BUDGET.md` |
+| `minimax-h3-turbo` | ~$0.00374 for a 15s clip (~21s of **compute**) | fal dashboard request detail, 2026-09-05 |
+
+Turbo appears to bill by compute-seconds on a fast backend rather than by output-video
+length, which is why it lands roughly two orders of magnitude cheaper per clip. Do not
+assume the two models' per-second rates are interchangeable when budgeting.
+
+**Cost rule: the REST API returns no cost field anywhere** (checked `fal.subscribe`'s
+result, `fal.queue.status`, and the raw `queue.fal.run/.../requests/<id>` response — none
+carry a price). The only place the real billed amount exists is the fal.ai dashboard.
+After any generation, confirm actual cost with:
+
+```bash
+cd fal-tools/browser
+node get_request_cost.js fal-ai/minimax-h3-turbo/image-to-video <request-id>
+```
+
+This reuses the same port-9333 logged-in Chrome profile as the browser tools below — it
+is read-only (just opens the request's detail page and reads the Cost field), it does not
+submit or drive any generation itself. If that profile's session has expired, `fal_up.js`
+opens a visible window to sign back in by hand.
+
+## Layout (API route)
+
+| File | Role |
+|---|---|
+| `api/client.js` | Configures `@fal-ai/client` from `FAL_KEY` (loaded from repo-root `.env`, written by `set-fal-key.ps1`) |
+| `api/h3_turbo_image_to_video.js` | Generic single-clip CLI — `--image`/`--end-image` accept local paths (auto-uploaded to fal storage) or URLs |
+| `browser/get_request_cost.js` | Read-only: looks up a request's actual billed cost on the dashboard |
+
+The rest of this README (below) documents the earlier free-tier/sandbox route and the
+Scene 2 clip plan/prompts, which are still the source of truth for *what* each shot
+should contain — only *how it's submitted* changed.
+
+---
+
 # fal.ai tooling — Scene 2 video on MiniMax H3 Max
 
 Closes the open item recorded in `HANDOVER.md` §12: *"No fal.ai tooling exists in this

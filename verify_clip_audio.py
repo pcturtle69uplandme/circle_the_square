@@ -46,7 +46,7 @@ def expected_lines(slug):
         # model and are never spoken aloud -- that scored a verbatim-correct take at 32%
         # and reported it as failing.
         out = []
-        for seg in re.findall(r'DIALOGUE:(.*?)(?:AUDIO:|TIMING:|CRITICAL|$)', block, re.S):
+        for seg in re.findall(r'DIALOGUE[^:]*:(.*?)(?:AUDIO:|TIMING:|CRITICAL|$)', block, re.S):
             out += re.findall(r'"([^"]{4,})"', seg)
         return out
     return []

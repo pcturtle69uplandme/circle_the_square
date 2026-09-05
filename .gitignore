@@ -41,3 +41,6 @@ skills-lock.json
 # Never commit credentials -- these sit untracked in clips/cartoon/ and must stay that way
 credentials*.txt
 *credentials*.txt
+
+# Scratch compressed review copies sent to the user mid-session -- not project deliverables
+_review_tmp/

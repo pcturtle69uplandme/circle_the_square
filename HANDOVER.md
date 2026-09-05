@@ -1,18 +1,19 @@
 # 🤝 HANDOVER — Circle the Square
 
 > **For**: the next Claude Code session, likely on a different machine.
-> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-09-02 (Scene 2 routing
-> pivot to fal.ai free tier, see the banner immediately below and §12).
+> **Written**: 2026-08-10 (cartoon pivot), last updated 2026-09-05 (Scene 4 Beat 1
+> produced on fal.ai, see the banner immediately below and §13).
 > **Repo**: https://github.com/pcturtle69uplandme/circle_the_square (private)
 > **Active branch**: `higgsfield-minimax-h3-pipeline` (renamed 2026-08-30 from
 > `rive-cutout-rigging-pivot`, which had drifted entirely off its stated purpose —
 > the abandoned Rive cutout-rigging proof-of-concept is preserved on
 > `archive/rive-cutout-rigging-pivot`, see `RIVE_RIGGING_PIVOT.md`).
-> **Read next**: **`HANDOVER.md` §12** (Scene 2 routing, 2026-09-02) → §11 (Scene 1,
-> now closed) → `video-tests/README.md` (rebuild order + adding-the-next-beat
-> checklist) → `SCENE1_MINIMAX_TRACKER.md` §3 (Scene 1 per-beat plan, all done) →
-> `.agents/rules/` (mechanics gotchas — read before generating anything; still apply
-> to Scene 2, same model family, see §12).
+> **Read next**: **`HANDOVER.md` §13** (Scene 4 Beat 1, 2026-09-05 — read its
+> "hard-won process rules" before generating Beat 2) → `SCENE4_SHOT_LIST.md` (full
+> 4-beat/51-shot plan, only Beat 1 done) → `cast-bible.html` (live photoreal cast
+> reference) → `SCENE3_SHOT_LIST.md` (Scene 3, produced between §12 and §13, not
+> otherwise documented in this file) → §12 (Scene 2 routing, superseded for Scene 3+
+> by "fal.ai only" per §13) → `.agents/rules/` (mechanics gotchas, still apply).
 > `featurette_storyboard_image_prompts.md`, `CARTOON_BUILDING_TRAILER_PLAN.md`,
 > `CARTOON_CAST_BIBLE.md` are the **cartoon-era master workflow, currently inactive**
 > — see the banner below before treating them as current.
@@ -813,3 +814,113 @@ evaluated because Scene 1 was still being actively funded at the time.
    with `archive/` for rejects. Next session should decide whether Scene 2 gets its
    own directory (e.g. `video-tests-scene2/`) or continues numbering in `video-tests/`
    — the numbering scheme there currently implies one continuous scene.
+
+---
+
+## 13. Session 2026-09-05 — Scene 4 written, Beat 1 fully produced on fal.ai only
+
+> 🆕 **Note: this section jumps straight from §12 (Scene 2 planning) to Scene 4.**
+> Scene 3 (the canteen/taser scene) was written and produced in the gap between §12
+> and this session, on its own fal.ai pipeline (`fal-tools/api/run_scene3_d*.js`,
+> `compose_s3_*.js`, `SCENE3_SHOT_LIST.md`) — nobody updated this file for it. If you
+> need Scene 3's history, read `SCENE3_SHOT_LIST.md` and the git log directly rather
+> than trusting this handover to have it.
+
+### What happened this session
+
+1. **Scene 4 written** — a new scene added to `CTS_Featurette_Episode.fountain` after
+   Scene 3's `FADE OUT.`: the day after Jan gets tased, four beats (Jan's office → open-
+   plan floor → HR breakout room → canteen). Full beat/shot/duration breakdown in
+   `SCENE4_SHOT_LIST.md` (51 shots planned across all 4 beats).
+2. **Cast bible built**: `cast-bible.html` (photoreal, supersedes the archived
+   `CARTOON_CAST_BIBLE.md`/`character-bible.html`) — all 9 characters including new HR
+   manager Debbie Vance, whose only asset so far is a single Google-Flow-generated
+   turnaround sheet (`character-refs/higgsfield/debbie/debbie_turnaround_sheet.png`),
+   **not** the full 12-shot set every other character has.
+3. **Beat 1 (Jan's office, 15 shots) fully produced and QA'd** — the only beat done so
+   far. Stills in `scene4-stills/`, clips in `scene4-clips/`, stitched preview at
+   `scene4-clips/scene4_beat1_running_preview.mp4` (~137s). Beats 2-4 (open-plan,
+   HR breakout room, canteen — 36 more shots) are **not started**.
+4. **Route settled: fal.ai only, no Higgsfield.** User explicitly ended the Higgsfield
+   detour (both its web free tier and its 2.07-credit MCP balance were exhausted
+   mid-session) — stills via `fal-ai/nano-banana-pro/edit` (~$0.15/image), video via
+   `fal-ai/minimax-h3-turbo/image-to-video` at 768P (per `.agents/rules/fal_video_model_rules.md`,
+   pre-existing rule, still correct). A brief Google Flow detour (`flow_generate.js`,
+   `flow_up.js`) was used for two early stills before settling back on fal.ai for
+   reliability — kept for reference, not the primary route.
+
+### Hard-won process rules from this session — read before generating Beat 2-4
+
+These cost real re-generation cycles to learn. Apply them from the *start* of Beat 2,
+not after the fact:
+
+1. **An "anchor" still used as a reference for many other shots is a single point of
+   failure for every prop/detail it shows.** `s4_01` was referenced (as "Picture 1") by
+   nearly every other Beat 1 still for room/wardrobe continuity. It happened to show
+   Christina holding a tablet; fixing that to a document folder later meant checking
+   *every* shot that had ever referenced `s4_01`, not just the ones whose own text
+   happened to mention a held object. **Before generating a beat's anchor still, decide
+   every prop a character will need across the WHOLE beat (scan the dialogue/shot list
+   first) and put them in the anchor from the start.**
+2. **Fixing one detail on an already-accepted image: edit it, don't regenerate it.** A
+   full from-scratch regenerate of `s4_01` (same prompt, just the held-object line
+   changed) drifted badly — different stress-ball color, wrong plaster shape, different
+   room framing — because nothing anchors a from-scratch generation to the specific
+   accepted pixels. The fix was `fal-ai/nano-banana-pro/edit` with the *accepted image
+   itself* as the sole reference and a prompt that says "change ONLY X, preserve
+   everything else" (see `fal-tools/api/edit_s4_01_folder_swap.js`). Use this pattern
+   for any post-hoc prop/detail fix on an approved still.
+3. **Chain last-frame→first-frame for any shots meant to be one continuous take**, not
+   just when forced by the 15s duration cap. Several Beat 1 hard cuts the user flagged
+   as "jumps" were between shots that were always meant to be one continuous shot (same
+   camera setup, no scripted beat break) but had been independently re-composited,
+   letting position/props drift shot to shot. Chaining fixed all of them. **Cap chains
+   at ~3 links** (matches the pre-existing generational-drift guidance in
+   `.agents/rules/location_continuity_rules.md` §"don't chain indefinitely") then reset
+   to a fresh independent still.
+4. **A requested camera move (push in, pan, arc) will happily reveal geography that was
+   never established elsewhere in the scene** — an undressed window wall, a generic
+   corridor — if you don't explicitly forbid it. Every chained-move prompt needs a line
+   like *"do NOT reveal any part of the room not already visible in the previous frame"*
+   naming the specific elements that must stay in frame (the feature wall, the
+   bookshelf, whatever anchors that location).
+5. **The video model has a strong, repeated bias toward standing a seated character up**
+   during any "energetic"/"delighted"/"brightens" reaction beat, regardless of explicit
+   "stay seated" instructions — this took 4 regeneration attempts on one shot (`s4_07`)
+   to fix. What worked: strip high-energy verbs ("brightens", "barrels past") from the
+   action text entirely and describe minimal, restrained motion instead ("a small
+   pointing gesture with a single hand and a small nod"). If a character must stay
+   seated through a big emotional beat, write the prompt like it's a small beat.
+6. **QA every clip by sampling frames across its FULL duration, not just start/end**,
+   and specifically extract each clip's last frame next to the following clip's first
+   frame/still. That side-by-side comparison is what actually catches jump cuts, prop
+   pop-ins, and posture mismatches — a single start/end check on one clip in isolation
+   misses all of them.
+
+### Cost so far (Beat 1, fal.ai only)
+
+Rough tally, not pulled from the fal.ai dashboard: ~25-30 `nano-banana-pro/edit` still
+generations (~$0.15 each, several were re-rolls fixing the issues above) ≈ $4-5, plus
+~22 `minimax-h3-turbo` video generations at 768P, each a few cents per the compute-second
+pricing in `.agents/rules/fal_video_model_rules.md` ≈ well under $1 total for video.
+Confirm actual spend via the fal.ai dashboard if it matters for budgeting Beats 2-4.
+
+### Open items for the next session
+
+1. **Get final user sign-off on the current Beat 1 preview** (`scene4_beat1_running_preview.mp4`)
+   before starting Beat 2 — several rounds of fixes landed late in this session and
+   the very latest cut has not yet been explicitly approved.
+2. **Beats 2-4 not started.** `SCENE4_SHOT_LIST.md` has the full shot list (Beat 2:
+   open-plan floor, 12 shots; Beat 3: HR breakout room, 11 shots — needs Debbie's full
+   12-shot character set built first, see below; Beat 4: canteen, 13 shots — reuses
+   existing canteen coverage but must carry forward Scene 3's end-state, plywood-boarded
+   window, not shattered glass).
+3. **Debbie Vance needs her full 12-shot reference set** before Beat 3 can be produced
+   properly — right now there's only the one Flow turnaround sheet. Either extend that
+   via fal.ai edits (crop/regenerate individual angles from it) or build the full set
+   the same way the other 8 characters have one (see `cast-bible.html`'s per-character
+   galleries for the pattern: front/three-quarter/profile/slight-up/slight-down/
+   expression-neutral/expression-incharacter/fullbody-neutral/fullbody-characteristic/
+   lighting-soft/lighting-harsh).
+4. **Scan every beat's full dialogue/action for props before generating its anchor
+   still** — apply lesson #1 above from the start of Beat 2 onward, not after the fact.
